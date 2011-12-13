@@ -7,7 +7,7 @@ As outlined in the _Project Summary_, the initial goal of this project is to inv
 
   * Document the current build processes so others can get started
   * Build a test suite for each FVS variant
-  * Add ab R code directory that is used to run FVS as a shared library from R. The structure of the directory will follow the R standards for build an R package.
+  * Add an R code directory that is used to run FVS as a shared library from R. The structure and content under that directory will follow the R standards for an R package.
 
 The initial activities do not include building distribution packages for the general public. That is currently being done by the Forest Service and provided from their web site. 
 
