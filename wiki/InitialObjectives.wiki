@@ -1,6 +1,4 @@
 #labels Featured
-#Initial Objectives
-
 = Initial Objectives =
 
 As outlined in the _Project Summary_, the initial goal of this project is to involve additional developers in FVS. To that end, the initial activities will be to: 
