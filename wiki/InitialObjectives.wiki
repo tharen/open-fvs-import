@@ -1,0 +1,14 @@
+#summary One-sentence summary of this page.
+#labels Featured
+
+= Initial Objectives =
+
+As outlined in the _Project Summary_, the initial goal of this project is to involve additional developers in FVS. To that end, the initial activities will be to: 
+
+  * Document the current build processes so others can get started
+  * Build a test suite for each FVS variant
+  * Add ab R code directory that is used to run FVS as a shared library from R. The structure of the directory will follow the R standards for build an R package.
+
+The initial activities do not include building distribution packages for the general public. That is currently being done by the Forest Service and provided from their web site. 
+
+Eventually, modifying the source and build structure to be more like (or _just like_) a standard GNU open source project is a project goal. Improvements along those lines are welcome.
