@@ -8,7 +8,7 @@ Currently supported variants are:
 
   * ie – the Inland Empire of northern Idaho, eastern Washington, and western Montana
   * ne – the northeast US
-  * aca – Acaidain (under development), currently mostly based on ne.
+  * acd – Acaidain (under development), currently mostly based on ne.
 
 Changes in the `makefile` are required to the build other programs in the FVS system using the code posted in open-fvs.
 
@@ -34,9 +34,9 @@ To build ne or aca use one of the following:
 
 {{{
 make FVSne
-make FVSaca
+make FVSacd
 }}}
 
-To build shared libraries of these programs, add `as.shared=1` to the make commands. Note that if you build a program on Linux and also wish to build a shared library you must first delete all the object code (there is no reliable `make clean` as yet). 
+To build shared libraries of these programs, add `as.shared=1` to the make commands. Note that if you build a program on Linux and also wish to build a shared library you must first delete all the object code. You can use `make clean` to accomplish that task.
 
 Lastly, to build a working _Data Base Extension_ on 64-bit systems, some changes are needed in `src/dbs/DBSTYPEDEFS.F77` (see the comments in the code).
