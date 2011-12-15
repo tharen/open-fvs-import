@@ -2,30 +2,19 @@
 #labels Featured,Phase-QA
 #sidebar TableOfContents
 
-= Introduction =
-
-Add your content here.
-
-Follow the example of the support FAQ.
-
-= Details =
-
-Add your content here.  Format your content with:
-  * Text in *bold* or _italic_
-  * Headings, paragraphs, and lists
-  * Automatic links to other wiki pages
+This is a basic FAQ. 
 
 = Question 1. Where do I get production versions of [http://www.fs.fed.us/fmsc/fvs/ FVS] simulator variants now? =
 
 This is the link to [http://www.fs.fed.us/fmsc/fvs/ FVS]
 
-= Question 2. Why can't I get [feature] to work? =
+= Question 2. Why can't I get _EXTENSION_ to build? =
 
 The Answer is ...
 
 = Question 3 - When are you going to complete the FAQ? =
 
-The Answer is because yadda, yadda, yadda.
+Are they ever complete?
 
 = Question 4 - What happens next? =
 
