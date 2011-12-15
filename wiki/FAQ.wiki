@@ -8,14 +8,14 @@ This is a basic FAQ.
 
 This is the link to [http://www.fs.fed.us/fmsc/fvs/ FVS]
 
-= Question 2. Why can't I get _EXTENSION_ to build? =
-
-The Answer is ...
-
-= Question 3 - When are you going to complete the FAQ? =
+= Question 2. When are you going to complete the FAQ? =
 
 Are they ever complete?
 
-= Question 4 - What happens next? =
+= Question 3. What happens next? =
 
 We have no idea.
+
+= Question 4. Why can't I get _EXTENSION_ to build? =
+
+The Answer is ...
