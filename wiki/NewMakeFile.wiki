@@ -44,9 +44,13 @@ The build command would be as it is now, that is, to build FVSiec in the bin dir
 
 == Current Progress ==
 
-As of December 28, 2011, the first of the `*_sourceList.txt` file was built and placed in the source `bin` directory. In addition the first first version of `newmakefile` is also `bin`. To try it (only on Win32 for now, and using the Rtools as outlined in  [BuildProcess]), do this:
+As of December 28, 2011, the first of the `*_sourceList.txt` file was built and placed in the source `bin` directory. In addition the first first version of `newmakefile` is also `bin`. 
+
+January 16, 2012 update: The new makefile now has been tested on MAC OSX, Generic Linux, and Windows 32 (see [BuildProcess]). These commands work:
 
 {{{
 cd bin
 make --file=newmakefile FVSiec
+make --file=newmakefile FVSpnc
+make --file=newmakefile FVSne
 }}}
