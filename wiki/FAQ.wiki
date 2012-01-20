@@ -31,16 +31,14 @@ If your build doesn't work, that is to say, you don't get an executable on your 
 
 This is the link to [http://www.fs.fed.us/fmsc/fvs/ FVS]
 
-= Question 4. When are you going to complete the FAQ? =
-
-
+= Question 5. When are you going to complete the FAQ? =
 
 Are they ever complete?
 
-= Question 3. What happens next? =
+= Question 6. What happens next? =
 
 We have no idea.
 
-= Question 4. Why can't I get _EXTENSION_ to build? =
+= Question 7. Why can't I get _EXTENSION XYZ_ to build? =
 
 The Answer is …
