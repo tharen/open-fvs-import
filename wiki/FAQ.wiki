@@ -1,8 +1,8 @@
-#summary One-sentence summary of this page.
+#summary Frequently Asked Questions.
 #labels Featured,Phase-QA
 #sidebar TableOfContents
 
-This is a basic FAQ. 
+This is a basic list of the frequently asked questions (FAQ) for the open-fvs project. 
 
 = Question 1. How do I checkout out the source code? =
 
@@ -34,4 +34,3 @@ We have no idea.
 = Question 4. Why can't I get _EXTENSION_ to build? =
 
 The Answer is …
-
