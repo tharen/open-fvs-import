@@ -6,15 +6,17 @@ This is a basic list of the frequently asked questions (FAQ) for the open-fvs pr
 
 = Question 1. How do I checkout out the source code? =
 
-You can obtain the source code anonymously using Subversion,
+You can obtain the source code anonymously using [http://subversion.apache.org/ Subversion],
 
 {{{
 svn checkout http://open-fvs.googlecode.com/svn/trunk/ open-fvs
 }}}
 
-= Question 2. How do I build one of the FVS variants like FVSpnc? =
+For more information, see the [http://code.google.com/p/open-fvs/source/checkout Source] link.
 
-From your current directory, check out the source code, then change into the `bin` directory. Then run the the make command using the newmakefile instead of the system default Makefile or makefile, by running it with the --file= option,
+= Question 2. How do I build one of the FVS variants? =
+
+From your current directory, check out the source code, then change into the `bin` directory. Then run the the make command using the newmakefile instead of the system default Makefile or makefile, by running it with the --file= option,. For example, to build the [http://www.fs.fed.us/fmsc/ftp/fvs/docs/overviews/FVSpn_Overview.pdf Pacific Northwest FVS] variant, 
 
 {{{
 cd bin
