@@ -4,11 +4,26 @@
 
 This is a basic FAQ. 
 
-= Question 1. Where do I get production versions of [http://www.fs.fed.us/fmsc/fvs/ FVS] simulator variants now? =
+= Question 1. How do I checkout out the source code? =
+
+{{{
+svn checkout http://open-fvs.googlecode.com/svn/trunk/ open-fvs
+}}}
+
+= Question 2. How do I build one of the FVS variants like FVSpnc? =
+
+From your current directory, check out the source code, then change into the `bin` directory. Then run the the make command using the newmakefile instead of the system default Makefile or makefile, by running it with the --file= option,
+
+{{{
+cd bin
+make --file=newmakefile FVSpnc
+}}}
+
+= Question 3. Where do I get production versions of [http://www.fs.fed.us/fmsc/fvs/ FVS] simulator variants now? =
 
 This is the link to [http://www.fs.fed.us/fmsc/fvs/ FVS]
 
-= Question 2. When are you going to complete the FAQ? =
+= Question 4. When are you going to complete the FAQ? =
 
 Are they ever complete?
 
@@ -18,4 +33,5 @@ We have no idea.
 
 = Question 4. Why can't I get _EXTENSION_ to build? =
 
-The Answer is ...
+The Answer is …
+
