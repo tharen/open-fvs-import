@@ -1,3 +1,5 @@
+#summary Current build information
+
 =Build Process=
 
 This Wiki entry documents the build process that is currently available from the sources in open-fvs.
@@ -27,4 +29,8 @@ To make any of the programs listed above, enter the program name as in this exam
 make FVSiec
 }}}
 
+To remove all the programs, object files, and build directories, enter:
 
+{{{
+make clean
+}}}
