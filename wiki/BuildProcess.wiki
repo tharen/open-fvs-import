@@ -4,7 +4,7 @@
 
 This Wiki entry documents the build process that is currently available from the sources in open-fvs.
 
-FVS programs are built in the bin directory. The basic approach is to identify the _program_ you want and use a `make` command to build it.
+FVS programs are built in the bin directory. The basic approach is to identify the _program_ (or _shared library_, see below) you want and use a `make` command to build it (also see [NewMakeFile]).
 
 FVS programs are a combination of an FVS regional _variant_ and one or more _extensions_. An extension adds functions to the core program.
 
@@ -17,9 +17,13 @@ The currently available programs are:
 
 Additional programs will be available as we get to them.
 
-==Build Tools==
+==Platforms==
 
-The key tools include make, gfortran, and gcc. The open-fvs community includes people who routinely build on Windows-32 (under Windows XP and Win7), generic Linux (x86_64), and MAX OSX (x86_64). To build under Windows, we suggest using the same tools the R community use to build R. These tools are know as the Rtools toolkit and it is available from [http://www.murdoch-sutherland.com/Rtools]. 
+The open-fvs community includes people who routinely build on Windows-32 (under Windows XP and Win7), generic Linux (x86_64), and MAC OSX (x86_64). 
+
+==Windows Build Tools==
+
+To build under Windows, we suggest using the same tools the R community use to build R. These tools are know as the Rtools toolkit and it is available from [http://www.murdoch-sutherland.com/Rtools]. 
 
 ==Build==
 
@@ -34,3 +38,11 @@ To remove all the programs, object files, and build directories, enter:
 {{{
 make clean
 }}}
+
+Note that the build process makes a _program_ file plus one shared library that must be available during the run. That library is called libfvsSQL.so and it is built in the bin directory. When running an FVS program, the operating system must be able to find that library. This is not a problem with Windows so long as the library and the program are stored in the same directory. On Unix-alike systems, the library must be installed in a directory that is searched by the loader. This is operating system specific.
+
+==FVS as a Shared Library==
+
+FVS programs can be linked into _shared libraries_ rather than program files. This is done by adding `as.shared=1` to the make commands. The file suffix for the library will be `.so` regardless of the OS being used (that is, even on Windows, these files will be .dll files, but they will carry the suffix .so). 
+
+Having a shared library incarnation of FVS requires programmers to call the program elements in a useful way. That topic is covered in a separate Wiki page on the [FVS_API].
