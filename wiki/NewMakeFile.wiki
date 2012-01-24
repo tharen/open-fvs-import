@@ -1,5 +1,7 @@
 #summary Describes the new makefile approach
 
+Nick Crookston, January 2012
+
 = The `makefile` situation =
 
 On January 22, 2012, the old makefiles used by the FMSC and described below were retired in the open-fvs project. This Wiki page discusses the old makefiles and the new makefile approach.
