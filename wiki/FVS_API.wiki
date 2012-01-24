@@ -6,6 +6,18 @@ Nick Crookston, January 2012
 
 Several people have asked if FVS can be built as a _shared library_ so that it can interact with other programs during a simulation. This document describes the FVS _Application Program Interface_ (API) that provides for this interaction. 
 
-Note that the fact that FVS is written as a _procedural_ program rather than an _object oriented_ program  means that the methods used in the FVS_API are not consistent with an object-oriented paradigm. Achievement of specific goals, for example, processing many stands in parallel through time, is achieved differently in FVS than would be accomplished if FVS were object oriented. The design of the API is keyed to this reality.
+Note that the fact that FVS is written as a _procedural_ program rather than an _object oriented_ program means that the methods used in the FVS_API are not consistent with an object-oriented paradigm. Achievement of specific goals, for example, processing many stands in parallel through time, is achieved differently in FVS than would be accomplished if FVS were object oriented. The design of the API is keyed to this reality.
+
+The design of this API is driven by known and perceived needs and as those change, the API will change. The design was further dictated by the system used to call it. So far, that is only one system, the [http://www.r-project.org/ R System for Statistical Computing]. However, I know that [http://essa.com/ Don Robinson and Sarah Beukema] are in the process of writing additional, unique, functionality that we intend to integrate into this work. The target system they are using is based on .Net rather than R. 
+
+Speaking of R, I intend to add a directory to this repository called _rFVS_. The goal is to provide a set of R functions can be used to call FVS to run a wide array of simulations. An additional objective is to test and demonstrate the API described below! Therefore, many of the examples presented below that illustrate this API use R code. The R functions may someday become an R package; for now they documented in this Wiki document.
+
+Note that this is the first version of the API; this is _experimental_ work subject to change. 
+
+= Basic Idea =
+
+FVS can hold one stand in memory at a time. When a shared library is loaded, the state of its memory is not set to reliable initial values; no stand, no run options, and no trees are defined. Using the current API functions, there is only one way to define the initial conditions and that is to read a keyword file as would be done with FVS if it were run as a program rather than as a shared library. FVS keyword commands that cause FVS to read site and tree information are used to setup the simulation. 
+
+Specifying the name of the keyword file is done by setting the `--keywordfile` argument as done the [FVSCommandLine FVS Command Line] (there is an API call to set this value without putting it on the command line). The FVS program is then run by calling a single API function which returns when the simulation is over, unless, of course, the program is requested to stop during the simulation. The request to stop is done by setting a stop point and stop year. The program returns when it reaches the designated stop point and then it picks up the calculations were it left off when it is called again. There are several ways to interact with the program between its "return" and when it is called again, each is supported with an API function. Note, this is the _basic idea_, details are provided below that cover more complicated scenarios. 
 
 *_More content is being drafted_*
