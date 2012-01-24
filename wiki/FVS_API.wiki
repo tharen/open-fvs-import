@@ -1,0 +1,11 @@
+#summary FVS-API: Running FVS as a Shared Library
+
+Nick Crookston, January 2012
+
+= Introduction =
+
+Several people have asked if FVS can be built as a _shared library_ so that it can interact with other programs during a simulation. This document describes the FVS _Application Program Interface_ (API) that provides for this interaction. 
+
+Note that the fact that FVS is written as a _procedural_ program rather than an _object oriented_ program  means that the methods used in the FVS_API are not consistent with an object-oriented paradigm. Achievement of specific goals, for example, processing many stands in parallel through time, is achieved differently in FVS than would be accomplished if FVS were object oriented. The design of the API is keyed to this reality.
+
+*_More content is being drafted_*
