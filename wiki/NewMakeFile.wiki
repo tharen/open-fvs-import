@@ -41,4 +41,4 @@ To build FVSiec in the bin directory the programmer would enter â€œmake FVSiecâ€
 
 = Multiplatform builds =
 
-Recognizing that some people may want to develop in a Visual Studio environment, I am working on discovering and documenting the simplest possible steps to creating a VS 2010 solution that will build a command line FVS using the existing code and directory. Current OS is WinXP SP3 (32 bit). I am identifying some issues (mostly cross-platform DB syntax) that need some attention. Once worked out, code changes will be suggested and short documentation will be provided (drobinson@essa.com)
+Recognizing that some people may want to develop in a Visual Studio environment, I am working on discovering and documenting the simplest possible steps to creating a VS 2010 solution that will build a command line FVS using the existing code and directory structure. This is being worked on WinXP SP3 (32 bit) OS. I am identifying some issues (mostly cross-platform DB syntax) that need some attention. Once worked out, code changes will be suggested and short documentation will be provided (drobinson@essa.com)
