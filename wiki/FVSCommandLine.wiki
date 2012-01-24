@@ -1,0 +1,40 @@
+#summary FVS Command Line Options and Stop Points
+
+Nick Crookston, January 2012
+
+= Introduction =
+
+FVS can be run by entering the program name at the system command line and then answering prompts for the names of input and output file names. These names are often given even when not used by FVS. Indeed, if the command line option that replaces this practice is not used, then FVS still prompts for file names as usual.Now, a command line option has been added that replaces the prompts. 
+
+In addition, a new *_experimental_* facility in FVS is described that allows the program to stop during a simulation after storing the state of all the stands as of a specific point in time and at a specific point during the simulation computations. This facility is most useful when FVS is used as a shared library (see [FVS_API]). 
+
+=Options=
+
+== Ready Now ==
+
+`--keywordfile=<fileNamePrefix>.key` 
+  Specify the input keyword file name. Note that all output files will be opened automatically using the `<fileNamePrefix>` and the suffix *must* be `.key`.  The <> characters are not included, for example if the input keyword file name is `myInputFile.key`, then the following is coded: `--keywordfile=myInputFile.key`. Specifying `--keywordfile` is not allowed if `--restart` (see below) is specified. 
+
+== Experimental ==
+
+`--stoppoint=<stopptcode>,<stopptyear>,<stopptfile>`
+
+  Specify that the program store all the state variables associated with a stand in the file called the _stop point file_ specified as `<stopptfile>`, that this be done during the cycle that contains the _stop point year_ specified as `<stopptyear>` and that the state of the simulation is stored as of a specific point during the simulation as designated by the _stop point code_ specified as `<stopptcode>`. The possible values of this code are:
+
+  * *1* stop prior to the first call to the Event Monitor during a simulation.
+  * *2* stop after FVS growth and mortality rates are computed, but prior these being added to the definition of the trees. 
+  * *3* stop prior to the call to the Establishment model.
+
+Example:
+{{{
+FVSiec --keywordfile=test.key --stoppoint=1,2040,test.stop
+}}}
+
+`--restart=<stopptfile>`
+
+ Specify that the program recover the state variables and continue processing from where it left off. This option may be used with `--stoppoint` but it is not allowed with `--keywordfile`.
+
+Example:
+{{{
+FVSiec --restart=test.stop
+}}}
