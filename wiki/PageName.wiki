@@ -1,0 +1,25 @@
+#summary The FVS Stop and Restart Facilities
+
+Nick Crookston - January 2012
+
+= FVS Stop and Restart =
+
+== Introduction ==
+
+FVS has the capability to stop a simulation at a selected point, store the current state variables, and then restart from where it left off. Other programs can be run in the interim. This is useful, say, in the case where FVS is used in conjunction with another model that represents some landscape-level process. The development of a large number of stands can be projected up to a stopping point while storing summaries of conditions in each stand in a data base. A separate program could then be run that simulates some other landscape process, for example, fire. Its output would be stored in separate data tables. When FVS is restarted, it can reload the state variables of each stand in turn, fetch the information left behind by the separate models, and use that information in predicting future stand development.
+
+Achievement of this goal uses a stop-point and restart capability. Users control this capability with command line options. To create a stopping point, a tag is specified that defines where during the sequence of calculations FVS should stop, a year is specified given that defines the timing of stopping point, and a file name is specified that defines a mass storage location for all the state variables (in the future, this may be tag specifying an alternative storage method that serves the same purpose). 
+
+To restart the program, a user simply specifies the name of the mass storage where all the data were stored. FVS loads these data one stand at a time and continues the simulation of each. Note that a new stop point can be created during the processing of an existing one. Therefore, one can start the model, run for a short time, stop, restart, stop again, and repeat until the simulation is complete. In this way, the simulation can progress through time for all the stands together. Without the use of these techniques, each stand is run for the entire simulation period, independently of the others.  
+
+When FVS is run as a shared library, there is an additional stop point and restart capability. In this situation, FVS returns control to the calling program from selected stopping points within a time step without storing state variables in mass storage. In this situation, a single stand is held in computer memory (only one stand is allowed at a time) after the program returns control to the parent. When FVS is called again, it picks up where it left off with the same stand and simulates it forward to the next stop point. This can be done frequently during a simulation. In the interim, between when FVS returns and when it is called again, data within FVS can be fetched from the computer's memory and changed by the parent program. For example, alternative growth equations can be used for some of the trees or newly established trees as predicted by an independent regeneration establishment model can be added to the simulation. 
+
+These two approaches can be used together. That is, the ability to stop, store, and restart from a mass storage can be used in the same simulation as the second approach of stop and restart without storage.
+
+FVS users may remember that the idea of stopping and restarting FVS is an old one, first introduced by Crookston and Stage in 1991 as part of the [http://www.fs.fed.us/fmsc/ftp/fvs/docs/gtr/parallel_processing.pdf Parallel Processing Extension of FVS (PPE)]. Indeed, the PPE is still available from the [http://www.fs.fed.us/fmsc/fvs Forest Management Service Center], and the source files are in the open-fvs repository. However, the start and restart capability described here is intended to replace the PPE so that it can be retired.
+
+== Controlling these Features ==
+
+When FVS is run as a program, rather than being called as a shared library, the only stop and restart approach that makes sense is the first one, where the data are stored in a persistent mass storage location. [FVSCommandLine Command line] options are used to control the behavior of FVS when this capability is used. 
+
+When FVS is run as a shared library both start and restart approaches can be used together. Controlling the programs behavior is done with [FVS_API] calls that request that stop points be set and respected by the FVS system with and without storing the state variables. The [FVS_API] provides a way to specify the parameters that are otherwise stated on the command line options so that the names of the storage files and associated parameters can be set by the parent program.
