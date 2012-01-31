@@ -123,29 +123,29 @@ Get a snap shot of the simulation of the current stand. (The return code reporte
 ||maxcol||returned length of summary (20 words).||
 ||rtnCode||returned status code for this call where 0=OK, 1=an error.||
 
-The 20 values are as follows (in western variants, other may differ, see [http://www.fs.fed.us/fmsc/fvs/documents/index.shtml FVS documentation] for more details).
+The 20 values are as follows (in western variants, eastern variants differ, (see [http://www.fs.fed.us/fmsc/fvs/documents/index.shtml FVS documentation] for more details).
 
 ||Name||Definition||
-||Year||Current year of simulation||   
-||Age||Current age of stand||   
-||Tpa||Trees per acre||   
-||TCuFt||Total cubic volumn||   
-||MCuFt||Total merchantable volume||   
-||BdFt||Total Board Foot Volume||   
-||RTpa||Removed trees per acre||   
-||RTCuFt||Removed total cubic volume||   
-||RMCuFt||Removed merchantable volume||   
-||RBdFt||Removed board foot volume||   
-||ATBA||After thin basal area||   
-||ATCCF||After thin CCF||   
-||ATTopHt||After thin top height||   
-||PrdLen||Lenght of simulation cycle||   
-||Acc||Accreation in cubic feet/acre/year||   
-||Mort||Mortality in cubic feet/acre/year||   
-||SampWt||Stand sampling weight, often the size or area represneted||   
-||ForTyp||Forest type code||   
-||SizeCls||Size class code||   
-||StkCls||Stocking class code||
+||`Year`||Current year of simulation||
+||`Age`||Current age of stand||
+||`Tpa`||Trees per acre||
+||`TCuFt`||Total cubic volume||
+||`MCuFt`||Total merchantable volume||   
+||`BdFt`||Total Board Foot Volume||   
+||`RTpa`||Removed trees per acre||   
+||`RTCuFt`||Removed total cubic volume||   
+||`RMCuFt`||Removed merchantable volume||   
+||`RBdFt`||Removed board foot volume||   
+||`ATBA`||After thin basal area||   
+||`ATCCF`||After thin CCF||   
+||`ATTopHt`||After thin top height||
+||`PrdLen`||Length of simulation cycle (years)||
+||`Acc`||Accretion in cubic feet/acre/year||
+||`Mort`||Mortality in cubic feet/acre/year||
+||`SampWt`||Stand sampling weight, often the area||
+||`ForTyp`||Forest type code||
+||`SizeCls`||Size class code||
+||`StkCls`||Stocking class code||
 
 _TODO:_ Document the list for the eastern variants. 
 
@@ -172,7 +172,7 @@ Get or set attributes of the trees in the simulation. (The return code reported 
 subroutine fvsEvmonAttr(name,nch,action,attr,rtnCode)
 }}}
 
-Get or set FVS Event Monitor variables. (The return code reported here are independent of the general return code.)
+Get or set FVS Event Monitor variables. There are too many variables to list here, see [http://www.fs.fed.us/fmsc/fvs/documents/index.shtml FVS documentation] for more details. (The return code reported here are independent of the general return code.)
 
 ||Argument||Definition||
 ||name||character string defining name of the Event Monitor attribute being being acted upon.||
