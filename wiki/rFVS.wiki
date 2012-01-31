@@ -19,7 +19,7 @@ This is *_experimental work_* that is subject to change, particularly with respe
 == Notation Used Below ==
 
   * The code blocks specify commands entered into R.
-  * The notation `<open-fvs>/` signifies that the directory where the open-fvs code is stored on your system. Modify this string so that the path name to the files can be found.
+  * The notation `<open-fvs>/` defines the directory where the open-fvs code is stored on your system. Modify this string so that the path name to the files can be found.
 
 == Start up ==
 
@@ -30,12 +30,12 @@ sdir = "<open-fvs>/rFVS/R"
 for (rf in dir (sdir)) source (paste(sdir,rf,sep="/"))
 }}}
 
-The second step is to load the FVS shared library. How to do this currently depends on the operating system being used. The following assumes that program FVSiec has been built as a shared library (see [BuildProcess Build Process] for current build instructions.
+The second step is to load the FVS shared library. How to do this currently depends on the operating system being used. The following assumes that program `FVSiec` has been built as a shared library (see [BuildProcess Build Process] for build instructions.
 
 On Windows and generic Linux 64:
  
 {{{
-dyn.load(“<open-fvs>/trunk/bin/libfvsSQL.so")
+dyn.load("<open-fvs>/trunk/bin/libfvsSQL.so")
 dyn.load("<open-fvs>/trunk/bin/FVSiec.so")
 }}}
 
@@ -50,7 +50,7 @@ dyn.load("<open-fvs>/trunk/bin/FVSiec.so")
 The following is a list of the R functions that call [FVS_API FVS API] member functions as needed; consult the API for more information on the functions used. 
 
 {{{
-fvsAddTrees (…)
+fvsAddTrees ()
 }}}
 
 TODO: write function
@@ -83,7 +83,7 @@ fvsGetSpeciesCodes()
 
 Return value: 
 
-A matrix of character strings with one row for each species and three columns. The column names are `fvs, fia, plant` correspond to the three kinds of code. The order is exactly as presented in the FVS variant which means, for example, that row 1 corresponds to the internal FVS species index number 1, row 2 for species 2 and so on.
+A matrix of character strings with one row for each species and three columns. The column names `fvs, fia, plant` correspond to the three kinds of species codes used in FVS. The order is exactly as presented in the FVS variant which means, for example, that row 1 corresponds to the internal FVS species index number 1, row 2 for species 2 and so on.
 
 {{{
 fvsGetSummary()
@@ -104,15 +104,15 @@ Argument:
 A vector of strings whereby each string names an attribute to be returned.
 
 ||Name||Description||
-||` tpa`||Trees per acre||
-||` dbh`||Diameter breast height (inches)||
-||` dg`||Diameter growth scaled to cycle length (inches)||
-||` ht`||Hieght (feet)||
-||` htg`||Height growth scaled to cycle length (feet)||
-||` crwdth`||Crown width (feet)||
-||` cratio`||Crown ratio (proportion of height in live crown||
-||` species`||FVS numeric species code||
-||` age`||Tree age||
+||`tpa`||Trees per acre||
+||`dbh`||Diameter breast height (inches)||
+||`dg`||Diameter growth scaled to cycle length (inches)||
+||`ht`||Hieght (feet)||
+||`htg`||Height growth scaled to cycle length (feet)||
+||`crwdth`||Crown width (feet)||
+||`cratio`||Crown ratio (proportion of height in live crown||
+||`species`||FVS numeric species code||
+||`age`||Tree age||
 
 Return value:
 
@@ -164,6 +164,6 @@ fvsSetTreeAttr
 
 TODO: write function
 
-= Run Example =
+= Run Examples =
 
 TODO: Draft this section
