@@ -12,7 +12,7 @@ Nick Crookston, January 2012
     * [FVS_API#Return_Code_State Return Code State]
     * [FVS_API#FVS_Dimensions FVS Dimensions]
     * [FVS_API#FVS_Summary_Statistics FVS Summary Statistics]
-    * [FVS_API#FVS_Tree_Attribues FVS Tree Attribues]
+    * [FVS_API#FVS_Tree_Attribues FVS Tree Attributes]
     * [FVS_API#FVS_Event_Monitor_Variables FVS Event Monitor Variables]
     * [FVS_API#Add_Trees Add Trees]
     * [FVS_API#Species_Codes Species Codes]
@@ -35,8 +35,7 @@ Note that this is the first version of the API; this is _experimental_ work subj
 
 FVS can hold one stand in memory at a time. When a shared library is loaded, the state of its memory is not set to reliable initial values; no stand, no run options, and no trees are defined. Using the current API functions, there is only one way to define the initial conditions and that is to read a keyword file as would be done with FVS if it were run as a program rather than as a shared library. FVS keyword commands that cause FVS to read site and tree information are used to setup the simulation. 
 
-Specifying the name of the keyword file is done by setting the `--keywordfile` argument as done the [FVSCommandLine FVS Command Line] (there is an API call to set this value without putting it on the command line). The FVS program is then run by calling a single API function which returns when the simulation is over, unless, of course, the program is requested to stop during the simulation. The request to stop is done by setting a stop point and stop year. The program returns when it reaches the designated stop point and then it picks up the calculations were it left off when it is called again. There are several ways to interact with the program between its "return" and when it is called again, each is supported with an API function. Note, this is the _basic idea_, details are provided below that cover more complicated scenarios. 
-
+Specifying the name of the keyword file is done by setting the `--keywordfile` argument as done the [FVSCommandLine FVS Command Line] (there is an [FVS_API#Command_Line API call] to set this value without putting it on the command line). The FVS program is then run by calling a single API function which returns when the simulation is over, unless, of course, the program is requested to stop during the simulation. The request to stop is done by setting a stop point and stop year. The program returns when it reaches the designated stop point and then it picks up the calculations were it left off when it is called again. There are several ways to interact with the program between its "return" and when it is called again, each is supported with an API function. Note, this is the _basic idea_, details are provided below that cover more complicated scenarios. 
 
 = API Reference =
 
@@ -73,11 +72,12 @@ Set the parameters that control start/restart while FVS is run as a shared libra
 subroutine getfvsRtnCode (rtnCode)
 }}}
 
-_rtnCode_ is returned with the current return code value in FVS. In general:
-  * -1 indicates that FVS has not been started.
-  * 0 indicates that FVS is in good running state. 
-  * 1 indicates that FVS has detected an error of some kind and should not be used until reset by specifying new input.
-  * 2 indicates that FVS has finished processing all the stands; new input can be specified. 
+_rtnCode_ is returned with the current return code value in FVS. 
+||Value||Meaning||
+||-1||indicates that FVS has not been started.||
+||0||indicates that FVS is in good running state.||
+||1||indicates that FVS has detected an error of some kind and should not be used until reset by specifying new input.||
+||2||indicates that FVS has finished processing all the stands; new input can be specified.||
 
 == FVS ==
 
@@ -85,7 +85,7 @@ _rtnCode_ is returned with the current return code value in FVS. In general:
 subroutine fvs(rtnCode)
 }}}
 
-Run FVS up to the next stop point, or to the end of the simulation. Start from where the simulation left off or by reading the keyword file or by reading a restart file, depending on run options. 
+Run FVS up to the next stop point, or to the end of the simulation. Start by reading the keyword file or by reading a restart file, depending on run options [see FVSCommandLine FVS Command Line]. 
 
 The _rtnCode_ is as described for [FVS_API#Return_Code_State Return Code State].
 
@@ -121,9 +121,35 @@ Get a snap shot of the simulation of the current stand. (The return code reporte
 ||ncycle||returned number of cycles defined for the run.||
 ||maxrow||returned maximum value of ncycle (and icycle).||
 ||maxcol||returned length of summary (20 words).||
-||rtnCode||returned status code for this call where 1 indicates an error and 0 indicates OK.||
+||rtnCode||returned status code for this call where 0=OK, 1=an error.||
 
-== FVS Tree Attribues ==
+The 20 values are as follows (in western variants, other may differ, see [http://www.fs.fed.us/fmsc/fvs/documents/index.shtml FVS documentation] for more details).
+
+||Name||Definition||
+||Year||Current year of simulation||   
+||Age||Current age of stand||   
+||Tpa||Trees per acre||   
+||TCuFt||Total cubic volumn||   
+||MCuFt||Total merchantable volume||   
+||BdFt||Total Board Foot Volume||   
+||RTpa||Removed trees per acre||   
+||RTCuFt||Removed total cubic volume||   
+||RMCuFt||Removed merchantable volume||   
+||RBdFt||Removed board foot volume||   
+||ATBA||After thin basal area||   
+||ATCCF||After thin CCF||   
+||ATTopHt||After thin top height||   
+||PrdLen||Lenght of simulation cycle||   
+||Acc||Accreation in cubic feet/acre/year||   
+||Mort||Mortality in cubic feet/acre/year||   
+||SampWt||Stand sampling weight, often the size or area represneted||   
+||ForTyp||Forest type code||   
+||SizeCls||Size class code||   
+||StkCls||Stocking class code||
+
+_TODO:_ Document the list for the eastern variants. 
+
+== FVS Tree Attributes ==
 
 {{{
 subroutine fvsTreeAttr(name,nch,action,ntrees,attr,rtnCode)
@@ -206,7 +232,7 @@ subroutine fvsCutTrees(pToCut,nt,rtnCode)
 }}}
 
 
-_TODO:_ Not yet implimented
+_TODO:_ Not yet implemented
 
 Specify the proportion of each existing tree record FVS should cut. (The return code reported here are independent of the general return code.)
 
