@@ -1,0 +1,169 @@
+#summary Running FVS form R (*work in progress*)
+
+Nick Crookston, January 2012
+
+= Contents =
+
+<wiki:toc max_depth="2" />
+
+= Introduction =
+
+This Wiki page discusses the use of FVS within the [http://www.r-project.org/ R System for Statistical Computing]. As stated in the discussion of the [FVS_API FVS Application Program Interface], using FVS as a _shared library_ requires that the library be loaded and called from a parent program -- here, the parent is R.
+
+What follows is a description of each of several R functions that are in the `rFVS` portion of the open-fvs repository. That collection may someday form an R-package that can be loaded into an R session thereby providing users all the functionality of the collection, plus detailed documentation and examples. Until the work is done to build the package, this Wiki page will begin to fill the documentation requirements. 
+
+This is *_experimental work_* that is subject to change, particularly with respect to adding functions. 
+
+= Getting Started =
+
+== Notation Used Below ==
+
+  * The code blocks specify commands entered into R.
+  * The notation `<open-fvs>/` signifies that the directory where the open-fvs code is stored on your system. Modify this string so that the path name to the files can be found.
+
+== Start up ==
+
+The first step is to start R and load the desired functions. Until rFVS becomes an R package, the following code can be used to load all the functions found in `<open-fvs>/rFVS/R`. 
+
+{{{
+sdir = "<open-fvs>/rFVS/R"
+for (rf in dir (sdir)) source (paste(sdir,rf,sep="/"))
+}}}
+
+The second step is to load the FVS shared library. How to do this currently depends on the operating system being used. The following assumes that program FVSiec has been built as a shared library (see [BuildProcess Build Process] for current build instructions.
+
+On Windows and generic Linux 64:
+ 
+{{{
+dyn.load(“<open-fvs>/trunk/bin/libfvsSQL.so")
+dyn.load("<open-fvs>/trunk/bin/FVSiec.so")
+}}}
+
+On MAC OSX you first need to insure that the dynamic library called libfvsSQL.so can be found (this can be done by entering `export DYLD_FALLBACK_LIBRARY_PATH=<open-fvs>/trunk/bin/` in your .bashrc file and insuring this environment variable is set for your R session.
+
+{{{
+dyn.load("<open-fvs>/trunk/bin/FVSiec.so")
+}}}
+
+= rFVS Function Reference =
+
+The following is a list of the R functions that call [FVS_API FVS API] member functions as needed; consult the API for more information on the functions used. 
+
+{{{
+fvsAddTrees (…)
+}}}
+
+TODO: write function
+
+{{{
+fvsGetDims ()
+}}}
+
+Return value:
+
+A named vector of integers as follows: `ntrees, ncycles, nplots, maxtrees, maxspecies, maxplots, maxcycles`.
+
+{{{
+fvsGetPlotAttrs(vars)
+}}}
+
+Argument:
+
+A vector of strings whereby each string names an attribute to be returned.
+
+Return value:
+
+A matrix of numeric values with one row for each plot and a column for each attribute.
+
+TODO: The R code for this function is written but the [FVS_API FVS API] code is not.
+
+{{{
+fvsGetSpeciesCodes()
+}}}
+
+Return value: 
+
+A matrix of character strings with one row for each species and three columns. The column names are `fvs, fia, plant` correspond to the three kinds of code. The order is exactly as presented in the FVS variant which means, for example, that row 1 corresponds to the internal FVS species index number 1, row 2 for species 2 and so on.
+
+{{{
+fvsGetSummary()
+}}}
+
+Return value: 
+
+A matrix of integer values with one row for each completed FVS cycle. The columns are named as documented in the [FVS_API#FVS_Summary_Statistics FVS Summary Statistics].
+
+TOTO: Set this up so that the column names are correct of eastern variants.
+
+{{{
+fvsGetTreeAttrs(vars)
+}}}
+
+Argument:
+
+A vector of strings whereby each string names an attribute to be returned.
+
+||Name||Description||
+||` tpa`||Trees per acre||
+||` dbh`||Diameter breast height (inches)||
+||` dg`||Diameter growth scaled to cycle length (inches)||
+||` ht`||Hieght (feet)||
+||` htg`||Height growth scaled to cycle length (feet)||
+||` crwdth`||Crown width (feet)||
+||` cratio`||Crown ratio (proportion of height in live crown||
+||` species`||FVS numeric species code||
+||` age`||Tree age||
+
+Return value:
+
+A matrix of numeric values with one row for each plot and a column for each attribute.
+
+TODO: Add more attributes, make sure units are as listed.
+
+{{{
+fvsRun(stopPointCode=NA,stopPointYear=NA)
+}}}
+
+Arguments:
+||`stopPointCode`||The stop point code corresponding to the next place in the FVS simulation form where the program should return.||
+||` stopPointYear `||The stop point year corresponding to the next time the FVS simulation should return.||
+
+Return value:
+
+The FVS [FVS_API#Return_Code_State return code state] (integer).
+.
+{{{
+fvsSetCmdLine(cl = NULL)
+}}}
+
+Sets the command line to the values listed of the [FVSCommandLine FVS Command Line]  _and_ opens files for input as indicted by the values found. This routine can result in the FVS [FVS_API#Return_Code_State return code state] to be reset.
+
+Argument:
+
+A character string that contains the command line arguments. If NULL (the default), the function attempts to fetch the arguments as they may be specified on the command that starts R. This is done by calling the R function `commandArgs(trailingOnly = TRUE)`, see R documentation for details.
+
+Return value:
+
+The argument passed argument is returned.
+
+{{{
+fvsSetPlotAttr
+}}}
+
+TODO: write function
+
+{{{
+fvsSetSiteAttr
+}}}
+
+TODO: write function
+
+{{{
+fvsSetTreeAttr
+}}}
+
+TODO: write function
+
+= Run Example =
+
+TODO: Draft this section
