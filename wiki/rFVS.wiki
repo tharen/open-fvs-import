@@ -30,7 +30,7 @@ sdir = "<open-fvs>/rFVS/R"
 for (rf in dir (sdir)) source (paste(sdir,rf,sep="/"))
 }}}
 
-The second step is to load the FVS shared library. How to do this currently depends on the operating system being used. The following assumes that program `FVSiec` has been built as a shared library (see [BuildProcess Build Process] for build instructions.
+The second step is to load the FVS shared library. How to do this currently depends on the operating system being used. The following assumes that program `FVSiec` has been built as a shared library (see [BuildProcess Build Process] for build instructions).
 
 On Windows and generic Linux 64:
  
@@ -50,13 +50,13 @@ dyn.load("<open-fvs>/trunk/bin/FVSiec.so")
 The following is a list of the R functions that call [FVS_API FVS API] member functions as needed; consult the API for more information on the functions used. 
 
 {{{
-fvsAddTrees ()
+fvsAddTrees()
 }}}
 
 TODO: write function
 
 {{{
-fvsGetDims ()
+fvsGetDims()
 }}}
 
 Return value:
@@ -128,6 +128,8 @@ Arguments:
 ||`stopPointCode`||The stop point code corresponding to the next place in the FVS simulation form where the program should return.||
 ||` stopPointYear `||The stop point year corresponding to the next time the FVS simulation should return.||
 
+Note: if one of the arguments is specified, the other must also be specified. If both are left as NA values, the defaults for FVS are used. Those defaults imply that no stopping be done.
+
 Return value:
 
 The FVS [FVS_API#Return_Code_State return code state] (integer).
@@ -168,11 +170,9 @@ TODO: write function
 
 Example code is like a photograph: a few lines of working code are worth a 1,000 words of explanation. Note that these examples are all run with program FVSiec, it is left as an exercise to adapt them to your situation.
 
-== Example 1, Simple run ==
+== Example 1 Simple run ==
 
-Here a simple run of one stand simulated three with three different prescriptions is run. The keyword file and tree data for this run is in the `<open-fvs>/rFVS/tests/`.  That directory is set as the working directory prior to any other commands.  This run is the same as that found in `<open-fvs>/trunk/tests/FVSiec`, but in that case the run is done using the FVSiec _program_ rather than the _shared library_.
-
-Step 1: Loaded the shared library as covered under section [Start_up Start up].
+Here a simple run of one stand simulated three with three different prescriptions. The keyword file and tree data for this run is in the `<open-fvs>/rFVS/tests/` directory. That directory is set as the working directory prior to any other commands be entered.  This run is the same as that found in `<open-fvs>/trunk/tests/FVSiec`, but in that case the run is done using the FVSiec _program_ rather than the _shared library_.
 
 {{{
 setwd ("<open-fvs>/rFVS/tests")  # Note: edit <open-fvs> to reflect your system.
@@ -192,8 +192,66 @@ fvsSetCmdLine("--keywordfile=iet01.key")
 fvsRun()
 }}}
 
-It is left as an exercise to verify that the outputs are the same as those achieved by running FVS as a program.
+== Example 2 Simple with Graphics ==
 
+In this example, the same run of [Example_1_Simple_run Example 1] is revisited. However, in this example, the `fvsRun()` function is not used. In its place, function calls are included to provide a fine degree of interaction with the simulation. 
 
+What we desire is to create a panel of scatter height/diameter scatter plots. There are three management alternatives and we will capture the data to build the scatter plots for two points in time, one at the year 2030 and the other at year 2080. 
 
+The code sequence below assumes that the same steps used in [Example_1_Simple_run Example 1] up to the `fvsRun()` command. 
 
+{{{
+
+# set the stop codes, stop at the at location 1 and use -1 to signal 
+# a stop point at every year
+.Fortran("setstoppointcodes",as.integer(1),as.integer(-1))
+
+# set up a list of the cases we desire to capture. Initialize it to NULL
+saveData=NULL
+
+# set up the return code
+rtn=as.integer(0)
+while (rtn == 0)
+{
+  # run fvs, capture the return code
+  rtn=.Fortran("fvs",as.integer(rtn))[[1]]
+  if (rtn != 0) break
+  
+  # get the simulation year from the event monitor variables. Ignore the return code   
+  yr =.Fortran("fvsevmonattr","year",as.integer(4),"get",as.double(0),as.integer(0))[[4]]
+  cat ("yr=",yr," rtn=",rtn,"\n")
+  if (yr == 2030 || yr == 2080) 
+  {
+    # we desire to save these data. Fetch the stand and managment ids
+    ids=.Fortran("fvsstandid"," "," ",as.integer(0),as.integer(0))
+    stdid=substr(ids[[1]],1,ids[[3]])
+    mgmid=substr(ids[[2]],1,ids[[4]]) 
+    
+    # form an case identifier used in the plots
+    caseID = paste(stdid, mgmid, as.character(yr),sep=":")
+    cat ("caseID=",caseID,"\n")      
+
+    # fetch the data that will be used for plotting.
+    atts = fvsGetTreeAttrs(c("dbh","ht","species"))
+    saveData=append(saveData,list(atts))
+    names(saveData)[length(saveData)]=caseID
+  }
+}
+if (rtn == 2) .Fortran("filclose")
+
+# there are 6 plots, arrange them in 3 rows, 2 cols 
+par(mfcol=c(3,2),mar=c(4,4,4,1)+.1)
+
+# find global values for axes limits
+xlim=range(unlist(lapply(saveData,function (x) range(x[,"dbh"]))))
+ylim=range(unlist(lapply(saveData,function (x) range(x[,"ht"]))))
+
+for (case in names(saveData))
+{
+  atts = saveData[[case]]
+  plot(atts[,1:2],col=atts[,3],xlim=xlim,ylim=ylim,main=case)
+}
+
+}}}
+
+  
