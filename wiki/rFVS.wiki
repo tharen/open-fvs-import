@@ -166,4 +166,34 @@ TODO: write function
 
 = Run Examples =
 
-TODO: Draft this section
+Example code is like a photograph: a few lines of working code are worth a 1,000 words of explanation. Note that these examples are all run with program FVSiec, it is left as an exercise to adapt them to your situation.
+
+== Example 1, Simple run ==
+
+Here a simple run of one stand simulated three with three different prescriptions is run. The keyword file and tree data for this run is in the `<open-fvs>/rFVS/tests/`.  That directory is set as the working directory prior to any other commands.  This run is the same as that found in `<open-fvs>/trunk/tests/FVSiec`, but in that case the run is done using the FVSiec _program_ rather than the _shared library_.
+
+Step 1: Loaded the shared library as covered under section [Start_up Start up].
+
+{{{
+setwd ("<open-fvs>/rFVS/tests")  # Note: edit <open-fvs> to reflect your system.
+
+# load the R functions
+sdir = "../R"
+for (rf in dir (sdir)) source (paste(sdir,rf,sep="/"))
+
+# load the FVS library
+dyn.load("../../trunk/bin/libfvsSQL.so")
+dyn.load("../../trunk/bin/FVSiec.so")
+
+# specify the keyword file
+fvsSetCmdLine("--keywordfile=iet01.key")
+
+# Run the simulation as would be done using FVS as a program
+fvsRun()
+}}}
+
+It is left as an exercise to verify that the outputs are the same as those achieved by running FVS as a program.
+
+
+
+
