@@ -196,48 +196,64 @@ fvsRun()
 
 In this example, the same run of [Example_1_Simple_run Example 1] is revisited. However, in this example, the `fvsRun()` function is not used. In its place, function calls are included to provide a fine degree of interaction with the simulation. 
 
-What we desire is to create a panel of scatter height/diameter scatter plots. There are three management alternatives and we will capture the data to build the scatter plots for two points in time, one at the year 2030 and the other at year 2080. 
+What we desire is to create a panel of scatter height/diameter scatter plots. There are three management alternatives and we will capture the data to build the scatter plots for two points in time, one at the year 2010 and the other at year 2070. 
 
-The code sequence below assumes that the same steps used in [Example_1_Simple_run Example 1] up to the `fvsRun()` command. 
+The code sequence below assumes that the same set up steps used in [Example_1_Simple_run Example 1] are used up to the `fvsSetCmdLine()` command. 
 
 {{{
 
+# specify the keyword file
+fvsSetCmdLine("--keywordfile=iet01.key")
+
 # set the stop codes, stop at the at location 1 and use -1 to signal 
 # a stop point at every year
-.Fortran("setstoppointcodes",as.integer(1),as.integer(-1))
+
+.Fortran("setstoppointcodes",as.integer(2),as.integer(-1))
 
 # set up a list of the cases we desire to capture. Initialize it to NULL
 saveData=NULL
 
-# set up the return code
-rtn=as.integer(0)
-while (rtn == 0)
+# do until done
+repeat
 {
   # run fvs, capture the return code
-  rtn=.Fortran("fvs",as.integer(rtn))[[1]]
+  rtn=.Fortran("fvs",as.integer(0))[[1]]
   if (rtn != 0) break
   
-  # get the simulation year from the event monitor variables. Ignore the return code   
-  yr =.Fortran("fvsevmonattr","year",as.integer(4),"get",as.double(0),as.integer(0))[[4]]
-  cat ("yr=",yr," rtn=",rtn,"\n")
-  if (yr == 2030 || yr == 2080) 
-  {
-    # we desire to save these data. Fetch the stand and managment ids
-    ids=.Fortran("fvsstandid"," "," ",as.integer(0),as.integer(0))
-    stdid=substr(ids[[1]],1,ids[[3]])
-    mgmid=substr(ids[[2]],1,ids[[4]]) 
-    
-    # form an case identifier used in the plots
-    caseID = paste(stdid, mgmid, as.character(yr),sep=":")
-    cat ("caseID=",caseID,"\n")      
+  stopPoint = .Fortran("getrestartcode",as.integer(0))[[1]]
 
-    # fetch the data that will be used for plotting.
-    atts = fvsGetTreeAttrs(c("dbh","ht","species"))
-    saveData=append(saveData,list(atts))
-    names(saveData)[length(saveData)]=caseID
-  }
+  switch(stopPoint+1,
+    next, # 0, stop code is "load next stand" stand, skip these
+    next, # 1, stop was before the first call to the Event Monitor
+    { # 2 stop was after the first call to the Event Monitor.
+    
+      # get the simulation year from the event monitor variables. Ignore the return code   
+      yr =.Fortran("fvsevmonattr","year",as.integer(4),"get",as.double(0),as.integer(0))[[4]]
+
+      if (yr == 2010 || yr == 2070) 
+      {
+        # we desire to save these data. Fetch the stand and managment ids
+        ids=.Fortran("fvsstandid"," "," ",as.integer(0),as.integer(0))
+        stdid=substr(ids[[1]],1,ids[[3]])
+        mgmid=substr(ids[[2]],1,ids[[4]]) 
+        
+        # form an case identifier used in the plots
+        caseID = paste(stdid, mgmid, as.character(yr),sep=":")
+
+        # fetch the data that will be used for plotting.
+        atts = fvsGetTreeAttrs(c("dbh","ht","species"))
+        saveData=append(saveData,list(atts))
+        names(saveData)[length(saveData)]=caseID
+      }
+      next
+    },
+    next, # 3 stop was just before the second call to the Event Monitor. 
+    next, # 4 stop was just after the second call to the Event Monitor.
+    next, # 5 stop was after growth and mortality has been computed, but prior to applying them.
+    next  # 6 stop was just before the estab routines are called.
+  )
 }
-if (rtn == 2) .Fortran("filclose")
+
 
 # there are 6 plots, arrange them in 3 rows, 2 cols 
 par(mfcol=c(3,2),mar=c(4,4,4,1)+.1)
@@ -246,7 +262,7 @@ par(mfcol=c(3,2),mar=c(4,4,4,1)+.1)
 xlim=range(unlist(lapply(saveData,function (x) range(x[,"dbh"]))))
 ylim=range(unlist(lapply(saveData,function (x) range(x[,"ht"]))))
 
-for (case in names(saveData))
+for (caseID in names(saveData))
 {
   atts = saveData[[case]]
   plot(atts[,1:2],col=atts[,3],xlim=xlim,ylim=ylim,main=case)

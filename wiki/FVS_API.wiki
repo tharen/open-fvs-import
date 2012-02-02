@@ -42,17 +42,55 @@ Set the command line arguments. When FVS is run as a program, this value is spec
 ||`lenCL`||the length of _theCmdLine_ (integer)||
 
 
+== FVS File Close ==
+
+{{{
+subroutine fvsCloseFile(filename,nch)
+}}}
+
+Close the file if it is opened. This routine will normally not be needed.
+
+||Argument||Definition||
+||`filename`||input character string specifying a file name.||
+||`nch`||the length of the defined part of _filename_ (integer)||
+
+
 == Stop Points ==
 
 {{{
 subroutine setstoppointcodes (spptcd,spptyr)
 }}}
 
-Set the parameters that control start/restart while FVS is run as a shared library (see [FVSCommandLine FVS Command Line] for definitions).
+Set the parameters that control start/restart while FVS is run as a shared library (also see [FVSCommandLine FVS Command Line] for definitions).
 
 ||Argument||Definition||
-||`stptcd`||is the stop point code (integer) to be used.||
-||`stptyr`||is the stop point year (integer) be used.||
+||`stptcd`||is the stop point code (integer) to be used, see table below for codes||
+||`stptyr`||is the stop point year (integer) be used: 0 mean never stop, -1 means stop at every cycle.||
+
+||Stop Point Codes||Definition||
+||`0`||Never stop.||
+||`-1`||Stop at every stop location.||
+||`1`||Stop just before the first call to the Event Monitor.||
+||`2`||Stop just after the first call to the Event Monitor.||
+||`3`||Stop just before the second call to the Event Monitor.||
+||`4`||Stop just after the second call to the Event Monitor.||
+||`5`||Stop after growth and mortality has been computed, but prior to applying them.||
+||`6`||Stop just before the estab routines are called.||
+
+{{{
+subroutine getrestartcode (restartcode)
+}}}
+
+Returns the current value of the stop/restart code. This is an integer the indicates point within the FVS sequence of calculations were the program will start when subroutine fvs is called next (also see [FVSCommandLine FVS Command Line]. Values are as follows:
+
+||Stop Point Code||Definition||
+||`1`||Stop was done just before the first call to the Event Monitor.||
+||`2`||Stop was done just after the first call to the Event Monitor.||
+||`3`||Stop was done just before the second call to the Event Monitor.||
+||`4`||Stop was done just after the second call to the Event Monitor.||
+||`5`||Stop was done after growth and mortality has been computed, but prior to applying them.||
+||`6`||Stop was done just before the estab routines are called.||
+
 
 == Return Code State ==
 
@@ -243,3 +281,4 @@ Get the stand identification codes.
 ||`mID`||returned character string holding the management identification code (4 characters maximum).||
 ||`ncsID`||length of defined part of _sID_ (integer)||
 ||`ncmID`||length of defined part of _mID_ (integer)||
+

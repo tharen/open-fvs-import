@@ -21,9 +21,16 @@ In addition, a new *_experimental_* facility in FVS is described that allows the
 
   Specify that the program store all the state variables associated with a stand in the file called the _stop point file_ specified as `<stopptfile>`, that this be done during the cycle that contains the _stop point year_ specified as `<stopptyear>` and that the state of the simulation is stored as of a specific point during the simulation as designated by the _stop point code_ specified as `<stopptcode>`. The possible values of this code are:
 
-  * *1* stop prior to the first call to the Event Monitor during a simulation.
-  * *2* stop after FVS growth and mortality rates are computed, but prior these being added to the definition of the trees. 
-  * *3* stop prior to the call to the Establishment model.
+||Stop Point Code||Definition
+||`0`||Don't stop.||
+||`-1`||Stop at every stop point; only used with the [FVS_API FVS API].||
+||`1`||Stop just before the first call to the Event Monitor.||
+||`2`||Stop just after the first call to the Event Monitor.||
+||`3`||Stop just before the second call to the Event Monitor.||
+||`4`||Stop just after the second call to the Event Monitor.||
+||`5`||Stop after growth and mortality has been computed, but prior to applying them.||
+||`6`||Stop just before the estab routines are called.||
+
 
 Example:
 {{{
