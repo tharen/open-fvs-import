@@ -192,25 +192,27 @@ fvsSetCmdLine("--keywordfile=iet01.key")
 fvsRun()
 }}}
 
-== Example 2 Simple with Graphics ==
+== Example 2 R-FVS Interaction with Graphics ==
 
-In this example, the same run of [Example_1_Simple_run Example 1] is revisited. However, in this example, the `fvsRun()` function is not used. In its place, function calls are included to provide a fine degree of interaction with the simulation. 
+In this example, the same run of [Example_1_Simple_run Example 1] is revisited. However, in this example, the `fvsRun()` function is not used. In its place, code is included to show how to interact with FVS at each of the possible stop points. 
 
-What we desire is to create a panel of scatter height/diameter scatter plots. There are three management alternatives and we will capture the data to build the scatter plots for two points in time, one at the year 2010 and the other at year 2070. 
+The objective the example is to create a panel of height/diameter scatter plots. There are three management alternatives and we will capture the data to build the scatter plots for two points in time, one at the year 2010 and the other at year 2070. You can view the plot created by running this example [rFVS_ex2.png here].  
+
 
 The code sequence below assumes that the same set up steps used in [Example_1_Simple_run Example 1] are used up to the `fvsSetCmdLine()` command. 
+
 
 {{{
 
 # specify the keyword file
 fvsSetCmdLine("--keywordfile=iet01.key")
 
-# set the stop codes, stop at the at location 1 and use -1 to signal 
+# set the stop codes, stop at the at location 2 and use -1 to signal 
 # a stop point at every year
 
 .Fortran("setstoppointcodes",as.integer(2),as.integer(-1))
 
-# set up a list of the cases we desire to capture. Initialize it to NULL
+# set up variable that will become a list of the data needed to plot.
 saveData=NULL
 
 # do until done
@@ -218,8 +220,9 @@ repeat
 {
   # run fvs, capture the return code
   rtn=.Fortran("fvs",as.integer(0))[[1]]
-  if (rtn != 0) break
-  
+  if (rtn != 0) break  # exit when the return code is no longer 0
+
+  # get the current stop point value, use it for a switch below.
   stopPoint = .Fortran("getrestartcode",as.integer(0))[[1]]
 
   switch(stopPoint+1,
@@ -256,7 +259,9 @@ repeat
 
 
 # there are 6 plots, arrange them in 3 rows, 2 cols 
-par(mfcol=c(3,2),mar=c(4,4,4,1)+.1)
+png(file="rFVS_ex2.png",pointsize=8,height=4,width=3,units="in",res=200)
+par(mar=c(4,4,4,1)+.1)
+layout(mat=matrix(1:6,3,2,byrow=TRUE))
 
 # find global values for axes limits
 xlim=range(unlist(lapply(saveData,function (x) range(x[,"dbh"]))))
@@ -264,10 +269,10 @@ ylim=range(unlist(lapply(saveData,function (x) range(x[,"ht"]))))
 
 for (caseID in names(saveData))
 {
-  atts = saveData[[case]]
-  plot(atts[,1:2],col=atts[,3],xlim=xlim,ylim=ylim,main=case)
+  atts = saveData[[caseID]]
+  plot(atts[,1:2],col=atts[,3],xlim=xlim,ylim=ylim,main=caseID)
 }
+dev.off()
 
 }}}
 
-  
