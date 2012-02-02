@@ -194,10 +194,9 @@ fvsRun()
 
 == Example 2 R-FVS Interaction with Graphics ==
 
-In this example, the same run of [Example_1_Simple_run Example 1] is revisited. However, in this example, the `fvsRun()` function is not used. In its place, code is included to show how to interact with FVS at each of the possible stop points. 
+The simple run in Example 1 is revisited to illustrate how to interact with FVS during the simulation. Here, the `fvsRun()` function is not used. In its place, code is included to show how to interact with FVS at each of the possible stop points. 
 
-The objective the example is to create a panel of height/diameter scatter plots. There are three management alternatives and we will capture the data to build the scatter plots for two points in time, one at the year 2010 and the other at year 2070. You can view the plot created by running this example [rFVS#rFVS_ex2.png here].  
-
+The objective the example is to create a panel of height/diameter scatter plots. There are three management alternatives and we will capture the data to build the scatter plots for two points in time, one at the year 2010 and the other at year 2070. 
 
 The code sequence below assumes that the same set up steps used in [Example_1_Simple_run Example 1] are used up to the `fvsSetCmdLine()` command. 
 
