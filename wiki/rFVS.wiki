@@ -180,9 +180,11 @@ fvsSetupSummary(sumTable)
 
 Adds extra data to the summary statistics table returned by function `fvsGetSummary()`. The extra data include new columns showing total production of trees and volume plus new rows so  that years with removals have two data points, one for before and the after the harvest. 
 
-Argument: A data matrix as returned by `fvsGetSummary()`.
+Argument: A matrix as returned by `fvsGetSummary()`.
 
-Return value: A data matrix.
+Return value: 
+
+A matrix with additional columns and rows (if there were harvests in the run).
 
 = Run Examples =
 
@@ -280,11 +282,11 @@ repeat
 
 One use of the saved data is to create plots. The first plots is a panel of height/diameter scatter plots. There are three management alternatives and we will capture the data to build the scatter plots for two points in time, one at the year 2010 and the other at year 2070. 
 
-Here are the command to make the scatter plots
+Here are the command to make the scatter plots:
 
 {{{
 # there are 6 plots, arrange them in 3 rows, 2 cols 
-#for saving plot: png(file="rFVS_ex2.png",pointsize=10,height=6,width=4,units="in",res=200)
+# for saving plot: png(file="rFVS_ex2.png",pointsize=10,height=6,width=4,units="in",res=200)
 X11(height=6,width=4,pointsize=10)
 par(mar=c(4,4,4,1)+.1)
 layout(mat=matrix(1:6,3,2,byrow=TRUE))
@@ -303,9 +305,9 @@ for (caseID in names(saveTrees))
 
 }}}
 
-The second plots show standing cubic volume and total production of volume over time. There are three plots, one for each alternative. The plots share the same scaling, note that not all of the simulations are the same length.
+The second plots show standing cubic volume and total production of total cubic volume over time. There are three plots, one for each alternative. The plots share the same scaling; also note that not all of the simulations are the same length.
 
-The summary statistics table provided by FVS is not set up for simple plotting. The [
+The summary statistics table provided by FVS is not set up for simple plotting. The fvsSetupSummary() (described above) is used to compute a matrix of values suitable for plotting.
 
 {{{
 
@@ -327,6 +329,4 @@ for (caseID in names(sumToPlot))
        col="red")
 }
 }}} 
-
-
 
