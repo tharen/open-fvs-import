@@ -10,12 +10,12 @@ FVS programs are a combination of an FVS regional _variant_ and one or more _ext
 
 The currently available programs are:
 
-  * FVSiec – the Inland Empire variant plus the Fire and Fuels Extension (FFE) and the Climate Extension.
+  * FVSiec  the Inland Empire variant plus the Fire and Fuels Extension (FFE) and the Climate Extension.
   * FVSpnc - The Pacific Northwest variant plus FFE and the Climate Extension. 
-  * FVSne – The northeast US variant plus FFE.
-  * FVSsn – The southern US variant plus FFE. 
+  * FVSne  The northeast US variant plus FFE.
+  * FVSsn  The southern US variant plus FFE. 
 
-Additional programs will be available as we get to them.
+Additional programs will be available as team members build the corresponding "sourceList" files.
 
 ==Platforms==
 
@@ -27,7 +27,13 @@ To build under Windows, we suggest using the same tools the R community use to b
 
 ==Build==
 
-To make any of the programs listed above, enter the program name as in this example:
+To make any of the programs listed above, enter the program name (and suffix, as needed) as in this example for Windows:
+
+{{{
+make FVSiec.exe
+}}}
+
+For other systems, leave off the suffix.  
 
 {{{
 make FVSiec
@@ -39,10 +45,8 @@ To remove all the programs, object files, and build directories, enter:
 make clean
 }}}
 
-Note that the build process makes a _program_ file plus one shared library that must be available during the run. That library is called libfvsSQL.so and it is built in the bin directory. When running an FVS program, the operating system must be able to find that library. This is not a problem with Windows so long as the library and the program are stored in the same directory. On Unix-alike systems, the library must be installed in a directory that is searched by the loader. This is operating system specific.
+Note that the build process makes an FVS _program_ file and an FVS shared library. On Windows, an additional library is built libfvsSQL.so. When running an FVS program, the operating system must be able to find that library. This is not a problem with Windows so long as the library and the program are stored in the same directory. On Unix-alike systems this additional library is not used as the logic it contains is linked directly to the FVS program and FVS shared library. 
 
 ==FVS as a Shared Library==
 
-FVS programs can be linked into _shared libraries_ rather than program files. This is done by adding `as.shared=1` to the make commands. The file suffix for the library will be `.so` regardless of the OS being used (that is, even on Windows, these files will be .dll files, but they will carry the suffix .so). 
-
-Having a shared library incarnation of FVS requires programmers to call the program elements in a useful way. That topic is covered in a separate Wiki page on the [FVS_API].
+FVS programs are linked into program files and also as _shared libraries_. The file suffix for these libraries is `.dll` on Windows and `.so` on the other platforms. Having a shared library incarnation of FVS requires programmers to call the program elements in a useful way. That topic is covered in a separate Wiki page on the [FVS_API].
