@@ -1,6 +1,6 @@
 #summary Describes the new makefile approach
 
-Nick Crookston, January 2012
+Nick Crookston, January 2012, Updated February 13, 2012
 
 = The `makefile` situation =
 
@@ -9,7 +9,7 @@ On January 22, 2012, the old makefiles used by the FMSC and described below were
 The old makefiles work, but they are very difficult to maintain and modify. They are almost impossible to explain to others and therefore represent a major impediment to increasing the participation of others in the development of FVS.
 
 Data that backs up these conclusions includes these facts:
-  * The “main” old makefile is 13,503 lines long and includes necessary but redundant information found elsewhere in slightly modified forms in the set of many makefiles.
+  * The main old makefile is 13,503 lines long and includes necessary but redundant information found elsewhere in slightly modified forms in the set of many makefiles.
   * There are a total of 114 sub makefiles in the old system for building FVS programs. 
   * To add a subroutine to a variant requires carefully editing about 3-5 of these files.
   * It is very difficult to know exactly which source files form an FVS program. New programmers are often at a lost to know even how to find out what they need to change to improve a program or build a new FVS variant.
@@ -24,20 +24,22 @@ Data that backs up these conclusions includes these facts:
   * The build process will run on Win32, Win64, most Linux-based systems, and will automatically configure to system on which it is running. 
   * On Windows, the builds will be done using the Rtools tool-chain that is installed and run under a simple windows prompt eliminating the need to install the very large cygwin system. The gfortran and gcc compilers are included in this set of tools.
   * It is easy to understand which FVS programs rely on a given source file. 
-  * There will be redundant compilation: if several programs can use the same object file, that object file will be recreated for each program. It is interesting to note that this is often the case now, but one would never know unless the output from the make command is studied. For example, to build FVSiec old  makefiles requires compiling 751 routines, yet the link step includes 494 object files!
+  * There will be redundant compilation: if several programs can use the same object file, that object file will be recreated for each program. It is interesting to note that this is often the case now, but one would never know unless the output from the make command is studied. For example, to build FVSiec old makefiles requires compiling 120 routines, yet the link step includes 494 object files!
 
 == Implementation ==
 
 A simple list of source files which define an FVS program is prepared. That list includes the list of include-files used to build the program. This list includes the relative path names to each file. The naming convention for each list of these files is based on the program name. For example, if the program name is FVSiec, then the list of source files is called FVSiec_sourceList.txt. 
 
-To build FVSiec in the bin directory the programmer would enter “make FVSiec”. The sequence of events preformed by the make commands is:
+To build FVSiec in the bin directory the programmer would enter make FVSiec (or make FVSiec.exe on Windows). The sequence of events preformed by the make commands is:
 
   # A subdirectory is made called: FVSiec_buildDir (if it exists it is not recreated).
-  # Every the source file in the list and not present in FVSiec_buildDir is copied to the directory. Any file that is already present and is older than the one in the list is copied. That is, the source files in FVSiec_buildDir are made up-to-date.
+  # Every source file in the list and not present in FVSiec_buildDir is copied to the directory. Any file that is already present and is older than the one in the list is copied. That is, the source files in FVSiec_buildDir are made up-to-date.
   # Every out of date object file in the build dir is compiled using generic conversion rules. 
-  # A change in any one include-file renders all object files obsolete. The use of implicit rules rather than explicit rules allowed us to eliminate thousands of lines of carefully crafted yet often incorrect make rules. 
+  # Object files are linked into two sets, a shared libaray and a program. The file suffix for shared libaries is ".dll" on Windows and ".so" on other platforms. The suffix for programs is ".exe" windows and there is not suffix on other platforms.
+  # On Windows an additional library "libfvsSQL.dll" is built to support ODBC. This library must be installed with the program or shared libaray. On other systems, this library is not built, the required logic is linked directly into the FVS program or library.
+  # A change in any one include-file or Fortran "mod" file renders all object files obsolete. The use of implicit rules rather than explicit rules allowed us to eliminate thousands of lines of carefully crafted yet often incorrect make rules. 
   # A change in the source list file corresponding to a program renders the program an all the object files out of date.
-  # Make `clean` involves the simple task of removing `*_buildDir` from bin. Note that these directories and their contents are considered temporary. Changes in source files made in these directories would not be managed by SVN and programmers would be advised not to even look at the contents of the “buildDir”.
+  # Make `clean` involves the simple task of removing `*_buildDir` from bin. Note that these directories and their contents are considered temporary. Changes in source files made in these directories would not be managed by SVN and programmers would be advised not to even look at the contents of the buildDir.
   # No changes are currently being considered for the directory structure of the source files.
   # All of the object directories and the makefiles they contain may be deleted.
 
