@@ -21,13 +21,17 @@ The topmost branch of open-fvs is called DEVELOPMENT, with the next branch down 
 Examples of the branches/tags:
 
 OPENFVS_1_0_0_DEVELOPMENT
+
 OPENFVS_3_11_2_RELEASE
+
 OPENFVS_4_1_8_DEVELOPMENT
 
 for individual contributor branches that are created by individual developers independently:
 
 OPENFVS_DIRECTORY_RESTRUCTURE_TEST_HACK
+
 OPENFVS_AUTOTOOLS_TEST
+
 OPENFVS_SHARED_LIB_TEST
 
 and for the exports for the Ft. Collins trunk:
