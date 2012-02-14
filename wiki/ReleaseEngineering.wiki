@@ -3,9 +3,9 @@
 
 = Introduction =
 
-Between full releases of open-fvs (e.g. open-fvs-1.3.0, open-fvs-3.4.8, etc.), the source code is often in flux as the maintainers need to fix defects, add new extensions, and possible rearrange the system structure. If you're new to revision control, or the copy-modify-merge model used by CVS/SVN, then read a little about the concept before proceeding. 
+Between full releases of open-fvs (e.g. open-fvs-1.3.0, open-fvs-3.4.8, etc.), the source code is often in flux as the maintainers need to fix defects, add new extensions, and possibly rearrange the system structure. If you're new to revision control, or the copy-modify-merge model used by CVS/SVN, then read a little about the concept before proceeding. 
 
-The open-fvs project uses a [http://www.wikipedia.com/release_engineering.html release engineering] system similar to the well established open source operating system FreeBSD and the statistical environment R. The source tree for the FreeBSD operating system was originally maintained using CVS, a predecessor to SVN, and now uses Subversion (svn) as does R and the open-fvs project.
+The open-fvs project uses a [http://www.wikipedia.com/release_engineering.html release engineering] system similar to the well established open source operating system [http://www.freebsd.org/ FreeBSD] and the statistical environment R. The source tree for the FreeBSD operating system was originally maintained using CVS, a predecessor to SVN, and now uses Subversion (svn) as does R and the open-fvs project.
 
 The four major phases of development include: 
 
