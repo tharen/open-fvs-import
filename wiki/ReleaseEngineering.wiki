@@ -1,0 +1,57 @@
+#summary Release Engineering Topics for open-fvs.
+#labels Phase-Design,Phase-QA
+
+= Introduction =
+
+Between full releases of open-fvs (e.g. open-fvs-1.3.0, open-fvs-3.4.8, etc.), the source code is often in flux as the maintainers need to fix defects, add new extensions, and possible rearrange the system structure. If you're new to revision control, or the copy-modify-merge model used by CVS/SVN, then read a little about the concept before proceeding. 
+
+The open-fvs project uses a release engineering system similar to the well established open source operating system FreeBSD and the statistical environment R. The source tree for the FreeBSD operating system was originally maintained using CVS, a predecessor to SVN, and now uses Subversion (svn) as does R and the open-fvs project.
+
+The four major phases of development include: 
+
+1) checkout a clean copy of the appropriate source code (DEVELOPMENT or RELEASE) from the repository,
+2) modify, test, debug, and verify the results for your contribution, 
+3) update the repository for your branch (DEVELOPMENT or RELEASE)
+4) merge the development branch into the release branch
+
+To perform these tasks from the command-line, you only need to use five (5) subversion commands: svn commit, svn update, svn commit, svn cp, svn mv, and svn rm. If you're using a graphical user interface (GUI) like TortiseSVN, these commands can be accessed from the menu. 
+
+The topmost branch of open-fvs is called DEVELOPMENT, with the next branch down the source tree called RELEASE. One thing to remember – DEVELOPMENT isn't what you want to use for a production set of executables. This is critical. If you need to build a set of production executables yourself and you cannot use the precompiled binaries for your operating system, then use the RELEASE branch. 
+
+Examples of the branches/tags:
+
+OPENFVS_1_0_0_DEVELOPMENT
+OPENFVS_3_11_2_RELEASE
+OPENFVS_4_1_8_DEVELOPMENT
+
+for individual contributor branches that are created by individual developers independently:
+
+OPENFVS_DIRECTORY_RESTRUCTURE_TEST_HACK
+OPENFVS_AUTOTOOLS_TEST
+OPENFVS_SHARED_LIB_TEST
+
+and for the exports for the Ft. Collins trunk:
+
+FVS_081104_TRUNK = export of trunk from august 11, 2004. 
+
+all of which can be checked out to a local directory name of your choice. For example, to check out the OPENFVS-3.11.3 release branch, use the svn checkout (svn co) command:
+
+svn co http://www.blah-bah-blah.com/OPENFVS_3_11_3_RELEASE openfvs
+
+or 
+
+svn co http://www.blah-bah-blah.com/OPENFVS_DIR_RESTRUCTURE_TEST openfvs
+
+where the local directory is simply what the developer is using for development. 
+
+Once your code has been created, debugged, tested, and verified, you need to commit your code to the branch. 
+
+= Merging Branches =
+
+We'll work on how to merge a DEVELOPMENT branch into the RELEASE branch later.
+
+
+Add your content here.  Format your content with:
+  * Text in *bold* or _italic_
+  * Headings, paragraphs, and lists
+  * Automatic links to other wiki pages
