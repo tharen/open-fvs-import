@@ -1,4 +1,4 @@
-#summary Release Engineering.
+#summary Release Engineering
 #labels Phase-Design,Phase-QA
 #sidebar TableOfContents
 
