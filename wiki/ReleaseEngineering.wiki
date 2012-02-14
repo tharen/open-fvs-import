@@ -1,5 +1,6 @@
-#summary Release Engineering Topics for open-fvs.
+#summary Release Engineering.
 #labels Phase-Design,Phase-QA
+#sidebar TableOfContents
 
 = Introduction =
 
@@ -54,8 +55,4 @@ Once your code has been created, debugged, tested, and verified, you need to com
 
 We'll work on how to merge a DEVELOPMENT branch into the RELEASE branch later.
 
-
-Add your content here.  Format your content with:
-  * Text in *bold* or _italic_
-  * Headings, paragraphs, and lists
-  * Automatic links to other wiki pages
+For more details on using `svn merge` please see http://svnbook.red-bean.com/en/1.0/re16.html
