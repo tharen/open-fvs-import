@@ -7,6 +7,8 @@ Between full releases of open-fvs (e.g. open-fvs-1.3.0, open-fvs-3.4.8, etc.), t
 
 The open-fvs project uses a [http://www.wikipedia.com/release_engineering.html release engineering] system similar to the well established open source operating system [http://www.freebsd.org/ FreeBSD] and the statistical environment R. The source tree for the FreeBSD operating system was originally maintained using CVS, a predecessor to SVN, and now uses Subversion (svn) as does R and the open-fvs project.
 
+Try using SVN to commit to the repos...
+
 The four major phases of development include: 
 
   # checkout a clean copy of the appropriate source code (DEVELOPMENT or RELEASE) from the repository, then
