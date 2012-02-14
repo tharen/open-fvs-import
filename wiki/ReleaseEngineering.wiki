@@ -9,10 +9,10 @@ The open-fvs project uses a release engineering system similar to the well estab
 
 The four major phases of development include: 
 
-1) checkout a clean copy of the appropriate source code (DEVELOPMENT or RELEASE) from the repository,
-2) modify, test, debug, and verify the results for your contribution, 
-3) update the repository for your branch (DEVELOPMENT or RELEASE)
-4) merge the development branch into the release branch
+  # checkout a clean copy of the appropriate source code (DEVELOPMENT or RELEASE) from the repository,
+  # modify, test, debug, and verify the results for your contribution, 
+  # update the repository for your branch (DEVELOPMENT or RELEASE)
+  # merge the development branch into the release branch
 
 To perform these tasks from the command-line, you only need to use five (5) subversion commands: svn commit, svn update, svn commit, svn cp, svn mv, and svn rm. If you're using a graphical user interface (GUI) like TortiseSVN, these commands can be accessed from the menu. 
 
