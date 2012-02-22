@@ -26,8 +26,8 @@ make FVSpnc
 If the build worked, you should have a listing in your trunk/bin that contains the binary executable file:
 
 {{{
-ls -la FVSne
--rwxr-xr-x  1 hamannjd  staff  3879324 Feb 21 09:55 FVSne
+ls -la FVSpnc
+-rwxr-xr-x  1 hamannjd  staff  3879324 Feb 21 09:55 FVSpnc
 }}}
 
 = Question 3. The build didn't work. Now what? =
