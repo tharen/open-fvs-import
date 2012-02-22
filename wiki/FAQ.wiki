@@ -19,7 +19,7 @@ For more information, see the [http://code.google.com/p/open-fvs/source/checkout
 From your current directory, check out the source code (see question 1), then change into the `trunk/bin` directory. Then run the the make command using the variant you want to build. For example, to build the [http://www.fs.fed.us/fmsc/ftp/fvs/docs/overviews/FVSpn_Overview.pdf Pacific Northwest FVS] variant with the climate extension, 
 
 {{{
-cd trunk/bin
+cd open-fvs/trunk/bin
 make FVSpnc
 }}}
 
