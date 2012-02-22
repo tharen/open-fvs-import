@@ -44,11 +44,12 @@ We will ask that you upload this file and the output from the `uname -a` command
 
 {{{
 uname -a
+Darwin macbook.local 10.8.0 Darwin Kernel Version 10.8.0: Tue Jun  7 16:32:41 PDT 2011; root:xnu-1504.15.3~1/RELEASE_X86_64 x86_64
 }}}
 
 when you submit your issue. 
 
-Once you have your files, submit your [http://code.google.com/p/open-fvs/issues/entry issue here].
+Once you those two files, submit your [http://code.google.com/p/open-fvs/issues/entry issue here].
 
 = Question 4. Where do I get production versions of the [http://www.fs.fed.us/fmsc/fvs/ FVS] simulator variants right now? =
 
