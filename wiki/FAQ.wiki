@@ -35,10 +35,14 @@ ls -la FVSpnc
 If your build doesn't work, that is to say, you don't get an executable on your machine, please see if there is an existing question and answer on this FAQ can first resolves your issue. Since these are being built with new code, please be patient. If you don't get an executable, please build and redirect the make output to a debugging file:
 
 {{{
-make FVSpnc > FVSpnc-make-output.txt 2>&1
+make FVS[variant] > FVS[variant]-make-output.txt 2>&1
 }}}
 
-and submit the problem as a new [http://code.google.com/p/open-fvs/issues/entry issue]. We will ask that you upload this file when you submit your issue, the results of "ls -la > open-fvs-dir.txt" and "uname -a" too please.
+and submit the problem as a new [http://code.google.com/p/open-fvs/issues/entry issue]. 
+
+We will ask that you upload this file and the results of `uname -a` when you submit your issue. 
+
+Once you have your files, submit your [http://code.google.com/p/open-fvs/issues/entry issue here].
 
 = Question 4. Where do I get production versions of the [http://www.fs.fed.us/fmsc/fvs/ FVS] simulator variants right now? =
 
