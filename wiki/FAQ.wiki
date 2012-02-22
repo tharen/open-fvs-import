@@ -16,16 +16,29 @@ For more information, see the [http://code.google.com/p/open-fvs/source/checkout
 
 = Question 2. How do I build one of the FVS variants? =
 
-From your current directory, check out the source code, then change into the `bin` directory. Then run the the make command using the newmakefile instead of the system default Makefile or makefile, by running it with the --file= option,. For example, to build the [http://www.fs.fed.us/fmsc/ftp/fvs/docs/overviews/FVSpn_Overview.pdf Pacific Northwest FVS] variant, 
+From your current directory, check out the source code (see question 1), then change into the `trunk/bin` directory. Then run the the make command using the variant you want to build. For example, to build the [http://www.fs.fed.us/fmsc/ftp/fvs/docs/overviews/FVSpn_Overview.pdf Pacific Northwest FVS] variant with the climate extension, 
 
 {{{
-cd bin
-make --file=newmakefile FVSpnc
+cd trunk/bin
+make FVSpnc
+}}}
+
+If the build worked, you should have a listing in your trunk/bin that contains the binary executable file:
+
+{{{
+ls -la FVSne
+-rwxr-xr-x  1 hamannjd  staff  3879324 Feb 21 09:55 FVSne
 }}}
 
 = Question 3. The build didn't work. Now what? =
 
-If your build doesn't work, that is to say, you don't get an executable on your machine, please see if there is an existing question and answer on this FAQ. If not, submit the problem as a new [http://code.google.com/p/open-fvs/issues/entry issue].
+If your build doesn't work, that is to say, you don't get an executable on your machine, please see if there is an existing question and answer on this FAQ can first resolves your issue. Since these are being built with new code, please be patient. If you don't get an executable, please build and redirect the make output to a debugging file:
+
+{{{
+make FVSpnc > FVSpnc-make-output.txt 2>&1
+}}}
+
+and submit the problem as a new [http://code.google.com/p/open-fvs/issues/entry issue]. We will ask that you upload this file when you submit your issue, the results of "ls -la > open-fvs-dir.txt" and "uname -a" too please.
 
 = Question 4. Where do I get production versions of the [http://www.fs.fed.us/fmsc/fvs/ FVS] simulator variants right now? =
 
