@@ -40,7 +40,13 @@ make FVS[variant] > FVS[variant]-make-output.txt 2>&1
 
 and submit the problem as a new [http://code.google.com/p/open-fvs/issues/entry issue]. 
 
-We will ask that you upload this file and the results of `uname -a` when you submit your issue. 
+We will ask that you upload this file and the output from the `uname -a` command: 
+
+{{{
+uname -a
+}}}
+
+when you submit your issue. 
 
 Once you have your files, submit your [http://code.google.com/p/open-fvs/issues/entry issue here].
 
