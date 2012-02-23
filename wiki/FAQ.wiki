@@ -16,10 +16,18 @@ For more information, see the [http://code.google.com/p/open-fvs/source/checkout
 
 = Question 2. How do I build one of the FVS variants? =
 
+Since we currently do not have an automated build process, this will depend on your computer platform (e.g. Intel, AMD, etc.) and operating system (e.g. Win32, Win64, MingW, Cygwin, OSX, FreeBSD, etc.). 
+
+A simple solution is to install [http://cran.r-project.org/bin/windows/Rtools/ Rtools], which is also used to build R under Windows. It includes all the required tools to build FVS for Windows.
+
+If you're using another operating system, you should be able to use standard GNU utilities to make the applications. 
+
+Regardless, once you have your tools installed, you should be able to build your FVS variants.
+
 From your current directory, check out the source code (see question 1), then change into the `trunk/bin` directory. Then run the the make command using the variant you want to build. For example, to build the [http://www.fs.fed.us/fmsc/ftp/fvs/docs/overviews/FVSpn_Overview.pdf Pacific Northwest FVS] variant with the climate extension, 
 
 {{{
-cd open-fvs/trunk/bin
+cd open-fvs/bin
 make FVSpnc
 }}}
 
