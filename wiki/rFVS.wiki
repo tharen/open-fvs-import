@@ -32,14 +32,14 @@ for (rf in dir (sdir)) source (paste(sdir,rf,sep="/"))
 
 The second step is to load the FVS shared library. How to do this currently depends on the operating system being used. The following assumes that program `FVSiec` has been built as a shared library (see [BuildProcess Build Process] for build instructions).
 
-On Windows and generic Linux 64:
+On Windows:
  
 {{{
-dyn.load("<open-fvs>/trunk/bin/libfvsSQL.so")
-dyn.load("<open-fvs>/trunk/bin/FVSiec.so")
+dyn.load("<open-fvs>/trunk/bin/libfvsSQL.dll")
+dyn.load("<open-fvs>/trunk/bin/FVSiec.dll")
 }}}
 
-On MAC OSX you first need to insure that the dynamic library called libfvsSQL.so can be found (this can be done by entering `export DYLD_FALLBACK_LIBRARY_PATH=<open-fvs>/trunk/bin/` in your .bashrc file and insuring this environment variable is set for your R session.
+On generic Linux and MAC OSX:
 
 {{{
 dyn.load("<open-fvs>/trunk/bin/FVSiec.so")
@@ -201,9 +201,9 @@ setwd ("<open-fvs>/rFVS/tests")  # Note: edit <open-fvs> to reflect your system.
 sdir = "../R"
 for (rf in dir (sdir)) source (paste(sdir,rf,sep="/"))
 
-# load the FVS library
-dyn.load("../../trunk/bin/libfvsSQL.so")
-dyn.load("../../trunk/bin/FVSiec.so")
+# load the FVS library (windows example)
+dyn.load("../../trunk/bin/libfvsSQL.dll")
+dyn.load("../../trunk/bin/FVSiec.dll")
 
 # specify the keyword file
 fvsSetCmdLine("--keywordfile=iet01.key")
@@ -329,4 +329,3 @@ for (caseID in names(sumToPlot))
        col="red")
 }
 }}} 
-
