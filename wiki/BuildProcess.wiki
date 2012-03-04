@@ -4,16 +4,16 @@
 
 This Wiki entry documents the build process that is currently available from the sources in open-fvs.
 
-FVS programs are built in the bin directory. The basic approach is to identify the _program_ (or _shared library_, see below) you want and use a `make` command to build it (also see [NewMakeFile]).
+FVS programs are built in the bin directory. The basic approach is to identify the _program_ (which will automatically be built into a program and a _shared library_, see below) you want and use a `make` command to build it (also see [NewMakeFile]).
 
-FVS programs are a combination of an FVS regional _variant_ and one or more _extensions_. An extension adds functions to the core program.
+FVS programs are a combination of an FVS regional _variant_ and one or more _extensions_. A variant is a region-specific version of the core program and an extension adds functions to the core program.
 
 The currently available programs are:
 
-  * FVSiec  the Inland Empire variant plus the Fire and Fuels Extension (FFE) and the Climate Extension.
-  * FVSpnc - The Pacific Northwest variant plus FFE and the Climate Extension. 
-  * FVSne  The northeast US variant plus FFE.
-  * FVSsn  The southern US variant plus FFE. 
+  * FVSiec  the Inland Empire variant plus the Fire and Fuels Extension (FFE) and the Econ and Climate Extensions.
+  * FVSpnc - The Pacific Northwest variant plus FFE and the Econ and Climate Extensions. 
+  * FVSne  The northeast US variant plus FFE and Econ Extensions.
+  * FVSsn  The southern US variant plus FFE and Econ Extensions. 
 
 Additional programs will be available as team members build the corresponding "sourceList" files.
 
@@ -21,9 +21,11 @@ Additional programs will be available as team members build the corresponding "s
 
 The open-fvs community includes people who routinely build on Windows-32 (under Windows XP and Win7), generic Linux (x86_64), and MAC OSX (x86_64). 
 
-==Windows Build Tools==
+==Build Tools==
 
-To build under Windows, we suggest using the same tools the R community use to build R. These tools are know as the Rtools toolkit and it is available from [http://www.murdoch-sutherland.com/Rtools]. 
+FVS requires C-language and Fortran compilers. We support builds using gcc version 4.2+ and gfortran version 4.5+. Older compilers are known not to work.
+
+To build under *Windows*, we suggest using the same tools the R community use to build R. These tools are know as the Rtools toolkit and it is available from [http://www.murdoch-sutherland.com/Rtools]. 
 
 ==Build==
 
@@ -45,7 +47,7 @@ To remove all the programs, object files, and build directories, enter:
 make clean
 }}}
 
-Note that the build process makes an FVS _program_ file and an FVS shared library. On Windows, an additional library is built libfvsSQL.so. When running an FVS program, the operating system must be able to find that library. This is not a problem with Windows so long as the library and the program are stored in the same directory. On Unix-alike systems this additional library is not used as the logic it contains is linked directly to the FVS program and FVS shared library. 
+Note that the build process makes an FVS _program_ file and an FVS shared library. On Windows, an additional library is built libfvsSQL.dll. When running an FVS program, the operating system must be able to find that library. This is not a problem with Windows so long as the library and the program are stored in the same directory. 
 
 ==FVS as a Shared Library==
 
