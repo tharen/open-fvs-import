@@ -59,18 +59,18 @@ when you submit your issue.
 
 Once you those two files, submit your [http://code.google.com/p/open-fvs/issues/entry issue here].
 
-= Question 4. Where do I get production versions of the [http://www.fs.fed.us/fmsc/fvs/ FVS] simulator variants right now? =
+= Question 4. Im not sure I can trust your code. Where do I get official production versions of the [http://www.fs.fed.us/fmsc/fvs/ FVS] simulator variants right now? =
 
 This is the link to [http://www.fs.fed.us/fmsc/fvs/ FVS]
 
-= Question 5. When are you going to complete the FAQ? =
+= Question 5. How do I make a new variant? =
+
+The instructions for creating a new variant, from an existing variant, are found [http://code.google.com/p/open-fvs/wiki/MakeNewFVSProgram here].
+
+= Question 6. When are you going to complete the FAQ? =
 
 Are they ever complete?
 
-= Question 6. What happens next? =
+= Question 7. What happens next? =
 
 We have no idea.
-
-= Question 7. Why can't I get _EXTENSION XYZ_ to build? =
-
-The Answer is …
