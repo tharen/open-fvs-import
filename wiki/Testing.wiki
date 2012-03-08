@@ -1,0 +1,41 @@
+#summary Testing Open-FVS: A Work That is Forever In Progress
+
+= Introduction =
+
+This Wiki entry provides a brief overview of the testing scheme we have developed. There will be changes in this protocol as the development of open-fvs progresses. Your input is welcome.
+
+= Running Tests =
+
+There is a `tests` directory under the `trunk`. It contains a directory for each FVS program that can be built in the open-fvs system. It also contains a directory called `ODBC` which contains sub directories for testing two databases, Access and SQLite3. 
+
+Inside each sub directory there is a makefile that runs all the tests that are stored in that directory. To run the tests, simply run make:
+
+{{{
+make all
+}}}
+
+The each of the tests in the make file is run generally using the following steps:
+
+  # An FVS program is run using an input file. Sometimes the test is run using a response file to answer the traditional prompts and sometimes it is run using command line arguments to specify the keyword file or other arguments.
+  # `grep` may be used to find specific lines in the output that will be compared with saved _correct_ output.
+  # `diff` is run to compare the newly created output with output that is saved and the differences are displayed.
+
+= Correct Output =
+
+The correct output for each test is stored in a file that has `.save` as its suffix. Note that this output has been deemed correct by the team member who committed the `.save` file the repository. It is important to understand that this output was run on one of the supported computer systems and output you get using a different system may be equally correct but different. Review the magnitude of the differences and decide for yourself if the tests pass or that an error has occurred that needs to be addressed.
+
+= Creating Tests =
+
+A step in the development process is to add to the test library. There are a few steps to follow:
+
+  # Inspect the current tests, pick a pattern to follow (there are several approaches), and construct your tests using what you consider to be the best approach. Be thrifty, these tests will become part of the routine set and will be run thousands of times. But don't be too thrifty, include tests that should be run!
+  # Add entries to the `makefile` as needed; build new makefiles if needed. 
+  # Run your tests and establish the _correct output_. Rename the output file by adding `.save` as the suffix.
+  # Commit the new tests and `.save` file to the repository. Remember to commit new versions of the `.save` file if you make changes in FVS that result in new _correct output_. 
+
+= Operating System-Dependent Tests =
+
+  * Tests of the Access data base (in `tests/ODBC`) rely on the Windows operating system. 
+  * Tests of the SQLite3 data base (in `tests/ODBC`) rely on having SQLite3 ODBC drivers installed on your system.
+
+
