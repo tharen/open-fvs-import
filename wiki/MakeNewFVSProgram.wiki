@@ -22,6 +22,7 @@ make FVSacd.exe
   # Lets assume you desire to create a modified version of the diameter growth function, `dgf.f`. Find where the original one you are using is stored in the directory tree by finding the path name in the FVSacd_sourceList.txt file. Because you are not changing this file, you need to create a new, customized copy for your new program. Create a source file directory and file for your use, following the file naming conventions evident by inspecting the directory tree. In this case, you would likely desire to create an `acd` directory and make copy the `dgf.f` source file in it.
   # Modify your `FVSacd_sourceList.txt` file to show the new location of `dgf.f`. The program build process will now use your copy. Modify it at will, building and testing as you go.
   # Follow this pattern for as many changes or additions you desire.
+  # Remember to add appropriate tests to the FVS tests, see [Testing] for more information.
 
 = Support for added libraries =
 
