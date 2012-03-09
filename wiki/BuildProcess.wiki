@@ -25,7 +25,7 @@ The open-fvs community includes people who routinely build on Windows-32 (under 
 
 FVS requires C-language and Fortran compilers. We support builds using gcc version 4.2+ and gfortran version 4.5+. Older compilers are known not to work.
 
-To build under *Windows*, we suggest using the same tools the R community use to build R. These tools are know as the Rtools toolkit and it is available from [http://cran.r-project.org/bin/windows/Rtools/]. We recommend using [http://cran.r-project.org/bin/windows/Rtools/Rtools215.exe]
+To build under *Windows*, we suggest using the same tools the R community use to build R. These tools are know as the Rtools toolkit and it is available from [http://cran.r-project.org/bin/windows/Rtools/]. We recommend using [http://cran.r-project.org/bin/windows/Rtools/Rtools215.exe]. You may have to set up your environment variables.
 
 ==Build==
 
