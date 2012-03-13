@@ -1,0 +1,2 @@
+
+Added the description and news file to test config management idea.
