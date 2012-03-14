@@ -5,10 +5,13 @@
 ../base/src/algcmp.f
 ## gets translated into:
 
+../src/base/algcmp.f
+
+
+
 ../src/base/src/algcmp.f
 
 ../src/base/algcmp.f
-
 
 
 ../base/src/algevl.f
@@ -208,7 +211,16 @@
 ../base/src/update.f
 ../base/src/upkey.f
 ../base/src/volkey.f
+
+
 ../common/ARRAYS.F77
+
+...becomes...
+
+COMMON=../src/common
+
+${COMMON}/ARRAYS.F77
+etc.
 ../common/CALCOM.F77
 ../common/CALDEN.F77
 ../common/COEFFS.F77
@@ -251,6 +263,9 @@
 ../common/VARCOM.F77
 ../common/VOLSTD.F77
 ../common/WORKCM.F77
+
+
+## --with-odbc
 ../dbs/src/DBSCOM.F77
 ../dbs/src/DBSTYPEDEFS_w32.F77
 ../dbs/src/DBSTYPEDEFS_l64.F77
@@ -430,6 +445,8 @@
 ../fire/fofem/src/fof_util.c
 ../fire/fofem/src/fof_util.h
 ../fire/fofem/src/win_ccwf.h
+
+## these are variant specific fire behavior models
 ../fire/ne/src/fmbrkt.f
 ../fire/ne/src/fmcba.f
 ../fire/ne/src/fmcblk.f
@@ -461,6 +478,8 @@
 ../ls/src/sumhed.f
 ../ls/src/varvol.f
 ../ls/src/vols.f
+
+
 ../ne/common/ESPARM.F77
 ../ne/common/PRGPRM.F77
 ../ne/src/badist.f
