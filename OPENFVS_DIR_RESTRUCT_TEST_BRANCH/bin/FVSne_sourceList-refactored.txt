@@ -3,14 +3,20 @@
 ## example:
 ## this 
 ../base/src/algcmp.f
-## gets translated into:
 
+## gets translated into:
 ../src/base/algcmp.f
 
-
+## this appears trivial, but when including 
+## entire extensions, as is the case with 
+## the econ exention below. it's possible
+## to use automated build tools and
+## techniques to create programs (variants)
+## with sets of extensions. I'm guessing 
+## almost all will be included to minimize 
+## the build process.
 
 ../src/base/src/algcmp.f
-
 ../src/base/algcmp.f
 
 
