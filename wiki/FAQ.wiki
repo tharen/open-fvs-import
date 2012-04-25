@@ -40,24 +40,30 @@ ls -la FVSpnc
 
 = Question 3. The build didn't work. Now what? =
 
-If your build doesn't work, that is to say, you don't get an executable on your machine, please see if there is an existing question and answer on this FAQ can first resolves your issue. Since these are being built with new code, please be patient. If you don't get an executable, please build and redirect the make output to a debugging file:
+If your build doesn't work, that is to say, you don't get an executable on your machine, attempt to build again and redirect the make output to a debugging file:
 
 {{{
 make FVS[variant] > FVS[variant]-make-output.txt 2>&1
 }}}
 
-and submit the problem as a new [http://code.google.com/p/open-fvs/issues/entry issue]. 
-
-We will ask that you upload this file and the output from the `uname -a` command: 
+You will also need to provide the operating system, which can be obtained using the output from the `uname -a` command for non-Windows platforms:
 
 {{{
 uname -a
 Darwin macbook.local 10.8.0 Darwin Kernel Version 10.8.0: Tue Jun  7 16:32:41 PDT 2011; root:xnu-1504.15.3~1/RELEASE_X86_64 x86_64
 }}}
 
-when you submit your issue. 
+and the `ver` command if you're using Windows:
 
-Once you those two files, submit your [http://code.google.com/p/open-fvs/issues/entry issue here].
+{{{
+C:\open-fvs\trunk\bin>ver
+
+Microsoft Windows XP [Version 5.1.2600]
+
+C:\open-fvs\trunk\bin>
+}}}
+
+Once you have those two outputs, submit your problem as a new [http://code.google.com/p/open-fvs/issues/entry issue].
 
 = Question 4. Im not sure I can trust your code. Where do I get official production versions of the [http://www.fs.fed.us/fmsc/fvs/ FVS] simulator variants right now? =
 
