@@ -1,0 +1,19 @@
+# List of routines in open-fvs that differ from Ft Collins in known ways and
+# and therefore differences are not listed in the results.
+dbchk.f
+dbinit.f
+dbscan.f
+errgro.f
+filopn.f
+genrpt.f
+gradd.f
+grincr.f
+grohed.f
+initre.f
+intree.f
+keyrdr.f
+main.f
+prtrls.f
+rcdset.f
+sumout.f
+tregro.f
