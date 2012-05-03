@@ -41,7 +41,7 @@ setwd("Z:\\ncrookston\\fvs\\ftcollins\\trunk\\bin")
 # DEFINE pgm from the command line....
 
   pgm = commandArgs(trailingOnly=TRUE)[1]
-  
+# pgm="FVSwsc"  
   var = paste("/",substr(pgm,4,5),"/",sep="")
   cat ("running, pgm=",pgm," var=",var,"\n"); flush.console()
   
@@ -94,7 +94,6 @@ setwd("Z:\\ncrookston\\fvs\\ftcollins\\trunk\\bin")
     linkList = linkList[-objSearches]
   }
      
-  allout=vector("list")
   
   map = scan(mapFile,what="character",sep="\n",quiet=TRUE)
   map = map[(grep("Lib:Object",map)+1):length(map)]
@@ -110,6 +109,10 @@ setwd("Z:\\ncrookston\\fvs\\ftcollins\\trunk\\bin")
     
   map=gsub(".obj",".f",map,fixed = TRUE)
      
+  allout=vector("list")
+  trimout = getwd()
+  trimout = substr(trimout,3,9999)
+  trimout = sub("/bin","",trimout)
   for (line in all)
   {
     tag = grep ("Entering",line)
@@ -166,11 +169,11 @@ setwd("Z:\\ncrookston\\fvs\\ftcollins\\trunk\\bin")
             srcparts[(i+1):length(srcparts)]),collapse="/")
     if (!file.exists(filename)) break
     # cat (filename,"\n"); flush.console()
-    allout=append(allout,filename)
     sf = scan(filename,what="character",sep="\n",quiet=TRUE)
     includes = grep ("include",sf,ignore.case=TRUE)
     if (length(includes) == 0) next 
     sf = gsub(" ","",sf[includes],fixed=TRUE)
+    fileIncludes=NULL
     for (inc in sf)
     {
       up = toupper(inc) 
@@ -184,20 +187,20 @@ setwd("Z:\\ncrookston\\fvs\\ftcollins\\trunk\\bin")
         if (file.exists(incfile)) 
         { 
           # cat (incfile,"\n"); flush.console()
-          allout=append(allout,incfile)
-          break
+          fileIncludes=append(fileIncludes,incfile)
         }
       }
+      fileIncludes = gsub(trimout,"..",fileIncludes,fixed = TRUE)
     }
+    filename = gsub(trimout,"..",filename,fixed = TRUE)
+    attr(filename,"includes") = fileIncludes
+    # cat ("filename=", filename," attr=",paste(attributes(filename)),"\n"); flush.console()
+    allout[[length(allout)+1]]=filename
   }
-  allout=unique(allout)
-  allout=sort(unlist(allout))
-  trimout = getwd()
-  trimout = substr(trimout,3,9999)
-  trimout = sub("/bin","",trimout)
-  allout=gsub(trimout,"..",allout,fixed = TRUE)
+  
+  
   svn=grep ("INCLUDESVN.F",allout)
-  if (length(svn) > 0) allout[svn]=sub("INCLUDESVN.F","incudeSVN.f",allout[svn],fixed = TRUE)
+  if (length(svn) > 0) allout = allout[-svn]
   myo=grep ("myopen_pc.f",allout)
   if (length(myo) > 0) allout[myo]=sub("_pc","",allout[svn],fixed = TRUE)
   
@@ -210,23 +213,37 @@ setwd("Z:\\ncrookston\\fvs\\ftcollins\\trunk\\bin")
     found = grep (px,allout,fixed = TRUE)
     if (length(found) > 1) 
     {
-      cat (" x=",x," found ", found, " routines=", allout[found],"\n")
+      cat (" x=",x," found ", found, " routines=", paste(allout[found]),"\n")
+      # if the variant tag is in the file name, then keep that version.
       keep=grep(var,allout[found],fixed = TRUE)
-      if (length(keep) == 0) 
+      if (length(keep) == 0) # variant name is not found. 
       {
-        px = sub(".f",".obj",px,fixed=TRUE)
-        keep = grep(px,linkList,fixed=TRUE,value=TRUE)
+        # search for a source file in the corresponding object directory.
+        pxx = sub(".f",".obj",px,fixed=TRUE)
+        keep = grep(pxx,linkList,fixed=TRUE,value=TRUE)
         if (length(keep) > 0) 
         {
           search=unlist(strsplit(keep,"/"))[2]
           keep=grep(search,allout[found],fixed=TRUE)
         }
+      }   
+      if (length(keep) == 0) 
+      {
+        toss = grep ("/base/",allout[found],fixed=TRUE) 
+        if (length(toss) > 0) keep = (1:length(found))[-toss] 
       }
-      if (length(keep) == 0) keep = 1
-      cat ("keep=",allout[found[keep]],"\n")
-      found=found[-keep]
-      cat ("toss=",allout[found],"\n")
-      allout = allout[-found]          
+      if (length(keep) == 0) 
+      {
+        toss = grep ("../common/",allout[found],fixed=TRUE) 
+        if (length(toss) > 0) keep = (1:length(found))[-toss]      
+      }     
+      if (length(keep) > 0)
+      {
+        cat ("keep=",paste(allout[found[keep]]),"\n")
+        found=found[-keep]
+        cat ("toss=",paste(allout[found]),"\n")
+        allout = allout[-found]
+      }
     } 
   }
   
@@ -291,14 +308,8 @@ setwd("Z:\\ncrookston\\fvs\\ftcollins\\trunk\\bin")
   "../fire/fofem/src/fof_util.c",
   "../fire/fofem/src/fof_util.h",
   "../fire/fofem/src/win_ccwf.h",
-  "../mistoe/src/MISCOM.F77",
-  "../mistoe/src/misact.f",
-  "../mistoe/src/msppgt.f",
-  "../mistoe/src/mspppt.f",
   "../pg/src/chget.f",
   "../pg/src/chput.f",
-  "../pg/src/cvget.f",
-  "../pg/src/cvput.f",
   "../pg/src/ecnget.f",
   "../pg/src/ecnput.f",
   "../pg/src/fmppget.f",
@@ -308,6 +319,13 @@ setwd("Z:\\ncrookston\\fvs\\ftcollins\\trunk\\bin")
   "../pg/src/putgetsubs.f",
   "../pg/src/putstd.f",
   "../pg/src/stash.f")
+
+  if (length(grep("excov.f",allout)) == 0) adds=c(adds,
+     c("../pg/src/cvget.f","../pg/src/cvput.f"))
+     
+  if (length(grep("exmist.f",allout))== 0) adds=c(adds, 
+     c("../mistoe/src/MISCOM.F77","../mistoe/src/misact.f",
+       "../mistoe/src/msppgt.f","../mistoe/src/mspppt.f"))
   
   allout=sort(c(allout,adds))
   outfile=paste(pgm,"sourceList.txt",sep="_")
