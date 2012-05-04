@@ -41,7 +41,7 @@ setwd("Z:\\ncrookston\\fvs\\ftcollins\\trunk\\bin")
 # DEFINE pgm from the command line....
 
   pgm = commandArgs(trailingOnly=TRUE)[1]
-# pgm="FVSwsc"  
+# pgm="FVSne"  
   var = paste("/",substr(pgm,4,5),"/",sep="")
   cat ("running, pgm=",pgm," var=",var,"\n"); flush.console()
   
@@ -60,7 +60,6 @@ setwd("Z:\\ncrookston\\fvs\\ftcollins\\trunk\\bin")
   
   all = scan(makeoutFile,what="character",sep="\n",quiet=TRUE)
 
-
   linkfirst=grep(pgm,all)[1]
   linkList = NULL
   for (linkL in linkfirst:length(all))
@@ -75,6 +74,7 @@ setwd("Z:\\ncrookston\\fvs\\ftcollins\\trunk\\bin")
     linkList = c(linkList,addToList)
     if (fixLast == lastone) break
   }
+
   keep=unlist(lapply(linkList,nchar)) > 0
   linkList = linkList[keep]
   objSearches = grep ("*.obj",linkList,fixed=TRUE)
@@ -93,6 +93,8 @@ setwd("Z:\\ncrookston\\fvs\\ftcollins\\trunk\\bin")
     }
     linkList = linkList[-objSearches]
   }
+  linkList=gsub("`ls","",linkList)
+  linkList=gsub("`","",linkList)
      
   
   map = scan(mapFile,what="character",sep="\n",quiet=TRUE)
@@ -108,11 +110,8 @@ setwd("Z:\\ncrookston\\fvs\\ftcollins\\trunk\\bin")
   linkList = linkList[keep]
     
   map=gsub(".obj",".f",map,fixed = TRUE)
-     
-  allout=vector("list")
-  trimout = getwd()
-  trimout = substr(trimout,3,9999)
-  trimout = sub("/bin","",trimout)
+
+  allout=vector("list")     
   for (line in all)
   {
     tag = grep ("Entering",line)
@@ -121,7 +120,10 @@ setwd("Z:\\ncrookston\\fvs\\ftcollins\\trunk\\bin")
       curdir=strsplit(line,"`")[[1]][2]
       curdir=sub("'","",curdir)
       dirparts=unlist(strsplit(curdir,"/"))
-      dirparts=dirparts[4:length(dirparts)]
+      trunk=grep("trunk",dirparts,fixed=TRUE)
+      cdparts=dirparts[(trunk+1):length(dirparts)]
+      compDir=paste("/",paste(cdparts,collapse="/"),"/",sep="")
+      cat ("compDir = ",compDir,"\n"); flush.console()
       next
     }
     tag = substr(line,1,4)
@@ -150,108 +152,92 @@ setwd("Z:\\ncrookston\\fvs\\ftcollins\\trunk\\bin")
       src=src[length(src)]
       if (substr(src,1,2) == "./") src = substring(src,3)
       if (substr(src,1,2) != "..") next
-      srcparts=unlist(strsplit(src,"/"))
+      srcparts=unlist(strsplit(src,"/"))     
     } else next
+
     i=0
     for (sp in srcparts) if (sp == "..") i=i+1
-    fn = srcparts[length(srcparts)]  
-    fnused = grep(fn,map,fixed=TRUE)
+    compOut = paste(compDir,srcparts[length(srcparts)],sep="")
+    compOut = sub(".f",".obj",compOut,fixed=TRUE)
+    fnused = grep(compOut,linkList,fixed=TRUE)
     if (length(fnused) == 0) 
     {
-       cat ("compiled but not used=",fn,"\n"); flush.console()
+       fn = srcparts[length(srcparts)]  
+  #     cat ("compiled but not used=",compOut,"\n"); flush.console()
        mod = grep("_mod",fn,fixed=TRUE)
        myo = grep("myopen",fn,fixed=TRUE)
        if (length(mod)+length(myo) == 0) next
-       cat ("kept anyway=",fn,"\n"); flush.console()
+  #     cat ("kept anyway=",fn,"\n"); flush.console()
     }
   
     filename = paste(c("",dirparts[1:(length(dirparts)-i)],
-            srcparts[(i+1):length(srcparts)]),collapse="/")
-    if (!file.exists(filename)) break
-    # cat (filename,"\n"); flush.console()
+            srcparts[(i+1):length(srcparts)]),collapse="/") 
+    filename = sub("//cygdrive/z","Z:",filename,fixed=TRUE)
+#    cat (filename," exists=",file.exists(filename),"\n"); flush.console()
+    if (!file.exists(filename)) next
+    allout=append(allout,filename)
     sf = scan(filename,what="character",sep="\n",quiet=TRUE)
     includes = grep ("include",sf,ignore.case=TRUE)
     if (length(includes) == 0) next 
     sf = gsub(" ","",sf[includes],fixed=TRUE)
-    fileIncludes=NULL
+    verbose = length(grep("volum",compDir))>0
+ 
     for (inc in sf)
     {
-      up = toupper(inc) 
-      if (substring(up,1,7) != "INCLUDE") break
+      up = toupper(inc)
+      if (verbose) cat (filename,"up = ",up,"\n")
+      if (substring(up,1,7) != "INCLUDE") next
       up = sub("INCLUDE","",up,fixed = TRUE)
       up = gsub("'","",up,fixed = TRUE)
       up = gsub('"',"",up,fixed = TRUE)
-      for (i in 1:length(incp)) 
+      if (length(grep("!",up)) > 0) up = unlist(strsplit(up,"!"))[1]
+      # search the "include search list"
+
+      for (i in 0:length(incp)) 
       {
-        incfile = paste(incp[i],up,sep="/")
+        if (i == 0)
+        {
+          incfile=unlist(strsplit(filename,"/"))
+          incfile=paste(c(incfile[1:(length(incfile)-1)],up),collapse="/")
+        }
+        else
+        {
+          incfile = paste(incp[i],up,sep="/")
+          incfile = sub("//cygdrive/z","Z:",incfile,fixed=TRUE)
+        }
+    #    cat (incfile," exists=",file.exists(incfile),"\n"); flush.console()
+        # if the file is found, then add it and break.
         if (file.exists(incfile)) 
-        { 
-          # cat (incfile,"\n"); flush.console()
-          fileIncludes=append(fileIncludes,incfile)
+        {
+          if (length(grep(incfile,unlist(allout))) == 0) allout=append(allout,incfile)
+          break
         }
       }
-      fileIncludes = gsub(trimout,"..",fileIncludes,fixed = TRUE)
     }
-    filename = gsub(trimout,"..",filename,fixed = TRUE)
-    attr(filename,"includes") = fileIncludes
-    # cat ("filename=", filename," attr=",paste(attributes(filename)),"\n"); flush.console()
-    allout[[length(allout)+1]]=filename
   }
-  
-  
+
+  allout=sort(unlist(allout))
+  allout=unique(allout)
+  trimout = "Z:/ncrookston/fvs/ftcollins/trunk"
+  allout=gsub(trimout,"..",allout,fixed = TRUE)
+  cat ("trimout = ",trimout,"\n");flush.console()
   svn=grep ("INCLUDESVN.F",allout)
   if (length(svn) > 0) allout = allout[-svn]
   myo=grep ("myopen_pc.f",allout)
   if (length(myo) > 0) allout[myo]=sub("_pc","",allout[svn],fixed = TRUE)
   
+  allout = sort(allout)
   allout = unique(allout)
-#  allout=alloutSave
-  for (x in allout)
-  {
-    px = unlist(strsplit(x,"/"))
-    px = paste("/",px[length(px)],sep="")
-    found = grep (px,allout,fixed = TRUE)
-    if (length(found) > 1) 
-    {
-      cat (" x=",x," found ", found, " routines=", paste(allout[found]),"\n")
-      # if the variant tag is in the file name, then keep that version.
-      keep=grep(var,allout[found],fixed = TRUE)
-      if (length(keep) == 0) # variant name is not found. 
-      {
-        # search for a source file in the corresponding object directory.
-        pxx = sub(".f",".obj",px,fixed=TRUE)
-        keep = grep(pxx,linkList,fixed=TRUE,value=TRUE)
-        if (length(keep) > 0) 
-        {
-          search=unlist(strsplit(keep,"/"))[2]
-          keep=grep(search,allout[found],fixed=TRUE)
-        }
-      }   
-      if (length(keep) == 0) 
-      {
-        toss = grep ("/base/",allout[found],fixed=TRUE) 
-        if (length(toss) > 0) keep = (1:length(found))[-toss] 
-      }
-      if (length(keep) == 0) 
-      {
-        toss = grep ("../common/",allout[found],fixed=TRUE) 
-        if (length(toss) > 0) keep = (1:length(found))[-toss]      
-      }     
-      if (length(keep) > 0)
-      {
-        cat ("keep=",paste(allout[found[keep]]),"\n")
-        found=found[-keep]
-        cat ("toss=",paste(allout[found]),"\n")
-        allout = allout[-found]
-      }
-    } 
-  }
-  
+  alloutSave = allout
+
   adds=c("../base/src/apisubs.f",
   "../base/src/cmdline.f",
   "../base/src/fvs.f",
   "../base/src/myopen.f",
   "../common/GLBLCNTL.F77",
+  "../common/GGCOM.F77",
+  "../common/ESHAP2.F77",
+  "../common/ESCOM2.F77",
   "../common/PPDNCM.F77",
   "../dbs/src/fvsSQL.c",
   "../dbs/src/mkdbsTypeDefs.c",
@@ -327,7 +313,8 @@ setwd("Z:\\ncrookston\\fvs\\ftcollins\\trunk\\bin")
      c("../mistoe/src/MISCOM.F77","../mistoe/src/misact.f",
        "../mistoe/src/msppgt.f","../mistoe/src/mspppt.f"))
   
-  allout=sort(c(allout,adds))
+  allout = unique(sort(c(allout,adds)))
+
   outfile=paste(pgm,"sourceList.txt",sep="_")
   cat("output file=",outfile,"\n"); flush.console()
   write.table(allout,file=outfile,quote=FALSE,row.names=FALSE,col.names=FALSE)
