@@ -9,7 +9,7 @@ This is a basic list of the frequently asked questions (FAQ) for the open-fvs pr
 You can obtain the source code anonymously using [http://subversion.apache.org/ Subversion],
 
 {{{
-svn checkout http://open-fvs.googlecode.com/svn/trunk/ open-fvs
+svn checkout http://open-fvs.googlecode.com/svn open-fvs
 }}}
 
 For more information, see the [http://code.google.com/p/open-fvs/source/checkout Source] link.
@@ -27,7 +27,7 @@ Regardless, once you have your tools installed, you should be able to build your
 From your current directory, check out the source code (see question 1), then change into the `trunk/bin` directory. Then run the the make command using the variant you want to build. For example, to build the [http://www.fs.fed.us/fmsc/ftp/fvs/docs/overviews/FVSpn_Overview.pdf Pacific Northwest FVS] variant with the climate extension, 
 
 {{{
-cd open-fvs/bin
+cd open-fvs/trunk/bin
 make FVSpnc
 }}}
 
