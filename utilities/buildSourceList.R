@@ -24,7 +24,6 @@
 # ./cleanObj; make FVSncc > FVSncc.makeout ; R  --verboxe --no-save --args FVSncc  < z:/ncrookston/fvs/open-fvs/utilities/buildSourceList.R                                                     
 # ./cleanObj; make FVSne  > FVSne.makeout  ; R  --verboxe --no-save --args FVSne   < z:/ncrookston/fvs/open-fvs/utilities/buildSourceList.R                                                     
 # ./cleanObj; make FVSpnc > FVSpnc.makeout ; R  --verboxe --no-save --args FVSpnc  < z:/ncrookston/fvs/open-fvs/utilities/buildSourceList.R                                                     
-# ./cleanObj; make FVSse  > FVSse.makeout  ; R  --verboxe --no-save --args FVSse   < z:/ncrookston/fvs/open-fvs/utilities/buildSourceList.R                                                     
 # ./cleanObj; make FVSsn  > FVSsn.makeout  ; R  --verboxe --no-save --args FVSsn   < z:/ncrookston/fvs/open-fvs/utilities/buildSourceList.R                                                     
 # ./cleanObj; make FVSsoc > FVSsoc.makeout ; R  --verboxe --no-save --args FVSsoc  < z:/ncrookston/fvs/open-fvs/utilities/buildSourceList.R                                                     
 # ./cleanObj; make FVSttc > FVSttc.makeout ; R  --verboxe --no-save --args FVSttc  < z:/ncrookston/fvs/open-fvs/utilities/buildSourceList.R                                                     
