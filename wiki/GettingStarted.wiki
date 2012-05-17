@@ -45,3 +45,4 @@ The FVS variant executables are named FVSxxx.exe, where the xxx is the 2-letter 
 {{{
 make FVSiec.exe
 }}}
+Not all variants are currently able to be built.  Look in the trunk\bin directory for the sourcelist files.  If there is a sourcelist file you can build that variant.  For example, if the file FVSls_sourceList.txt exists you can build the variant executable FVSls.exe.
