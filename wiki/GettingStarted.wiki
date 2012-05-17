@@ -1,0 +1,44 @@
+#summary Windows build process
+
+=Getting Started in Windows=
+
+This wiki documents the process to set things up on a Windows PC so you can build FVS executables.
+
+==Get The Needed Tools==
+
+You will need the *Rtools* toolkit package in order to build the executables.  Download it from http://cran.r-project.org/bin/windows/Rtools/ and install it.  Two directories will be created on your hard drive.  By default they are C:\Rtools and C:\minGW.  Each of these contains a bin directory.
+
+After installation you need to add the path to the Rtools\bin and minGW\bin directories as follows.
+
+On Windows XP
+{{{
+Start > Settings > Control Panel > System.
+On the Advanced tab click Environment Variables.
+}}}
+
+On Windows Vista or Windows 7
+{{{
+Start > Settings > Control Panel > Advanced System Settings > Environment Variables.
+}}}
+
+In the System Variables box find and highlight Path, then click Edit.  To the end of the existing path text string add ";C:\Rtools\bin;C\minGW\bin" .  Don’t include the quotes, but make sure to include the semicolons.  Then restart the PC.
+
+==Get The Source Files==
+
+The open-fvs files are stored in a Subversion (SVN) repository.  If you don’t have an SVN client software package you will probably want to install one.  There are several free SVN packages available for download.  Two examples are SmartSVN ([http://www.syntevo.com/smartsvn/]) and Tortoise ([http://tortoisesvn.net/])
+
+You will use the "checkout" feature of your SVN client software package to download the FVS source files.  Use the repository URL http://open-fvs.googlecode.com/svn/.  Select an appropriate location on your hard drive to download the source files into.
+
+==Build The Executable==
+
+Open a Command Window
+{{{
+Click Start > (All) Programs > Accessories > Command Prompt
+}}}
+
+Navigate to the trunk\bin directory inside the directory into which you checked out the open-fvs files.
+{{{
+cd \MyFvsFiles\trunk\bin
+}}}
+
+The FVS variant executables are named FVSxxx, where the xxx is the 2-letter abbreviation for the variant (e.g., ie for Inland Empire) optionally followed by the 1-letter abbreviation for an extension (e.g., x for the insect and disease extensions, or c for the climate extension).  To make an executable on a Windows PC type the command “make FVSxxx.exe” without the quotes, and with “xxx” replaced by the variant and extension designations (e.g., make FVSiec.exe).  On all other operating systems the command is the same except the “.exe” extension is not included.
