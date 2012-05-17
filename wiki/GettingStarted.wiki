@@ -36,12 +36,18 @@ Open a Command Window
 Start > (All) Programs > Accessories > Command Prompt
 }}}
 
-Navigate to the trunk\bin directory inside the directory into which you checked out the open-fvs files.  If you placed the files into a directory called MyFvsFiles the command would be as shown below.
+Use the "cd" command to navigate to the trunk\bin directory inside the directory into which you checked out the open-fvs files.  If you placed the files into a directory called MyFvsFiles you would type the command as shown below.
 {{{
 cd \MyFvsFiles\trunk\bin
 }}}
 
-The FVS variant executables are named FVSxxx.exe, where the xxx is the 2-letter abbreviation for the variant (e.g., ie for Inland Empire) optionally followed by the 1-letter abbreviation for an extension (e.g., x for the insect and disease extensions, or c for the climate extension).  To make an executable on a Windows PC type the command "make FVSxxx.exe" without the quotes and with xxx replaced by the variant and extension designations.  For example, to build the Inland Empire variant with the Climate extension you would use the command below.
+The prompt in the command window should change to reflect the directory you just typed.  In the example above the prompt should look as shown below.  If it doesn't, repeat the command shown above.
+
+{{{
+C:\MyFvsFiles\trunk\bin>
+}}}
+
+The FVS variant executables are named FVSxxx.exe, where the xxx is the 2-letter abbreviation for the variant (e.g., ie for Inland Empire or ls for Lake States) optionally followed by the 1-letter abbreviation for an extension (e.g., x for the insect and disease extensions, or c for the climate extension).  To make an executable on a Windows PC type the command "make FVSxxx.exe" without the quotes and with xxx replaced by the variant and extension designations.  For example, to build the Inland Empire variant with the Climate extension you would use the command below.
 {{{
 make FVSiec.exe
 }}}
