@@ -1,7 +1,7 @@
 #summary Windows build process
 #labels Draft
 
-=Getting started with the build process in Windows=
+=Getting Started With The Build Process In Windows=
 
 This wiki documents the process to set things up on a Windows PC so you can build FVS executables.
 
