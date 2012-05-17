@@ -21,7 +21,7 @@ On Windows Vista or Windows 7
 Start > Settings > Control Panel > Advanced System Settings > Environment Variables.
 }}}
 
-In the System Variables box find and highlight Path, then click Edit.  To the end of the existing path text string add ";C:\Rtools\bin;C\minGW\bin" .  Don’t include the quotes, but make sure to include the semicolons.  Then restart the PC.
+In the System Variables box find and highlight Path, then click Edit.  To the end of the existing path text string add ";C:\Rtools\bin;C\minGW\bin" .  Don’t include the quotes, but make sure to include the semicolons.  Also make sure not to delete any of the exising path information in the process.  When you have added the new path info restart the PC.
 
 ==Get The Source Files==
 
