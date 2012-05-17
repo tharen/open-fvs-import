@@ -36,7 +36,7 @@ Open a Command Window
 Start > (All) Programs > Accessories > Command Prompt
 }}}
 
-Navigate to the trunk\bin directory inside the directory into which you checked out the open-fvs files.  If you placed the files into a directory called "MyFvsFiles" the command would be as shown below.
+Navigate to the trunk\bin directory inside the directory into which you checked out the open-fvs files.  If you placed the files into a directory called MyFvsFiles the command would be as shown below.
 {{{
 cd \MyFvsFiles\trunk\bin
 }}}
