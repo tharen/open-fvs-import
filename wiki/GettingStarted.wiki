@@ -43,4 +43,8 @@ Once you have navigated to the correct directory you are ready to make an execut
 {{{
 make FVSiec.exe
 }}}
+To build the Lake States variant with none of the optional extensions you would use the command below.
+{{{
+make FVSls.exe
+}}}
 A sourcelist file needs to exist in the `trunk\bin` directory in order to build the variants in this way. For example, the file `FVSls_sourceList.txt` allows you to use the `make` command to build the variant executable `FVSls.exe`. Not all variants currently have a sourcelist, but we're working on it.
