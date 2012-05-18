@@ -5,7 +5,7 @@
 
 This wiki documents the process of setting things up on a Windows PC so you can build FVS executables from the source files in the open-fvs repository.  For more information on the build process, including information for builds on other platforms (Mac and Linux) please refer to the [BuildProcess] wiki.
 
-==Getting The Needed Tools==
+==Getting The Necessary Tools==
 
 You will need the *Rtools* toolkit package in order to build the executables.  Download it from http://cran.r-project.org/bin/windows/Rtools/ and install it.  Two directories will be created on your hard drive.  By default they are `C:\Rtools` and `C:\minGW`.  Each of these contains a bin directory.
 
