@@ -49,3 +49,5 @@ The FVS variant executables are named `FVSxxx.exe`, where the `xxx` is the 2-let
 make FVSiec.exe
 }}}
 A sourcelist file needs to exist in the `trunk\bin` directory in order to build the variants in this way.  For example, the file `FVSls_sourceList.txt` allows you to use the `make` command to build the variant executable `FVSls.exe`.  Not all variants currently have a sourcelist, but we're working on it.
+
+For more information on the build process, including information for builds on other platforms (Mac and Linux) please refer to the [BuildProcess] wiki.
