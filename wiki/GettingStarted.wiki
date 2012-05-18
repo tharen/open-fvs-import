@@ -27,7 +27,7 @@ In the `System Variables` box find and highlight `Path`, then click `Edit`.  To 
 
 The open-fvs files are stored in a Subversion (SVN) repository.  If you don't have an *SVN client* software package you will probably want to install one.  There are several free SVN packages available for download.  Two examples are SmartSVN ([http://www.syntevo.com/smartsvn/]) and Tortoise ([http://tortoisesvn.net/])
 
-You will use the "checkout" feature of your SVN client software package to download the FVS source files.  Use the repository URL http://open-fvs.googlecode.com/svn/.  Select or create an appropriate directory on your hard drive to download the source files into.  For example, you could create a directory on your C drive called `MyFvsFiles`.
+You will use the "checkout" feature of your SVN client software package to download the FVS source files.  Refer to the software documentation for a description.  Use the repository URL http://open-fvs.googlecode.com/svn/.  Select or create an appropriate directory on your hard drive to download the source files into.  For example, you could create a directory on your C drive called `MyFvsFiles`.
 
 ==Build The Executable==
 
