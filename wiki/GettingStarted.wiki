@@ -21,11 +21,11 @@ Start > Settings > Control Panel > System.
 On the Advanced tab click Environment Variables.
 }}}
 
-In the System Variables box find and highlight `Path`, then click `Edit`.  To the _end_ of the existing path text add *`;C:\Rtools\bin;C:\minGW\bin`*.  Make sure to include the semicolons.  Also make sure not to delete any of the exising path information in the process.  When you have added the new path info restart the PC.
+In the `System Variables` box find and highlight `Path`, then click `Edit`.  To the _end_ of the existing path text add *`;C:\Rtools\bin;C:\minGW\bin`*.  Make sure to include the semicolons.  Also make sure not to delete any of the exising path information in the process.  When you have added the new path info restart the PC.
 
 ==Get The Source Files==
 
-The open-fvs files are stored in a Subversion (SVN) repository.  If you don't have an SVN client software package you will probably want to install one.  There are several free SVN packages available for download.  Two examples are *SmartSVN* ([http://www.syntevo.com/smartsvn/]) and *Tortoise* ([http://tortoisesvn.net/])
+The open-fvs files are stored in a Subversion (SVN) repository.  If you don't have an *SVN client* software package you will probably want to install one.  There are several free SVN packages available for download.  Two examples are SmartSVN ([http://www.syntevo.com/smartsvn/]) and Tortoise ([http://tortoisesvn.net/])
 
 You will use the "checkout" feature of your SVN client software package to download the FVS source files.  Use the repository URL http://open-fvs.googlecode.com/svn/.  Select or create an appropriate directory on your hard drive to download the source files into.  For example, you could create a directory on your C drive called `MyFvsFiles`.
 
