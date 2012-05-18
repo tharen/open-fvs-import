@@ -3,13 +3,13 @@
 
 =Getting Started With The Build Process In Windows=
 
-This wiki documents the process of setting things up on a Windows PC so you can build FVS executables from the source files in the open-fvs repository.
+This wiki documents the process of setting things up on a Windows PC so you can build FVS executables from the source files in the open-fvs repository.  For more information on the build process, including information for builds on other platforms (Mac and Linux) please refer to the [BuildProcess] wiki.
 
 ==Get The Needed Tools==
 
 You will need the *Rtools* toolkit package in order to build the executables.  Download it from http://cran.r-project.org/bin/windows/Rtools/ and install it.  Two directories will be created on your hard drive.  By default they are `C:\Rtools` and `C:\minGW`.  Each of these contains a bin directory.
 
-After installing Rtools on a Windows PC you need to modify the Windows path information to include the Rtools\bin and minGW\bin directories so the system knows where to find the tools.  This is done as follows.
+After installing Rtools on a Windows PC you need to modify the Windows path information to include the `C:\Rtools\bin` and `C:\minGW\bin` directories so the system knows where to find the tools.  This is done as follows.
 
 On Windows 7 or Windows Vista
 {{{
@@ -49,5 +49,3 @@ The FVS variant executables are named `FVSxxx.exe`, where the `xxx` is the 2-let
 make FVSiec.exe
 }}}
 A sourcelist file needs to exist in the `trunk\bin` directory in order to build the variants in this way.  For example, the file `FVSls_sourceList.txt` allows you to use the `make` command to build the variant executable `FVSls.exe`.  Not all variants currently have a sourcelist, but we're working on it.
-
-For more information on the build process, including information for builds on other platforms (Mac and Linux) please refer to the [BuildProcess] wiki.
