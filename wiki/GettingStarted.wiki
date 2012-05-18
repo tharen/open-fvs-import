@@ -3,7 +3,7 @@
 
 =Getting Started With The Build Process In Windows=
 
-This wiki documents the process of setting things up on a Windows PC so you can build FVS executables from the source files in the open-fvs repository. For more information on the build process, including information for builds on other platforms (Mac and Linux) please refer to the [BuildProcess] wiki.
+This wiki documents the process of setting things up on a Windows PC so you can build FVS executables from the source files in the open-fvs repository. For more information on the build process, including information for builds on other platforms (Mac and Linux) please refer to the [BuildProcess] wiki or the [FAQ] wiki.
 
 ==Getting The Necessary Tools==
 
