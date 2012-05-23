@@ -7,21 +7,47 @@ This wiki documents the process of setting things up on a Windows PC so you can 
 
 ==Getting The Necessary Tools==
 
-You will need the *Rtools* toolkit package in order to build the executables. Download it from http://cran.r-project.org/bin/windows/Rtools/ and install it. Two directories will be created on your hard drive. By default they are `C:\Rtools` and `C:\minGW`. Each of these contains a bin directory.
+You will need the *Rtools* toolkit package in order to build the executables. Download it from http://cran.r-project.org/bin/windows/Rtools/ . Download the latest package RTools215.exe.
 
-After installing Rtools on a Windows PC you need to modify the Windows path information to include the `C:\Rtools\bin` and `C:\minGW\bin` directories so the system knows where to find the tools. This is done as follows.
+Once you get the self-extracting installer downloaded and started, select from the pull down list “full installation to build 32 or 64 bit R 2.14.2+” option.  When the setup dialog appears, don’t bother to edit the environment variable; It’s already been done. Unfortunately, when the installation is complete, nothing shows up on the desktop or in your start menu typically used to run windows programs. 
 
-On Windows 7 or Windows Vista
+To test for successful installation of RTools, Open a Command Window
 {{{
-Start > Settings > Control Panel > Advanced System Settings > Environment Variables.
+Start > (All) Programs > Accessories > Command Prompt
 }}}
-On Windows XP or Windows 2000
+Type in *gcc --version* at the DOS prompt
 {{{
-Start > Settings > Control Panel > System.
-On the Advanced tab click Environment Variables.
+Microsoft Windows XP [Version 5.1.2600]
+(C) Copyright 1985-2001 Microsoft Corp.
+
+C:\Documents and Settings\Administrator>gcc --version
+
+gcc (GCC) 4.6.3 20111208 (prerelease)
+Copyright (C) 2011 Free Software Foundation, Inc.
+This is free software; see the source for copying conditions.  There is NO
+warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+}}}
+Type in *gfortran --version* at the DOS prompt
+
+{{{
+C:\Documents and Settings\Administrator>gfortran --version
+
+GNU Fortran (GCC) 4.6.3 20111208 (prerelease)
+Copyright (C) 2011 Free Software Foundation, Inc.
+
+GNU Fortran comes with NO WARRANTY, to the extent permitted by law.
+You may redistribute copies of GNU Fortran
+under the terms of the GNU General Public License.
+For more information about these matters, see the file named COPYING'
+
+
+C:\Documents and Settings\Administrator>
 }}}
 
-In the `System Variables` box find and highlight `Path`, then click `Edit`. To the _end_ of the existing path text add *`;C:\Rtools\bin;C:\minGW\bin`*. Make sure to include the semicolons. Also make sure not to delete any of the exising path information in the process. When you have added the new path info restart the PC.
+And that’s it. You’ve successfully installed Rtools and can now build open-fvs programs. 
+Now that you have verified you have successfully installed RTools, the next step is to check out the source code from the Subversion repository located on google.code servers. 
+
+
 
 ==Getting The Source Files==
 
@@ -47,6 +73,11 @@ To build the Lake States variant with none of the optional extensions you would 
 {{{
 make FVSls.exe
 }}}
+To build all of the varaints just type 'make' and do not specify a varaint. This could take up to 20 minutes.
+{{{
+make
+}}}
+
 The variant executable file is created in the `trunk\bin` directory in which you are currently working.  
 
 A sourcelist file needs to exist in the `trunk\bin` directory in order to build the variants in this way. For example, the file `FVSls_sourceList.txt` allows you to use the `make` command to build the variant executable `FVSls.exe`. Look in the `trunk\bin` directory to see which variants are currently available.
