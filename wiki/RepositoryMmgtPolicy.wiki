@@ -1,0 +1,39 @@
+#summary SVN Repository Management Policy (*work in progress*)
+#sidebar TableOfContents
+
+= Introduction =
+
+This document outlines the source code repository management policy for Open-FVS. Everyone who has commit authority is expected to know and follow this policy. 
+
+= Directory Structure =
+
+The directory structure is:
+
+||Directory||Description||
+||`../trunk`||contains the currently up to date stable source code, makefiles, and tests ||
+||`../branches/`||contains svn copies of trunk and is where "in progress" changes are stored. There will always be at least on copy of trunk called _dev_ in this directory|| 
+||`../tags/`||contains copies of trunk as of the date used to name the tag directory. The first tag in Open-FVS is called _2012-04-22_. It will forever be a copy of the trunk as of that date.||
+
+= Usage =
+
+Committers are free to create svn copies in the branches directory and commit their work to those branches as they see fit. The only requirement is that code should compile on at least on platform prior to being committed. Developers are encouraged to use common development branches when practical to limit the number of merges that will be needed to the _trunk_.
+
+Commits to the trunk should be coordinated with one of the administrators. In general, changes to the _trunk_ (via merges from _development_ or otherwise) should never be committed unless all tests are complete, code review is done, and documentation that may be needed is prepared. Exceptions to this rule will generally include bug fixes that involve few lines of code and are not considered program enhancements. 
+
+No one should ever commit changes to an existing _tag_. Tags are considered frozen snapshots of the repository.
+
+= Workflow =
+
+This section describes the process of adding or modifying FVS in any respect. It applies to adding new features, extensions, new variants, or modification of existing program elements. 
+
+The first step is to get the repository and consider weather or not the work requires a new branch. If the work is focused on a part of the model you are likely the only one working on, and it is a part that works independently of other parts, then perhaps committing changes to the always present _../branches/dev_ directory will work. Otherwise create a new entry in _../branches/_ using the _../trunk_ as the source. 
+
+Work in the branch, create test files and other information as needed and commit those changes frequently. Developers are encouraged to use the repository to store "in progress" work that will change in the near future. 
+
+Routinely, as needed, merge the trunk onto the development branch so that changes that take place in the _most trusted_ code set form the foundation for the work being done in the branch.
+
+As the development cycle nears completion, consult with a project administrator about merging the new code onto the branch. Usually, that step will be accomplished by an administrator. After the merge is complete and fully tested, the modified trunk will be committed.
+
+= Code review =
+
+There is no single rule regarding code review in Open-FVS. How much review might be needed depends on the nature of the changes being made and the impact on users and other developers. Consult your colleagues and accomplish the level of review the fits the need. Note, however, that changes to FVS that cause changes in predictions can be controversial and will require that consensus be reached regarding integration of the changes into the _trunk_. On solution to resolving controversy is to create a new FVS variant with a unique name that contains the code that creates new predictions. The general principal here is transparency: take such action that insures users have access to information describing model content. 
