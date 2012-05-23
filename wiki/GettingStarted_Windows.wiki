@@ -27,6 +27,8 @@ Copyright (C) 2011 Free Software Foundation, Inc.
 This is free software; see the source for copying conditions.  There is NO
 warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 }}}
+Make sure the version (shown on the first line of the report) is at least 4.2.
+
 Type in *gfortran --version* at the DOS prompt
 
 {{{
@@ -43,6 +45,7 @@ For more information about these matters, see the file named COPYING'
 
 C:\Documents and Settings\Administrator>
 }}}
+Make sure the version (shown on the first line of the report) is at least 4.5.
 
 And that’s it. You’ve successfully installed Rtools and can now build open-fvs programs. 
 Now that you have verified you have successfully installed RTools, the next step is to check out the source code from the Subversion repository located on google.code servers. 
