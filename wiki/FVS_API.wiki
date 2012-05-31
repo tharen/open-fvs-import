@@ -127,6 +127,7 @@ Get dimension information for the version of FVS being run.
 ||Argument||Definition||
 ||`ntrees`||returned number of trees defined in FVS.||
 ||`ncycles`||returned number of cycle defined in FVS.||
+||`nplots`||returned number of plots inventoried.||
 ||`maxtrees`||returned maximum number of trees FVS can hold.||
 ||`maxspecies`||returned maximum number of species FVS has defined.||
 ||`maxplots`||returned maximum number of sample plots FVS can hold.||
@@ -281,4 +282,3 @@ Get the stand identification codes.
 ||`mID`||returned character string holding the management identification code (4 characters maximum).||
 ||`ncsID`||length of defined part of _sID_ (integer)||
 ||`ncmID`||length of defined part of _mID_ (integer)||
-
