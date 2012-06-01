@@ -1,6 +1,6 @@
-#summary FVS-API: Running FVS as a Shared Library (*work in progress*)
+#summary Running FVS form R (*work in progress*)
 
-Nick Crookston, January 2012
+Nick Crookston, January and May 2012
 
 = Contents =
 
@@ -8,277 +8,355 @@ Nick Crookston, January 2012
 
 = Introduction =
 
-Several people have asked if FVS can be built as a _shared library_ so that it can interact with other programs during a simulation. This document describes the FVS _Application Program Interface_ (API) that provides for this interaction. 
+This Wiki page discusses the use of FVS within the [http://www.r-project.org/ R System for Statistical Computing]. As stated in the discussion of the [FVS_API FVS Application Program Interface], using FVS as a _shared library_ requires that the library be loaded and called from a parent program -- here, the parent is R.
 
-Note that the fact that FVS is written as a _procedural_ program rather than an _object oriented_ program means that the methods used in the FVS_API are not consistent with an object-oriented paradigm. Achievement of specific goals, for example, processing many stands in parallel through time, is achieved differently in FVS than would be accomplished if FVS were object oriented. The design of the API is keyed to this reality.
+What follows is a description of each of several R functions that are in the `rFVS` portion of the open-fvs repository. This Wiki page serves as the documentation to that collection of functions. 
 
-The design of this API is driven by known and perceived needs and as those change, the API will change. The design was further dictated by the system used to call it. So far, that is only one system, the [http://www.r-project.org/ R System for Statistical Computing]. However, I know that [http://essa.com/ Don Robinson and Sarah Beukema] are in the process of writing additional, unique, functionality that we intend to integrate into this work. The target system they are using is based on .Net rather than R. 
+This is *_experimental work_* that is subject to change, particularly with respect to adding functions. 
 
-Speaking of R, there is a directory to this repository called _rFVS_. This is a collection of R functions used to run FVS on a wide variety of simulations. These functions also serve to demonstrate how to use the API that is described below. In the future, these R functions may become an R package; for now they documented in the [rFVS rFVS Wiki page].
+= Getting Started =
 
-Note that this is the first version of the API; this is _experimental_ work subject to change. 
+== Notation Used Below ==
 
-= Basic Idea =
+  * The code blocks specify commands entered into R.
+  * The notation `<open-fvs>/` defines the directory where the open-fvs code is stored on your system. Modify this string so that the path name to the files can be found.
 
-FVS can hold one stand in memory at a time. When a shared library is loaded, the state of its memory is not set to reliable initial values; no stand, no run options, and no trees are defined. Using the current API functions, there is only one way to define the initial conditions and that is to read a keyword file as would be done with FVS if it were run as a program rather than as a shared library. FVS keyword commands that cause FVS to read site and tree information are used to setup the simulation. 
+== Start up ==
 
-Specifying the name of the keyword file is done by setting the `--keywordfile` argument as done the [FVSCommandLine FVS Command Line] (there is an [FVS_API#Command_Line API call] to set this value without putting it on the command line). The FVS program is then run by calling a single API function which returns when the simulation is over, unless, of course, the program is requested to stop during the simulation. The request to stop is done by setting a stop point and stop year. The program returns when it reaches the designated stop point and then it picks up the calculations were it left off when it is called again. There are several ways to interact with the program between its "return" and when it is called again, each is supported with an API function. Note, this is the _basic idea_, details are provided below that cover more complicated scenarios. 
-
-= API Reference =
-
-What follows is the definition of subroutines designed to be called by the parent programs. Note that many other routines with FVS could be called and, in fact, the simulation can be destroyed by calling other FVS functions incorrectly and out of order. User's are encouraged to take a minimalist approach, yet by all means do take an approach! 
-
-== Command Line ==
+The first step is to start R and load the `rFVS` functions found in `<open-fvs>/rFVS/R` [remember to replace the string `<open-fvs>` with the pathname of where you have stored your copy of the code].
 
 {{{
-subroutne cmdLine(theCmdLine,lenCL)
+sdir = "<open-fvs>/rFVS/R"
+for (rf in dir (sdir)) source (paste(sdir,rf,sep="/"))
 }}}
 
-Set the command line arguments. When FVS is run as a program, this value is specified on the command line as arguments to the program start (see [FVSCommandLine FVS Command Line] for definitions of this string). Values specified using this function take precedence over those set on the actual command line. This function also opens files for input as indicted by the values found and it can result in the FVS [FVS_API#Return_Code_State return code state] to be reset.
-
-
-||Argument||Definition||
-||`theCmdLine`||input character string defines the command line values.||
-||`lenCL`||the length of _theCmdLine_ (integer)||
-
-
-== FVS File Close ==
+The second step is to load the FVS shared library. A function has been provided to accomplish that task. The following assumes that program `FVSiec` has been built as a shared library (see [BuildProcess Build Process] for build instructions).
 
 {{{
-subroutine fvsCloseFile(filename,nch)
+fvsLoad("FVSiec")
 }}}
 
-Close the file if it is opened. This routine will normally not be needed.
-
-||Argument||Definition||
-||`filename`||input character string specifying a file name.||
-||`nch`||the length of the defined part of _filename_ (integer)||
-
-
-== Stop Points ==
+As an alternative, the directory name of the bin can be specified. Documentation for this function is provided below.
 
 {{{
-subroutine setstoppointcodes (spptcd,spptyr)
+fvsLoad("FVSiec", bin="<open-fvs>/trunk/bin")
 }}}
 
-Set the parameters that control start/restart while FVS is run as a shared library (also see [FVSCommandLine FVS Command Line] for definitions).
+= rFVS Function Reference =
 
-||Argument||Definition||
-||`stptcd`||is the stop point code (integer) to be used, see table below for codes||
-||`stptyr`||is the stop point year (integer) be used: 0 mean never stop, -1 means stop at every cycle.||
-
-||Stop Point Codes||Definition||
-||`0`||Never stop.||
-||`-1`||Stop at every stop location.||
-||`1`||Stop just before the first call to the Event Monitor.||
-||`2`||Stop just after the first call to the Event Monitor.||
-||`3`||Stop just before the second call to the Event Monitor.||
-||`4`||Stop just after the second call to the Event Monitor.||
-||`5`||Stop after growth and mortality has been computed, but prior to applying them.||
-||`6`||Stop just before the estab routines are called.||
+The following is a list of the R functions that call [FVS_API FVS API] member functions as needed; consult the API for more information on the functions used. 
 
 {{{
-subroutine getrestartcode (restartcode)
+fvsAddTrees()
 }}}
 
-Returns the current value of the stop/restart code. This is an integer the indicates point within the FVS sequence of calculations were the program will start when subroutine fvs is called next (also see [FVSCommandLine FVS Command Line]. Values are as follows:
-
-||Stop Point Code||Definition||
-||`1`||Stop was done just before the first call to the Event Monitor.||
-||`2`||Stop was done just after the first call to the Event Monitor.||
-||`3`||Stop was done just before the second call to the Event Monitor.||
-||`4`||Stop was done just after the second call to the Event Monitor.||
-||`5`||Stop was done after growth and mortality has been computed, but prior to applying them.||
-||`6`||Stop was done just before the estab routines are called.||
-
-
-== Return Code State ==
+TODO: write function
 
 {{{
-subroutine getfvsRtnCode (rtnCode)
+fvsComplexRun (functionsToCall=list(NULL,NULL,NULL,NULL,NULL,NULL,fvsGetSummary))
 }}}
 
-_rtnCode_ is returned with the current return code value in FVS. 
-||Value||Meaning||
-||`-1`||indicates that FVS has not been started.||
-||`0`||indicates that FVS is in good running state.||
-||`1`||indicates that FVS has detected an error of some kind and should not be used until reset by specifying new input.||
-||`2`||indicates that FVS has finished processing all the stands; new input can be specified.||
+This function is used to manage interaction between R and FVS. The only argument is a list (which can be a named list) of functions, specified in order, that are called at corresponding [FVS_API#Stop stop points] in FVS cycles. If the corresponding function is NULL, then nothing is called and the corresponding stop point is skipped. There are 6 defined stop points (see [FVS_API#Stop Stop Points]), however, there are 7 positions for functions in `functionsToCall`. The last function is called at the end of a simulation for each stand.
 
-== FVS ==
+Return value:
+
+A named list of the values returned by each of the functions in `functionsToCall` form a _case answer list_ (with one list member for each function that is called). If the function returns NULL, then there is no corresponding entry in _case answer list_. If names are used in specification of the `functionsToCall` argument, then those names are used to name the list members, otherwise default names for the list members are generated by the `fvsComplexRun`. 
+
+There is one _case answer list_ for each stand and cycle. Each of these are placed in one larger list of lists. Names for each are automatically formed by the `standid`, `mgmtid`, and `year`. This larger list is the return value of the function.
+
 
 {{{
-subroutine fvs(rtnCode)
+fvsGetDims()
 }}}
 
-Run FVS up to the next stop point, or to the end of the simulation. Start by reading the keyword file or by reading a restart file, depending on run options [see FVSCommandLine FVS Command Line]. 
+Return value:
 
-The _rtnCode_ is as described for [FVS_API#Return_Code_State Return Code State].
-
-== FVS Dimensions ==
+A named vector of integers as follows: `ntrees, ncycles, nplots, maxtrees, maxspecies, maxplots, maxcycles`.
 
 {{{
-subroutine fvsDimSizes(ntrees,ncycles,maxtrees,maxspecies,
-                       maxplots,maxcycles)
+fvsGetEventMonitorVariables(vars)
 }}}
 
-Get dimension information for the version of FVS being run.
+Argument:
 
-||Argument||Definition||
-||`ntrees`||returned number of trees defined in FVS.||
-||`ncycles`||returned number of cycle defined in FVS.||
-||`nplots`||returned number of plots inventoried.||
-||`maxtrees`||returned maximum number of trees FVS can hold.||
-||`maxspecies`||returned maximum number of species FVS has defined.||
-||`maxplots`||returned maximum number of sample plots FVS can hold.||
-||`maxcycles`||returned maximum number of cycles the can be defined in FVS.||
+A vector of strings whereby each string names an FVS Event Monitor for which the value will be returned.
 
+Return value:
 
-== FVS Summary Statistics ==
+A named vector of values. The values will be NA if they were not defined.
 
 {{{
-subroutine fvsSummary(summary,icycle,ncycle,maxrow,maxcol,rtnCode)
+fvsGetPlotAttrs(vars)
 }}}
 
-Get a snap shot of the simulation of the current stand. (The return code reported here are independent of the general return code.)
+Argument:
 
-||Argument||Definition||
-||`summary`||returned vector of 20 integer words that hold summary statistic attributes.||
-||`icycle`||requested cycle number corresponding to the summary statistics desired.||
-||`ncycle`||returned number of cycles defined for the run.||
-||`maxrow`||returned maximum value of ncycle (and icycle).||
-||`maxcol`||returned length of summary (20 words).||
-||`rtnCode`||returned status code for this call where 0=OK, 1=an error.||
+A vector of strings whereby each string names an attribute to be returned.
 
-The 20 values are as follows (in western variants, eastern variants differ, (see [http://www.fs.fed.us/fmsc/fvs/documents/index.shtml FVS documentation] for more details).
+Return value:
 
-||Name||Definition||
-||`Year`||Current year of simulation||
-||`Age`||Current age of stand||
-||`Tpa`||Trees per acre||
-||`TCuFt`||Total cubic volume||
-||`MCuFt`||Total merchantable volume||   
-||`BdFt`||Total Board Foot Volume||   
-||`RTpa`||Removed trees per acre||   
-||`RTCuFt`||Removed total cubic volume||   
-||`RMCuFt`||Removed merchantable volume||   
-||`RBdFt`||Removed board foot volume||   
-||`ATBA`||After thin basal area||   
-||`ATCCF`||After thin CCF||   
-||`ATTopHt`||After thin top height||
-||`PrdLen`||Length of simulation cycle (years)||
-||`Acc`||Accretion in cubic feet/acre/year||
-||`Mort`||Mortality in cubic feet/acre/year||
-||`SampWt`||Stand sampling weight, often the area||
-||`ForTyp`||Forest type code||
-||`SizeCls`||Size class code||
-||`StkCls`||Stocking class code||
+A matrix of numeric values with one row for each plot and a column for each attribute.
 
-_TODO:_ Document the list for the eastern variants. 
-
-== FVS Tree Attributes ==
+TODO: The R code for this function is written but the [FVS_API FVS API] code is not.
 
 {{{
-subroutine fvsTreeAttr(name,nch,action,ntrees,attr,rtnCode)
+fvsGetSpeciesCodes()
 }}}
 
-Get or set attributes of the trees in the simulation. (The return code reported here are independent of the general return code.)
+Return value: 
 
-||Argument||Definition||
-||`name`||character string defining the tree attribute being being acted upon. ||
-||`nch`||integer number defining the length of _name_.||
-||`action`||action requested where, "get" signals that the current values defined in FVS should be returned as a vector in _attr_ and "set" signals that the current values in FVS should be changed to those specified in _attr_.||
-||`ntrees`|| the length of the _attr_||
-||`attr`||a vector of double precision (8-byte floats) of the attribute being processed.||
-||`rtnCode`||return codes, as follows: 0=OK, 1=_name_ not found, 2=_ntrees_ is greater than the maximum allowed, and 3=there were more or fewer trees the ntrees.||
-
-
-== FVS Event Monitor Variables ==
+A matrix of character strings with one row for each species and three columns. The column names `fvs, fia, plant` correspond to the three kinds of species codes used in FVS. The order is exactly as presented in the FVS variant which means, for example, that row 1 corresponds to the internal FVS species index number 1, row 2 for species 2 and so on.
 
 {{{
-subroutine fvsEvmonAttr(name,nch,action,attr,rtnCode)
+fvsGetStandIDs()
 }}}
 
-Get or set FVS Event Monitor variables. There are too many variables to list here, see [http://www.fs.fed.us/fmsc/fvs/documents/index.shtml FVS documentation] for more details. (The return code reported here are independent of the general return code.)
+Return value:
 
-||Argument||Definition||
-||`name`||character string defining name of the Event Monitor attribute being being acted upon.||
-||`nch`||integer number defining the length of _name_.||
-||`action`||action requested where, "get" signals that the current values defined in FVS should be returned as a vector in _attr_ and "set" signals that the current values in FVS should be changed to those specified in _attr_.||
-||`attr`||a single double precision (8-byte float) word of the attribute being processed.||
-||`rtnCode`||return codes, as follows: 0=OK, 1=_name_ not found, 2=_ntrees_ is greater than the maximum allowed, and 3=there were more or fewer trees the ntrees.||
-
-
-== Add Trees ==
+A named vector of three strings with names `standid`, `standcn`, and `mgmtid`.
 
 {{{
-subroutine fvsAddTrees(in_dbh,in_species,in_ht,in_cratio,
-                       in_plot,in_tpa,ntrees,rtnCode)
+fvsGetSummary()
 }}}
 
-_TODO:_ Not yet tested.
+Return value: 
 
-Add more trees to a current simulation. All values are double precision vectors of length _ntrees_ except as noted below. (The return code reported here are independent of the general return code.)
+A matrix of integer values with one row for each completed FVS cycle. The columns are named as documented in the [FVS_API#FVS_Summary_Statistics FVS Summary Statistics].
 
-||Argument||Definition||
-||`in_dbh`||dbh values for the additional trees.||
-||`in_species`||internal FVS species codes for the additional trees.||
-||`in_ht`||tree heights for the additional trees.||
-||`in_cratio`||crown ratios for the additional trees.||
-||`in_plot`||internal FVS plot indicies for the additional trees.||
-||`in_tpa`||number of trees per acre like the tree being added.||
-||`ntrees`||a integer value, length of the vectors.||
-||`rtnCode`||return code, where 0=OK, 1=there was not enough room to store the new trees.||
-
-
-== Species Codes ==
+TOTO: Set this up so that the column names are correct of eastern variants.
 
 {{{
-subroutine fvsSpeciesCode(fvs_code,fia_code,plant_code,
-                          indx,nchfvs,nchfia,nchplant,rtnCode)
+fvsGetTreeAttrs(vars)
 }}}
 
-Get the FVS species codes.  (The return code reported here are independent of the general return code.)
+Argument:
 
+A vector of strings whereby each string names an attribute to be returned.
 
-||Argument||Definition||
-||`fvs_code`||returned FVS species code; 4 chars maximum.||
-||`fia_code`||returned FIA code; 4 chars maximum||
-||`plant_code`||returned FIA code; 6 chars maximum||
-||`indx`||index (integer) of requested code.||
-||`nchfvs`||returned actual length of fvs_code (integer).|| 
-||`nchfia`||returned actual length of fia_code (integer).||
-||`nchplant`||returned actual length of plant_code (integer).||
-||`rtnCode`||return code, where 0=OK, 1=_indx_ is out of range.||
+||Name||Description||
+||`tpa`||Trees per acre||
+||`dbh`||Diameter breast height (inches)||
+||`dg`||Diameter growth scaled to cycle length (inches)||
+||`ht`||Hieght (feet)||
+||`htg`||Height growth scaled to cycle length (feet)||
+||`crwdth`||Crown width (feet)||
+||`cratio`||Crown ratio (proportion of height in live crown||
+||`species`||FVS numeric species code||
+||`age`||Tree age||
 
+Return value:
 
-== Define Harvest ==
+A matrix of numeric values with one row for each plot and a column for each attribute.
+
+TODO: Add more attributes, make sure units are as listed.
 
 {{{
-subroutine fvsCutTrees(pToCut,nt,rtnCode)
+fvsLoad(fvsProgram,bin="../../trunk/bin")
 }}}
 
+This function loads the FVS dynamic library specified in the first argument. It has the side effect of creating an object in the R global environment called `.FVSLOADEDLIBRARY` that contains the names of the libraries loaded by the call. If `.FVSLOADEDLIBRARY` exists when this function is called, the libraries that are already loaded are unloaded prior to the specified libraries being loaded.
 
-_TODO:_ Not yet implemented
+Return value:
 
-Specify the proportion of each existing tree record FVS should cut. (The return code reported here are independent of the general return code.)
-
-||Argument||Definition||
-||`pToCut`||double precision vector of proportions, one per tree.||
-||`ntrees`||length of pToCut (integer)||
-||`rtnCode`||return code, where 0=OK, 1=_ntrees_ is not equal to the number of trees in the model.||
-
-
-== Stand Identification ==
+A copy of `.FVSLOADEDLIBRARY` is invisibly returned. 
 
 {{{
-subroutine fvsStandID(sID,mID,ncsID,ncmID)
+fvsRun(stopPointCode=NA,stopPointYear=NA)
 }}}
 
-Get the stand identification codes. 
+Arguments:
+||`stopPointCode`||The stop point code corresponding to the next place in the FVS simulation form where the program should return.||
+||` stopPointYear `||The stop point year corresponding to the next time the FVS simulation should return.||
 
-||Argument||Definition||
-||`sID`||returned character string holding the stand identification code (26 characters maximum).||
-||`mID`||returned character string holding the management identification code (4 characters maximum).||
-||`ncsID`||length of defined part of _sID_ (integer)||
-||`ncmID`||length of defined part of _mID_ (integer)||
+Note: if one of the arguments is specified, the other must also be specified. If both are left as NA values, the defaults for FVS are used. Those defaults imply that no stopping be done.
+
+Return value:
+
+The FVS [FVS_API#Return_Code_State return code state] (integer).
+.
+{{{
+fvsSetCmdLine(cl = NULL)
+}}}
+
+Sets the command line to the values listed of the [FVSCommandLine FVS Command Line]  _and_ opens files for input as indicted by the values found. This routine can result in the FVS [FVS_API#Return_Code_State return code state] to be reset.
+
+Argument:
+
+A character string that contains the command line arguments. If NULL (the default), the function attempts to fetch the arguments as they may be specified on the command that starts R. This is done by calling the R function `commandArgs(trailingOnly = TRUE)`, see R documentation for details.
+
+Return value:
+
+The argument passed argument is returned.
+
+{{{
+fvsSetPlotAttr
+}}}
+
+TODO: write function
+
+{{{
+fvsSetSiteAttr
+}}}
+
+TODO: write function
+
+{{{
+fvsSetTreeAttr
+}}}
+
+TODO: write function
+
+{{{
+fvsSetupSummary(sumTable)
+}}}
+
+Adds extra data to the summary statistics table returned by function `fvsGetSummary()`. The extra data include new columns showing total production of trees and volume plus new rows so  that years with removals have two data points, one for before and the after the harvest. 
+
+Argument: A matrix as returned by `fvsGetSummary()`.
+
+Return value: 
+
+A matrix with additional columns and rows (if there were harvests in the run).
+
+= Run Examples =
+
+Example code is like a photograph: a few lines of working code are worth a 1,000 words of explanation. Note that these examples are all run with program FVSiec, it is left as an exercise to adapt them to your situation.
+
+== Example 1 Simple run ==
+
+Here a simple run of one stand simulated three with three different prescriptions. The keyword file and tree data for this run is in the `<open-fvs>/rFVS/tests/` directory. That directory is set as the working directory prior to any other commands be entered.  This run is the same as that found in `<open-fvs>/trunk/tests/FVSiec`, but in that case the run is done using the FVSiec _program_ rather than the _shared library_.
+
+{{{
+setwd ("<open-fvs>/rFVS/tests")  # Note: edit <open-fvs> to reflect your system.
+
+# load the R functions
+sdir = "../R"
+for (rf in dir (sdir)) source (paste(sdir,rf,sep="/"))
+
+# load the FVS library
+fvsLoad("FVSiec")
+
+# specify the keyword file
+fvsSetCmdLine("--keywordfile=iet01.key")
+
+# Run the simulation as would be done using FVS as a program
+fvsRun()
+}}}
+
+== Example 2 R-FVS Interaction with Graphics ==
+
+The simple run in Example 1 is revisited to illustrate how to interact with FVS during the simulation. Here, the `fvsRun()` function is not used. In its place, code is included to show how to interact with FVS at each of the possible stop points. 
+
+Two sets of data are captured for plotting after the simulation is completed. The first set are six data frames of tree heights, diameters, and species codes. There is one data frame for each of 3 management alternatives and 2 points in time (2020 and 2070) as set up in the keywords file. The second set are the 3 summary statistics tables captured at the end of the simulation.
+
+The R code below assumes that the same set up steps used in [Example_1_Simple_run Example 1] are used up to the `fvsSetCmdLine()` command are run. Following this code, the example continues by showing how to create plots using the caputred data.
+
+{{{
+
+# specify the keyword file
+fvsSetCmdLine("--keywordfile=iet01.key")
+
+# set the stop codes, stop at the at location 2 and use -1 to signal 
+# a stop point at every year
+
+.Fortran("setstoppointcodes",as.integer(2),as.integer(-1))
+
+# set up a list of the cases we desire to capture. 
+saveTrees=list()
+saveSummary=list()
+
+# do until done
+repeat
+{
+  # run fvs, capture the return code
+  rtn=.Fortran("fvs",as.integer(0))[[1]]
+  if (rtn != 0) break
+  
+  stopPoint = .Fortran("getrestartcode",as.integer(0))[[1]]
+
+  switch(stopPoint+1,
+    { # 0, stop before loading next stand, save summary statistics here.
+  
+      saveSummary = append(saveSummary,list(fvsGetSummary()))
+      names(saveSummary)[length(saveSummary)] = paste(fvsGetStandIDs(),collapse=":")
+      next
+    }, 
+    next, # 1, stop was before the first call to the Event Monitor
+    { # 2 stop was after the first call to the Event Monitor.
+    
+      # get the simulation year from the event monitor variables. Ignore the return code   
+      yr =.Fortran("fvsevmonattr","year",as.integer(4),"get",as.double(0),as.integer(0))[[4]]
+
+      if (yr == 2020 || yr == 2070) 
+      {
+        # we desire to save these data. Fetch the stand and managment ids
+        ids=fvsGetStandIDs()
+        
+        # form an case identifier used in the plots
+        caseID = paste(ids[1], ids[2], as.character(yr),sep=":")
+
+        # fetch the data that will be used for plotting.
+        atts = fvsGetTreeAttrs(c("dbh","ht","species"))
+        saveTrees=append(saveTrees,list(atts))
+        names(saveTrees)[length(saveTrees)]=caseID
+      }
+      next
+    },
+    next, # 3 stop was just before the second call to the Event Monitor. 
+    next, # 4 stop was just after the second call to the Event Monitor.
+    next, # 5 stop was after growth and mortality has been computed but prior to applying.
+    next  # 6 stop was just before the estab routines are called.
+  )
+}
+
+}}}
+
+One use of the saved data is to create plots. The first plots is a panel of height/diameter scatter plots. There are three management alternatives and we will capture the data to build the scatter plots for two points in time, one at the year 2010 and the other at year 2070. 
+
+Here are the command to make the scatter plots:
+
+{{{
+# there are 6 plots, arrange them in 3 rows, 2 cols 
+# for saving plot: png(file="rFVS_ex2.png",pointsize=10,height=6,width=4,units="in",res=200)
+X11(height=6,width=4,pointsize=10)
+par(mar=c(4,4,4,1)+.1)
+layout(mat=matrix(1:6,3,2,byrow=TRUE))
+
+# find global values for axes limits
+xlim=range(unlist(lapply(saveTrees,function (x) range(x[,"dbh"]))))
+ylim=range(unlist(lapply(saveTrees,function (x) range(x[,"ht"]))))
+
+for (caseID in names(saveTrees))
+{
+  atts = saveTrees[[caseID]]
+  plot(atts[,1:2],col=atts[,3],xlim=xlim,ylim=ylim,main=caseID,
+   xlab="D.B.H. (inches)",ylab="Height (feet)")
+}
+#for saving plot: dev.off()
+
+}}}
+
+The second plots show standing cubic volume and total production of total cubic volume over time. There are three plots, one for each alternative. The plots share the same scaling; also note that not all of the simulations are the same length.
+
+The summary statistics table provided by FVS is not set up for simple plotting. The fvsSetupSummary() (described above) is used to compute a matrix of values suitable for plotting.
+
+{{{
+
+# set up the summary statistics table for plotting
+sumToPlot=lapply(saveSummary,fvsSetupSummary)
+
+# find global range
+yrRange =    range(unlist(lapply(sumToPlot,function (x) range(x[,"Year"]))))
+tcuftRange = range(unlist(lapply(sumToPlot,function (x) range(x[,"TPrdTCuFt"]))))
+
+X11(height=3,width=6,pointsize=10)
+par(mar=c(4,4,4,1)+.1,mfcol=c(1,3))
+
+for (caseID in names(sumToPlot))
+{
+  plot(TPrdTCuFt ~ Year, data=sumToPlot[[caseID]], xlim=yrRange, ylim=tcuftRange, type="b",
+       main=caseID,col="green",ylab="Total cubic volume per acre")
+  lines(TCuFt    ~ Year, data=sumToPlot[[caseID]], xlim=yrRange, ylim=tcuftRange, type="b",
+       col="red")
+}
+}}} 
