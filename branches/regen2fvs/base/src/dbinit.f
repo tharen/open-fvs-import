@@ -1,0 +1,19 @@
+      SUBROUTINE DBINIT
+      IMPLICIT NONE
+C----------
+C  **DBINIT--BASE DATE OF LAST REVISION:  02/08/2012
+C----------
+C
+C
+COMMONS
+C
+C
+      INCLUDE 'DBSTK.F77'
+C
+C
+COMMONS
+C
+C
+      ITOP=0
+      RETURN
+      END
