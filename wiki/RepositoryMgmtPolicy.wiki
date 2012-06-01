@@ -16,7 +16,7 @@ The directory structure is:
 
 = Usage =
 
-Committers are free to create svn copies in the `../branches` directory and commit their work to those branches as they see fit. The only requirement is that code should compile and link on at least on platform prior to being committed. Developers are encouraged to use common development branches when practical to limit the number of merges to the `../trunk` that will be needed to keep progress flowing. 
+Committers are free to create svn copies in the `../branches` directory and commit their work to those branches as they see fit. The only requirement is that code should compile and link on at least one platform prior to being committed. Developers are encouraged to use common development branches when practical to limit the number of merges to the `../trunk` that will be needed to keep progress flowing. 
 
 Commits to the `../trunk` should be coordinated with one of the project owners (administrators). In general, changes to the trunk (via merges from `../branches` or otherwise) should never be committed unless all tests are complete, code review is done, and documentation that may be needed is prepared. One of the items of documentation will usually include the addition of a file in the  `../changeNotes` directory (see `../changeNotes/template.txt`). Exceptions to this rule will generally include bug fixes that involve few lines of code and are not considered program enhancements. 
 
@@ -26,7 +26,7 @@ No one should ever commit changes to an existing _tag_. Entries in `../tags` are
 
 This section describes the process of adding or modifying FVS in any respect. It applies to adding new features, extensions, new variants, or modification of existing program elements. 
 
-The first step is to refresh your copy of the repository and then consider weather or not the work requires a new branch. If the work is focused on a part of the model you are likely the only one working on, and it is a part that works independently of other parts, then perhaps committing changes to the always present _../branches/dev_ branch will be satisfactory. Otherwise create a new entry in _../branches/_ using the _../trunk_ as the source. 
+The first step is to refresh your copy of the repository and then consider whether or not the work requires a new branch. If the work is focused on a part of the model you are likely the only one working on, and it is a part that works independently of other parts, then perhaps committing changes to the always present _../branches/dev_ branch will be satisfactory. Otherwise create a new entry in _../branches/_ using the _../trunk_ as the source. 
 
 Work in the branch, create test files and other information as needed and commit those changes frequently. Developers are encouraged to use the repository to store "in progress" work that will change in the near future. 
 
