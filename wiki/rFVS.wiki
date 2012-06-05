@@ -352,7 +352,7 @@ output <- fvsComplexRun(AfterEM1="fetchTrees(c(2020,2070))",
 
 }}}
 
-Here, the captured `output` is used to create plots. The first set is a panel of six height/diameter scatter plots corresponding to the three management alternatives and two points in time captured in the `output` data frame. 
+Here, the captured `output` is used to create plots. The first set is a panel of six height/diameter scatter plots corresponding to the three management alternatives and two points in time captured in the `output` data frame. [http://open-fvs.googlecode.com/svn/wiki/rFVS_ex2A.png]
 
 Here are the commands to make the scatter plots:
 
@@ -370,7 +370,7 @@ xlim <- range(unlist(lapply(treeLists,function (x) range(x[["AfterEM1"]][,"dbh"]
 ylim <- range(unlist(lapply(treeLists,function (x) range(x[["AfterEM1"]][,"ht"]))))
 
 # there are 6 plots, arrange them in 3 rows, 2 cols 
-# for saving plot: png(file="rFVS_ex2.png",pointsize=10,height=6,width=4,units="in",res=200)
+# for saving plot: png(file="rFVS_ex2A.png",pointsize=10,height=6,width=4,units="in",res=200)
 X11(height=6,width=4,pointsize=10)
 par(mar=c(4,4,4,1)+.1)
 layout(mat=matrix(1:6,3,2,byrow=TRUE))
@@ -386,6 +386,7 @@ for (caseID in names(treeLists))
 }}}
 
 The second plots show standing cubic volume and total production of total cubic volume over time. There are three plots, one for each alternative. The plots share the same scaling; also note that not all of the simulations are the same length.
+[http://open-fvs.googlecode.com/svn/wiki/rFVS_ex2B.png]
 
 The summary statistics table provided by FVS is not set up for simple plotting. The function `fvsSetupSummary()` (described above) is used to compute a matrix of values suitable for plotting.
 
@@ -398,6 +399,8 @@ sumToPlot <- lapply(summaryStats,fvsSetupSummary)
 yrRange    <- range(unlist(lapply(sumToPlot,function (x) range(x[,"Year"]))))
 tcuftRange <- range(unlist(lapply(sumToPlot,function (x) range(x[,"TPrdTCuFt"]))))
 
+# for saving plot: png(file="rFVS_ex2B.png",pointsize=10,height=3,width=6,units="in",res=200)
+
 X11(height=3,width=6,pointsize=10)
 par(mar=c(4,4,4,1)+.1,mfcol=c(1,3))
 
@@ -409,4 +412,6 @@ for (caseID in names(sumToPlot))
   lines(TCuFt    ~ Year, data=sumToPlot[[caseID]], xlim=yrRange, ylim=tcuftRange, 
        type="b",col="red")
 }
+#for saving plot: dev.off()
+
 }}} 
