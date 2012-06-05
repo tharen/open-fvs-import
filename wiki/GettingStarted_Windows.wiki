@@ -62,10 +62,8 @@ You will use the "checkout" feature of your SVN client software package to downl
 
 ==Building The Executable==
 
-Open a Command Window
-{{{
-Start > (All) Programs > Accessories > Command Prompt
-}}}
+Open a Command Window. If you aren't familiar with this, click *Start > (All) Programs > Accessories > Command Prompt* and the Command Window should open to your personal directory.
+
 Use the `cd` command to navigate to the `trunk\bin` directory inside the directory into which you checked out the open-fvs files. If you had placed the files into a directory called `MyFvsFiles` you would type the command as shown below.
 {{{
 cd \MyFvsFiles\trunk\bin
