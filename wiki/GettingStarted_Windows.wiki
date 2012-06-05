@@ -11,10 +11,8 @@ You will need the *Rtools* toolkit package in order to build the executables. Do
 
 Once you get the installer downloaded, run it.  When you get to the "Select Components" page, open the pull down list and select *full installation to build 32 or 64 bit R 2.14.2+*.  When the "Select Additional Tasks" window appears, make sure the first checkbox is checked. Then just click through the rest of the installation. Unfortunately, when the installation is complete, nothing shows up on the desktop or in your start menu as is typically done with Windows installations. 
 
-To test for successful installation of RTools, Open a Command Window
-{{{
-Start > (All) Programs > Accessories > Command Prompt
-}}}
+To test for successful installation of RTools, Open a Command Window. If you aren't familiar with this, click *Start > (All) Programs > Accessories > Command Prompt* and the Command Window should open to your personal directory.
+
 Type in *gcc --version* at the DOS prompt
 {{{
 Microsoft Windows XP [Version 5.1.2600]
@@ -62,7 +60,7 @@ You will use the "checkout" feature of your SVN client software package to downl
 
 ==Building The Executable==
 
-Open a Command Window. If you aren't familiar with this, click *Start > (All) Programs > Accessories > Command Prompt* and the Command Window should open to your personal directory.
+Open a Command Window. If you don't know how to do this, refer to the "Getting the Necessary Tools" section above.
 
 Use the `cd` command to navigate to the `trunk\bin` directory inside the directory into which you checked out the open-fvs files. If you had placed the files into a directory called `MyFvsFiles` you would type the command as shown below.
 {{{
