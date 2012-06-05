@@ -7,17 +7,16 @@ This wiki documents the process of setting things up on a Windows PC so you can 
 
 ==Getting The Necessary Tools==
 
-You will need the *Rtools* toolkit package in order to build the executables. Download it from http://cran.r-project.org/bin/windows/Rtools/ . Download the latest Rtools package.
+You will need Administrator privileges to install the necessary tools, so ensure you have that before proceeding.
 
-Once you get the installer downloaded, run it.  When you get to the "Select Components" page, open the pull down list and select *full installation to build 32 or 64 bit R 2.14.2+*.  When the "Select Additional Tasks" window appears, make sure the first checkbox is checked. Then just click through the rest of the installation. Unfortunately, when the installation is complete, nothing shows up on the desktop or in your start menu as is typically done with Windows installations. 
+The *Rtools* toolkit package is needed in order to build the executables. Download it from http://cran.r-project.org/bin/windows/Rtools/ . Download the latest Rtools package.
+
+Once you get the installer downloaded, run it.  When you get to the "Select Components" page, open the pull-down list and select *full installation to build 32 or 64 bit R 2.14.2+*.  When the "Select Additional Tasks" window appears, make sure the *first checkbox is checked*. Then just click through the rest of the installation. Unfortunately, when the installation is complete, nothing shows up on the desktop or in your start menu as is typically done with Windows installations. 
 
 To test for successful installation of RTools, Open a Command Window. If you aren't familiar with this, click *Start > (All) Programs > Accessories > Command Prompt* and the Command Window should open to your personal directory.
 
 Type in *gcc --version* at the DOS prompt
 {{{
-Microsoft Windows XP [Version 5.1.2600]
-(C) Copyright 1985-2001 Microsoft Corp.
-
 C:\Documents and Settings\Administrator>gcc --version
 
 gcc (GCC) 4.6.3 20111208 (prerelease)
@@ -74,11 +73,11 @@ To build the Lake States variant with none of the optional extensions you would 
 {{{
 make FVSls.exe
 }}}
-To build all of the varaints just type 'make' and do not specify a varaint. This could take up to 20 minutes.
+The variant executable file is created in the `trunk\bin` directory in which you are currently working.
+
+A sourcelist file needs to exist in the `trunk\bin` directory in order to build the variants in this way. For example, the file `FVSls_sourceList.txt` allows you to use the `make` command to build the variant executable `FVSls.exe`. Look in the `trunk\bin` directory to see which variants are currently available.
+
+To build all of the varaints for which a sourcelist file exists just type 'make' and do not specify a varaint. This could take a long time (up to 20 minutes or more) to complete.
 {{{
 make
 }}}
-
-The variant executable file is created in the `trunk\bin` directory in which you are currently working.  
-
-A sourcelist file needs to exist in the `trunk\bin` directory in order to build the variants in this way. For example, the file `FVSls_sourceList.txt` allows you to use the `make` command to build the variant executable `FVSls.exe`. Look in the `trunk\bin` directory to see which variants are currently available.
