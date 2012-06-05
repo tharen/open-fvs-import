@@ -9,7 +9,7 @@ This wiki documents the process of setting things up on a Windows PC so you can 
 
 You will need the *Rtools* toolkit package in order to build the executables. Download it from http://cran.r-project.org/bin/windows/Rtools/ . Download the latest package RTools215.exe.
 
-Once you get the self-extracting installer downloaded, run it.  When you get to the "Select Components" page, open the pull down list and select *full installation to build 32 or 64 bit R 2.14.2+*.  If the setup dialog appears, don’t bother to edit the environment variable; It’s already been done. Unfortunately, when the installation is complete, nothing shows up on the desktop or in your start menu typically used to run windows programs. 
+Once you get the installer downloaded, run it.  When you get to the "Select Components" page, open the pull down list and select *full installation to build 32 or 64 bit R 2.14.2+*.  When the "Select Additional Tasks" window appears, make sure the first checkbox is checked. Then just click through the rest of the installation. Unfortunately, when the installation is complete, nothing shows up on the desktop or in your start menu as is typically done with Windows installations. 
 
 To test for successful installation of RTools, Open a Command Window
 {{{
@@ -54,7 +54,9 @@ Now that you have verified you have successfully installed RTools, the next step
 
 ==Getting The Source Files==
 
-The open-fvs files are stored in a Subversion (SVN) repository. If you don't have an *SVN client* software package you will probably want to install one. There are several free SVN packages available for download. Two examples are Tortoise ([http://tortoisesvn.net/]) and SmartSVN ([http://www.syntevo.com/smartsvn/])
+The open-fvs files are stored in a Subversion (SVN) repository. If you have a command-line version of Subversion you can use the Command-line Access instructions on the [Source] page of open-fvs.
+
+If you don't have an *SVN client* software package you may want to install one with a Windows interface. There are several free SVN packages available for download. Two examples are Tortoise ([http://tortoisesvn.net/]) and SmartSVN ([http://www.syntevo.com/smartsvn/])
 
 You will use the "checkout" feature of your SVN client software package to download the FVS source files. Refer to the software documentation if you need help with this. Designate the repository using the URL http://open-fvs.googlecode.com/svn/. Select or create an appropriate directory on your hard drive to download the source files into. For example, you could create a directory on your C drive called `MyFvsFiles`.
 
