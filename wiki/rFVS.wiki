@@ -47,6 +47,25 @@ fvsLoad("FVSiec", bin="<open-fvs>/trunk/bin")
 The following is a list of the R functions that call [FVS_API FVS API] member functions as needed; consult the API for more information on the functions used. 
 
 {{{
+fvsAddActivity(year,activity,parms=NULL)
+}}}
+
+Add an an FVS Activity to the activity schedule. 
+
+Arguments:
+
+`year` is the year the activity is scheduled to be accomplished.
+
+`activity` can be either an FVS activity code (which is number recognized by the FVS activity processing code) or a character string corresponding the FVS keyword used to schedule the activity. If a keyword is specified, this function translates it to the necessary numeric code. Not all of the possible keyword/code pairs are programmed, but those that control the harvesting logic plus the establishment model PLANT and NATURAL keywords are. 
+
+`parms` is a numeric vector of parameters (if any are needed) associated with the keyword. These must be in order and have values FVS can use. Error checking is not done as is the case when keywords are entered into FVS via the keyword file.
+
+Return value:
+
+An integer flag with the value 0 if the activity was added and 1 if there was some error.
+
+
+{{{
 fvsAddTrees(newtrees)
 }}}
 
@@ -59,7 +78,7 @@ A matrix or dataframe that has values defined for the following attributes of ne
 ||Name||Description||
 ||`dbh`||Diameter breast height (inches)||
 ||`species`||FVS numeric species code||
-||`ht`||Hieght (feet)||
+||`ht`||Height (feet)||
 ||`cratio`||Crown ratio (proportion of height in live crown||
 ||`plot`||FVS numeric plot index||
 ||`tpa`||Trees per acre||
@@ -97,11 +116,13 @@ fvsGetEventMonitorVariables(vars)
 
 Argument:
 
-A vector of strings whereby each string names an FVS Event Monitor for which the value will be returned.
+A scalar or vector of strings whereby each string names an FVS Event Monitor for which the value will be returned.
 
 Return value:
 
 A named vector of values. The values will be NA if they were not defined.
+
+Also see: `fvsSetEventMonitorVariables`
 
 {{{
 fvsGetPlotAttrs(vars)
@@ -155,7 +176,7 @@ A vector of strings whereby each string names an attribute to be returned.
 ||`tpa`||Trees per acre||
 ||`dbh`||Diameter breast height (inches)||
 ||`dg`||Diameter growth scaled to cycle length (inches)||
-||`ht`||Hieght (feet)||
+||`ht`||Height (feet)||
 ||`htg`||Height growth scaled to cycle length (feet)||
 ||`crwdth`||Crown width (feet)||
 ||`cratio`||Crown ratio (proportion of height in live crown||
@@ -206,6 +227,24 @@ A character string that contains the command line arguments. If NULL (the defaul
 Return value:
 
 The argument passed argument is returned.
+
+{{{
+fvsSetEventMonitorVariables(vars)
+}}}
+
+This routine sets the values of Event Monitor variables. Generally, however, many of the variables are reset to by FVS when the Event Monitor is called each cycle (before and after simulated harvests). This is especially true of those automatic variables defined during the first and second calls to the Event Monitor (consult FVS documentation). Therefore setting the value of these variables may be in effective in meeting useful goals. 
+
+One use of this function is to set user-defined variables (those traditionally defined using the FVS Compute keyword). If a Event Monitor variable that has the name given in the names attribute of the `vars` argument is not found, one is created. If a user-defined variable has already been defined, it is given a new value when this function is called. 
+
+Argument:
+
+A vector of named numeric values where the names are FVS Event Monitor variable names that will take on the corresponding values. 
+
+Return value:
+
+A named vector of values. The values will be NA if they were not defined.
+
+Also see: `fvsGetEventMonitorVariables`
 
 {{{
 fvsSetPlotAttr
@@ -268,7 +307,7 @@ The simple run in Example 1 is revisited to illustrate how to interact with FVS 
 
 The goal of the run is to capture two types of data from FVS so that it can be used for plotting after the simulation is completed. The first type is a set of six data frames containing tree heights, diameters, and species codes. There is one of these data frames for each of the 3 management alternatives captured at 2 points in time (2020 and 2070). The second set includes the summary statistics tables captured at the end of the simulations.
 
-The tree-by-tree data are caputred using a function we specify (as shown in the example code). Recall that functions passed to `fvsComplexRun` can have no arguments. The function we supply meets this requirement.
+The tree-by-tree data are captured using a function we specify (as shown in the example code). Recall that functions passed to `fvsComplexRun` can have no arguments. The function we supply meets this requirement.
 
 The R code below assumes that the same set up steps used in [rFVS#Example_1_Simple_run Example 1] are used up to the `fvsSetCmdLine()` command. 
 
