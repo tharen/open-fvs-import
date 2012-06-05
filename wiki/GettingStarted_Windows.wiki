@@ -7,7 +7,7 @@ This wiki documents the process of setting things up on a Windows PC so you can 
 
 ==Getting The Necessary Tools==
 
-You will need the *Rtools* toolkit package in order to build the executables. Download it from http://cran.r-project.org/bin/windows/Rtools/ . Download the latest package RTools215.exe.
+You will need the *Rtools* toolkit package in order to build the executables. Download it from http://cran.r-project.org/bin/windows/Rtools/ . Download the latest Rtools package.
 
 Once you get the installer downloaded, run it.  When you get to the "Select Components" page, open the pull down list and select *full installation to build 32 or 64 bit R 2.14.2+*.  When the "Select Additional Tasks" window appears, make sure the first checkbox is checked. Then just click through the rest of the installation. Unfortunately, when the installation is complete, nothing shows up on the desktop or in your start menu as is typically done with Windows installations. 
 
