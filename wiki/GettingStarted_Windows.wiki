@@ -52,7 +52,7 @@ Now that you have verified you have successfully installed RTools, the next step
 
 ==Getting The Source Files==
 
-The open-fvs files are stored in a Subversion (SVN) repository. If you have a command-line version of Subversion you can use the Command-line Access instructions on the Source page of open-fvs.
+The open-fvs files are stored in a Subversion (SVN) repository. If you have a command-line version of Subversion you can use the Command-line Access instructions on the [http://code.google.com/p/open-fvs/source/checkout Source] page of open-fvs.
 
 If you don't have an *SVN client* software package you may want to install one with a Windows interface. There are several free SVN packages available for download. Two examples are Tortoise ([http://tortoisesvn.net/]) and SmartSVN ([http://www.syntevo.com/smartsvn/])
 
