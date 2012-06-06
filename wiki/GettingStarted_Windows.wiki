@@ -38,9 +38,6 @@ GNU Fortran comes with NO WARRANTY, to the extent permitted by law.
 You may redistribute copies of GNU Fortran
 under the terms of the GNU General Public License.
 For more information about these matters, see the file named COPYING'
-
-
-C:\Documents and Settings\Administrator>
 }}}
 Make sure the version (shown on the first line of the report) is at least 4.5.
 
