@@ -88,34 +88,6 @@ Return value:
 A scalar integer with the return code from FVS where 0 signals trees were added and 1 signals an error. 
 
 {{{
-fvsComplexRun (...)
-}}}
-
-This function is used to manage interaction between R and FVS. Arguments, when specified, refer to names of [FVS_API#Stop stop points]:
-
-||Argument Name||Definition||
-||`BeforeEM1`||R code to run at the stop point just before the first call to the Event Monitor||
-||`AfterEM1`||R code to run at the stop point just after the first call to the Event Monitor||
-||`BeforeEM2`||R code to run at the stop point just before the second call to the Event Monitor||
-||`AfterEM2`||R code to run at the stop point just after the second call to the Event Monitor||
-||`BeforeAdd`||R code to run at the stop point after growth and mortality has been computed, but prior to applying them||
-||`BeforeEstab`||R code to run at the stop point just before the Regeneration Establishment Model is called||
-||`SimEnd`||R code to run at the stop point at the end of one stand's simulaton and prior to the beginning of the next||
-
-The value of arguments can be either 
-  # a quoted character string containing a valid R expression, or  
-  # an R function with no arguments. 
-The expression is evaluated (or the function is called) when the corresponding stop point is reached. 
-
-Return value:
-
-A named list where the names are automatically generated using the `standid`, `mgmtid`, and `year`. In the case where the return value corresponds to the end of the simulation, the string `SimEnd` is used in place of `year`.
-
-The objects in this returned list are also a named lists. Each contains the values of the expressions (or functions) when they are computed. The values are named using the argument names.
-
-[rFVS#Example_2 Example 2] provides a simple example of using this function. 
-
-{{{
 fvsGetDims()
 }}}
 
@@ -204,6 +176,38 @@ A matrix of numeric values with one row for each plot and a column for each attr
 TODO: Add more attributes, make sure units are as listed.
 
 {{{
+fvsInteractRun (...)
+}}}
+
+This function is used to provide for functional interaction between R and FVS. Arguments, when specified, refer to names of [FVS_API#Stop stop points]; each provides R code that is run when the stop point is reached.
+
+||Argument Name||Definition||
+||`BeforeEM1`||R code to run at the stop point just before the first call to the Event Monitor||
+||`AfterEM1`||R code to run at the stop point just after the first call to the Event Monitor||
+||`BeforeEM2`||R code to run at the stop point just before the second call to the Event Monitor||
+||`AfterEM2`||R code to run at the stop point just after the second call to the Event Monitor||
+||`BeforeAdd`||R code to run at the stop point after growth and mortality has been computed, but prior to applying them||
+||`BeforeEstab`||R code to run at the stop point just before the Regeneration Establishment Model is called||
+||`SimEnd`||R code to run at the stop point at the end of one stand's simulaton and prior to the beginning of the next||
+
+The value of arguments can be either 
+  # a quoted character string containing a valid R expression, or  
+  # an R function with no arguments. 
+The expression is evaluated (or the function is called) when the corresponding stop point is reached. 
+
+Note that using fvsInteractRun() without arguments is functionally equivalent to using fvsRun() without arguments. 
+
+Return value:
+
+A named list where the names are automatically generated using the `standid`, `mgmtid`, and `year`. In the case where the return value corresponds to the end of the simulation, the string `SimEnd` is used in place of `year`.
+
+The objects in this returned list are also a named lists. Each contains the values of the expressions (or functions) when they are computed. The values are named using the argument names.
+
+[rFVS#Example_2 Example 2] provides a simple example of using this function. 
+
+Also see: fvsRun()
+
+{{{
 fvsLoad(fvsProgram,bin="../../trunk/bin")
 }}}
 
@@ -219,14 +223,20 @@ fvsRun(stopPointCode=NA,stopPointYear=NA)
 
 Arguments:
 ||`stopPointCode`||The stop point code corresponding to the next place in the FVS simulation form where the program should return.||
-||` stopPointYear `||The stop point year corresponding to the next time the FVS simulation should return.||
+||` stopPointYear `||The stop point year corresponding to the year in simulated  time the FVS simulation should return.||
 
-Note: if one of the arguments is specified, the other must also be specified. If both are left as NA values, the defaults for FVS are used. Those defaults imply that no stopping be done.
+See [FVS_API#Stop stop points] for a list of valid stop point codes.
+
+If one of the arguments is specified, the other must also be specified. If both are left as NA values, the defaults for FVS are used. Those defaults imply that no stopping be done.
+
+Note that using fvsRun() without arguments is functionally equivalent to using  fvsInteractRun() without arguments. 
 
 Return value:
 
 The FVS [FVS_API#Return_Code_State return code state] (integer).
-.
+
+Also see: fvsInteractRun()
+
 {{{
 fvsSetCmdLine(cl = NULL)
 }}}
@@ -316,7 +326,7 @@ fvsRun()
 
 == Example 2 R-FVS Interaction with Graphics ==
 
-The simple run in Example 1 is revisited to illustrate how to interact with FVS during the simulation. Here, the function `fvsComplexRun()` is used in place of `fvsRun()` because it provides a simple-to-use scheme for including interaction between FVS and R.
+The simple run in Example 1 is revisited to illustrate how to interact with FVS during the simulation. Here, the function `fvsInteractRun()` is used in place of `fvsRun()` because it provides a simple-to-use scheme for including interaction between FVS and R.
 
 The goal of the run is to capture two types of data from FVS so that it can be used for plotting after the simulation is completed. The first type is a set of six data frames containing tree heights, diameters, and species codes. There is one of these data frames for each of the 3 management alternatives captured at 2 points in time (2020 and 2070). The second set includes the summary statistics tables captured at the end of the simulations.
 
@@ -347,8 +357,8 @@ fetchTrees <- function (captureYears)
 # is a string of R code that is evaluated at each stop point and the
 # second is a function that contains no arguments. 
 
-output <- fvsComplexRun(AfterEM1="fetchTrees(c(2020,2070))",
-                        SimEnd=fvsGetSummary)
+output <- fvsInteractRun(AfterEM1="fetchTrees(c(2020,2070))",
+                         SimEnd=fvsGetSummary)
 
 }}}
 
@@ -370,9 +380,9 @@ xlim <- range(unlist(lapply(treeLists,function (x) range(x[["AfterEM1"]][,"dbh"]
 ylim <- range(unlist(lapply(treeLists,function (x) range(x[["AfterEM1"]][,"ht"]))))
 
 # there are 6 plots, arrange them in 3 rows, 2 cols 
-# for saving plot: png(file="rFVS_ex2A.png",pointsize=10,height=6,width=4,units="in",res=200)
-X11(height=6,width=4,pointsize=10)
-par(mar=c(4,4,4,1)+.1)
+# for saving plot: png(file="rFVS_ex2A.png",pointsize=8,height=3.5,width=2.5,units="in",res=200)
+X11(height=3.5,width=2.5,pointsize=8)
+par(mar=c(3,3.8,3,1)+.1)
 layout(mat=matrix(1:6,3,2,byrow=TRUE))
 
 for (caseID in names(treeLists))
@@ -399,10 +409,9 @@ sumToPlot <- lapply(summaryStats,fvsSetupSummary)
 yrRange    <- range(unlist(lapply(sumToPlot,function (x) range(x[,"Year"]))))
 tcuftRange <- range(unlist(lapply(sumToPlot,function (x) range(x[,"TPrdTCuFt"]))))
 
-# for saving plot: png(file="rFVS_ex2B.png",pointsize=10,height=3,width=6,units="in",res=200)
-
-X11(height=3,width=6,pointsize=10)
-par(mar=c(4,4,4,1)+.1,mfcol=c(1,3))
+# for saving plot: png(file="rFVS_ex2B.png",pointsize=8,height=1.5,width=4,units="in",res=200)
+X11(height=1.5,width=4,pointsize=8)
+par(mar=c(3,3.8,3,1)+.1,mfcol=c(1,3))
 
 for (caseID in names(sumToPlot))
 {
@@ -415,3 +424,4 @@ for (caseID in names(sumToPlot))
 #for saving plot: dev.off()
 
 }}} 
+
