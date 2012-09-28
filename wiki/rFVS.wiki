@@ -30,7 +30,7 @@ sdir = "<open-fvs>/rFVS/R"
 for (rf in dir (sdir)) source (paste(sdir,rf,sep="/"))
 }}}
 
-The second step is to load the FVS shared library. A function has been provided to accomplish that task. The following assumes that program `FVSiec` has been built as a shared library (see [BuildProcess Build Process] for build instructions).
+The second step is to load the FVS shared library. A function has been provided to accomplish that task. The following assumes that program `FVSiec` has been built as a shared library (see [BuildProcess Build Process] for build instructions). Note that you must match the machine architecture: run 32-bit R if you have 32-bit FVS and 64-bit R if you have built FVS as 64-bit.
 
 {{{
 fvsLoad("FVSiec")
@@ -424,4 +424,3 @@ for (caseID in names(sumToPlot))
 #for saving plot: dev.off()
 
 }}} 
-
