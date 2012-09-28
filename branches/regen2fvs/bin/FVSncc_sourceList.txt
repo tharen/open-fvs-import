@@ -237,7 +237,6 @@
 ../common/PDEN.F77
 ../common/PLOT.F77
 ../common/PPDNCM.F77
-../common/PRGPRM.F77
 ../common/RANCOM.F77
 ../common/SCREEN.F77
 ../common/SNCOM.F77
@@ -457,6 +456,7 @@
 ../mistoe/src/msppgt.f
 ../mistoe/src/mspppt.f
 ../nc/common/ESPARM.F77
+../nc/common/PRGPRM.F77
 ../nc/src/bfvol.f
 ../nc/src/blkdat.f
 ../nc/src/bratio.f
@@ -513,6 +513,8 @@
 ../pg/src/putgetsubs.f
 ../pg/src/putstd.f
 ../pg/src/stash.f
+../pg/src/varget.f
+../pg/src/varput.f
 ../so/src/avht40.f
 ../so/src/r6crwd.f
 ../strp/src/esaddt.f
@@ -576,5 +578,4 @@
 ../volume/src/sf_yhat3.f
 ../volume/src/sf_zero.f
 ../volume/src/voleqdef.f
-../ws/common/PRGPRM.F77
 ../ws/src/r5crwd.f

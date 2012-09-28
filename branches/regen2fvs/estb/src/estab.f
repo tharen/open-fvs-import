@@ -1,7 +1,7 @@
       SUBROUTINE ESTAB (KDT)
       IMPLICIT NONE
 C----------
-C   **ESTAB--ESTB   DATE OF LAST REVISION:  01/03/11
+C   **ESTAB--ESTB   DATE OF LAST REVISION:  05/15/12
 C----------
 COMMONS
 C
@@ -1183,6 +1183,7 @@ C
       NBFDEF(ITRN)=0
       PDBH(ITRN)=0.
       PHT(ITRN)=0.
+      ZRAND(ITRN)=-999.
 C
       CALL RDESTB (ITRN,PROB(ITRN))
 C
@@ -1253,6 +1254,7 @@ C
       NBFDEF(ITRN)=0
       PDBH(ITRN)=0.
       PHT(ITRN)=0.
+      ZRAND(ITRN)=-999.
 C
       CALL RDESTB (ITRN,PROB(ITRN))
 C
@@ -1324,6 +1326,7 @@ C
       NBFDEF(ITRN)=0
       PDBH(ITRN)=0.
       PHT(ITRN)=0.
+      ZRAND(ITRN)=-999.
 C
       CALL RDESTB (ITRN,PROB(ITRN))
 C

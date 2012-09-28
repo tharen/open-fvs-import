@@ -305,7 +305,7 @@
 ../fire/base/src/fmchrvout.f
 ../fire/base/src/fmcmpr.f
 ../fire/base/src/fmcrbout.f
-../fire/base/src/fmcrowls.f
+../fire/base/src/fmcrowe.f
 ../fire/base/src/fmcwd.f
 ../fire/base/src/fmdout.f
 ../fire/base/src/fmdyn.f
@@ -468,6 +468,8 @@
 ../pg/src/putgetsubs.f
 ../pg/src/putstd.f
 ../pg/src/stash.f
+../pg/src/varget.f
+../pg/src/varput.f
 ../so/src/adjmai.f
 ../so/src/avht40.f
 ../strp/src/esaddt.f

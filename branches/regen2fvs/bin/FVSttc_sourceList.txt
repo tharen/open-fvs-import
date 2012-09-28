@@ -199,6 +199,8 @@
 ../base/src/update.f
 ../base/src/upkey.f
 ../base/src/volkey.f
+../ci/src/varget.f
+../ci/src/varput.f
 ../clim/base/clauestb.f
 ../clim/base/clgmult.f
 ../clim/base/clin.f
@@ -210,6 +212,7 @@
 ../common/CALCOM.F77
 ../common/CALDEN.F77
 ../common/CLIMATE.F77
+../common/CICOM.F77
 ../common/COEFFS.F77
 ../common/CONTRL.F77
 ../common/CVCOM.F77
@@ -217,6 +220,8 @@
 ../common/DBSTK.F77
 ../common/ECNCOM.F77
 ../common/ECON.F77
+../common/ESCOMN.F77
+../common/ESCOM2.F77
 ../common/ESHAP.F77
 ../common/ESHAP2.F77
 ../common/ESHOOT.F77
@@ -500,7 +505,6 @@
 ../strp/src/estime.f
 ../strp/src/estump.f
 ../strp/src/esuckr.f
-../tt/common/ESCOMN.F77
 ../tt/common/ESPARM.F77
 ../tt/common/PRGPRM.F77
 ../tt/src/bfvol.f

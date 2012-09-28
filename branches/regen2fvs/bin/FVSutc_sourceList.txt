@@ -217,6 +217,7 @@
 ../common/DBSTK.F77
 ../common/ECNCOM.F77
 ../common/ECON.F77
+../common/ESCOM2.F77
 ../common/ESCOMN.F77
 ../common/ESHAP.F77
 ../common/ESHAP2.F77
@@ -478,6 +479,8 @@
 ../pg/src/putgetsubs.f
 ../pg/src/putstd.f
 ../pg/src/stash.f
+../pg/src/varget.f
+../pg/src/varput.f
 ../so/src/adjmai.f
 ../so/src/avht40.f
 ../strp/src/esaddt.f

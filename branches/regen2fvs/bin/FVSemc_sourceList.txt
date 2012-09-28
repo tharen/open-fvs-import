@@ -239,7 +239,6 @@
 ../common/PDEN.F77
 ../common/PLOT.F77
 ../common/PPDNCM.F77
-../common/PRGPRM.F77
 ../common/RANCOM.F77
 ../common/SCREEN.F77
 ../common/SNCOM.F77
@@ -538,6 +537,8 @@
 ../pg/src/putgetsubs.f
 ../pg/src/putstd.f
 ../pg/src/stash.f
+../pg/src/varget.f
+../pg/src/varput.f
 ../so/src/adjmai.f
 ../ut/src/dgfasp.f
 ../volume/src/brk_up.f
