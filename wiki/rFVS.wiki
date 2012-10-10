@@ -203,7 +203,7 @@ A named list where the names are automatically generated using the `standid`, `m
 
 The objects in this returned list are also a named lists. Each contains the values of the expressions (or functions) when they are computed. The values are named using the argument names.
 
-[rFVS#Example_2 Example 2] provides a simple example of using this function. 
+[rFVS#Example_2_R-FVS_Interaction_with_Graphics Example 2] provides a simple example of using this function. 
 
 Also see: fvsRun()
 
