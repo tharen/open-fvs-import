@@ -179,7 +179,7 @@ TODO: Add more attributes, make sure units are as listed.
 fvsInteractRun (...)
 }}}
 
-This function is used to provide for functional interaction between R and FVS. Arguments, when specified, refer to names of [FVS_API#Stop stop points]; each provides R code that is run when the stop point is reached.
+This function is used to provide for functional interaction between R and FVS. Most of the arguments (all those listed in the table below), when specified, refer to names of [FVS_API#Stop stop points]; each provides R code that is run when the stop point is reached. One additional optional argument may be added that that is `trace=[TRUE|FALSE]`. When `trace=TRUE` specified, informative messages are output during the function call. Setting `trace=FALSE` has the same effect as not specifying it at all.
 
 ||Argument Name||Definition||
 ||`BeforeEM1`||R code to run at the stop point just before the first call to the Event Monitor||
@@ -191,7 +191,7 @@ This function is used to provide for functional interaction between R and FVS. A
 ||`SimEnd`||R code to run at the stop point at the end of one stand's simulaton and prior to the beginning of the next||
 
 The value of arguments can be either 
-  # a quoted character string containing a valid R expression, or  
+  # a quoted character string containing a valid R expression (more than one can be specified if separated by semicolons (`;`), or  
   # an R function with no arguments. 
 The expression is evaluated (or the function is called) when the corresponding stop point is reached. 
 
