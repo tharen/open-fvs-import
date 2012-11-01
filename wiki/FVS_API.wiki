@@ -272,13 +272,15 @@ Specify the proportion of each existing tree record FVS should cut. (The return 
 == Stand Identification ==
 
 {{{
-subroutine fvsStandID(sID,mID,ncsID,ncmID)
+subroutine fvsStandID(sID,sCN,mID,ncsID,ncCN,ncmID)
 }}}
 
 Get the stand identification codes. 
 
 ||Argument||Definition||
 ||`sID`||returned character string holding the stand identification code (26 characters maximum).||
+||`sCN`||returned character string holding the database connection string (40 characters maximum).||
 ||`mID`||returned character string holding the management identification code (4 characters maximum).||
 ||`ncsID`||length of defined part of _sID_ (integer)||
+||`ncCN`||length of connection strin _sCN_ (integer)||
 ||`ncmID`||length of defined part of _mID_ (integer)||
