@@ -10,9 +10,9 @@ Nick Crookston, January and May 2012
 
 This Wiki page discusses the use of FVS within the [http://www.r-project.org/ R System for Statistical Computing]. As stated in the discussion of the [FVS_API FVS Application Program Interface], using FVS as a _shared library_ requires that the library be loaded and called from a parent program -- here, the parent is R.
 
-What follows is a description of each of several R functions that are in the `rFVS` portion of the open-fvs repository. This Wiki page serves as the documentation to that collection of functions. 
+What follows is a description of each of several R functions that are in the `rFVS` portion of the open-fvs repository. This Wiki page serves as the documentation to that collection of functions.
 
-This is *_experimental work_* that is subject to change, particularly with respect to adding functions. 
+This is *_experimental work_* that is subject to change, particularly with respect to adding functions.
 
 = Getting Started =
 
@@ -44,19 +44,19 @@ fvsLoad("FVSiec", bin="<open-fvs>/trunk/bin")
 
 = rFVS Function Reference =
 
-The following is a list of the R functions that call [FVS_API FVS API] member functions as needed; consult the API for more information on the functions used. 
+The following is a list of the R functions that call [FVS_API FVS API] member functions as needed; consult the API for more information on the functions used.
 
 {{{
 fvsAddActivity(year,activity,parms=NULL)
 }}}
 
-Add an an FVS Activity to the activity schedule. 
+Add an an FVS Activity to the activity schedule.
 
 Arguments:
 
 `year` is the year the activity is scheduled to be accomplished.
 
-`activity` can be either an FVS activity code (which is number recognized by the FVS activity processing code) or a character string corresponding the FVS keyword used to schedule the activity. If a keyword is specified, this function translates it to the necessary numeric code. Not all of the possible keyword/code pairs are programmed, but those that control the harvesting logic plus the establishment model PLANT and NATURAL keywords are. 
+`activity` can be either an FVS activity code (which is number recognized by the FVS activity processing code) or a character string corresponding the FVS keyword used to schedule the activity. If a keyword is specified, this function translates it to the necessary numeric code. Not all of the possible keyword/code pairs are programmed, but those that control the harvesting logic plus the establishment model PLANT and NATURAL keywords are.
 
 `parms` is a numeric vector of parameters (if any are needed) associated with the keyword. These must be in order and have values FVS can use. Error checking is not done as is the case when keywords are entered into FVS via the keyword file.
 
@@ -69,12 +69,12 @@ An integer flag with the value 0 if the activity was added and 1 if there was so
 fvsAddTrees(newtrees)
 }}}
 
-Add new tree records to an existing simulation. Designed to be used to simulate regeneration establishment. 
+Add new tree records to an existing simulation. Designed to be used to simulate regeneration establishment.
 
 Argument:
 
 A matrix or dataframe that has values defined for the following attributes of new trees.
- 
+
 ||Name||Description||
 ||`dbh`||Diameter breast height (inches)||
 ||`species`||FVS numeric species code||
@@ -85,7 +85,7 @@ A matrix or dataframe that has values defined for the following attributes of ne
 
 Return value:
 
-A scalar integer with the return code from FVS where 0 signals trees were added and 1 signals an error. 
+A scalar integer with the return code from FVS where 0 signals trees were added and 1 signals an error.
 
 {{{
 fvsGetDims()
@@ -127,7 +127,7 @@ TODO: The R code for this function is written but the [FVS_API FVS API] code is 
 fvsGetSpeciesCodes()
 }}}
 
-Return value: 
+Return value:
 
 A matrix of character strings with one row for each species and three columns. The column names `fvs, fia, plant` correspond to the three kinds of species codes used in FVS. The order is exactly as presented in the FVS variant which means, for example, that row 1 corresponds to the internal FVS species index number 1, row 2 for species 2 and so on.
 
@@ -143,7 +143,7 @@ A named vector of three strings with names `standid`, `standcn`, and `mgmtid`.
 fvsGetSummary()
 }}}
 
-Return value: 
+Return value:
 
 A matrix of integer values with one row for each completed FVS cycle. The columns are named as documented in the [FVS_API#FVS_Summary_Statistics FVS Summary Statistics].
 
@@ -190,12 +190,12 @@ This function is used to provide for functional interaction between R and FVS. M
 ||`BeforeEstab`||R code to run at the stop point just before the Regeneration Establishment Model is called||
 ||`SimEnd`||R code to run at the stop point at the end of one stand's simulaton and prior to the beginning of the next||
 
-The value of arguments can be either 
-  # a quoted character string containing a valid R expression (more than one can be specified if separated by semicolons (`;`), or  
-  # an R function with no arguments. 
-The expression is evaluated (or the function is called) when the corresponding stop point is reached. 
+The value of arguments can be either
+  # a quoted character string containing a valid R expression (more than one can be specified if separated by semicolons (`;`), or
+  # an R function with no arguments.
+The expression is evaluated (or the function is called) when the corresponding stop point is reached.
 
-Note that using fvsInteractRun() without arguments is functionally equivalent to using fvsRun() without arguments. 
+Note that using fvsInteractRun() without arguments is functionally equivalent to using fvsRun() without arguments.
 
 Return value:
 
@@ -203,7 +203,7 @@ A named list where the names are automatically generated using the `standid`, `m
 
 The objects in this returned list are also a named lists. Each contains the values of the expressions (or functions) when they are computed. The values are named using the argument names.
 
-[rFVS#Example_2_R-FVS_Interaction_with_Graphics Example 2] provides a simple example of using this function. 
+[rFVS#Example_2_R-FVS_Interaction_with_Graphics Example 2] provides a simple example of using this function.
 
 Also see: fvsRun()
 
@@ -215,7 +215,7 @@ This function loads the FVS dynamic library specified in the first argument. It 
 
 Return value:
 
-A copy of `.FVSLOADEDLIBRARY` is invisibly returned. 
+A copy of `.FVSLOADEDLIBRARY` is invisibly returned.
 
 {{{
 fvsRun(stopPointCode=NA,stopPointYear=NA)
@@ -229,7 +229,7 @@ See [FVS_API#Stop stop points] for a list of valid stop point codes.
 
 If one of the arguments is specified, the other must also be specified. If both are left as NA values, the defaults for FVS are used. Those defaults imply that no stopping be done.
 
-Note that using fvsRun() without arguments is functionally equivalent to using  fvsInteractRun() without arguments. 
+Note that using fvsRun() without arguments is functionally equivalent to using  fvsInteractRun() without arguments.
 
 Return value:
 
@@ -255,13 +255,13 @@ The argument passed argument is returned.
 fvsSetEventMonitorVariables(vars)
 }}}
 
-This routine sets the values of Event Monitor variables. Generally, however, many of the variables are reset to by FVS when the Event Monitor is called each cycle (before and after simulated harvests). This is especially true of those automatic variables defined during the first and second calls to the Event Monitor (consult FVS documentation). Therefore setting the value of these variables may be in effective in meeting useful goals. 
+This routine sets the values of Event Monitor variables. Generally, however, many of the variables are reset to by FVS when the Event Monitor is called each cycle (before and after simulated harvests). This is especially true of those automatic variables defined during the first and second calls to the Event Monitor (consult FVS documentation). Therefore setting the value of these variables may be in effective in meeting useful goals.
 
-One use of this function is to set user-defined variables (those traditionally defined using the FVS Compute keyword). If a Event Monitor variable that has the name given in the names attribute of the `vars` argument is not found, one is created. If a user-defined variable has already been defined, it is given a new value when this function is called. 
+One use of this function is to set user-defined variables (those traditionally defined using the FVS Compute keyword). If a Event Monitor variable that has the name given in the names attribute of the `vars` argument is not found, one is created. If a user-defined variable has already been defined, it is given a new value when this function is called.
 
 Argument:
 
-A vector of named numeric values where the names are FVS Event Monitor variable names that will take on the corresponding values. 
+A vector of named numeric values where the names are FVS Event Monitor variable names that will take on the corresponding values.
 
 Return value:
 
@@ -291,11 +291,11 @@ TODO: write function
 fvsSetupSummary(sumTable)
 }}}
 
-Adds extra data to the summary statistics table returned by function `fvsGetSummary()`. The extra data include new columns showing total production of trees and volume plus new rows so  that years with removals have two data points, one for before and the after the harvest. 
+Adds extra data to the summary statistics table returned by function `fvsGetSummary()`. The extra data include new columns showing total production of trees and volume plus new rows so  that years with removals have two data points, one for before and the after the harvest.
 
 Argument: A matrix as returned by `fvsGetSummary()`.
 
-Return value: 
+Return value:
 
 A matrix with additional columns and rows (if there were harvests in the run).
 
@@ -330,9 +330,9 @@ The simple run in Example 1 is revisited to illustrate how to interact with FVS 
 
 The goal of the run is to capture two types of data from FVS so that it can be used for plotting after the simulation is completed. The first type is a set of six data frames containing tree heights, diameters, and species codes. There is one of these data frames for each of the 3 management alternatives captured at 2 points in time (2020 and 2070). The second set includes the summary statistics tables captured at the end of the simulations.
 
-The tree-by-tree data are captured using a function we specify (as shown in the example code). 
+The tree-by-tree data are captured using a function we specify (as shown in the example code).
 
-The R code below assumes that the same set up steps used in [rFVS#Example_1_Simple_run Example 1] are used up to the `fvsSetCmdLine()` command. 
+The R code below assumes that the same set up steps used in [rFVS#Example_1_Simple_run Example 1] are used up to the `fvsSetCmdLine()` command.
 
 {{{
 
@@ -341,21 +341,21 @@ The R code below assumes that the same set up steps used in [rFVS#Example_1_Simp
 fvsSetCmdLine("--keywordfile=iet01.key")
 
 # define a function that will be called after the first call to the Event
-# Monitor. This function returns a data frame that contains the dbh, ht, and 
-# species of each tree. It takes one argument which is a vector of years 
+# Monitor. This function returns a data frame that contains the dbh, ht, and
+# species of each tree. It takes one argument which is a vector of years
 # corresponding to the years the data frame is desired. NULL is returned
-# in all other years. 
+# in all other years.
 
-fetchTrees <- function (captureYears) 
+fetchTrees <- function (captureYears)
 {
-  curYear <- fvsGetEventMonitorVariables("year") 
-  if (is.na(match(curYear,captureYears))) NULL else 
-      fvsGetTreeAttrs(c("dbh","ht","species"))  
+  curYear <- fvsGetEventMonitorVariables("year")
+  if (is.na(match(curYear,captureYears))) NULL else
+      fvsGetTreeAttrs(c("dbh","ht","species"))
 }
 
 # run the simulation and capture the data. Note that the first argument
 # is a string of R code that is evaluated at each stop point and the
-# second is a function that contains no arguments. 
+# second is a function that contains no arguments.
 
 output <- fvsInteractRun(AfterEM1="fetchTrees(c(2020,2070))",
                          SimEnd=fvsGetSummary)
@@ -368,7 +368,7 @@ Here are the commands to make the scatter plots:
 
 {{{
 
-# separate the tree list information from the summary statistics so that 
+# separate the tree list information from the summary statistics so that
 # the following code is easier to follow.
 
 treeLists    <- output[-grep("SimEnd",names(output))]
@@ -379,7 +379,7 @@ summaryStats <- output[ grep("SimEnd",names(output))]
 xlim <- range(unlist(lapply(treeLists,function (x) range(x[["AfterEM1"]][,"dbh"]))))
 ylim <- range(unlist(lapply(treeLists,function (x) range(x[["AfterEM1"]][,"ht"]))))
 
-# there are 6 plots, arrange them in 3 rows, 2 cols 
+# there are 6 plots, arrange them in 3 rows, 2 cols
 # for saving plot: png(file="rFVS_ex2A.png",pointsize=8,height=3.5,width=2.5,units="in",res=200)
 X11(height=3.5,width=2.5,pointsize=8)
 par(mar=c(3,3.8,3,1)+.1)
@@ -416,11 +416,11 @@ par(mar=c(3,3.8,3,1)+.1,mfcol=c(1,3))
 for (caseID in names(sumToPlot))
 {
   mainLab <- sub(":SimEnd","",caseID) #remove SimEnd for a plot title.
-  plot(TPrdTCuFt ~ Year, data=sumToPlot[[caseID]], xlim=yrRange, ylim=tcuftRange, 
+  plot(TPrdTCuFt ~ Year, data=sumToPlot[[caseID]], xlim=yrRange, ylim=tcuftRange,
        type="b",main=mainLab,col="green",ylab="Total cubic volume per acre")
-  lines(TCuFt    ~ Year, data=sumToPlot[[caseID]], xlim=yrRange, ylim=tcuftRange, 
+  lines(TCuFt    ~ Year, data=sumToPlot[[caseID]], xlim=yrRange, ylim=tcuftRange,
        type="b",col="red")
 }
 #for saving plot: dev.off()
 
-}}} 
+}}}

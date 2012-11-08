@@ -17,9 +17,9 @@ In addition, a new *_experimental_* facility in FVS is described that allows the
 
 == Experimental ==
 
-`--stoppoint=<stopptcode>,<stopptyear>,<stopptfile>`
+`--stoppoint=<stopptcode>,<stopptyear>[,<stopptfile>]`
 
-  Specify that the program store all the state variables associated with a stand in the file called the _stop point file_ specified as `<stopptfile>`, that this be done during the cycle that contains the _stop point year_ specified as `<stopptyear>` and that the state of the simulation is stored as of a specific point during the simulation as designated by the _stop point code_ specified as `<stopptcode>`. The possible values of this code are:
+  Specify that the program stop during the cycle that contains the _stop point year_ specified as `<stopptyear>` and that the state of the simulation is stored as of a specific point during the simulation as designated by the _stop point code_ specified as `<stopptcode>`. Prior to stopping, all the state variables associated with a stand are stored in the file called the _stop point file_ if one is specified as the `<stopptfile>`. The possible values for the stoppcode code are:
 
 ||Stop Point Code||Definition
 ||`0`||Don't stop.||

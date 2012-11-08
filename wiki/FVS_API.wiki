@@ -8,30 +8,30 @@ Nick Crookston, January 2012
 
 = Introduction =
 
-Several people have asked if FVS can be built as a _shared library_ so that it can interact with other programs during a simulation. This document describes the FVS _Application Program Interface_ (API) that provides for this interaction. 
+Several people have asked if FVS can be built as a _shared library_ so that it can interact with other programs during a simulation. This document describes the FVS _Application Program Interface_ (API) that provides for this interaction.
 
 Note that the fact that FVS is written as a _procedural_ program rather than an _object oriented_ program means that the methods used in the FVS_API are not consistent with an object-oriented paradigm. Achievement of specific goals, for example, processing many stands in parallel through time, is achieved differently in FVS than would be accomplished if FVS were object oriented. The design of the API is keyed to this reality.
 
-The design of this API is driven by known and perceived needs and as those change, the API will change. The design was further dictated by the system used to call it. So far, that is only one system, the [http://www.r-project.org/ R System for Statistical Computing]. However, I know that [http://essa.com/ Don Robinson and Sarah Beukema] are in the process of writing additional, unique, functionality that we intend to integrate into this work. The target system they are using is based on .Net rather than R. 
+The design of this API is driven by known and perceived needs and as those change, the API will change. The design was further dictated by the system used to call it. So far, that is only one system, the [http://www.r-project.org/ R System for Statistical Computing]. However, I know that [http://essa.com/ Don Robinson and Sarah Beukema] are in the process of writing additional, unique, functionality that we intend to integrate into this work. The target system they are using is based on .Net rather than R.
 
 Speaking of R, there is a directory to this repository called _rFVS_. This is a collection of R functions used to run FVS on a wide variety of simulations. These functions also serve to demonstrate how to use the API that is described below. In the future, these R functions may become an R package; for now they documented in the [rFVS rFVS Wiki page].
 
-Note that this is the first version of the API; this is _experimental_ work subject to change. 
+Note that this is the first version of the API; this is _experimental_ work subject to change.
 
 = Basic Idea =
 
-FVS can hold one stand in memory at a time. When a shared library is loaded, the state of its memory is not set to reliable initial values; no stand, no run options, and no trees are defined. Using the current API functions, there is only one way to define the initial conditions and that is to read a keyword file as would be done with FVS if it were run as a program rather than as a shared library. FVS keyword commands that cause FVS to read site and tree information are used to setup the simulation. 
+FVS can hold one stand in memory at a time. When a shared library is loaded, the state of its memory is not set to reliable initial values; no stand, no run options, and no trees are defined. Using the current API functions, there is only one way to define the initial conditions and that is to read a keyword file as would be done with FVS if it were run as a program rather than as a shared library. FVS keyword commands that cause FVS to read site and tree information are used to setup the simulation.
 
-Specifying the name of the keyword file is done by setting the `--keywordfile` argument as done the [FVSCommandLine FVS Command Line] (there is an [FVS_API#Command_Line API call] to set this value without putting it on the command line). The FVS program is then run by calling a single API function which returns when the simulation is over, unless, of course, the program is requested to stop during the simulation. The request to stop is done by setting a stop point and stop year. The program returns when it reaches the designated stop point and then it picks up the calculations were it left off when it is called again. There are several ways to interact with the program between its "return" and when it is called again, each is supported with an API function. Note, this is the _basic idea_, details are provided below that cover more complicated scenarios. 
+Specifying the name of the keyword file is done by setting the `--keywordfile` argument as done the [FVSCommandLine FVS Command Line] (there is an [FVS_API#Command_Line API call] to set this value without putting it on the command line). The FVS program is then run by calling a single API function which returns when the simulation is over, unless, of course, the program is requested to stop during the simulation. The request to stop is done by setting a stop point and stop year. The program returns when it reaches the designated stop point and then it picks up the calculations were it left off when it is called again. There are several ways to interact with the program between its "return" and when it is called again, each is supported with an API function. Note, this is the _basic idea_, details are provided below that cover more complicated scenarios.
 
 = API Reference =
 
-What follows is the definition of subroutines designed to be called by the parent programs. Note that many other routines with FVS could be called and, in fact, the simulation can be destroyed by calling other FVS functions incorrectly and out of order. User's are encouraged to take a minimalist approach, yet by all means do take an approach! 
+What follows is the definition of subroutines designed to be called by the parent programs. Note that many other routines with FVS could be called and, in fact, the simulation can be destroyed by calling other FVS functions incorrectly and out of order. User's are encouraged to take a minimalist approach, yet by all means do take an approach!
 
 == Command Line ==
 
 {{{
-subroutne cmdLine(theCmdLine,lenCL)
+subroutne fvsSetCmdLine(theCmdLine,lenCL,rtnCode)
 }}}
 
 Set the command line arguments. When FVS is run as a program, this value is specified on the command line as arguments to the program start (see [FVSCommandLine FVS Command Line] for definitions of this string). Values specified using this function take precedence over those set on the actual command line. This function also opens files for input as indicted by the values found and it can result in the FVS [FVS_API#Return_Code_State return code state] to be reset.
@@ -40,6 +40,7 @@ Set the command line arguments. When FVS is run as a program, this value is spec
 ||Argument||Definition||
 ||`theCmdLine`||input character string defines the command line values.||
 ||`lenCL`||the length of _theCmdLine_ (integer)||
+||`rtnCode`||current FVS return code (integer)||
 
 
 == FVS File Close ==
@@ -58,10 +59,11 @@ Close the file if it is opened. This routine will normally not be needed.
 == Stop Points ==
 
 {{{
-subroutine setstoppointcodes (spptcd,spptyr)
+subroutine fvsSetStoppointCodes (spptcd,spptyr)
+subroutine fvsGetStoppointCodes (spptcd,spptyr)
 }}}
 
-Set the parameters that control start/restart while FVS is run as a shared library (also see [FVSCommandLine FVS Command Line] for definitions).
+Set (or Get) the parameters that control start/restart while FVS is run as a shared library (also see [FVSCommandLine FVS Command Line] for definitions).
 
 ||Argument||Definition||
 ||`stptcd`||is the stop point code (integer) to be used, see table below for codes||
@@ -78,7 +80,7 @@ Set the parameters that control start/restart while FVS is run as a shared libra
 ||`6`||Stop just before the estab routines are called.||
 
 {{{
-subroutine getrestartcode (restartcode)
+subroutine fvsGetRestartcode (restartcode)
 }}}
 
 Returns the current value of the stop/restart code. This is an integer the indicates point within the FVS sequence of calculations were the program will start when subroutine fvs is called next (also see [FVSCommandLine FVS Command Line]. Values are as follows:
@@ -95,10 +97,10 @@ Returns the current value of the stop/restart code. This is an integer the indic
 == Return Code State ==
 
 {{{
-subroutine getfvsRtnCode (rtnCode)
+subroutine fvsGetRtnCode (rtnCode)
 }}}
 
-_rtnCode_ is returned with the current return code value in FVS. 
+_rtnCode_ is returned with the current return code value in FVS.
 ||Value||Meaning||
 ||`-1`||indicates that FVS has not been started.||
 ||`0`||indicates that FVS is in good running state.||
@@ -111,7 +113,7 @@ _rtnCode_ is returned with the current return code value in FVS.
 subroutine fvs(rtnCode)
 }}}
 
-Run FVS up to the next stop point, or to the end of the simulation. Start by reading the keyword file or by reading a restart file, depending on run options [see FVSCommandLine FVS Command Line]. 
+Run FVS up to the next stop point, or to the end of the simulation. Start by reading the keyword file or by reading a restart file, depending on run options [see FVSCommandLine FVS Command Line].
 
 The _rtnCode_ is as described for [FVS_API#Return_Code_State Return Code State].
 
@@ -157,14 +159,14 @@ The 20 values are as follows (in western variants, eastern variants differ, (see
 ||`Age`||Current age of stand||
 ||`Tpa`||Trees per acre||
 ||`TCuFt`||Total cubic volume||
-||`MCuFt`||Total merchantable volume||   
-||`BdFt`||Total Board Foot Volume||   
-||`RTpa`||Removed trees per acre||   
-||`RTCuFt`||Removed total cubic volume||   
-||`RMCuFt`||Removed merchantable volume||   
-||`RBdFt`||Removed board foot volume||   
-||`ATBA`||After thin basal area||   
-||`ATCCF`||After thin CCF||   
+||`MCuFt`||Total merchantable volume||
+||`BdFt`||Total Board Foot Volume||
+||`RTpa`||Removed trees per acre||
+||`RTCuFt`||Removed total cubic volume||
+||`RMCuFt`||Removed merchantable volume||
+||`RBdFt`||Removed board foot volume||
+||`ATBA`||After thin basal area||
+||`ATCCF`||After thin CCF||
 ||`ATTopHt`||After thin top height||
 ||`PrdLen`||Length of simulation cycle (years)||
 ||`Acc`||Accretion in cubic feet/acre/year||
@@ -174,7 +176,7 @@ The 20 values are as follows (in western variants, eastern variants differ, (see
 ||`SizeCls`||Size class code||
 ||`StkCls`||Stocking class code||
 
-_TODO:_ Document the list for the eastern variants. 
+_TODO:_ Document the list for the eastern variants.
 
 == FVS Tree Attributes ==
 
@@ -246,7 +248,7 @@ Get the FVS species codes.  (The return code reported here are independent of th
 ||`fia_code`||returned FIA code; 4 chars maximum||
 ||`plant_code`||returned FIA code; 6 chars maximum||
 ||`indx`||index (integer) of requested code.||
-||`nchfvs`||returned actual length of fvs_code (integer).|| 
+||`nchfvs`||returned actual length of fvs_code (integer).||
 ||`nchfia`||returned actual length of fia_code (integer).||
 ||`nchplant`||returned actual length of plant_code (integer).||
 ||`rtnCode`||return code, where 0=OK, 1=_indx_ is out of range.||
@@ -275,12 +277,27 @@ Specify the proportion of each existing tree record FVS should cut. (The return 
 subroutine fvsStandID(sID,sCN,mID,ncsID,ncCN,ncmID)
 }}}
 
-Get the stand identification codes. 
+Get the stand identification codes.
 
 ||Argument||Definition||
 ||`sID`||returned character string holding the stand identification code (26 characters maximum).||
-||`sCN`||returned character string holding the database connection string (40 characters maximum).||
+||`sCN`||returned character string holding the database control identification (40 characters maximum).||
 ||`mID`||returned character string holding the management identification code (4 characters maximum).||
 ||`ncsID`||length of defined part of _sID_ (integer)||
-||`ncCN`||length of connection strin _sCN_ (integer)||
+||`ncCN`||length of the defined part of _sCN_ (integer) ||
 ||`ncmID`||length of defined part of _mID_ (integer)||
+
+
+== Current Keyword File Name ==
+
+{{{
+subroutine fvsGetKeywordFileName(name,mxch,nch)
+}}}
+
+Get the string that hold the current file name (not NULL terminated).
+
+||Argument||Definition||
+||`name`||returned character string holding the file name.||
+||`mxch`||the length of the string the calling routine has reserved (integer)||
+||`nch`||returned length of defined part of _name_ (integer)||
+
