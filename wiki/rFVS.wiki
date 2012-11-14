@@ -90,6 +90,28 @@ Return value:
 
 A scalar integer with the return code from FVS where 0 signals trees were added and 1 signals an error.
 
+== fvsCompositeSum(sumList) ==
+
+{{{
+fvsCompositeSum(sumList)
+}}}
+
+Argument:
+
+A list of summary statistics tables as returned by [rFVS#fvsGetSummary() fvsGetSummary()]. 
+
+Return value:
+
+A named list of 4 matrices. Each matrix contains entries only for the years that are in common to all of the summary tables in `sumList`. The matrices are as follows: 
+
+||Name||Description||
+||`sumTable`||The weighted average of the individual summary tables, with the same column headings||
+||`ForType`||The column headings are the unique forest type codes found in the data and the data are the sum of the corresponding sampling weights.||
+||`SizeCls`||The column headings are the unique size classes found in the data and the data are the sum of the corresponding sampling weights.||
+||`StkCls`||The column headings are the unique stocking classes found in the data and the data are the sum of the corresponding sampling weights.||
+
+Also see: [rFVS#fvsSetupSummary(sumTable) fvsSetupSummary(sumTable)]
+
 == fvsGetDims() ==
 
 {{{
@@ -145,6 +167,9 @@ fvsGetSummary()
 Return value:
 
 A matrix of integer values with one row for each completed FVS cycle. The columns are named as documented in the [FVS_API#FVS_Summary_Statistics FVS Summary Statistics].
+
+Also see: [rFVS#fvsSetupSummary(sumTable) fvsSetupSummary(sumTable)] and [rFVS#fvsCompositeSum(sumList) fvsCompositeSum(sumList)]
+
 
 == fvsGetTreeAttrs(vars) ==
 
@@ -302,7 +327,7 @@ Return value:
 
 A scalar integer return code where 0 signals OK and 1 signals an error (or warnings).
 
-Also see: [rFVS$fvsSetTreeAttrs]
+Also see: [rFVS#fvsGetTreeAttrs(vars) fvsGetTreeAttrs(vars)]
 
 == fvsSetupSummary(sumTable) ==
 
@@ -312,7 +337,7 @@ fvsSetupSummary(sumTable)
 
 Adds extra data to the summary statistics table returned by function `fvsGetSummary()`. The extra data include new columns showing total production of trees and volume plus new rows so  that years with removals have two data points, one for before and the after the harvest.
 
-Argument: A matrix as returned by `fvsGetSummary()`.
+Argument: A matrix as returned by [rFVS#fvsGetSummary() fvsGetSummary()] or the summary table returned by [rFVS#fvsCompositeSum(sumList) fvsCompositeSum(sumList)].
 
 Return value:
 
