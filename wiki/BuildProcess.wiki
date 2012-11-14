@@ -8,14 +8,7 @@ FVS programs are built in the bin directory. The basic approach is to identify t
 
 FVS programs are a combination of an FVS regional _variant_ and one or more _extensions_. A variant is a region-specific version of the core program and an extension adds functions to the core program.
 
-The currently available programs are:
-
-  * FVSiec  the Inland Empire variant plus the Fire and Fuels Extension (FFE) and the Econ and Climate Extensions.
-  * FVSpnc - The Pacific Northwest variant plus FFE and the Econ and Climate Extensions. 
-  * FVSne  The northeast US variant plus FFE and Econ Extensions.
-  * FVSsn  The southern US variant plus FFE and Econ Extensions. 
-
-Additional programs will be available as team members build the corresponding "sourceList" files.
+The make file contains the build instructions for all variants. If there is a file in the bin directory that starts with `FVS` and ends with `_sourceList.txt`, then the corresponding FVS program will build. 
 
 ==Platforms==
 
