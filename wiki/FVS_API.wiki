@@ -8,15 +8,13 @@ Nick Crookston, January 2012
 
 = Introduction =
 
-Several people have asked if FVS can be built as a _shared library_ so that it can interact with other programs during a simulation. This document describes the FVS _Application Program Interface_ (API) that provides for this interaction.
+This document describes the FVS _Application Program Interface_ (API) that provides for running FVS as a _shared library_.
 
-Note that the fact that FVS is written as a _procedural_ program rather than an _object oriented_ program means that the methods used in the FVS_API are not consistent with an object-oriented paradigm. Achievement of specific goals, for example, processing many stands in parallel through time, is achieved differently in FVS than would be accomplished if FVS were object oriented. The design of the API is keyed to this reality.
+Note that the fact that FVS is written as a _procedural_ program rather than an _object oriented_ program means that the methods used in the FVS_API are not consistent with an object-oriented paradigm. Specific goals, for example, processing many stands in parallel through time, are achieved differently in FVS than would be accomplished if FVS were object oriented. The design of the API is keyed to this reality.
 
-The design of this API is driven by known and perceived needs and as those change, the API will change. The design was further dictated by the system used to call it. So far, that is only one system, the [http://www.r-project.org/ R System for Statistical Computing]. However, I know that [http://essa.com/ Don Robinson and Sarah Beukema] are in the process of writing additional, unique, functionality that we intend to integrate into this work. The target system they are using is based on .Net rather than R.
+The design of this API is driven by known and perceived needs and as those change, the API will change. The design was further dictated by the system used to call it. So far, that is only one system, the [http://www.r-project.org/ R System for Statistical Computing]. However, I know that [http://essa.com/ Don Robinson and Sarah Beukema] are targeting a system based on .Net and another programmer is working on calling FVS from Python. As these efforts progress, it is highly likely that the API will be augmented.
 
 Speaking of R, there is a directory to this repository called _rFVS_. This is a collection of R functions used to run FVS on a wide variety of simulations. These functions also serve to demonstrate how to use the API that is described below. In the future, these R functions may become an R package; for now they documented in the [rFVS rFVS Wiki page].
-
-Note that this is the first version of the API; this is _experimental_ work subject to change.
 
 = Basic Idea =
 
@@ -26,7 +24,7 @@ Specifying the name of the keyword file is done by setting the `--keywordfile` a
 
 = API Reference =
 
-What follows is the definition of subroutines designed to be called by the parent programs. Note that many other routines with FVS could be called and, in fact, the simulation can be destroyed by calling other FVS functions incorrectly and out of order. User's are encouraged to take a minimalist approach, yet by all means do take an approach!
+What follows is the definition of subroutines designed to be called by the parent programs. On some operating systems, depending on how the FVS library is built, many routines within FVS besides those listed below could be called. It would be easy to distroy the the simulation if FVS routines are called out of order. User's are encouraged to take a minimalist approach, yet by all means do take an approach!
 
 == Command Line ==
 
@@ -98,7 +96,10 @@ Returns the current value of the stop/restart code. This is an integer the indic
 
 {{{
 subroutine fvsGetRtnCode (rtnCode)
+subroutine fvsSetRtnCode (rtnCode)
 }}}
+
+fvsGetRtnCode simply returns the current value of the return code while fvsSetRtnCode sets it as well. If fvsSetRtnCode is called with a non-zero value, FVS automatically closes all open files and any open databases.
 
 _rtnCode_ is returned with the current return code value in FVS.
 ||Value||Meaning||
@@ -218,8 +219,6 @@ subroutine fvsAddTrees(in_dbh,in_species,in_ht,in_cratio,
                        in_plot,in_tpa,ntrees,rtnCode)
 }}}
 
-_TODO:_ Not yet tested.
-
 Add more trees to a current simulation. All values are double precision vectors of length _ntrees_ except as noted below. (The return code reported here are independent of the general return code.)
 
 ||Argument||Definition||
@@ -300,4 +299,12 @@ Get the string that hold the current file name (not NULL terminated).
 ||`name`||returned character string holding the file name.||
 ||`mxch`||the length of the string the calling routine has reserved (integer)||
 ||`nch`||returned length of defined part of _name_ (integer)||
+
+== Summary of TODO ==
+
+Here is a list of TODO items:
+
+  # Finish the fvsCutTrees function.
+  # Set up the fvs function so that one can restart from the previous stand (assuming that the stand is stored in a stoppoint file. This would allow for making several projections from a stoppoint year into the future (upto a stoppoint year) for the same stand. This feature would be useful for treatment optimizations. There are two functions in the _API_ that are designed to support the functionality, but they have not yet been tested.
+  # Add a --treeDataFile option to the command line.
 
