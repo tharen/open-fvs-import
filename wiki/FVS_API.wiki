@@ -300,6 +300,17 @@ Get the string that hold the current file name (not NULL terminated).
 ||`mxch`||the length of the string the calling routine has reserved (integer)||
 ||`nch`||returned length of defined part of _name_ (integer)||
 
+== Return Code (placeholder) ==
+
+{{{
+subroutine fvsGetICCode(rtnCode)
+}}}
+
+Get the integer code returned when FVS exits. Value of 0 means that no serious errors occured. Values 10,20,30,40,50 indicate different error states that made it impossible to continue. Error clues found in the main output file.
+
+||Argument||Definition||
+||`rtnCode`||value of FVS return code (integer)||
+
 == Summary of TODO ==
 
 Here is a list of TODO items:
@@ -307,4 +318,3 @@ Here is a list of TODO items:
   # Finish the fvsCutTrees function.
   # Set up the fvs function so that one can restart from the previous stand (assuming that the stand is stored in a stoppoint file. This would allow for making several projections from a stoppoint year into the future (upto a stoppoint year) for the same stand. This feature would be useful for treatment optimizations. There are two functions in the _API_ that are designed to support the functionality, but they have not yet been tested.
   # Add a --treeDataFile option to the command line.
-
