@@ -300,13 +300,13 @@ Get the string that hold the current file name (not NULL terminated).
 ||`mxch`||the length of the string the calling routine has reserved (integer)||
 ||`nch`||returned length of defined part of _name_ (integer)||
 
-== Return Code (placeholder) ==
+== Return Error Code ==
 
 {{{
 subroutine fvsGetICCode(rtnCode)
 }}}
 
-Get the integer code returned when FVS exits. Value of 0 means that no serious errors occurred. Values 10,20,30 or 40 indicate different error states that sometimes make it impossible to continue (error codes: 10=input data; 20=keyword or expression; 30=extension or group activities; 40=scratch file). The maximum error code value is returned, and more specific error clues are written to the main output file beginning with "FVS<i>nn</i> WARNING", where <i>nn</i? =(01,...,36)
+Fetch the integer code returned when FVS exits. A value of 0 means that no serious errors occurred. Non-zero values indicate different error states that sometimes make it impossible to continue (error codes: 10=input data; 20=keyword or expression; 30=extension or group activities; 40=scratch file). The maximum error code value is returned, with more specific clues are written to the main output file beginning with "FVS<i>nn</i> WARNING", where <i>nn</i> =(01,...,36)
 
 ||Argument||Definition||
 ||`rtnCode`||value of FVS return code (integer)||
