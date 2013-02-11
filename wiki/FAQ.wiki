@@ -74,11 +74,3 @@ This is the link to [http://www.fs.fed.us/fmsc/fvs/ FVS]
 = Question 5. How do I make a new variant? =
 
 The instructions for creating a new variant, from an existing variant, are found [http://code.google.com/p/open-fvs/wiki/MakeNewFVSProgram here].
-
-= Question 6. When are you going to complete the FAQ? =
-
-Are they ever complete?
-
-= Question 7. What happens next? =
-
-We have no idea.
