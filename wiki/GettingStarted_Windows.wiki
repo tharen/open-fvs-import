@@ -1,7 +1,7 @@
 #summary Windows build process
 #labels Featured
 
-=Getting Started With The Build Process In Windows=
+=Getting Started With The Build Process In Windows & Rtools=
 
 This wiki documents the process of setting things up on a Windows PC so you can build FVS executables from the source files in the open-fvs repository. For more information on the build process, including information for builds on other platforms (Mac and Linux) please refer to the [BuildProcess] wiki or the [FAQ] wiki.
 
