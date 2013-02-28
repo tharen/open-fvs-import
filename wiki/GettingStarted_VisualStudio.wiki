@@ -17,17 +17,33 @@ You will also need to install the Cmake system, which can be found here: http://
 Please see [GettingStarted_Windows] to find out about SVN clients and the FVS code base.
 
 ==Building The Executable==
+Open a DOS Command Window and navigate to the directory which contains the FVS 
+code base. If you aren't familiar with the command prompt, click Start > (All) Programs > Accessories > Command Prompt and the Command Window should open to your personal directory. Assuming you have the FVS code base installed as described under [GettingStarted_Windows], use the `cd` command to navigate to the `trunk\bin` directory inside the directory into which you checked out the open-fvs files. If you had placed the files into a directory called `MyFvsFiles` you would type the command as shown below.
 
-Open a DOS Command Window. If you don't know how to do this, refer to the "Getting the Necessary Tools" section above.
-
-Use the `cd` command to navigate to the `trunk\bin` directory inside the directory into which you checked out the open-fvs files. If you had placed the files into a directory called `MyFvsFiles` you would type the command as shown below.
 {{{
 cd \MyFvsFiles\trunk\bin
 }}}
-Once you have navigated to the correct directory you are ready to make an executable. The FVS variant executables are named `FVS__.exe`, where the `__` is the 2-letter abbreviation for the variant (e.g., `ie` for Inland Empire or `ls` for Lake States) optionally followed by the 1-letter abbreviation for an extension (e.g., `x` for the insect and disease extensions, or `c` for the climate extension). To make an executable on a Windows PC type the command `make FVS__.exe` with `__` replaced by the variant and extension designations. For example, to build the Inland Empire variant with the Climate extension you would use the command below.
+
+Once you have navigated to the correct directory you are ready to use *Cmake* to create a VS2010 solution file. If VS2010/Intel is installed, Cmake should automatically detect it and build the tools for VS2010. (If this does not happen automatically, please post the problem so that it can be resolved.)
+
+At the command line type
+
+{{{
+cmake .
+}}}
+
+This will begin the creation of VS2010 solution files (suffix: SLN) for all FVS variants. Each variant's SLN will be placed in a sub-directory like this:
+
+{{{
+\MyFvsFiles\trunk\bin\FVSiec_CmakeDir
+}}}
+
+The FVS variant executables are named `FVS__.exe`, where the `__` is the 2-letter abbreviation for the variant (e.g., `ie` for Inland Empire or `ls` for Lake States) optionally followed by the 1-letter abbreviation for an extension (e.g., `x` for the insect and disease extensions, or `c` for the climate extension). To make an executable on a Windows PC type the command `make FVS__.exe` with `__` replaced by the variant and extension designations. For example, to build the Inland Empire variant with the Climate extension you would use the command below.
 {{{
 make FVSiec.exe
 }}}
+
+
 To build the Lake States variant with none of the optional extensions you would use the command below.
 {{{
 make FVSls.exe
