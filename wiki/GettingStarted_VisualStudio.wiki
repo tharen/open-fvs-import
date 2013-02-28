@@ -26,14 +26,48 @@ cd \MyFvsFiles\trunk\bin
 Once you have navigated to the correct directory you are ready to use *Cmake* to create a VS2010 solution file. If VS2010/Intel is installed, Cmake should automatically detect it and build the tools for VS2010. (If this does not happen automatically, please post the problem so that it can be resolved.)
 
 At the command line type
+
 {{{
 cmake .
 }}}
-This will begin the creation of VS2010 solution files (suffix: SLN) for all FVS variants. Each variant's SLN will be placed in a sub-directory like this:
+
+This will begin the creation of VS2010 solution files (suffix: SLN) for all FVS variants. Each variant's SLN will be placed in a sub-directory like this
+
 {{{
 \MyFvsFiles\trunk\bin\FVSiec_CmakeDir
 }}}
-FVS variant subdirectories are named `FVS***_CmakeDire`, where the `***` is the 2-letter abbreviation for the variant (e.g., `ie` for Inland Empire or `ls` for Lake States) optionally followed by the 1-letter abbreviation for an extension (e.g., `x` for the insect and disease extensions, or `c` for the climate extension).
+
+FVS variant subdirectories are named `FVS***_CmakeDir`, where the `***` is the 2- or 3-letter abbreviation for the variant (e.g., 2-letters `ie` for Inland Empire or `ls` for Lake States) optionally followed by the 1-letter abbreviation for an extension (e.g., `x` for the insect and disease extensions, or `c` for the climate extension).
+
+With the successful creation of each variant SLN, you will see something like this
+{{{
+-- Building for: Visual Studio 10
+-- tobuild = D:/en1847/open-fvs/open-fvs/trunk/bin/FVSiec_sourceList.txt
+-- Building for: Visual Studio 10
+-- Check for working C compiler using: Visual Studio 10
+-- Check for working C compiler using: Visual Studio 10 -- works
+-- Detecting C compiler ABI info
+-- Detecting C compiler ABI info - done
+-- Check for working Fortran compiler using: Visual Studio 10
+-- Check for working Fortran compiler using: Visual Studio 10  -- works
+-- Detecting Fortran compiler ABI info
+-- Detecting Fortran compiler ABI info - done
+-- Determine Intel Fortran Compiler Implicit Link Path
+-- Determine Intel Fortran Compiler Implicit Link Path -- done
+-- Checking whether ifort supports Fortran 90
+-- Checking whether ifort supports Fortran 90 -- yes
+-- slfn = FVSiec_sourceList.txt prgName= FVSiec
+-- FVSvariant = FVSiec
+-- Configuring done
+-- Generating done
+-- Build files have been written to: <...>/trunk/bin/FVSiec_CmakeDir
+-- Configuring done
+-- Generating done
+-- Build files have been written to: <...>/trunk/bin
+}}}
+
+jl;kjl;kj
+
 ==Building The Executable ==
 
 
