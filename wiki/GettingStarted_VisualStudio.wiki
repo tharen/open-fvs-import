@@ -84,7 +84,7 @@ you can run this DOS batch file to create Release versions of all variants in th
 BuildAll_VS10.bat
 }}}
 
-==Building The Executable for Development & Debugging==
+==Building the Executable for Development & Debugging==
 
 Using Explorer, navigate to the directory containing the SLN file you wish to work with. Double-click on the SLN file to start Visual Studio.
 
@@ -97,6 +97,7 @@ Using Explorer, navigate to the directory containing the SLN file you wish to wo
 || mkdbsTypeDefs || Yes (optional) || C || DBSTYPEDEFS.F77 ||
 || FVSsql || No || C || _*FVSsql.dll*_ ||
 || ZERO_CHECK || Yes (optional) || - || - ||
-{{{
-make
-}}}
+
+When you start Visual Studio, the first build of the variant should include all projects, but subsequent builds do not need to perform the same internal checks (such as checking for and creating the OS-dependent file TYPEDEFS.F77 which is created by the mkdbsTypeDefs project and required for database connectivity), and can exclude some components from the build.
+
+In Visual Studio these non-essential projects can be unloaded by right-clicking the project and selecting Unload Project after the first successful build. The dbstypedefs project is the critical project to unload; the others are optional. Continuing with an FVS-IEC example: if the FVSiec project is not in bold-face after unloading these projects, right-click the FVSiec project name and select Set as StartUp Project. The “FVSiec” project is different from the “FVS_iec” project: the first of these builds the final executable; the second builds the DLL which contains most of the model code. Figure 1 shows an example of the Visual Studio Solution Explorer tree after the redundant projects have been unloaded and FVSiec made the startup project.
