@@ -1,4 +1,4 @@
-#summary Running FVS form R 
+#summary Running FVS from R
 
 Nick Crookston, January, May, and November 2012
 
@@ -468,4 +468,3 @@ for (caseID in names(sumToPlot))
 #for saving plot: dev.off()
 
 }}}
-
