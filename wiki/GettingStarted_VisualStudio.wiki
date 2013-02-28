@@ -104,8 +104,9 @@ Double-click on FVS.sln to start Visual Studio. After it starts you will see tha
 || FVSsql || No || C || _*FVSsql.dll*_ ||
 || ZERO_CHECK || Yes (optional) || - || - ||
 
-A tree control showing the solution components will help you navigate to the source files.
+A tree control showing the solution components will help you navigate to the source files:
 
+[http://open-fvs.googlecode.com/svn/wiki/VS2010a.png]
 
 When you start Visual Studio, the first build of the variant should include all projects, but subsequent builds do not need to perform the same internal checks (such as checking for and creating the OS-dependent file TYPEDEFS.F77 which is created by the mkdbsTypeDefs project and required for database connectivity), and can exclude some components from the build.
 
