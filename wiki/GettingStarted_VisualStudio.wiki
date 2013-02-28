@@ -8,19 +8,14 @@ This wiki documents the process of setting things up on a Windows PC so you can 
 
 You will need Administrator privileges to install the necessary tools, so ensure you have that before proceeding.
 
-Building with Visual Studio requires *Microsoft Visual Studio 2010* and the *Intel Fortran compiler 2012 (XE)*. More recent versions of Visual Studio and other compliant compilers may work, but have not been tested. Information about VS2010 is found here: http://www.microsoft.com/visualstudio/eng/downloads. Information about the Intel compiler is found here: http://software.intel.com/en-us/intel-visual-fortran-composer-xe-evaluation. You must have these both installed before continuing.
- 
+Building with Visual Studio requires *Microsoft Visual Studio 2010* and the *Intel Fortran compiler 2012 (XE)*. More recent versions of Visual Studio (including free or lower cost "Express" versions), and other compliant compilers may work, but have not been tested. Information about VS2010 is found here: http://www.microsoft.com/visualstudio/eng/downloads. Information about the Intel compiler is found here: http://software.intel.com/en-us/intel-visual-fortran-composer-xe-evaluation. You must have these both installed before continuing.
+
+You will also need to install the Cmake system, which can be found her. Cmake is a  
 Once you have verified you have successfully installed VS2010/Intel, the next step is to check out the source code from the Subversion repository located on google.code servers. 
 
 ==Getting The Source Files==
 
 Please see [GettingStarted_Windows] to find out about SVN clients and the FVS code base.
-
-The open-fvs files are stored in a Subversion (SVN) repository. If you have a command-line version of Subversion you can use the "Command-line Access" instructions on the [http://code.google.com/p/open-fvs/source/checkout Source] page of open-fvs.
-
-If you don't have an *SVN client* software package you may want to install one with a Windows interface. There are several free SVN packages available for download. Two examples are Tortoise ([http://tortoisesvn.net/]) and SmartSVN ([http://www.syntevo.com/smartsvn/])
-
-You will use the "checkout" feature of your SVN client software package to download the FVS source files. Refer to the software documentation if you need help with this. Designate the repository using the URL http://open-fvs.googlecode.com/svn/. Select or create an appropriate directory on your hard drive to download the source files into. For example, you could create a directory on your C drive called `MyFvsFiles`.
 
 ==Building The Executable==
 
