@@ -2,16 +2,15 @@
 
 =Getting Started with the Build Process in Windows using Visual Studio=
 
-This wiki documents the process of setting things up on a Windows PC so you can build FVS executables from the source files in the open-fvs repository. For more information on the build process, including information for builds on other platforms (Mac and Linux) please refer to the [GettingStarted_Windows],[GettingStarted_MinGW] wikis or the [FAQ] wiki.
+This wiki documents the process of setting things up on a Windows PC so you can build FVS executables from the source files in the open-fvs repository. Builds of 32-bit versions have been tested, and 64-bit builds will likely be tested by the end of 2013. For more information on the build process, including information for builds on other platforms (Mac and Linux) please refer to the [GettingStarted_Windows],[GettingStarted_MinGW] wikis or the [FAQ] wiki.
 
 ==Getting The Necessary Tools==
 
 You will need Administrator privileges to install the necessary tools, so ensure you have that before proceeding.
 
-Building with Visual Studio requires *Microsoft Visual Studio 2010* and the *Intel Fortran compiler 2012 (XE)*. More recent versions of Visual Studio (including free or lower cost "Express" versions), and other compliant compilers may work, but have not been tested. Information about VS2010 is found here: http://www.microsoft.com/visualstudio/eng/downloads. Information about the Intel compiler is found here: http://software.intel.com/en-us/intel-visual-fortran-composer-xe-evaluation. You must have these both installed before continuing.
+Building with Visual Studio requires *Microsoft Visual Studio 2010* and the *Intel Fortran compiler 2012 (XE)*. More recent versions of Visual Studio (including free or lower cost "Express" versions), and other compliant compilers _may work_, but have not been tested. Information about VS2010 is found here: http://www.microsoft.com/visualstudio/eng/downloads. Information about the Intel compiler is found here: http://software.intel.com/en-us/intel-visual-fortran-composer-xe-evaluation. You must have these both installed before continuing.
 
-You will also need to install the Cmake system, which can be found her. Cmake is a  
-Once you have verified you have successfully installed VS2010/Intel, the next step is to check out the source code from the Subversion repository located on google.code servers. 
+You will also need to install the Cmake system, which can be found here: http://cmake.org/cmake/resources/software.html. Download and install the latest version. The Cmake build steps described below have been tested with Version 2.8.8 and require at least Version 2.6.
 
 ==Getting The Source Files==
 
