@@ -1,7 +1,7 @@
 #summary Windows build process
 #labels Featured
 
-=Getting Started With The Build Process In Windows & Rtools=
+=Getting Started with the Build Process in Windows using Rtools=
 
 This wiki documents the process of setting things up on a Windows PC so you can build FVS executables from the source files in the open-fvs repository. For more information on the build process, including information for builds on other platforms (Mac and Linux) please refer to the [BuildProcess] wiki or the [FAQ] wiki.
 
@@ -74,7 +74,7 @@ The variant executable file is created in the `trunk\bin` directory in which you
 
 A sourcelist file needs to exist in the `trunk\bin` directory in order to build the variants in this way. For example, the file `FVSls_sourceList.txt` allows you to use the `make` command to build the variant executable `FVSls.exe`. Look in the `trunk\bin` directory to see which variants are currently available.
 
-To build all of the varaints for which a sourcelist file exists just type `make` and do not specify a varaint. This could take a long time (up to half an hour or more) to complete.
+To build all of the variants for which a sourcelist file exists just type `make` and do not specify a variant. This could take a long time (up to half an hour or more) to complete.
 {{{
 make
 }}}
