@@ -39,10 +39,13 @@ This will begin the creation of VS2010 solution files (suffix: SLN) for all FVS 
 
 FVS variant subdirectories are named `FVS***_CmakeDir`, where the `***` is the 2- or 3-letter abbreviation for the variant (e.g., 2-letters `ie` for Inland Empire or `ls` for Lake States) optionally followed by the 1-letter abbreviation for an extension (e.g., `x` for the insect and disease extensions, or `c` for the climate extension).
 
-With the successful creation of each variant SLN, you will see something like this
+Cmake utilizes two kinds of files to create to create each SLN file. First, it uses a master script file called *CMakeLists.txt" to control the creation of each variant. (You are welcome to inspect this file, but editing it is not recommended for beginners.) This master script file utilizes a set of about 20 files in turn - one for each variant - with names like 'FVSiec_sourceList.txt'. These files need to exist in the `trunk\bin` directory in order to build the variants. 
+
+With the successful creation of each variant SLN, you will see something like this:
+
 {{{
 -- Building for: Visual Studio 10
--- tobuild = D:/en1847/open-fvs/open-fvs/trunk/bin/FVSiec_sourceList.txt
+-- tobuild = <...>/trunk/bin/FVSiec_sourceList.txt
 -- Building for: Visual Studio 10
 -- Check for working C compiler using: Visual Studio 10
 -- Check for working C compiler using: Visual Studio 10 -- works
@@ -66,20 +69,12 @@ With the successful creation of each variant SLN, you will see something like th
 -- Build files have been written to: <...>/trunk/bin
 }}}
 
-jl;kjl;kj
+When that is complete, you can proceed to customize each variant SLN file to build FVS. You only need to repeat this step if the set of FVS source files change. Afterward, you can just rebuild the variants you need, based on periodic updates to the source code.
 
 ==Building The Executable ==
 
 
-To build the Lake States variant with none of the optional extensions you would use the command below.
-{{{
-make FVSls.exe
-}}}
-The variant executable file is created in the `trunk\bin` directory in which you are currently working.
 
-A sourcelist file needs to exist in the `trunk\bin` directory in order to build the variants in this way. For example, the file `FVSls_sourceList.txt` allows you to use the `make` command to build the variant executable `FVSls.exe`. Look in the `trunk\bin` directory to see which variants are currently available.
-
-To build all of the variants for which a sourcelist file exists just type `make` and do not specify a variant. This could take a long time (up to half an hour or more) to complete.
 {{{
 make
 }}}
