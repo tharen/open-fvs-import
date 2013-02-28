@@ -39,7 +39,7 @@ This will begin the creation of VS2010 solution files (suffix: SLN) for all FVS 
 
 FVS variant subdirectories are named `FVS***_CmakeDir`, where the `***` is the 2- or 3-letter abbreviation for the variant (e.g., 2-letters `ie` for Inland Empire or `ls` for Lake States) optionally followed by the 1-letter abbreviation for an extension (e.g., `x` for the insect and disease extensions, or `c` for the climate extension).
 
-Cmake utilizes two kinds of files to create to create each SLN file. First, it uses a master script file called *CMakeLists.txt" to control the creation of each variant. (You are welcome to inspect this file, but editing it is not recommended for beginners.) This master script file utilizes a set of about 20 files in turn - one for each variant - with names like 'FVSiec_sourceList.txt'. These files need to exist in the `trunk\bin` directory in order to build the variants. 
+Cmake utilizes two kinds of files to create to create each SLN file. First, it uses a master script file called *CMakeLists.txt* to control the creation of each variant. (You are welcome to inspect this file, but editing it is not recommended for beginners.) This master script file utilizes a set of about 20 files in turn - one for each variant - with names like 'FVSiec_sourceList.txt'. These files need to exist in the `trunk\bin` directory in order to build the variants. 
 
 With the successful creation of each variant SLN, you will see something like this:
 
