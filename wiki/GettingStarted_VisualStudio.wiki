@@ -78,7 +78,7 @@ Assuming you have a command-prompt in this directory:
 \MyFvsFiles\trunk\bin
 }}}
 
-you can run this DOS batch file to create Release versions of all variants in their respective sub-directories. If you wish to modify this for a subset of variants or Debug versions, please make a copy and use your copy.
+you can run this DOS batch file to create Release versions of all variants in their respective sub-directories. If you wish to modify this batch file for a subset of variants or Debug versions, please make a copy and use your copy.
 
 {{{
 BuildAll_VS10.bat
@@ -86,7 +86,17 @@ BuildAll_VS10.bat
 
 ==Building The Executable for Development & Debugging==
 
-Using Explorer, navigate to the directory containing
+Using Explorer, navigate to the directory containing the SLN file you wish to work with. Double-click on the SLN file to start Visual Studio.
+
+||*Project Name|| *Exclude After 1st Build* || *Language* || *Output* ||
+|| FVSiec|| No || FORTRAN || *_FVSiec.exe_*
+|| All_BUILD|| Yes (optional) || - || - ||
+|| dbstypedefs|| Yes || - || - ||
+|| FVSfofem || No || C || *_FVSfofem.dll_* ||
+|| FVS_iec || No || FORTRAN || *_FVS_iec.dll_* ||
+|| mkdbsTypeDefs || Yes (optional) || C || DBSTYPEDEFS.F77 ||
+|| FVSsql || No || C || FVSsql.dll ||
+|| ZERO_CHECK || Yes (optional|| - || - ||
 {{{
 make
 }}}
