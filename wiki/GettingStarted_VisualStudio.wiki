@@ -92,9 +92,7 @@ Using Windows Explorer, navigate to the directory containing the variant SLN fil
 \MyFvsFiles\trunk\bin\FVSiec_CmakeDir\FVS.sln
 }}}
 
-After Visual Studio starts, you will see that the Solution contains 8 sub-projects, which can be seen after opening the SLN with VS2010. Using FVS-IEC as an example, the 8 sub-projects shown below will be found.
-
-Double-click on the SLN file to start Visual Studio. 
+Double-click on FVS.sln to start Visual Studio. After it starts you will see that the Solution contains 8 sub-projects shown below:
 
 ||*Project Name* || *Exclude After 1st Build* || *Language* || *Output* ||
 || FVSiec|| No || FORTRAN || *_FVSiec.exe_* ||
@@ -105,6 +103,9 @@ Double-click on the SLN file to start Visual Studio.
 || mkdbsTypeDefs || Yes (optional) || C || DBSTYPEDEFS.F77 ||
 || FVSsql || No || C || _*FVSsql.dll*_ ||
 || ZERO_CHECK || Yes (optional) || - || - ||
+
+A tree control showing the solution components will help you navigate to the source files.
+
 
 When you start Visual Studio, the first build of the variant should include all projects, but subsequent builds do not need to perform the same internal checks (such as checking for and creating the OS-dependent file TYPEDEFS.F77 which is created by the mkdbsTypeDefs project and required for database connectivity), and can exclude some components from the build.
 
