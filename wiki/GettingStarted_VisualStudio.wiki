@@ -88,15 +88,15 @@ BuildAll_VS10.bat
 
 Using Explorer, navigate to the directory containing the SLN file you wish to work with. Double-click on the SLN file to start Visual Studio.
 
-||*Project Name*|| *Exclude After 1st Build* || *Language* || *Output* ||
-|| FVSiec|| No || FORTRAN || *_FVSiec.exe_*
+||*Project Name* || *Exclude After 1st Build* || *Language* || *Output* ||
+|| FVSiec|| No || FORTRAN || *_FVSiec.exe_* ||
 || All_BUILD|| Yes (optional) || - || - ||
 || dbstypedefs|| Yes || - || - ||
 || FVSfofem || No || C || *_FVSfofem.dll_* ||
 || FVS_iec || No || FORTRAN || *_FVS_iec.dll_* ||
-|| mkdbsTypeDefs || Yes (optional) || C || _*DBSTYPEDEFS.F77*_ ||
+|| mkdbsTypeDefs || Yes (optional) || C || DBSTYPEDEFS.F77 ||
 || FVSsql || No || C || _*FVSsql.dll*_ ||
-|| ZERO_CHECK || Yes (optional|| - || - ||
+|| ZERO_CHECK || Yes (optional) || - || - ||
 {{{
 make
 }}}
