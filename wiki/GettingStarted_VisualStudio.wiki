@@ -53,6 +53,7 @@ As Cmake creates each variant SLN you will see something like this:
 -- Building for: Visual Studio 10
 -- tobuild = <...>/trunk/bin/FVSiec_sourceList.txt
 -- Building for: Visual Studio 10
+-- The C compiler identification is MSVC 16.0.40219.1
 -- Check for working C compiler using: Visual Studio 10
 -- Check for working C compiler using: Visual Studio 10 -- works
 -- Detecting C compiler ABI info
