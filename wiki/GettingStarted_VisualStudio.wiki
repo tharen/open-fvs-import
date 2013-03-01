@@ -77,20 +77,6 @@ As Cmake creates each variant SLN you will see something like this:
 
 When that is complete, you can proceed to customize each variant SLN file to build FVS. You only need to repeat the step of creating an SLN file if the underlying set of FVS source files change. Afterward, you can just rebuild the variants you need, based on periodic updates to the source code.
 
-==Building the Executable in Batch==
-
-Assuming you have a command-prompt in this directory: 
-
-{{{
-\MyFvsFiles\trunk\bin
-}}}
-
-you can run this DOS batch file to create Release versions of all variants in their respective sub-directories. If you wish to modify this batch file for a subset of variants or Debug versions, please make a copy and use your copy.
-
-{{{
-BuildAll_VS10.bat
-}}}
-
 ==Building the Executable for Development & Debugging==
 
 Using Windows Explorer, navigate to the directory containing the variant SLN file you wish to work with. In the example that follows the Inland Empire + Climate variant (iec) is used throughout, and the SLN file will be located here:
@@ -115,7 +101,7 @@ The Solution Explorer tree control shown below will let you see each project com
 
 [http://open-fvs.googlecode.com/svn/wiki/VS2010a.png]
 
-Before trying to compile the FVSiec variant you should right-click the *FVSiec* project and select *Set as StartUp Project.* It will then appear in bold font. Note that the FVSiec project is different from the FVS_iec project. The first of these builds the final executable; the second builds the DLL which contains most of the model code (and is linked to the executable, along with other DLL components).
+Before trying to compile the FVSiec variant you should right-click the *FVSiec* project and select *Set as StartUp Project*. It will then appear in bold font. Note that the FVSiec project is different from the FVS_iec project. The first of these builds the final executable; the second builds the DLL which contains most of the model code (and is linked to the executable, along with other DLL components).
 
 When you start Visual Studio, the first build of the variant should include all projects, but subsequent builds do not need to repeatedly perform the same internal checks. An example of a component that can be excluded after the first build is the step of checking for and creating the OS-dependent file TYPEDEFS.F77 which is created by the mkdbsTypeDefs project and required for database connectivity. That component only needs to be created once. In Visual Studio these non-essential projects can be unloaded by right-clicking the project and selecting *Unload Project* after the first successful build. The dbstypedefs project is the critical project to unload; the others are optional, as shown in the preceding table.
 
@@ -124,3 +110,17 @@ The image above shows an example of the Visual Studio Solution Explorer tree aft
 [http://open-fvs.googlecode.com/svn/wiki/VS2010b.png]
 
 It is often helpful to further automate the coding and debugging process by providing a response file that reproduces the file names entered by typing at the command line, making it unnecessary to repeatedly type input and output file names. This is easy to do by creating a response file using any valid file name (e.g. 'iet01.rsp'). Then right-click the FVSiec project in the Solution Explorer tree and select *Properties*. From the tree-control highlight *Debugging* and modify the Command Arguments to provide input redirection, as shown in the preceding figure.
+
+==Building the Executable in Batch==
+
+Assuming you have a command-prompt in this directory: 
+
+{{{
+\MyFvsFiles\trunk\bin
+}}}
+
+you can run the DOS batch file shown below to create Release versions of all variants in their respective sub-directories. If you wish to modify this batch file for a subset of variants or Debug versions, please make a copy and use your copy.
+
+{{{
+BuildAll_VS10.bat
+}}}
