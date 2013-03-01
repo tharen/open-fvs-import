@@ -59,21 +59,19 @@ Cmake utilizes two kinds of files to create to create each SLN file. First, it u
 As Cmake creates each variant SLN you will see something like this:
 
 {{{
--- Building for: Visual Studio 10
 -- tobuild = <...>/trunk/bin/FVSiec_sourceList.txt
--- Building for: Visual Studio 10
--- Check for working C compiler using: Visual Studio 10
--- Check for working C compiler using: Visual Studio 10 -- works
+-- The C compiler identification is GNU 4.7.2
+-- The Fortran compiler identification is GNU
+-- Check for working C compiler: C:/MinGW/bin/gcc.exe
+-- Check for working C compiler: C:/MinGW/bin/gcc.exe -- works
 -- Detecting C compiler ABI info
 -- Detecting C compiler ABI info - done
--- Check for working Fortran compiler using: Visual Studio 10
--- Check for working Fortran compiler using: Visual Studio 10  -- works
+-- Check for working Fortran compiler: C:/MinGW/bin/gfortran.exe
+-- Check for working Fortran compiler: C:/MinGW/bin/gfortran.exe  -- works
 -- Detecting Fortran compiler ABI info
 -- Detecting Fortran compiler ABI info - done
--- Determine Intel Fortran Compiler Implicit Link Path
--- Determine Intel Fortran Compiler Implicit Link Path -- done
--- Checking whether ifort supports Fortran 90
--- Checking whether ifort supports Fortran 90 -- yes
+-- Checking whether C:/MinGW/bin/gfortran.exe supports Fortran 90
+-- Checking whether C:/MinGW/bin/gfortran.exe supports Fortran 90 -- yes
 -- slfn = FVSiec_sourceList.txt prgName= FVSiec
 -- FVSvariant = FVSiec
 -- Configuring done
