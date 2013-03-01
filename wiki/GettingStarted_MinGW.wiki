@@ -39,14 +39,11 @@ Once you have navigated to the correct directory you are ready to use *Cmake* to
 At the command line type
 
 {{{
-cmake .
+cmake -G "MinGW Makefiles" .
 }}}
 
-This will begin the creation of MinGW makefiles for _all_ FVS variants. 
-
-<working here>
-
-In Visual Studio parlance, a "solution" creates one or more software systems based on projects that are the components of the solution. In this case of FVS, an executable file is the principal software system that is created, but 3 component DLLs are also created. Each variant's SLN will be placed in a sub-directory like this
+This will begin the creation of MinGW makefiles for _all_ FVS variants.
+Each variant's Makefile will be placed in a sub-directory like this
 
 {{{
 \MyFvsFiles\trunk\bin\FVSiec_CmakeDir
