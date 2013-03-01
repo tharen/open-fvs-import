@@ -83,7 +83,7 @@ When that is complete, you can proceed to build FVS from with the variant sub-di
 
 ==Building the Executable for Development & Debugging==
 
-At the command-line, `cd` to the directory containing the variant you wish to work with. In the example that follows the Inland Empire + Climate variant (iec) is used throughout, and the makefile will be located here:
+At the command-line, `cd` to the directory containing the variant you wish to work with. In the example that follows the Inland Empire + Climate variant (iec) is used, and the makefile will be located here:
 
 {{{
 \MyFvsFiles\trunk\bin\FVSiec_CmakeDir\Makefile
