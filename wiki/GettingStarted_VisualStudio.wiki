@@ -130,12 +130,12 @@ BuildAll_VS10.bat
 
 FVS executables created with VS2010 - the EXE and 3 DLLs - can be freely distributed to others. If these are provided to users who do not have the Intel Fortran compiler installed (or whose components cannot be found by the PATH variable), the following files will need to be provided. When provided, they can be copied into the directory containing the FVS executable.
 
-||*Component*       || *Debug* || *Release* || *Redistributable* ||
-|| libifcoremd.dll  ||   || X ||    ||
+||* !Component*       || *Debug* || *Release* || *Redistributable* ||
+|| libifcoremd.dll  ||   || X || Yes   ||
 || libifcoremdd.dll || X ||   || No ||
-|| libifportmd.dll  || X || X ||    ||
+|| libifportmd.dll  || X || X || Yes   ||
 || libmmdd.dll      || X ||   || No ||
-|| libmmd.dll       || X || X ||    ||
-|| svml_dispmd.dll  ||   || X ||    ||
+|| libmmd.dll       || X || X || Yes   ||
+|| svml_dispmd.dll  ||   || X || Yes   ||
 
 Please not the restriction on distributing certain Debug DLLs.
