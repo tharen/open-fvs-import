@@ -20,20 +20,21 @@ You will need to install the *MinGW (Minimalist GNU for Windows* system. Informa
 C:\MinGW\bin
 }}}
 
-To do this, right-click the "My Computer" icon on the Windows desktop, click the Advanced tab, then the Environment Variables button. Locate *PATH* or *Path* from the User variables or System variables variables, then click Edit. Add "; C:\MinGW\bin" at the end of the current set of PATH directories.
+One way to do this is to right-click the _My Computer_ icon on the Windows desktop, click the Advanced tab, then the Environment Variables button. Locate *PATH* or *Path* from either the User variables or System variables, then click Edit. Add "; C:\MinGW\bin" at the end of the current set of PATH directories. Then click your way back to the desktop.
+
 You will also need to install the Cmake system, which can be found [http://cmake.org/cmake/resources/software.html here]. Download and install the latest version. The Cmake build steps described below have been tested with Version 2.8.8 and require at least _Version 2.6_.
 
 ==Getting the Source Files==
 Please visit Getting Started for [GettingStarted_Windows Windows] to find out about SVN clients and the FVS code base.
 
-==Building the Visual Studio Solution (SLN) with Cmake==
+==Building the MinGW Makefile with Cmake==
 Open a DOS Command Window and navigate to the directory which contains the FVS code base. If you aren't familiar with the command prompt, click Start > (All) Programs > Accessories > Command Prompt and the Command Window should open to your personal directory. Assuming you have the FVS code base installed as described under Getting Started for [GettingStarted_Windows Windows], use the `cd` command to navigate to the `trunk\bin` directory inside the directory into which you checked out the open-fvs files. If you had placed the files into a directory called `MyFvsFiles` you would type the command as shown below.
 
 {{{
 cd \MyFvsFiles\trunk\bin
 }}}
 
-Once you have navigated to the correct directory you are ready to use *Cmake* to create a VS2010 solution file. If VS2010/Intel is installed, Cmake should automatically detect it and build the tools for VS2010. (If this does not happen automatically, please post the problem so that it can be resolved.)
+Once you have navigated to the correct directory you are ready to use *Cmake* to create the MinGW Makefile. If MinGW is installed, Cmake should automatically detect it and build the Makefile for each FVS variatnt. (If this does not happen automatically, please post the problem so that it can be resolved.)
 
 At the command line type
 
@@ -41,7 +42,11 @@ At the command line type
 cmake .
 }}}
 
-This will begin the creation of VS2010 solution files (suffix: SLN) for _all_ FVS variants. In Visual Studio parlance, a "solution" creates one or more software systems based on projects that are the components of the solution. In this case of FVS, an executable file is the principal software system that is created, but 3 component DLLs are also created. Each variant's SLN will be placed in a sub-directory like this
+This will begin the creation of MinGW makefiles for _all_ FVS variants. 
+
+<working here>
+
+In Visual Studio parlance, a "solution" creates one or more software systems based on projects that are the components of the solution. In this case of FVS, an executable file is the principal software system that is created, but 3 component DLLs are also created. Each variant's SLN will be placed in a sub-directory like this
 
 {{{
 \MyFvsFiles\trunk\bin\FVSiec_CmakeDir
