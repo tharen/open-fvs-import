@@ -104,10 +104,12 @@ Double-click on FVS.sln to start Visual Studio. After it starts you will see tha
 || FVSsql || No || C || _*FVSsql.dll*_ ||
 || ZERO_CHECK || Yes (optional) || - || - ||
 
-A tree control showing the solution components will help you navigate to the source files:
+The Solution Explorer tree control shown below will let you see each project component. You can navigate around this tree control to locate source code of various kinds.
 
 [http://open-fvs.googlecode.com/svn/wiki/VS2010a.png]
 
-When you start Visual Studio, the first build of the variant should include all projects, but subsequent builds do not need to perform the same internal checks (such as checking for and creating the OS-dependent file TYPEDEFS.F77 which is created by the mkdbsTypeDefs project and required for database connectivity), and can exclude some components from the build.
+Before trying to compile the FVSiec variant you should right-click the *FVSiec* project and select *Set as StartUp Project*. It will then appear in bold font. Note that the FVSiec project is different from the FVS_iec project. The first of these builds the final executable; the second builds the DLL which contains most of the model code (and is linked to the executable, along with other DLL components).
 
-In Visual Studio these non-essential projects can be unloaded by right-clicking the project and selecting *Unload Project* after the first successful build. The dbstypedefs project is the critical project to unload; the others are optional. Continuing with an FVS-IEC example: if the FVSiec project is not in bold-face after unloading these projects, right-click the FVSiec project name and select *Set as StartUp Project*. The 'FVSiec' project is different from the 'FVS_iec' project: the first of these builds the final executable; the second builds the DLL which contains most of the model code. Figure 1 shows an example of the Visual Studio Solution Explorer tree after the redundant projects have been unloaded and FVSiec made the startup project.
+When you start Visual Studio, the first build of the variant should include all projects, but subsequent builds do not need to repeatedly perform the same internal checks. An example of a component that can be excluded after the first build is the step of checking for and creating the OS-dependent file TYPEDEFS.F77 which is created by the mkdbsTypeDefs project and required for database connectivity. That component only needs to be created once. In Visual Studio these non-essential projects can be unloaded by right-clicking the project and selecting *Unload Project* after the first successful build. The dbstypedefs project is the critical project to unload; the others are optional, as shown in the preceding table.
+
+The image above shows an example of the Visual Studio Solution Explorer tree after one of its redundant projects has been unloaded and FVSiec made the startup project.
