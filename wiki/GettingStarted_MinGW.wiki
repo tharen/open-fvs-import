@@ -51,9 +51,9 @@ Each variant's Makefile will be placed in a sub-directory like this
 
 FVS variant subdirectories are named with the pattern `FVS***_CmakeDir`, where `***` is a 2- or 3-letter abbreviation for the variant (e.g., 2-letters `ie` for Inland Empire or `ls` for Lake States) optionally followed by a 1-letter abbreviation for an extension (e.g., `x` for the insect and disease extensions, or `c` for the climate extension).
 
-Cmake utilizes two kinds of files to create to create each SLN file. First, it uses a master script file called *CMakeLists.txt* to control the creation of each variant SLN. (You are welcome to inspect this file, but editing it is not recommended for beginners.) This master script file utilizes a set of about 20 files in turn - one for each variant - with names like 'FVSiec_sourceList.txt'. These files need to exist in the `trunk\bin` directory in order to build the variants. 
+Cmake utilizes two kinds of files to create to create each variant makefile. First, it uses a master script file called *CMakeLists.txt* to control the creation of the makefile. (You are welcome to inspect this file, but editing it is not recommended for beginners.) This master script file utilizes a set of about 20 files in turn - one for each variant - with names like 'FVSiec_sourceList.txt'. These files need to exist in the `trunk\bin` directory in order to build the variants. 
 
-As Cmake creates each variant SLN you will see something like this:
+As Cmake creates each variant makefile you will see something like this:
 
 {{{
 -- tobuild = <...>/trunk/bin/FVSiec_sourceList.txt
@@ -79,52 +79,26 @@ As Cmake creates each variant SLN you will see something like this:
 -- Build files have been written to: <...>/trunk/bin
 }}}
 
-When that is complete, you can proceed to customize each variant SLN file to build FVS. You only need to repeat the step of creating an SLN file if the underlying set of FVS source files change. Afterward, you can just rebuild the variants you need, based on periodic updates to the source code.
+When that is complete, you can proceed to build FVS from with the variant sub-directory. You only need to repeat the step of creating a makefile if the underlying set of FVS source files change. Afterward, you can just rebuild the variants you need, based on periodic updates to the source code.
 
 ==Building the Executable for Development & Debugging==
 
-Using Windows Explorer, navigate to the directory containing the variant SLN file you wish to work with. In the example that follows the Inland Empire + Climate variant (iec) is used throughout, and the SLN file will be located here:
+At the command-line, `cd` to the directory containing the variant you wish to work with. In the example that follows the Inland Empire + Climate variant (iec) is used throughout, and the makefile will be located here:
 
 {{{
-\MyFvsFiles\trunk\bin\FVSiec_CmakeDir\FVS.sln
+\MyFvsFiles\trunk\bin\FVSiec_CmakeDir\Makefile
 }}}
 
-Double-click on FVS.sln to start Visual Studio. After it starts you will see that the Solution contains 8 sub-projects shown below:
+At the command-line, type this to begin building the executable:
 
-||*Project Name* || *Exclude After 1st Build* || *Language* || *Output* ||
-|| FVSiec|| No || FORTRAN || *_FVSiec.exe_* ||
-|| All_BUILD|| Yes (optional) || - || - ||
-|| dbstypedefs|| Yes || - || - ||
-|| FVSfofem || No || C || *_FVSfofem.dll_* ||
-|| FVS_iec || No || FORTRAN || *_FVS_iec.dll_* ||
-|| mkdbsTypeDefs || Yes (optional) || C || DBSTYPEDEFS.F77 ||
-|| FVSsql || No || C || _*FVSsql.dll*_ ||
-|| ZERO_CHECK || Yes (optional) || - || - ||
-
-The Solution Explorer tree control shown below will let you see each project component. You can navigate around this tree control to locate source code of various kinds. The bulk of the FVS code will be in the FVS_iec project.
-
-[http://open-fvs.googlecode.com/svn/wiki/VS2010a.png]
-
-Before trying to compile the FVSiec variant you should right-click the *FVSiec* project and select *Set as !StartUp Project*. It will then appear in bold font. Note that the FVSiec project is different from the FVS_iec project. The first of these builds the final executable; the second builds the DLL which contains most of the model code (and is linked to the executable, along with other DLL components).
-
-When you start Visual Studio, the first build of the variant should include all projects, but subsequent builds do not need to repeatedly perform the same internal checks. An example of a component that can be excluded after the first build is 'dbstypedefs', which carries out the step of checking for the OS-dependent file TYPEDEFS.F77 created by the mkdbsTypeDefs project which supports for database connectivity for FVS. That component only needs to be created once. In Visual Studio such non-essential projects can be unloaded by right-clicking the project and selecting *Unload Project* after the first successful build. The dbstypedefs project is the critical project to unload; the others are optional, as shown in the preceding table.
-
-The image above shows an example of the Visual Studio Solution Explorer tree after one of its redundant projects has been unloaded and FVSiec made the startup project.
-
-[http://open-fvs.googlecode.com/svn/wiki/VS2010b.png]
-
-It is often helpful to further automate the coding and debugging process by providing a response file that reproduces the file names entered by typing at the command line, making it unnecessary to repeatedly type input and output file names. This is easy to do by creating a response file using any valid file name (e.g. 'iet01.rsp'). Then right-click the FVSiec project in the Solution Explorer tree and select *Properties*. From the tree-control highlight *Debugging* and modify the Command Arguments to provide input redirection, as shown in the preceding figure.
+{{{
+mingw32-make
+}}}
 
 ==Building the Executable in Batch==
 
-Assuming you have a command-prompt in this directory: 
+_This feature is not yet developed for MinGW._
 
-{{{
-\MyFvsFiles\trunk\bin
-}}}
+==Redistributables==
 
-you can run the DOS batch file shown below to create Release versions of all variants in their respective sub-directories. If you wish to modify this batch file for a subset of variants or Debug versions, please make a copy and use your copy.
-
-{{{
-BuildAll_VS10.bat
-}}}
+*Not yet complete*
