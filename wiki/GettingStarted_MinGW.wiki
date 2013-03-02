@@ -95,6 +95,14 @@ At the command-line, type this to begin building the executable:
 mingw32-make
 }}}
 
+When complete, you will find these 4 key components in the variant sub-directory:
+
+|| *Component Name*  || *Language* ||
+|| *_FVSiec.exe_*   || FORTRAN ||
+|| *_FVSfofem.dll_* || C ||
+|| *_FVS_iec.dll_*  || FORTRAN ||
+|| *_FVSsql.dll_*   || C || 
+
 ==Building the Executable in Batch==
 
 _This feature is not yet developed for MinGW._
