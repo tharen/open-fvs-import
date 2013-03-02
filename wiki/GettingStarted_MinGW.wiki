@@ -101,4 +101,11 @@ _This feature is not yet developed for MinGW._
 
 ==Redistributables==
 
-*Not yet complete*
+FVS executables created with MinGW - the EXE and 3 DLLs - can be freely distributed to others. If these are provided to users who do not have the MinGW system installed (or whose components cannot be found by the PATH variable), the following files will need to be provided. When provided, they can be copied into the directory containing the FVS executable.
+
+|| *Component*        ||
+|| libgcc_s_dw2-1.dll ||
+|| libgfortran-3.dll  ||
+|| libquadmath-0.dll  ||
+
+Please not the restriction on distributing certain Debug DLLs.
