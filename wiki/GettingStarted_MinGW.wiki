@@ -119,5 +119,5 @@ FVS executables created with MinGW - the EXE and 3 DLLs - can be freely distribu
 These redistributables can be found here:
 
 {{{
-\MyFvsFiles\trunk\bin\Redistributables\Win32-MinGW
+C:\MinGW\bin
 }}}
