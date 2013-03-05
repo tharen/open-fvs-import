@@ -39,7 +39,7 @@ Once you have navigated to the correct directory you are ready to use *Cmake* to
 At the command line type
 
 {{{
-cmake -G "MinGW Makefiles" .
+cmake -G"MinGW Makefiles" .
 }}}
 
 This will begin the creation of MinGW makefiles for _all_ FVS variants.
@@ -115,5 +115,3 @@ FVS executables created with MinGW - the EXE and 3 DLLs - can be freely distribu
 || libgcc_s_dw2-1.dll ||
 || libgfortran-3.dll  ||
 || libquadmath-0.dll  ||
-
-Please not the restriction on distributing certain Debug DLLs.
