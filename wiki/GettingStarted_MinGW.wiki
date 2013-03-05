@@ -116,7 +116,7 @@ FVS executables created with MinGW - the EXE and 3 DLLs - can be freely distribu
 || libgfortran-3.dll  ||
 || libquadmath-0.dll  ||
 
-These redistributables can be found here:
+On a default MinGW installation the release-mode redistributables can be found here: 
 
 {{{
 C:\MinGW\bin
