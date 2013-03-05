@@ -138,4 +138,4 @@ FVS executables created with VS2010/Intel - the EXE and 3 DLLs - can be freely d
 || libmmd.dll       || X || X || Yes ||
 || svml_dispmd.dll  ||   || X || Yes ||
 
-Please not the restriction on distributing certain Debug DLLs.
+Please note the restriction on distributing certain Debug DLLs.
