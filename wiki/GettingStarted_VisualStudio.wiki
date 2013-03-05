@@ -34,7 +34,7 @@ Once you have navigated to the correct directory you are ready to use *Cmake* to
 At the command line type
 
 {{{
-cmake .
+cmake -G"Visual Studio 10" .
 }}}
 
 This will begin the creation of VS2010 solution files (suffix: SLN) for _all_ FVS variants. In Visual Studio parlance, a "solution" creates one or more software systems based on projects that are the components of the solution. In this case of FVS, an executable file is the principal software system that is created, but 3 component DLLs are also created. Each variant's SLN will be placed in a sub-directory like this
