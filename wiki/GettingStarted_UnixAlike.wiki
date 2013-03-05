@@ -1,13 +1,121 @@
-#summary One-sentence summary of this page.
+#summary Unix build process
 
-= Introduction =
+=Getting Started with the Build Process in Windows using Unix=
 
-Add your content here.
+_Don Robinson, [http://www.essa.com ESSA] Technologies, March 2013_
 
+This wiki documents the process of setting things up on Unix so you can build FVS executables from the source files in the open-fvs repository. Builds of 64-bit versions have been tested on _<Unix test system>_. For more information on the build process, including information for builds on Windows please refer to Getting Started for [GettingStarted_MinGW MinGW], [GettingStarted_VisualStudio Visual Studio], or the [FAQ].
 
-= Details =
+= Contents =
 
-Add your content here.  Format your content with:
-  * Text in *bold* or _italic_
-  * Headings, paragraphs, and lists
-  * Automatic links to other wiki pages
+<wiki:toc max_depth="2" />
+
+==Getting the Necessary Tools==
+
+*<TODO>*
+
+You will need to install the *MinGW (Minimalist GNU for Windows* system. Information about MinGW can be found [http://www.mingw.org/ here], and the MinGW install pack can be found [http://sourceforge.net/projects/mingw/ here]. Download and install the latest version. The Cmake build steps described below have been tested with Version 4.7.2. using the default installation directory. You will also need to modify the PATH environment variable to add the MinGW directory:
+
+{{{
+C:\MinGW\bin
+}}}
+
+One way to do this is to right-click the _My Computer_ icon on the Windows desktop, click the Advanced tab, then the Environment Variables button. Locate *PATH* or *Path* from either the User variables or System variables, then click Edit. Add "; C:\MinGW\bin" at the end of the current set of PATH directories. Then click your way back to the desktop.
+
+You will also need to install the *Cmake* software, which can be found [http://cmake.org/cmake/resources/software.html here]. Download and install the latest version. The Cmake build steps described below have been tested with Version 2.8.10.2 and require at least _Version 2.6_.
+
+==Getting the Source Files==
+Please visit Getting Started for [GettingStarted_Windows Windows] to find out about SVN clients and the FVS code base.
+
+==Building the Unix Makefile with Cmake==
+
+*<TODO>*
+
+Open a command line shell and navigate to the `trunk\bin` directory into which you checked out the open-fvs files. If you had placed the files into a directory called `MyFvsFiles` you would type the command as shown below.
+
+{{{
+cd \MyFvsFiles\trunk\bin
+}}}
+
+Once you have navigated to the correct directory you are ready to use *Cmake* to create the Unix Makefile. Cmake should automatically detect the OS and build the Makefile for each FVS variatnt. (If this does not happen automatically, please post the problem so that it can be resolved.)
+
+At the command line type
+
+{{{
+cmake -G"Unix Makefiles" .
+}}}
+
+This will begin the creation of Unix makefiles for _all_ FVS variants.
+Each variant's Makefile will be placed in a sub-directory like this
+
+{{{
+\MyFvsFiles\trunk\bin\FVSiec_CmakeDir
+}}}
+
+FVS variant subdirectories are named with the pattern `FVS***_CmakeDir`, where `***` is a 2- or 3-letter abbreviation for the variant (e.g., 2-letters `ie` for Inland Empire or `ls` for Lake States) optionally followed by a 1-letter abbreviation for an extension (e.g., `x` for the insect and disease extensions, or `c` for the climate extension).
+
+Cmake utilizes two kinds of files to create to create each variant makefile. First, it uses a master script file called *CMakeLists.txt* to control the creation of the makefile. (You are welcome to inspect this file, but editing it is not recommended for beginners.) This master script file utilizes a set of about 20 files in turn - one for each variant - with names like 'FVSiec_sourceList.txt'. These files need to exist in the `trunk\bin` directory in order to build the variants. 
+
+As Cmake creates each variant makefile you will see something like this:
+
+*<TODO>*
+
+{{{
+-- tobuild = <...>/trunk/bin/FVSiec_sourceList.txt
+-- The C compiler identification is GNU 4.7.2
+-- The Fortran compiler identification is GNU
+-- Check for working C compiler: C:/MinGW/bin/gcc.exe
+-- Check for working C compiler: C:/MinGW/bin/gcc.exe -- works
+-- Detecting C compiler ABI info
+-- Detecting C compiler ABI info - done
+-- Check for working Fortran compiler: C:/MinGW/bin/gfortran.exe
+-- Check for working Fortran compiler: C:/MinGW/bin/gfortran.exe  -- works
+-- Detecting Fortran compiler ABI info
+-- Detecting Fortran compiler ABI info - done
+-- Checking whether C:/MinGW/bin/gfortran.exe supports Fortran 90
+-- Checking whether C:/MinGW/bin/gfortran.exe supports Fortran 90 -- yes
+-- slfn = FVSiec_sourceList.txt prgName= FVSiec
+-- FVSvariant = FVSiec
+-- Configuring done
+-- Generating done
+-- Build files have been written to: <...>/trunk/bin/FVSiec_CmakeDir
+-- Configuring done
+-- Generating done
+-- Build files have been written to: <...>/trunk/bin
+}}}
+
+When that is complete, you can proceed to build FVS from with the variant sub-directory. You only need to repeat the step of creating a makefile if the underlying set of FVS source files change. Afterward, you can just rebuild the variants you need, based on periodic updates to the source code.
+
+==Building the Executable for Development & Debugging==
+
+At the command-line, `cd` to the directory containing the variant you wish to work with. In the example that follows the Inland Empire + Climate variant (iec) is used, and the makefile will be located here:
+
+{{{
+\MyFvsFiles\trunk\bin\FVSiec_CmakeDir\Makefile
+}}}
+
+At the command-line, type this to begin building the executable:
+
+{{{
+make
+}}}
+
+When complete, you will find these 4 key components in the variant sub-directory:
+
+*<TODO>*
+
+|| *Component Name*  || *Language* ||
+|| *_FVSiec.exe_*   || FORTRAN ||
+|| *_FVSfofem.dll_* || C ||
+|| *_FVS_iec.dll_*  || FORTRAN ||
+|| *_FVSsql.dll_*   || C || 
+
+==Building the Executable in Batch==
+
+_This feature is not yet developed for Unix. It is a trivial shell script..._
+
+==Redistributables==
+
+*<TODO>*
+
+FVS executables created with Unix - the EXE and 3 DLLs - can be freely distributed to others. If these are provided to users who are also using Unix, no redistributables need to be provided.
