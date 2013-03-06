@@ -4,7 +4,7 @@
 
 _Don Robinson, [http://www.essa.com ESSA] Technologies, March 2013_
 
-This wiki documents the process of setting things up on a Windows PC so you can build FVS executables from the source files in the open-fvs repository. Builds of 32-bit versions have been tested on XP SP3, and 64-bit builds will likely be tested by the end of 2013. For more information on the build process, including information for builds on other platforms please refer to Getting Started for [GettingStarted_UnixAlike Unix], [GettingStarted_MinGW MinGW] or the [FAQ].
+This wiki documents the process of setting things up on a Windows PC so you can build FVS executables from the source files in the open-fvs repository. Builds of 32-bit versions have been tested on XP SP3, and 64-bit builds will likely be tested by the end of 2013. For more information on the build process, including information for builds on other platforms please refer to [GettingStarted_UnixAlike], [GettingStarted_MinGW] or the [FAQ].
 
 = Contents =
 
@@ -14,15 +14,15 @@ This wiki documents the process of setting things up on a Windows PC so you can 
 
 You will need Administrator privileges to install the necessary tools, so ensure you have that before proceeding.
 
-Building with Visual Studio requires *Microsoft Visual Studio 2010* and the *Intel Fortran compiler 2012 (XE)*. More recent versions of Visual Studio (including free or lower cost "Express" versions), and other compliant compilers _may work_, but have not been tested. Information about VS2010 is found [http://www.microsoft.com/visualstudio/eng/downloads here]. Information about the Intel compiler is found [http://software.intel.com/en-us/intel-visual-fortran-composer-xe-evaluation here]. You must have these both installed before continuing. Explaining the use of VS2010 is beyond the scope of this wiki page.
+Building with Visual Studio requires *Microsoft Visual Studio 2010* and the *Intel Fortran compiler 2012 (XE)*. More recent versions of Visual Studio (including free or lower cost "Express" versions), and other compliant compilers _may work_, but have not been tested. Information about VS2010 is found at [http://www.microsoft.com/visualstudio/eng/downloads]. Information about the Intel compiler is found at [http://software.intel.com/en-us/intel-visual-fortran-composer-xe-evaluation]. You must have these both installed before continuing. Explaining the use of VS2010 is beyond the scope of this wiki page.
 
-You will also need to install the Cmake system, which can be found [http://cmake.org/cmake/resources/software.html here]. Download and install the latest version. The Cmake build steps described below have been tested with Version 2.8.10.2 and require at least _Version 2.6_.
+You will also need to install the Cmake system, which can be found at [http://cmake.org/cmake/resources/software.html]. Download and install the latest version. The Cmake build steps described below have been tested with Version 2.8.10.2 and require at least _Version 2.6_.
 
 ==Getting the Source Files==
-Please visit Getting Started for [GettingStarted_Windows Windows] to find out about SVN clients and the FVS code base.
+Please visit [GettingStarted_Windows] to find out about SVN clients and the FVS code base.
 
 ==Building the Visual Studio Solution (SLN) with Cmake==
-Open a DOS Command Window and navigate to the directory which contains the FVS code base. If you aren't familiar with the command prompt, click Start > (All) Programs > Accessories > Command Prompt and the Command Window should open to your personal directory. Assuming you have the FVS code base installed as described under Getting Started for [GettingStarted_Windows Windows], use the `cd` command to navigate to the `trunk\bin` directory inside the directory into which you checked out the open-fvs files. If you had placed the files into a directory called `MyFvsFiles` you would type the command as shown below.
+Open a DOS Command Window and navigate to the directory which contains the FVS code base. If you aren't familiar with the command prompt, click Start > (All) Programs > Accessories > Command Prompt and the Command Window should open to your personal directory. Assuming you have the FVS code base installed as described in [GettingStarted_Windows], use the `cd` command to navigate to the `trunk\bin` directory inside the directory into which you checked out the open-fvs files. If you had placed the files into a directory called `MyFvsFiles` you would type the command as shown below.
 
 {{{
 cd \MyFvsFiles\trunk\bin
