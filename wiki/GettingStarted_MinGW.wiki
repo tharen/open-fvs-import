@@ -4,7 +4,7 @@
 
 _Don Robinson, [http://www.essa.com ESSA] Technologies, March 2013_
 
-This wiki documents the process of setting things up on a Windows PC so you can build FVS executables from the source files in the open-fvs repository. Builds of 32-bit versions have been tested on XP SP3, and 64-bit builds may be tested by the end of 2013. For more information on the build process, including information for builds on other platforms (Mac and Linux) please refer to Getting Started for [GettingStarted_Windows Windows], [GettingStarted_VisualStudio Visual Studio], or the [FAQ].
+This wiki documents the process of setting things up on a Windows PC so you can build FVS executables from the source files in the open-fvs repository. Builds of 32-bit versions have been tested on XP SP3, and 64-bit builds may be tested by the end of 2013. For more information on the build process, including information for builds on other platforms please refer to Getting Started for [GettingStarted_WindowsAlike Unix], [GettingStarted_VisualStudio Visual Studio], or the [FAQ].
 
 = Contents =
 
