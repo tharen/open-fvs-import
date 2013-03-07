@@ -12,17 +12,15 @@ This wiki documents the process of setting things up on Unix so you can build FV
 
 ==Getting the Necessary Tools==
 
-*<TODO>*
-
-You will need to install the *MinGW (Minimalist GNU for Windows* system. Information about MinGW can be found [http://www.mingw.org/ here], and the MinGW install pack can be found [http://sourceforge.net/projects/mingw/ here]. Download and install the latest version. The Cmake build steps described below have been tested with Version 4.7.2. using the default installation directory. You will also need to modify the PATH environment variable to add the MinGW directory:
+This documentation is based on building FVS on the Ubuntu variant of Linux (Ubuntu 12.04.2). It has been tested with Cmake 2.8.7 and gfortran 4.6.3. Your particular Unix OS might behave differently. You will probably need to download and install *Cmake*, *gfortran* and  *ODBC* software using commands like this:
 
 {{{
-C:\MinGW\bin
+sudo -apt-get install gfortran
+sudo -apt-get install cmake
+sudo -apt-get install unixodbc-dev
 }}}
 
-One way to do this is to right-click the _My Computer_ icon on the Windows desktop, click the Advanced tab, then the Environment Variables button. Locate *PATH* or *Path* from either the User variables or System variables, then click Edit. Add "; C:\MinGW\bin" at the end of the current set of PATH directories. Then click your way back to the desktop.
-
-You will also need to install the *Cmake* software, which can be found [http://cmake.org/cmake/resources/software.html here]. Download and install the latest version. The Cmake build steps described below have been tested with Version 2.8.10.2 and require at least _Version 2.6_.
+The Cmake build steps described below have been tested with Version 2.8.7 and require at least _Version 2.6_. gfortran has been tested with Version 4.6.3.
 
 ==Getting the Source Files==
 Please visit Getting Started for [GettingStarted_Windows Windows] to find out about SVN clients and the FVS code base.
