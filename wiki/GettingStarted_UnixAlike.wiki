@@ -27,15 +27,13 @@ Please visit Getting Started for [GettingStarted_Windows Windows] to find out ab
 
 ==Building the Unix Makefile with Cmake==
 
-*<TODO>*
-
 Open a command line shell and navigate to the `trunk\bin` directory into which you checked out the open-fvs files. If you had placed the files into a directory called `MyFvsFiles` you would type the command as shown below.
 
 {{{
 cd \MyFvsFiles\trunk\bin
 }}}
 
-Once you have navigated to the correct directory you are ready to use *Cmake* to create the Unix Makefile. Cmake should automatically detect the OS and build the Makefile for each FVS variatnt. (If this does not happen automatically, please post the problem so that it can be resolved.)
+Once you have navigated to the correct directory you are ready to use *Cmake* to create the Unix Makefile. Cmake should automatically detect the OS and build the Makefile for each FVS variant. (If this does not happen automatically, please post the problem so that it can be resolved.)
 
 At the command line type
 
@@ -56,30 +54,29 @@ Cmake utilizes two kinds of files to create to create each variant makefile. Fir
 
 As Cmake creates each variant makefile you will see something like this:
 
-*<TODO>*
-
 {{{
--- tobuild = <...>/trunk/bin/FVSiec_sourceList.txt
--- The C compiler identification is GNU 4.7.2
+-- tobuild = <...>/bin/FVSiec_sourceList.txt
+-- Building FVS variant with Unix
+-- The C compiler identification is GNU
 -- The Fortran compiler identification is GNU
--- Check for working C compiler: C:/MinGW/bin/gcc.exe
--- Check for working C compiler: C:/MinGW/bin/gcc.exe -- works
+-- Check for working C compiler: /usr/bin/gcc
+-- Check for working C compiler: /usr/bin/gcc -- works
 -- Detecting C compiler ABI info
 -- Detecting C compiler ABI info - done
--- Check for working Fortran compiler: C:/MinGW/bin/gfortran.exe
--- Check for working Fortran compiler: C:/MinGW/bin/gfortran.exe  -- works
+-- Check for working Fortran compiler: /usr/bin/gfortran
+-- Check for working Fortran compiler: /usr/bin/gfortran  -- works
 -- Detecting Fortran compiler ABI info
 -- Detecting Fortran compiler ABI info - done
--- Checking whether C:/MinGW/bin/gfortran.exe supports Fortran 90
--- Checking whether C:/MinGW/bin/gfortran.exe supports Fortran 90 -- yes
+-- Checking whether /usr/bin/gfortran supports Fortran 90
+-- Checking whether /usr/bin/gfortran supports Fortran 90 -- yes
 -- slfn = FVSiec_sourceList.txt prgName= FVSiec
 -- FVSvariant = FVSiec
 -- Configuring done
 -- Generating done
--- Build files have been written to: <...>/trunk/bin/FVSiec_CmakeDir
+-- Build files have been written to: <...>/bin/FVSiec_CmakeDir
 -- Configuring done
 -- Generating done
--- Build files have been written to: <...>/trunk/bin
+-- Build files have been written to: <...>/bin
 }}}
 
 When that is complete, you can proceed to build FVS from with the variant sub-directory. You only need to repeat the step of creating a makefile if the underlying set of FVS source files change. Afterward, you can just rebuild the variants you need, based on periodic updates to the source code.
@@ -112,4 +109,4 @@ _This feature is not yet developed for Unix. It is a trivial shell script..._
 
 ==Redistributables==
 
-FVS executables created with Unix - the EXE and 3 DLLs - can be freely distributed to others using the same Unix OS platform. If these are provided to users who are also using Unix, no redistributables need to be provided.
+FVS executables created with Unix - the executable and 3 shared libraries - can be freely distributed to others using the same Unix OS platform.
