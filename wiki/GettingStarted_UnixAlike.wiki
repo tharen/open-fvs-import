@@ -55,7 +55,7 @@ Cmake utilizes two kinds of files to create to create each variant makefile. Fir
 As Cmake creates each variant makefile you will see something like this:
 
 {{{
--- tobuild = <...>/bin/FVSiec_sourceList.txt
+-- tobuild = <...>/trunk/bin/FVSiec_sourceList.txt
 -- Building FVS variant with Unix
 -- The C compiler identification is GNU
 -- The Fortran compiler identification is GNU
@@ -73,10 +73,10 @@ As Cmake creates each variant makefile you will see something like this:
 -- FVSvariant = FVSiec
 -- Configuring done
 -- Generating done
--- Build files have been written to: <...>/bin/FVSiec_CmakeDir
+-- Build files have been written to: <...>/trunk/bin/FVSiec_CmakeDir
 -- Configuring done
 -- Generating done
--- Build files have been written to: <...>/bin
+-- Build files have been written to: <...>/trunk/bin
 }}}
 
 When that is complete, you can proceed to build FVS from with the variant sub-directory. You only need to repeat the step of creating a makefile if the underlying set of FVS source files change. Afterward, you can just rebuild the variants you need, based on periodic updates to the source code.
