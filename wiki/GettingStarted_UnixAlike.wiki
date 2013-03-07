@@ -100,13 +100,11 @@ make
 
 When complete, you will find these 4 key components in the variant sub-directory:
 
-*<TODO>*
-
 || *Component Name*  || *Language* ||
-|| *_FVSiec.exe_*   || FORTRAN ||
-|| *_FVSfofem.dll_* || C ||
-|| *_FVS_iec.dll_*  || FORTRAN ||
-|| *_FVSsql.dll_*   || C || 
+|| *_FVSiec_*   || FORTRAN ||
+|| *_libFVSfofem.so_* || C ||
+|| *_libFVS_iec.so_*  || FORTRAN ||
+|| *_libFVSsql.so_*   || C || 
 
 ==Building the Executable in Batch==
 
@@ -114,6 +112,4 @@ _This feature is not yet developed for Unix. It is a trivial shell script..._
 
 ==Redistributables==
 
-*<TODO>*
-
-FVS executables created with Unix - the EXE and 3 DLLs - can be freely distributed to others. If these are provided to users who are also using Unix, no redistributables need to be provided.
+FVS executables created with Unix - the EXE and 3 DLLs - can be freely distributed to others using the same Unix OS platform. If these are provided to users who are also using Unix, no redistributables need to be provided.
