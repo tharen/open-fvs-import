@@ -4,7 +4,7 @@
 
 _Don Robinson, [http://www.essa.com ESSA] Technologies, March 2013_
 
-This wiki documents the process of setting things up on Unix so you can build FVS executables from the source files in the open-fvs repository. Builds of 64-bit versions have been tested on _<Unix test system>_. For more information on the build process, including information for builds on Windows please refer to Getting Started for [GettingStarted_MinGW MinGW], [GettingStarted_VisualStudio Visual Studio], or the [FAQ].
+This wiki documents the process of setting things up on Unix so you can build FVS executables from the source files in the open-fvs repository. Builds of 64-bit versions have been tested on _<Unix test system>_. For more information on the build process, including information for builds on Windows please refer to [GettingStarted_MinGW], [GettingStarted_VisualStudio], or the [FAQ].
 
 = Contents =
 
