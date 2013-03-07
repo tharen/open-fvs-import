@@ -56,6 +56,7 @@ Cmake utilizes two kinds of files to create to create each variant makefile. Fir
 As Cmake creates each variant makefile you will see something like this:
 
 {{{
+-- Building FVS variant with MinGW
 -- tobuild = <...>/trunk/bin/FVSiec_sourceList.txt
 -- The C compiler identification is GNU 4.7.2
 -- The Fortran compiler identification is GNU
