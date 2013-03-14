@@ -1,0 +1,48 @@
+=Downloading The Source Files=
+
+The open-fvs files are stored in a Subversion (SVN) repository. You will need SVN client software in order to download the source code. There is a wide variety of SVN client software packages for different operating systems available as free downloads from [http://subversion.apache.org/packages.html]. Two more free packages for Windows are Tortoise ([http://tortoisesvn.net]) and SmartSVN ([http://www.smartsvn.com]). There are others available, and we don't endorse the use of any particular software.
+
+You will use the "checkout" feature of your SVN client software package to download the FVS source files. Refer to the documentation for your particular client software if you need help with this. Select or create an appropriate directory on your hard drive into which the source files will be checked out. For example, you could create a directory on your hard drive called `MyFvsFiles` and checkout the repository into that directory.
+
+==Command-Line SVN Downloads==
+
+If you have a command-line SVN client you can use the "Command-line Access" instructions on the [http://code.google.com/p/open-fvs/source/checkout Source] page of open-fvs to checkout the source files. You will need to navigate to the checkout directory on your hard drive before performing the checkout. There are two different checkout commands. If you were designated as a committer and you plan to commit your code changes you should use the command that includes your googlecode username. That command is entered as
+
+{{{
+svn checkout https://open-fvs.googlecode.com/svn/ open-fvs --username __@__
+}}}
+ 
+where `__@__` is your googlecode email ID. When you execute this command you will be prompted for a googlecode password. If you are unsure of that password use the link provided on the Source page to retrieve it. This command places the source files into a directory called "open-fvs". When typing this command don't forget to include the "s" in "https". If you are logged in, the [http://code.google.com/p/open-fvs/source/checkout Source] page displays this command exactly as it needs to be entered, including your email ID. 
+
+If you want to simply check out the source code anonymously you can use the command that doesn't include your googlecode username. That command is shown below.
+
+{{{
+svn checkout http://open-fvs.googlecode.com/svn/ open-fvs-read-only
+}}}
+
+This command places the source files into a directory called "open-fvs-read-only". Note there is no "s" in "http" in this command.
+
+After the initial checkout of the source code you will use the "update" command to update your local copy of the repository with any changes that have been committed since you last updated your local copy of the files with those from the open-fvs site.  After navigating to the appropriate directory use the following command.
+
+{{{
+svn update
+}}}
+
+==GUI SVN Downloads==
+If you have a GUI-based SVN client you will use the appropriate features to checkout the open-fvs repository into the folder you created for this purpose. Refer to the documentation for your particular client software if you need help with the checkout procedure. 
+
+If you were designated as a committer and you plan to commit your code changes you should specify the repository URL as shown below.
+
+{{{
+http://open-fvs.googlecode.com/svn
+}}}
+
+If you want to simply check out the source code anonymously you should specify the repository URL as shown below.
+
+{{{
+http://open-fvs.googlecode.com/svn
+}}}
+
+You will need to specify your googlecode email ID and password when using this URL. Refer to the documentation for your particular client software if you need help setting this up.
+
+After the initial checkout you will use the update feature of your SVN client to update your local copy of the repository.
