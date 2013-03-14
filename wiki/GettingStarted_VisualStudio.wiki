@@ -16,7 +16,7 @@ You will need Administrator privileges to install the necessary tools, so ensure
 
 Building with Visual Studio requires *Microsoft Visual Studio 2010* and the *Intel Fortran compiler 2012 (XE)*. More recent versions of Visual Studio (including free or lower cost "Express" versions), and other compliant compilers _may work_, but have not been tested. Information about VS2010 is found at [http://www.microsoft.com/visualstudio/eng/downloads www.microsoft.com]. Information about the Intel compiler is found at [http://software.intel.com/en-us/intel-visual-fortran-composer-xe-evaluation http://software.intel.com]. You must have these both installed before continuing. Explaining the use of VS2010 is beyond the scope of this wiki page.
 
-You will also need to install the Cmake system, which can be found at [http://cmake.org/cmake/resources/software.html http://cmake.org]. Download and install the latest version. The Cmake build steps described below have been tested with Version 2.8.10.2 and require at least _Version 2.6_.
+You will also need to install the *Cmake* system, which can be found at [http://cmake.org/cmake/resources/software.html http://cmake.org]. Download and install the latest version. The Cmake build steps described below have been tested with Version 2.8.10.2 and require at least _Version 2.6_.
 
 ==Getting the Source Files==
 Please visit [GettingStarted_Windows] to find out about SVN clients and the FVS code base.
