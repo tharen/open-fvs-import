@@ -28,7 +28,7 @@ Open a DOS Command Window and navigate to the directory which contains the FVS c
 cd \MyFvsFiles\trunk\bin
 }}}
 
-Once you have navigated to the correct directory you are ready to use *Cmake* to create a VS2010 solution file. If VS2010/Intel is installed, Cmake should automatically detect it and build the tools for VS2010. (If this does not happen automatically, please post the problem so that it can be resolved.)
+Once you have navigated to the correct directory you are ready to use Cmake to create a VS2010 solution file. If VS2010/Intel is installed, Cmake should automatically detect it and build the tools for VS2010. (If this does not happen automatically, please post the problem so that it can be resolved.)
 
 At the command line type
 
