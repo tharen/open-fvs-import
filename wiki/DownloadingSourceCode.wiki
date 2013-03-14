@@ -37,12 +37,12 @@ If you were designated as a committer and you plan to commit your code changes y
 http://open-fvs.googlecode.com/svn
 }}}
 
+You will need to specify your googlecode email ID and password when using this URL. Refer to the documentation for your particular client software if you need help setting this up.
+
 If you want to simply check out the source code anonymously you should specify the repository URL as shown below.
 
 {{{
 http://open-fvs.googlecode.com/svn
 }}}
-
-You will need to specify your googlecode email ID and password when using this URL. Refer to the documentation for your particular client software if you need help setting this up.
 
 After the initial checkout you will use the update feature of your SVN client to update your local copy of the repository.
