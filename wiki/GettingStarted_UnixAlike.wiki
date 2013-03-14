@@ -33,7 +33,7 @@ Open a command line shell and navigate to the `trunk\bin` directory into which y
 cd \MyFvsFiles\trunk\bin
 }}}
 
-Once you have navigated to the correct directory you are ready to use *Cmake* to create the Unix Makefile. Cmake should automatically detect the OS and build the Makefile for each FVS variant. (If this does not happen automatically, please post the problem so that it can be resolved.)
+Once you have navigated to the correct directory you are ready to use Cmake to create the Unix Makefile. Cmake should automatically detect the OS and build the Makefile for each FVS variant. (If this does not happen automatically, please post the problem so that it can be resolved.)
 
 At the command line type
 
