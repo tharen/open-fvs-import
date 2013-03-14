@@ -28,16 +28,16 @@ After the initial checkout of the source code you will use the "update" command 
 svn update
 }}}
 
-==GUI SVN Downloads==
+==GUI-Based SVN Downloads==
 If you have a GUI-based SVN client you will use the appropriate features to checkout the open-fvs repository into the folder you created for this purpose. Refer to the documentation for your particular client software if you need help with the checkout procedure. 
 
 If you were designated as a committer and you plan to commit your code changes you should specify the repository URL as shown below.
 
 {{{
-http://open-fvs.googlecode.com/svn
+https://open-fvs.googlecode.com/svn
 }}}
 
-You will need to specify your googlecode email ID and password when using this URL. Refer to the documentation for your particular client software if you need help setting this up.
+Note the "s" in "https". You will need to specify your googlecode email ID and password when using this URL. Refer to the documentation for your particular client software if you need help setting this up.
 
 If you want to simply check out the source code anonymously you should specify the repository URL as shown below.
 
