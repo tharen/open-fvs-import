@@ -3,13 +3,13 @@
 
 =Getting Started with the Build Process in Windows using Rtools=
 
-This wiki documents the process of setting things up on a Windows PC so you can build FVS executables from the source files in the open-fvs repository. For more information on the build process, including information for builds on other platforms (Mac and Linux) please refer to the [BuildProcess] wiki or the [FAQ] wiki.
+This wiki documents the process of setting things up on a Windows PC so you can use the Rtools toolkit to build FVS executables from the source files in the open-fvs repository. For more information on the build process, including information for other Windows builds and builds on other platforms (Mac and Linux) please refer to the [BuildProcess] wiki, the [FAQ] wiki, or the wikis for other build processes.
 
 ==Getting The Necessary Tools==
 
 You will need Administrator privileges to install the necessary tools, so ensure you have that before proceeding.
 
-The *Rtools* toolkit package is needed in order to build the executables. Download it from http://cran.r-project.org/bin/windows/Rtools/ . Download the latest Rtools package.
+There are several different compiler packages that can be used to build the executables on a Windows PC.  The *Rtools* toolkit package will be discussed here.  Refer to the appropriate wiki document for discussion of the others. Download the Rtools toolkit from [http://cran.r-project.org/bin/windows/Rtools/]. You will want to download the _latest_ Rtools package.
 
 Once you get the installer downloaded, run it.  When you get to the *"Select Components" window, check all of the check boxes*.  When you get to the *"Select Additional Tasks" window, check both check boxes*. Then just click through the rest of the installation. Unfortunately, when the installation is complete, nothing shows up on the desktop or in your start menu as is typically done with Windows installations. 
 
@@ -50,7 +50,7 @@ Now that you have verified you have successfully installed RTools, the next step
 
 The open-fvs files are stored in a Subversion (SVN) repository. If you have a command-line version of Subversion you can use the "Command-line Access" instructions on the [http://code.google.com/p/open-fvs/source/checkout Source] page of open-fvs.
 
-If you don't have an *SVN client* software package you may want to install one with a Windows interface. There are several free SVN packages available for download. Two examples are Tortoise ([http://tortoisesvn.net/]) and SmartSVN ([http://www.syntevo.com/smartsvn/])
+If you don't have an *SVN client* software package you may want to install one with a Windows interface. There are several SVN packages available as free downloads from [http://subversion.apache.org/packages.html]. Two more free packages are Tortoise ([http://tortoisesvn.net/]) and SmartSVN ([http://www.syntevo.com/smartsvn/])
 
 You will use the "checkout" feature of your SVN client software package to download the FVS source files. Refer to the software documentation if you need help with this. Designate the repository using the URL http://open-fvs.googlecode.com/svn/. Select or create an appropriate directory on your hard drive to download the source files into. For example, you could create a directory on your C drive called `MyFvsFiles`.
 
