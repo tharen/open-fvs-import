@@ -3,7 +3,7 @@
 
 =Getting Started with the Build Process in Windows using Rtools=
 
-This wiki documents the process of setting things up on a Windows PC so you can use the Rtools toolkit to build FVS executables from the source files in the open-fvs repository. For more information on the build process, including information for other Windows builds and builds on other platforms (Mac and Linux) please refer to the [BuildProcess] wiki, the [FAQ] wiki, or the wikis for other build processes.
+This document describes the process of setting things up on a Windows PC so you can use the Rtools toolkit to build FVS executables from the source files in the open-fvs repository. For more information on the build process, including information for other Windows builds and builds on other platforms (Mac and Linux) please refer to the [BuildProcess] wiki, the [FAQ] wiki, or the wikis for other build processes.
 
 ==Getting The Necessary Tools==
 
@@ -44,15 +44,9 @@ Make sure the version (shown on the first line of the report) is at least 4.5.
 That's it. You’ve successfully installed Rtools and can now build open-fvs programs. 
 Now that you have verified you have successfully installed RTools, the next step is to check out the source code from the Subversion repository located on google.code servers. 
 
-
-
 ==Getting The Source Files==
 
-The open-fvs files are stored in a Subversion (SVN) repository. If you have a command-line version of Subversion you can use the "Command-line Access" instructions on the [http://code.google.com/p/open-fvs/source/checkout Source] page of open-fvs.
-
-If you don't have an *SVN client* software package you may want to install one with a Windows interface. There are several SVN packages available as free downloads from [http://subversion.apache.org/packages.html]. Two more free packages are Tortoise ([http://tortoisesvn.net/]) and SmartSVN ([http://www.syntevo.com/smartsvn/])
-
-You will use the "checkout" feature of your SVN client software package to download the FVS source files. Refer to the software documentation if you need help with this. Designate the repository using the URL http://open-fvs.googlecode.com/svn/. Select or create an appropriate directory on your hard drive to download the source files into. For example, you could create a directory on your C drive called `MyFvsFiles`.
+The open-fvs files are stored in a Subversion (SVN) repository. You will need SVN client software to download the files. Refer to the [DownloadingSourceCode] wiki document for detailed downloading instructions.
 
 ==Building The Executable==
 
