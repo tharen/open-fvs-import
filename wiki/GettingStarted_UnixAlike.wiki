@@ -1,6 +1,6 @@
 #summary Unix build process
 
-=Getting Started with the Build Process in Windows using Unix=
+=Getting Started with the Build Process in Unix=
 
 _Don Robinson, [http://www.essa.com ESSA] Technologies, March 2013_
 
