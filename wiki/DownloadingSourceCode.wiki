@@ -12,17 +12,17 @@ The open-fvs file repository is an open-source Subversion (SVN) repository. Anyo
 
 =SVN Client Software=
 
-There are two styles of SVN client software.  The first is a command-line style that runs from a command prompt where the user types in commands.  The other uses a graphical user interface (GUI) with graphical elements like buttons and text boxes. You will have to choose SVN client software that you are comfortable with.
+There are two styles of SVN client software.  The first is a command-line style that runs from a command prompt where the user types in commands.  The other uses a graphical user interface (GUI) with graphical elements like buttons and text boxes. You will have to choose SVN client software that you are comfortable with. Unless you are familiar with your command console (e.g., the DOS or UNIX console) and its associated standard commands you may want to try a GUI-based client.
 
 There is a wide variety of SVN client software packages for different operating systems available as free downloads from [http://subversion.apache.org/packages.html]. Two more free packages for Windows are Tortoise ([http://tortoisesvn.net]) and SmartSVN ([http://www.smartsvn.com]). There are others available, and we don't endorse the use of any particular software. Whichever package you decide to use, make sure it is properly installed before proceeding.
 
 =Downloading The Source Files=
 
-In SVN terminology, downloading files is called a "checkout". You will use the checkout feature of your SVN client software package to download the FVS source files. Refer to the documentation for your particular client software if you need help with this. 
+In SVN terminology, downloading the source files to create a local copy of the repository is called a "checkout". You will use the checkout feature of your SVN client software package to download the FVS source files. Refer to the documentation for your particular client software if you need help with this. 
 
-Before you download the source files you will need to select or create an appropriate directory on your hard drive into which the files will be checked out. For example, you could create a directory on your hard drive called `MyFvsFiles` and checkout the repository into that directory. If a suitable directory already exists you can use that one. Whatever you choose as the destination directory it is suggested that its sole purpose be to store the FVS source files.
+Before you download the source files you will need to select or create an appropriate directory on your hard drive into which the files will be checked out. For example, you could create a directory called `open-fvs` (or any other name you choose) and checkout the repository into it. If a suitable directory already exists you can use that one. Whatever you choose as the destination directory it is suggested that its sole purpose be to store the FVS source files.
 
-When you have SVN client software installed and have chosen a destination directory you are ready to beging downloading the files.
+When you have SVN client software installed and have chosen a destination directory you are ready to begin downloading the files.
 
 ==Checkout Using a Command-Line SVN Client==
 
@@ -32,7 +32,7 @@ If you have a command-line SVN client you can use the command shown below to che
 svn checkout https://open-fvs.googlecode.com/svn/ open-fvs
 }}}
  
-The last part of this command specifies the directory into which the repository will be checked out.  In this example we specified the directory "open-fvs". The open-fvs directory is a subdirectory of the current working directory specified in the command-line console. When the command executes you should get a copy of the entire open-fvs repository in the directory you specified. If you don't specify a directory the repository will be copied directly into the current working directory. It is also possible to specify a directory elsewhere by including the path to that directory.
+The last part of this command specifies the directory into which the repository will be checked out.  In this example we specified the directory "open-fvs". The open-fvs directory is a subdirectory of the current working directory for the command-line console. When the command executes you should get a copy of the entire open-fvs repository in the directory you specified. If you don't specify a directory the repository will be copied directly into the current working directory. It is also possible to specify a directory elsewhere by including the path to that directory.
 
 ==Checkout Using a GUI-Based SVN Client==
 
@@ -43,6 +43,8 @@ You should specify the repository URL as shown below. When typing this URL don't
 {{{
 https://open-fvs.googlecode.com/svn
 }}}
+
+The directory into which you want to checkout the repository needs to be specified as well. Refer to the documentation for your particular SVN client software if you need help.  A username and password are NOT required to checkout the source files, so you should any references to such items should be left blank.
 
 =Updating Your Copy of the Source Files=
 
@@ -60,6 +62,6 @@ If you are using a GUI-based SVN client you will use the "update" feature, which
 
 =Committing Modified Code=
 
-Only those designated as committers will be able to commit code changes. Rules and procedures for commits will be covered by a separate wiki.  However, there is one thing that should be mentioned here. Updates should be committed through the *https* version of the URL.  That is why it was suggested you use that URL when doing the intial checkout.  
+Only those designated as committers will be able to commit code changes. Rules and procedures for commits are covered in the [RepositoryMgmtPolicy] wiki. *All committers are expected to read that document and follow the rules it contains*.  There is one thing that should be mentioned here. Updates should be committed through the *https* version of the URL.  That is why it was suggested you use that URL when doing the intial checkout.  
 
 When committing updates you will be prompted for your googlecode email ID and googlecode password. This is not your normal password. It is assigned by the googlecode site. To see your password, sign in and use the link provided on the [http://code.google.com/p/open-fvs/source/checkout Source] page to retrieve it.
