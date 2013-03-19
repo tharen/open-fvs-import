@@ -1,6 +1,6 @@
 #summary Windows build process using Visual Studio 2010/Intel Fortran
 
-=Getting Started with the Build Process in Windows using Visual Studio=
+=The Build Process in Windows using Visual Studio=
 
 _Don Robinson, [http://www.essa.com ESSA] Technologies, March 2013_
 
