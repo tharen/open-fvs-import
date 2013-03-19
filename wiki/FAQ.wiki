@@ -18,7 +18,7 @@ For more information, see the [http://code.google.com/p/open-fvs/source/checkout
 
 Since we currently do not have an automated build process, this will depend on your computer platform (e.g. Intel, AMD, etc.) and operating system (e.g. Win32, Win64, MingW, Cygwin, OSX, FreeBSD, etc.). 
 
-A simple solution is to install [http://cran.r-project.org/bin/windows/Rtools/ Rtools], which is also used to build R under Windows. It includes all the required tools to build FVS for Windows. If you are building under Windows, make sure you read the [http://code.google.com/p/open-fvs/wiki/GettingStarted_Windows getting started page for Windows builds] too.
+A simple solution is to install [http://cran.r-project.org/bin/windows/Rtools/ Rtools], which is also used to build R under Windows. It includes all the required tools to build FVS for Windows. If you are building under Windows, make sure you read the [http://code.google.com/p/open-fvs/wiki/BuildProcess_Rtools page for Rtools builds] too.
 
 
 
