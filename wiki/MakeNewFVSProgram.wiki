@@ -14,7 +14,7 @@ This Wiki page provides a very short set of instructions for getting started. Th
 {{{
 cp FVSne_sourceList.txt FVSacd_sourceList.txt
 }}}
-  # Add the new program to the make file. An approach for accomplishing this task is to search the current makefile for FVSne and make corresponding entries for FVSacd. Note that you need not worry about the make rules. The make file uses to `FVSacd_sourceList.txt` to automatically build the make rules, you simply modify that file as you progress (if you're interested, see [BuildProcess] and [NewMakeFile] for details).
+  # Add the new program to the make file. An approach for accomplishing this task is to search the current makefile for FVSne and make corresponding entries for FVSacd. Note that you need not worry about the make rules. The make file uses `FVSacd_sourceList.txt` to automatically build the make rules, you simply modify that file as you progress.
   # Make your new program, on *Windows*, use the following command,  on other systems, leave off the .exe: 
 {{{
 make FVSacd.exe
