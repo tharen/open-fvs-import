@@ -1,6 +1,6 @@
 #summary Using an SVN client to download the FVS source files
 
-=Contents=
+*Contents*
 
 <wiki:toc max_depth="2" />
 
