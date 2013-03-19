@@ -58,33 +58,33 @@ Open a Command Window. If you don't know how to do this, refer to the "Getting t
 
 Use the `cd` command to navigate to the `trunk/bin` directory inside the directory into which you checked out the open-fvs files. If you had placed the files into a directory called `MyFvsFiles` you would type the command as shown below.  Please note that the Windows operating system requires a backslash (\) instead of a forward slash (/) to separate directory names.  Use whatever is appropriate for your operating system.
 
-Windows
+Windows:
 {{{
 cd \MyFvsFiles\trunk\bin
 }}}
-Other systems
+Other systems:
 {{{
 cd /MyFvsFiles/trunk/bin
 }}}
 
 Once you have navigated to the correct directory you are ready to make an executable. The FVS variant executables are named `FVS__`, where the `__` is the 2-letter abbreviation for the variant (e.g., `ie` for Inland Empire or `ls` for Lake States) optionally followed by the 1-letter abbreviation for an extension (e.g., `x` for the insect and disease extensions, or `c` for the climate extension). Executables on Windows have the filename extension `.exe` added to the base name. To make an executable, type the command `make FVS__` (or `make FVS__.exe`) with `__` replaced by the variant and extension designations. For example, to build the Inland Empire variant with the Climate extension you would use the appropriate command shown below.
 
-Windows
+Windows:
 {{{
 make FVSiec.exe
 }}}
-Other systems
+Other systems:
 {{{
 make FVSiec
 }}}
 
 To build the Lake States variant with none of the optional extensions you would use the same command with "iec" replaced with "ls", as shown below.
 
-Windows
+Windows:
 {{{
 make FVSls.exe
 }}}
-Other systems
+Other systems:
 {{{
 make FVSls
 }}}
@@ -93,10 +93,14 @@ The variant executable file is created in the `trunk/bin` directory in which you
 
 A sourcelist file needs to exist in the `trunk/bin` directory in order to build the variants in this way. For example, the file `FVSls_sourceList.txt` allows you to use the `make` command to build the variant executable `FVSls` (`FVSls.exe` on Windows). Look in the `trunk/bin` directory to see which variants are currently available.
 
-To build all of the variants for which a sourcelist file exists just type `make` and do not specify a variant.
+To build all of the variants for which a sourcelist file exists just type `make` and do not specify a variant. This could take a long time (up to half an hour or more) to complete.
 
 {{{
 make
 }}}
 
-This could take a long time (up to half an hour or more) to complete.
+To remove all the programs, object files, and build directories, use the "clean" option.
+
+{{{
+make clean
+}}}
