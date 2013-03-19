@@ -4,41 +4,21 @@
 
 This is a basic list of the frequently asked questions (FAQ) for the open-fvs project. 
 
-= Question 1. How do I checkout out the source code? =
+= Question 1. How do I obtain the source code? =
 
-You can obtain the source code anonymously using [http://subversion.apache.org/ Subversion],
+You can checkout the source code anonymously using [http://subversion.apache.org/ Subversion],
 
 {{{
-svn checkout http://open-fvs.googlecode.com/svn open-fvs
+svn checkout https://open-fvs.googlecode.com/svn open-fvs
 }}}
 
-For more information, see the [http://code.google.com/p/open-fvs/source/checkout Source] link.
+For more information, see the [DownloadingSourceCode] page.
 
 = Question 2. How do I build one of the FVS variants? =
 
-Since we currently do not have an automated build process, this will depend on your computer platform (e.g. Intel, AMD, etc.) and operating system (e.g. Win32, Win64, MingW, Cygwin, OSX, FreeBSD, etc.). 
+We currently have wiki documents describing the build process on [BuildProcess_UnixAlike Unix-alike] systems, and on Windows systems using [BuildProcess_VisualStudio Visual Studio], [BuildProcess_MinGW MinGW], or [BuildProcess_Rtools Rtools]. 
 
-A simple solution is to install [http://cran.r-project.org/bin/windows/Rtools/ Rtools], which is also used to build R under Windows. It includes all the required tools to build FVS for Windows. If you are building under Windows, make sure you read the [http://code.google.com/p/open-fvs/wiki/BuildProcess_Rtools page for Rtools builds] too.
-
-
-
-If you're using another operating system, you should be able to use standard GNU utilities to make the applications. 
-
-Regardless, once you have your tools installed, you should be able to build your FVS variants.
-
-From your current directory, check out the source code (see question 1), then change into the `trunk/bin` directory. Then run the the make command using the variant you want to build. For example, to build the [http://www.fs.fed.us/fmsc/ftp/fvs/docs/overviews/FVSpn_Overview.pdf Pacific Northwest FVS] variant with the climate extension, 
-
-{{{
-cd open-fvs/trunk/bin
-make FVSpnc
-}}}
-
-If the build worked, you should have a listing in your trunk/bin that contains the binary executable file:
-
-{{{
-ls -la FVSpnc
--rwxr-xr-x  1 hamannjd  staff  3879324 Feb 21 09:55 FVSpnc
-}}}
+Builds may be possible on other operating systems or with other compiler packages, but the processes are not documented here. 
 
 = Question 3. The build didn't work. Now what? =
 
@@ -67,10 +47,18 @@ C:\open-fvs\trunk\bin>
 
 Once you have those two outputs, submit your problem as a new [http://code.google.com/p/open-fvs/issues/entry issue].
 
-= Question 4. I am not sure I can trust your code. Where do I get production release versions of the [http://www.fs.fed.us/fmsc/fvs/ FVS] simulator variants right now? =
+= Question 4. How do I get help if I encounter problems? =
 
-This is the link to [http://www.fs.fed.us/fmsc/fvs/ FVS]
+The [http://code.google.com/p/open-fvs/issues/list Issues] tab in the open-fvs site has a utility for submitting issues. When submitting an issue include as much detail as possible, including the specific operating system (including the version) you are using. Refer to Question 3 for directions on getting operating system information. The FVS development team will attempt to resolve your issue.
 
-= Question 5. How do I make a new variant? =
+= Question 5. Where can I get production release versions of the executables?=
 
-The instructions for creating a new variant, from an existing variant, are found [http://code.google.com/p/open-fvs/wiki/MakeNewFVSProgram here].
+All of the FVS executables for Windows are avaialable from the [http://www.fs.fed.us/fmsc/fvs/ FVS website]. They are distributed in an installation package that contains all of the FVS variant executables. Executables for other operating systems are not currently distributed.
+
+= Question 6. Where can I get documentation on the models used in the FVS code? =
+
+The FVS Variant Overviews, which are available from the [http://www.fs.fed.us/fmsc/fvs/documents/userguides.shtml FVS website], contain information and references related to the underlying models.  The [http://www.fs.fed.us/fmsc/ftp/fvs/docs/gtr/EssentialFVS.pdf Essential FVS] document contains a great deal of more general model documentation.
+
+= Question 7. How do I make a new variant? =
+
+The instructions for creating a new variant based on the code from an existing variant are found in the [http://code.google.com/p/open-fvs/wiki/MakeNewFVSProgram MakeNewFVSProgram] wiki.
