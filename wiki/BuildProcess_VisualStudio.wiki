@@ -87,7 +87,7 @@ Using Windows Explorer, navigate to the directory containing the variant SLN fil
 
 Double-click on FVS.sln to start Visual Studio. After it starts you will see that the Solution contains 8 sub-projects shown below:
 
-||*Project Name* || *Exclude After 1st Build* || *Language* || *Output* ||
+|| *Project Name* || *Exclude After 1st Build* || *Language* || *Output* ||
 || FVSiec|| No || FORTRAN || *_FVSiec.exe_* ||
 || All_BUILD|| Yes (optional) || - || - ||
 || dbstypedefs|| Yes || - || - ||
