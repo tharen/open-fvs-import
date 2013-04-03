@@ -20,7 +20,7 @@ You will need to install the *MinGW (Minimalist GNU for Windows)* system. Inform
 C:\MinGW\bin
 }}}
 
-One way to do this is to right-click the _My Computer_ icon on the Windows desktop, click the Advanced tab, then the Environment Variables button. Locate *PATH* or *Path* from either the User variables or System variables, then click Edit. Add "; C:\MinGW\bin" at the end of the current set of PATH directories. Then click your way back to the desktop.
+One way to do this is to right-click the _My Computer_ icon on the Windows desktop and select Properties. Click the Advanced tab, then the Environment Variables button. Locate *PATH* or *Path* from either the User variables or System variables, then click Edit. At the end of the current set of PATH directories add "; C:\MinGW\bin". Then click OK buttons until you get back to the desktop.
 
 You will also need to install the *Cmake* software, which can be found at [http://cmake.org/cmake/resources/software.html http://cmake.org]. Download and install the latest version. The Cmake build steps described below have been tested with Version 2.8.10.2 and require at least _Version 2.6_.
 
@@ -34,7 +34,7 @@ Open a DOS Command Window and navigate to the directory which contains the FVS c
 cd \MyFvsFiles\trunk\bin
 }}}
 
-Once you have navigated to the correct directory you are ready to use Cmake to create the MinGW Makefile. If MinGW is installed, Cmake should automatically detect it and build the Makefile for each FVS variatnt. (If this does not happen automatically, please post the problem so that it can be resolved.)
+Once you have navigated to the correct directory you are ready to use Cmake to create the MinGW Makefile. If MinGW is installed, Cmake should automatically detect it and build the Makefile for each FVS variant. (If this does not happen automatically, please post the problem so that it can be resolved.)
 
 At the command line type
 
@@ -51,7 +51,7 @@ Each variant's Makefile will be placed in a sub-directory like this
 
 FVS variant subdirectories are named with the pattern `FVS***_CmakeDir`, where `***` is a 2- or 3-letter abbreviation for the variant (e.g., 2-letters `ie` for Inland Empire or `ls` for Lake States) optionally followed by a 1-letter abbreviation for an extension (e.g., `x` for the insect and disease extensions, or `c` for the climate extension).
 
-Cmake utilizes two kinds of files to create to create each variant makefile. First, it uses a master script file called *CMakeLists.txt* to control the creation of the makefile. (You are welcome to inspect this file, but editing it is not recommended for beginners.) This master script file utilizes a set of about 20 files in turn - one for each variant - with names like 'FVSiec_sourceList.txt'. These files need to exist in the `trunk\bin` directory in order to build the variants. 
+Cmake utilizes two kinds of files to create each variant makefile. First, it uses a master script file called *CMakeLists.txt* to control the creation of the makefile. (You are welcome to inspect this file, but editing it is not recommended for beginners.) This master script file utilizes a set of about 20 files in turn - one for each variant - with names like 'FVSiec_sourceList.txt'. These files need to exist in the `trunk\bin` directory in order to build the variants. 
 
 As Cmake creates each variant makefile you will see something like this:
 
@@ -80,7 +80,7 @@ As Cmake creates each variant makefile you will see something like this:
 -- Build files have been written to: <...>/trunk/bin
 }}}
 
-When that is complete, you can proceed to build FVS from with the variant sub-directory. You only need to repeat the step of creating a makefile if the underlying set of FVS source files change. Afterward, you can just rebuild the variants you need, based on periodic updates to the source code.
+When that is complete, you can proceed to build FVS with the variant sub-directory. You only need to repeat the step of creating a makefile if the underlying set of FVS source files change. Afterward, you can just rebuild the variants you need, based on periodic updates to the source code.
 
 ==Building the Executable for Development & Debugging==
 
