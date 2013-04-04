@@ -137,8 +137,9 @@ FVS executables created with VS2010/Intel - the EXE and 3 DLLs - can be freely d
 || libmmd.dll       || X || X || Yes ||
 || svml_dispmd.dll  ||   || X || Yes ||
 
-Please note the restriction on distributing certain _Debug_ DLLs. On a default Intel installation, the release-mode redistributables can be found here:
+Please note the restriction on distributing certain _Debug_ DLLs. On a default Intel installation, the release-mode redistributables can be found in one of these locations:
 
 {{{
 C:\Program Files\Common Files\Intel\Shared Libraries\redist\ia32\compiler
+C:\Program Files\Common Files\Intel\ComposerXE-2011\redist\ia32\compiler
 }}}
