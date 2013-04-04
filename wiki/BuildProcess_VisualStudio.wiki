@@ -143,3 +143,14 @@ Please note the restriction on distributing certain _Debug_ DLLs. On a default I
 C:\Program Files\Common Files\Intel\Shared Libraries\redist\ia32\compiler
 C:\Program Files\Common Files\Intel\ComposerXE-2011\redist\ia32\compiler
 }}}
+
+==Switching Between CMake Build Systems==
+Most of the time you will probably only want to build Visual Studio Solution (SLN) files. However, developers may may need to test their code on a non-VS2010 system, and therefore need to build FVS variants with MinGW (see [BuildProcess_MinGW]). If you need to do this, you should remove these files and directories before attempting to  build with MinGW:
+
+{{{
+directory: CMakeFiles
+file: cmake_install.cmake
+file: CMakeCache.txt
+}}}
+
+These files and directories contain information that is stored by CMake the first time it is run, and will "lock" CMake into always creating VS2010 solutions. Removing them allows CMake to create other kinds of build systems.
