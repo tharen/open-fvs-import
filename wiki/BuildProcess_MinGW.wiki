@@ -122,3 +122,14 @@ On a default MinGW installation the release-mode redistributables can be found h
 {{{
 C:\MinGW\bin
 }}}
+
+==Switching Between CMake Build Systems==
+Most of the time you will probably only want to build MinGW makefiles. However, developers may may need to test their code on a non-MinGW system, and therefore need to build FVS variants with Visual Studio 2010 (see [BuildProcess_VisualStudio]). If you need to do this, you should remove these files and directories before attempting to build with Visual Studio:
+
+{{{
+directory: CMakeFiles
+file: cmake_install.cmake
+file: CMakeCache.txt
+}}}
+
+These files and directories contain information that is stored by CMake the first time it is run, and will "lock" CMake into always creating MinGW makefiles. Removing them allows CMake to create other kinds of build systems. 
