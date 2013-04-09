@@ -30,13 +30,17 @@ sdir = "<open-fvs>/rFVS/R"
 for (rf in dir (sdir)) source (paste(sdir,rf,sep="/"))
 }}}
 
-The second step is to load the FVS shared library. A function has been provided to accomplish that task. The following assumes that program `FVSiec` has been built as a shared library (see [BuildProcess Build Process] for build instructions). Note that you must match the machine architecture: run 32-bit R if you have 32-bit FVS and 64-bit R if you have built FVS as 64-bit.
+The second step is to load the FVS shared library. A function has been provided to accomplish this task. 
 
 {{{
 fvsLoad("FVSiec")
 }}}
 
-As an alternative, the directory name of the bin can be specified. Documentation for this function is provided below.
+The preceding command assumes that program `FVSiec` has been built as a shared library using the [BuildProcess_Rtools] tool chain. Development work is under way to generalize the rFVS tools so that they will work with shared libraries built using Cmake and MinGW-VS2010-Unix tool chain. When those enhancements are complete, the instructions on this page may be updated. At present, only the Rtools build process is fully supported for rFVS.
+
+Note that you must match the machine architecture: run 32-bit R if you have 32-bit FVS and 64-bit R if you have built FVS as 64-bit.
+
+As an alternative way to load the shared libraries, the relative or complete path name of the bin can be specified. This step may be important if you are working within [http://www.rstudio.com/ R Studio], which might define the working directory differently from the `<open-fvs>/rFVS/R` path. Documentation for this function is provided below.
 
 {{{
 fvsLoad("FVSiec", bin="<open-fvs>/trunk/bin")
