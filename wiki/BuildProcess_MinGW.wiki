@@ -14,7 +14,7 @@ This wiki documents the process of setting things up on a Windows PC so you can 
 
 You will need Administrator privileges to install the necessary tools, so ensure you have that before proceeding.
 
-You will need to install the *MinGW (Minimalist GNU for Windows)* system. Information about MinGW can be found at [http://www.mingw.org/ www.mingw.org], and the MinGW install pack can be found at [http://sourceforge.net/projects/mingw/ http://sourceforge.net]. Download and install the latest version. The Cmake build steps described below have been tested with Version 4.7.2. using the default installation directory. You will also need to modify the PATH environment variable to add the MinGW directory:
+You will need to install the *MinGW (Minimalist GNU for Windows)* system. Information about MinGW can be found at [http://www.mingw.org/ www.mingw.org], and the MinGW install pack can be found at [http://sourceforge.net/projects/mingw/ http://sourceforge.net]. Download the latest version (package name: mingw-get-inst-20120426.exe). During installation make sure to choose the C, C++ and Fortran compilers for installation. The Cmake build steps described below have been tested using the default installation directory with the Version 4.7.2 compilers included in the 20120426 package. You will also need to modify the PATH environment variable to add the MinGW directory:
 
 {{{
 C:\MinGW\bin
