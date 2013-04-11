@@ -21,6 +21,18 @@ This is *_experimental work_* that is subject to change, particularly with respe
   * The code blocks specify commands entered into R.
   * The notation `<open-fvs>/` defines the directory where the open-fvs code is stored on your system. Modify this string so that the path name to the files can be found.
 
+== Machine Architecture ==
+
+You must match the machine architecture: run 32-bit R if you have 32-bit FVS and 64-bit R if you have built FVS as 64-bit.
+
+== DLL provenance ==
+
+`rFVS` is able to make use of DLLs created with the rTools ([BuildProcess_Rtools]) tool chain or the more recent tool chains based on Cmake: MinGW ([BuildProcess_MinGW]) and Unix-alike ([BuildProcess_UnixAlike]).
+
+So far, it has _*not*_ been possible to use combine `rFVS` with DLLs created with the Visual Studio 2010 tool chain ([BuildProcess_VisualStudio]). The low level incompatibility is thought to be related to differences in the way API references are stored by the different compilers: upper-case for VS2010 and lower-case for all others.
+
+Whichever valid tool chain you use, `rFVS` must be able to locate and load _*all*_ the component FVS DLLs associated with the tool chain. Please see the relevant wiki page to locate the names of the FVS DLLs created by your tool chain. As well, you will need to load the names of any compiler-specific redistributable DLLs which may be needed. These are documented under the "Redistributable" heading for each tool chain. As `rFVS` is developed further, some of these loading steps will likely become more automated.
+
 == Start up ==
 
 The first step is to start R and load the `rFVS` functions found in `<open-fvs>/rFVS/R`. Remember to replace the string `<open-fvs>` with the pathname of where you have stored your copy of FVS.
@@ -36,9 +48,7 @@ The second step is to load the FVS shared library. A function has been provided 
 fvsLoad("FVSiec")
 }}}
 
-The preceding command assumes that program `FVSiec` has been built as a shared library using the [BuildProcess_Rtools] tool chain. Development work is under way to generalize the rFVS tools so that they will work with shared libraries built using Cmake and MinGW-VS2010-Unix tool chain. When those enhancements are complete, the instructions on this page may be updated. At present, only the Rtools build process is fully supported for rFVS.
-
-Note that you must match the machine architecture: run 32-bit R if you have 32-bit FVS and 64-bit R if you have built FVS as 64-bit.
+The preceding command assumes that program `FVSiec` has been built as a shared library using the rTools ([BuildProcess_Rtools]) tool chain. 
 
 As an alternative way to load the shared libraries, the relative or complete path name of the bin can be specified. This step may be important if you are working within [http://www.rstudio.com/ R Studio], which might define the working directory differently from the `<open-fvs>/rFVS/R` path. Documentation for this function is provided below.
 
