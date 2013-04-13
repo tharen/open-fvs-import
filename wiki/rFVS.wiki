@@ -136,6 +136,16 @@ Return value:
 
 A named vector of integers as follows: `ntrees, ncycles, nplots, maxtrees, maxspecies, maxplots, maxcycles`.
 
+== fvsGetSVSDims() ==
+
+{{{
+fvsGetSVSDims()
+}}}
+
+Return value:
+
+A named vector of integers as follows: `nsvsobjs, ndeadobjs, ncwdobjs,  mxsvsobjs, mxdeadobjs, mxcwdobjs`.
+
 == fvsGetEventMonitorVariables(vars) ==
 
 {{{

@@ -136,6 +136,23 @@ Get dimension information for the version of FVS being run.
 ||`maxplots`||returned maximum number of sample plots FVS can hold.||
 ||`maxcycles`||returned maximum number of cycles the can be defined in FVS.||
 
+== FVS Stand Visualizaton (SVS) Dimensions ==
+
+{{{
+subroutine fvsSVSDimSizes(nsvsobjs, ndeadobjs, ncwdobjs,  mxsvsobjs, 
+                          mxdeadobjs, mxcwdobjs)
+}}}
+
+Get dimension information for the version of FVS being run.
+
+||Argument||Definition||
+||`nsvsobjs`||returned number of tota objects defined in SVS storage.||
+||`ndeadobjs`||returned number of dead tree objects defined in SVS storage.||
+||`ncwdobjs`||returned number of course wood objects defined in SVS storage.||
+||`mxsvsobjs`||returned maximum number of live tree objects SVS can hold.||
+||`mxdeadobjs`||returned maximum number of dead tree objects SVS can hold.||
+||`mxcwdobjs`||returned maximum number of course wood objects SVS can hold.||
+
 
 == FVS Summary Statistics ==
 
