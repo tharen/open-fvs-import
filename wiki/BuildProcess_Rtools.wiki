@@ -1,20 +1,20 @@
 #summary Build process using Rtools
 
-=The Build Process Using Rtools=
+=The Build Process Using Rtools (Windows only)=
 
-This document describes the process of setting things up so you can use the Rtools toolkit to build FVS executables from the source files in the open-fvs repository. For more information on the build process, including information for other compiler tools please refer to the other [http://code.google.com/p/open-fvs/w/list build process wikis] or the [FAQ] wiki.
+Rtools provides a single set of tools that includes everything you need to build FVS on Windows. This document describes the process of setting things up so you can use the Rtools toolkit to build FVS executables from the source files in the open-fvs repository. Furthermore this set of tools is used to develop and test the rFVS interface. For more information on the build process, including information for other compiler tools please refer to the other [http://code.google.com/p/open-fvs/w/list build process wikis] or the [FAQ] wiki.
 
 ==Getting The Necessary Tools==
 
 You will need the appropriate permissions (e.g., Administrator privileges in Windows) to install the necessary tools, so ensure you have that before proceeding.
 
-There are several different compiler packages that can be used to build the executables.  The *Rtools* toolkit package will be discussed here.  Refer to the appropriate wiki document for discussion of the others. Download the Rtools toolkit from [http://cran.r-project.org/bin/windows/Rtools/]. You will want to download the _latest_ Rtools package.
+There are several different compiler packages that can be used to build the executables.  The *Rtools* toolkit package will be discussed here.  Refer to the appropriate wiki document for discussion of the others. Download the Rtools toolkit from [http://cran.r-project.org/bin/windows/Rtools/]. You will want to download the _latest_ Rtools package, or if you are an R user, get the version that corresponds to your version of R.
 
 Once you get the installer downloaded, run it.  Include all Components and any Additional Tasks. Then just click through the rest of the installation. Unfortunately, when the installation is complete you may not see a program icon like those typically added with an installation. 
 
-To test for successful installation of RTools you will need to open a Command Window. For example, on Windows this is done by clicking *Start > (All) Programs > Accessories > Command Prompt*. On Mac OSX this is done by clicking *Applications > Utilities > Terminal*. On Ubuntu Linux click *Applications > Accessories > Terminal*.  The examples shown below are for Windows, but the commands are the same on other operating systems.
+To test for successful installation of RTools you will need to open a Command Window. For example, on Windows this is done by clicking *Start > (All) Programs > Accessories > Command Prompt*. 
 
-FVS requires C-language and Fortran compilers, so you will need to test for new enough versions of both.
+FVS requires C-language and Fortran compilers. If you have correctly installed Rtools, everything you need will be ready for you to use. To test that you have the compilers installed, you can enter these commands from the command prompt.
 
 At the prompt, enter the command
 {{{
@@ -58,35 +58,22 @@ Open a Command Window. If you don't know how to do this, refer to the "Getting t
 
 Use the `cd` command to navigate to the `trunk/bin` directory inside the directory into which you checked out the open-fvs files. If you had placed the files into a directory called `MyFvsFiles` you would type the command as shown below.  Please note that the Windows operating system requires a backslash (\) instead of a forward slash (/) to separate directory names.  Use whatever is appropriate for your operating system.
 
-Windows:
+
 {{{
 cd \MyFvsFiles\trunk\bin
-}}}
-Other systems:
-{{{
-cd /MyFvsFiles/trunk/bin
 }}}
 
 Once you have navigated to the correct directory you are ready to make an executable. The FVS variant executables are named `FVS__`, where the `__` is the 2-letter abbreviation for the variant (e.g., `ie` for Inland Empire or `ls` for Lake States) optionally followed by the 1-letter abbreviation for an extension (e.g., `x` for the insect and disease extensions, or `c` for the climate extension). Executables on Windows have the filename extension `.exe` added to the base name. To make an executable, type the command `make FVS__` (or `make FVS__.exe`) with `__` replaced by the variant and extension designations. For example, to build the Inland Empire variant with the Climate extension you would use the appropriate command shown below.
 
-Windows:
+On Windows (see other wiki pages for non-windows builds)
 {{{
 make FVSiec.exe
-}}}
-Other systems:
-{{{
-make FVSiec
 }}}
 
 To build the Lake States variant with none of the optional extensions you would use the same command with "iec" replaced with "ls", as shown below.
 
-Windows:
 {{{
 make FVSls.exe
-}}}
-Other systems:
-{{{
-make FVSls
 }}}
 
 The variant executable file is created in the `trunk/bin` directory in which you are currently working.
