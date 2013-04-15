@@ -1,7 +1,5 @@
 #summary FVS-API: Running FVS as a Shared Library (*work in progress*)
 
-Nick Crookston, January 2012
-
 = Contents =
 
 <wiki:toc max_depth="2" />
@@ -22,7 +20,7 @@ FVS can hold one stand in memory at a time. When a shared library is loaded, the
 
 Specifying the name of the keyword file is done by setting the `--keywordfile` argument as done the [FVSCommandLine FVS Command Line] (there is an [FVS_API#Command_Line API call] to set this value without putting it on the command line). The FVS program is then run by calling a single API function which returns when the simulation is over, unless, of course, the program is requested to stop during the simulation. The request to stop is done by setting a stop point and stop year. The program returns when it reaches the designated stop point and then it picks up the calculations were it left off when it is called again. There are several ways to interact with the program between its "return" and when it is called again, each is supported with an API function. Note, this is the _basic idea_, details are provided below that cover more complicated scenarios.
 
-= API Reference =
+= API Reference =        
 
 What follows is the definition of subroutines designed to be called by the parent programs. On some operating systems, depending on how the FVS library is built, many routines within FVS besides those listed below could be called. It would be easy to distroy the the simulation if FVS routines are called out of order. User's are encouraged to take a minimalist approach, yet by all means do take an approach!
 
@@ -136,7 +134,7 @@ Get dimension information for the version of FVS being run.
 ||`maxplots`||returned maximum number of sample plots FVS can hold.||
 ||`maxcycles`||returned maximum number of cycles the can be defined in FVS.||
 
-== FVS Stand Visualizaton (SVS) Dimensions ==
+== FVS Stand Visualizaton (SVS)  ==
 
 {{{
 subroutine fvsSVSDimSizes(nsvsobjs, ndeadobjs, ncwdobjs,  mxsvsobjs, 
@@ -153,6 +151,67 @@ Get dimension information for the version of FVS being run.
 ||`mxdeadobjs`||returned maximum number of dead tree objects SVS can hold.||
 ||`mxcwdobjs`||returned maximum number of course wood objects SVS can hold.||
 
+
+{{{
+subroutine fvsSVSObjData(name,nch,action,nobjs,attr,rtnCode)
+}}}
+
+Get or set attributes of the SVS attributs in the simulation. (The return code reported here are independent of the general return code.)
+
+||Argument||Definition||
+||`name`||character string defining the tree attribute being being acted upon. ||
+||`nch`||integer number defining the length of _name_.||
+||`action`||action requested where, "get" signals that the current values defined in FVS should be returned as a vector in _attr_ and "set" signals that the current values in FVS should be changed to those specified in _attr_.||
+||`nobjs`|| the length of the _attr_||
+||`attr`||a vector of double precision (8-byte floats) of the attribute being processed.||
+||`rtnCode`||return codes, as follows: 0=OK, 1=_name_ not found, 2=_nobjs_ is greater than the maximum allowed,  and 3=there were more or fewer objects than _nobjs_.||
+
+The attributes have different lengths as defined by fvsSVSDimSizes or fvsDimSizes
+
+||Name||_nobjs_ value||Definition||
+||`objtype`||`nsvsobjs`||Object type code (see below). Note that when the object type code indicates an FVS tree record, use _fvsTreeAttr_ to get or set corresponding attributes.||
+||`objindex`||`nsvsobjs`||Index into corresponding state variables depending on `objtype`.||
+||`xloc`||`nsvsobjs`||_x_ Location (feet) of object on the SVS plot.||
+||`yloc`||`nsvsobjs`||_y_ Location (feet) of object on the SVS plot.||
+||`snagdbh`||`ndeadobjs`||Current dbh (inches) of the snag.||
+||`snaglen`||`ndeadobjs`||Current length of a snag record.||
+||`snagyear`||`ndeadobjs`||Year the tree died.||
+||`snagspp`||`ndeadobjs`||FVS numeric species code.||
+||`snagfdir`||`ndeadobjs`||The direction of fall if down, -1 otherwise.||
+||`snagstat`||`ndeadobjs`||Status code (see below)||
+||`snagwt0`||`ndeadobjs`||Crown weight (pounds) of the foliage at time of death.||
+||`snagwt1`||`ndeadobjs`||Crown weight (pounds) of the 0-.25 inch material.||
+||`snagwt2`||`ndeadobjs`||Crown weight (pounds) of the .25-1 inch material.||
+||`snagwt3`||`ndeadobjs`||Crown weight (pounds) of the 1-5 inch material.||
+||`cwddia`||`ncwdobjs`||Diameter (inches) of a chunk of wood (CWD).||
+||`cwdlen`||`ncwdobjs`||Length (feet) of CWD object.||
+||`cwdpil`||`ncwdobjs`||Piled code, 0=unpiled, 1=piled.||
+||`cwddir`||`ncwdobjs`||Direction chunk lying.||
+||`cwdwt`||`ncwdobjs`||Weight (pounds).||
+
+Object type codes:
+   
+||Value||Definition|| 
+||`0`||The slot is open, no corresponding object exists||
+||`1`||An fvs tree||
+||`2`||A snag record||
+||`3`||A fvs tree that is flagged for removal|| 
+||`4`||CWD object (exclusive of fallen snags)||
+||`5`||A snag record that is flagged for removal||
+
+Snag status codes:
+
+||Value||Definition||      
+||`0`||open slot (no snag) ||
+||`1`||green, hard snag||
+||`2`||red, hard snag  ||
+||`3`||grey, hard snag ||
+||`4`||grey, soft snag ||
+||`5`||black, recently burned, still has crown||
+||`6`||black, older burned, no crown||
+||`90`||WWPB mortality, one or less years old (red)||
+||`91`||WWPB mortality, two years old (dark)||
+||`92`||WWPB mortality, 3-4 years old (grey)||
 
 == FVS Summary Statistics ==
 
