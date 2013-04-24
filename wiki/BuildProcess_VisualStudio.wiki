@@ -14,7 +14,7 @@ This wiki documents the process of setting things up on a Windows PC so you can 
 
 You will need Administrator privileges to install the necessary tools, so ensure you have that before proceeding.
 
-Building with Visual Studio requires *Microsoft Visual Studio 2010* and the *Intel Fortran compiler 2012 (XE)*. More recent versions of Visual Studio (including free or lower cost "Express" versions), and other compliant compilers _may work_, but have not been tested. Information about VS2010 is found at [http://www.microsoft.com/visualstudio/eng/downloads www.microsoft.com]. Information about the Intel compiler is found at [http://software.intel.com/en-us/intel-visual-fortran-composer-xe-evaluation http://software.intel.com]. You must have these both installed before continuing. Explaining the use of VS2010 is beyond the scope of this wiki page.
+Building with Visual Studio requires *Microsoft Visual Studio 2010* and the *Intel Fortran compiler 2012 (XE)*. More recent versions of Visual Studio (including free or lower cost "Express" versions), and other compliant compilers (such as earlier versions of Visual Studio) _may work_, but have not been tested. Information about VS2010 is found at [http://www.microsoft.com/visualstudio/eng/downloads www.microsoft.com]. Information about the Intel compiler is found at [http://software.intel.com/en-us/intel-visual-fortran-composer-xe-evaluation http://software.intel.com]. You must have these both installed before continuing. Explaining the use of VS2010 is beyond the scope of this wiki page.
 
 You will also need to install the *Cmake* system, which can be found at [http://cmake.org/cmake/resources/software.html http://cmake.org]. Download and install the latest version from the "Binary distributions" table. During the installation process for Windows, you will need to select the option "Add CMake to the system PATH..." for all users or current user. The Cmake build steps described below have been tested with Version 2.8.10.2 and require at least _Version 2.6_.
 
@@ -119,7 +119,7 @@ Assuming you have a command-prompt in this directory:
 \MyFvsFiles\trunk\bin
 }}}
 
-you can run the DOS batch file shown below to create Release versions of all variants in their respective sub-directories. If you wish to modify this batch file for a subset of variants or Debug versions, please make a copy and use your copy.
+you can run the DOS batch file shown below to compile Release versions of all variants in the \bin sub-directory. If you wish to modify this batch file for a subset of variants or Debug versions, please make a copy and use your copy.
 
 {{{
 BuildAll_VS10.bat
