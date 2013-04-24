@@ -106,7 +106,17 @@ When complete, you will find these 4 key components in the variant sub-directory
 
 ==Building the Executable in Batch==
 
-_This feature is not yet developed for MinGW._
+Assuming you have a command-prompt in this directory: 
+
+{{{
+\MyFvsFiles\trunk\bin
+}}}
+
+you can run the DOS batch file shown below to compile all variants in \bin sub-directory. If you wish to modify this batch file for a subset of variants, please make a copy and use your copy.
+
+{{{
+BuildAll_MinGW.bat
+}}}
 
 ==Redistributables==
 
