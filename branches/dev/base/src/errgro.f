@@ -297,8 +297,6 @@ C                        ERROR NUMBER 36
       GO TO 9000
  9000 CONTINUE
 C
-C     RETURN OR NOT??????
-C
       IF (LRETRN) RETURN
       CALL fvsSetRtnCode(ICCODE)
       RETURN
