@@ -1,7 +1,7 @@
 
 # $Id$
 
-all : iet01 iet02 iet03 TestSpecialCostAndRevenue MinHarvValueOfTrees \
+all : iet01 iet02 iet03  \
  climate climatePutGet
 
 iet01 : 
@@ -34,18 +34,6 @@ iet03 :
 	rm iet03.tmp iet03.tmp.save
 	@echo Test iet03 ended
 
-TestSpecialCostAndRevenue :
-	@echo Test ECON TestSpecialCostAndRevenue
-	-../../bin/FVSiec --keywordfile=TestSpecialCostAndRevenue.key
-	-diff -w TestSpecialCostAndRevenue.out TestSpecialCostAndRevenue.out.save
-	@echo Test ECON TestSpecialCostAndRevenue ended
-	
-MinHarvValueOfTrees :
-	@echo Test ECON MinHarvValueOfTrees
-	-../../bin/FVSiec --keywordfile=MinHarvValueOfTrees.key
-	-diff -w MinHarvValueOfTrees.out MinHarvValueOfTrees.out.save
-	@echo Test ECON MinHarvValueOfTrees ended
-	
 climate:
 	@echo Test Climate-FVS 
 	-../../bin/FVSiec --keywordfile=climate.key
@@ -64,6 +52,4 @@ climatePutGet:
 	-diff -w climate.tmp climate.tmp.save
 	rm climate.tmp climate.tmp.save
 	@echo Test Climate-FVS with PutGet ended
-	
- 
 
