@@ -36,10 +36,9 @@ C  Author Fred Martin, WA DNR,
       character (len=12)               :: warn = ' ********   '
       character (len=4), intent(in), dimension(MAXSP,3) :: NSP           !Dimension defined in PLOT.F77
 
-      integer :: i, k, l, activityId, errCode, lastSpId, parmsField,
-     &           rateCnt, spId, units, IRTNCD
+      integer :: i, k, l, activityId, errCode, parmsField, rateCnt, 
+     &           spId, spGrp, units, IRTNCD
       integer, intent(in out) :: ICYC, IREAD, IRECNT, JOSTND
-cc      integer, save                         :: specCstCnt, specRvnCnt
       integer, dimension (MAX_RATES)        :: tmpDurations
       integer, intent(in), dimension(10,52) :: ISPGRP                    !See CONTRL.F77 for description & array dimensions
       integer, parameter :: badCycle    =1, badUoM      =2, badValue=3,
@@ -58,10 +57,10 @@ cc      integer, save                         :: specCstCnt, specRvnCnt
 !    Read keywords, first keyword expected to be ECON
       readKeyWd: do                                                      !Exit on keyword=END or KEYRDR=EOF, errCode=2
          isEconToBe = .TRUE.
-         CALL KEYRDR(IREAD, JOSTND, .FALSE., KEYWRD, isNotBlank,
-     &           realFields, IRECNT, errCode, charFields, LFLAG, LKECHO) !KEYRDR fills realField w/ 0.0 unless actual number
+         CALL KEYRDR(IREAD, JOSTND, .FALSE., KEYWRD, isNotBlank, 
+     &        realFields, IRECNT, errCode, charFields, LFLAG, LKECHO)    !KEYRDR fills realField w/ 0.0 unless actual number
          if (errCode == 2) then
-           call ERRGRO(.FALSE., 2)                       !.FALSE. causes ERRGRO to flag error condition, 2 = EOF before END keyword
+           call ERRGRO(.FALSE., 2)                                       !.FALSE. causes ERRGRO to flag error condition, 2 = EOF before END keyword
            CALL fvsGetRtnCode(IRTNCD)
            IF (IRTNCD.NE.0) RETURN
          endif
@@ -75,7 +74,7 @@ cc      integer, save                         :: specCstCnt, specRvnCnt
          case ('ANNUCST')
             if (annCostCnt == MAX_KEYWORDS) then
                call errMsg(maxKeywds)
-               cycle readKeyWd                                           !go read next keyword
+               cycle readKeyWd                                           !Go read next keyword
             else if (realFields(1) <= 0.0) then
                call errMsg(badValue)
                cycle readKeyWd                                           !Go read next keyword
@@ -102,10 +101,10 @@ cc      integer, save                         :: specCstCnt, specRvnCnt
          case ('ANNURVN')
             if (annRevCnt == MAX_KEYWORDS) then
                call errMsg(maxKeywds)
-               cycle readKeyWd                                           !go read next keyword
+               cycle readKeyWd                                           !Go read next keyword
             else if (realFields(1) <= 0.0) then
                call errMsg(badValue)
-               cycle readKeyWd                                           !go read next keyword
+               cycle readKeyWd                                           !Go read next keyword
             end if
 
             annRevCnt = annRevCnt + 1
@@ -129,7 +128,7 @@ cc      integer, save                         :: specCstCnt, specRvnCnt
          case ('BURNCST')
             if (realFields(1) <= 0.0) then
                call errMsg(badValue)
-               cycle readKeyWd                                           !go read next keyword
+               cycle readKeyWd                                           !Go read next keyword
             end if
 
             burnCostAmt = realFields(1)
@@ -151,16 +150,16 @@ cc      integer, save                         :: specCstCnt, specRvnCnt
             if (LKECHO)
      &         write (JOSTND,'(/, 1x, a8,3x,"END ECONOMIC EXTENSION ",
      &                                             "KEYWORDS.")') KEYWRD
-         return                                                          !no more ECON keywords
+         return                                                          !No more ECON keywords
 
 !        ======================= CASE HRVFXCST =========================
          case ('HRVFXCST')
             if (fixHrvCnt == MAX_KEYWORDS) then
                call errMsg(maxKeywds)
-               cycle readKeyWd                                           !go read next keyword
+               cycle readKeyWd                                           !Go read next keyword
             else if (realFields(1) <= 0.0) then
                call errMsg(badValue)
-               cycle readKeyWd                                           !go read next keyword
+               cycle readKeyWd                                           !Go read next keyword
             end if
 
             fixHrvCnt = fixHrvCnt + 1
@@ -185,13 +184,13 @@ cc      integer, save                         :: specCstCnt, specRvnCnt
          case ("HRVVRCST")
             if (varHrvCnt == MAX_KEYWORDS) then
                call errMsg(maxKeywds)
-               cycle readKeyWd                                           !go read next keyword
+               cycle readKeyWd                                           !Go read next keyword
             else if (.not.isNotBlank(1) .or. realFields(1) < 0.0) then
                call errMsg(badValue)
-               cycle readKeyWd                                           !go read next keyword
+               cycle readKeyWd                                           !Go read next keyword
             else if (.not.isCorrectUnit(KEYWRD,int(realFields(2)))) then
                call errMsg(badUoM)
-               cycle readKeyWd                                           !go read next keyword
+               cycle readKeyWd                                           !Go read next keyword
             end if
 
             varHrvCnt              = varHrvCnt + 1
@@ -231,11 +230,11 @@ cc      integer, save                         :: specCstCnt, specRvnCnt
 
 !           Check for alpha species and decode to integer value
             call SPDECD(4, spId, NSP(1,1), JOSTND, IRECNT,
-     &                                   KEYWRD, realFields, charFields) !4=field containing species, realFields & charFields passed but not altered
+     &                  KEYWRD, realFields, charFields)                  !4=field containing species, realFields & charFields passed but not altered
             if (spId == -999) cycle readKeyWd                            !-999 = species not found, error handled by SPDECD
 
             call ratesAndDurations(charFields(5), MAX_RATES, rateCnt,
-     &                            tmpRates, tmpDurations)
+     &                             tmpRates, tmpDurations)
 
             units = int(realFields(2))                                   !Revenue units-of-measure
             price = realFields(1)
@@ -247,71 +246,57 @@ cc      integer, save                         :: specCstCnt, specRvnCnt
             end select
 
 !          Assign prices to speices, UoM, & DBH or DIB classes
-            lastSpId = 0
             if (spId == 0) then                                          !Set values for all species not already set
                allSpecies: do i = 1, MAXSP
-                  if (hrvRevCnt(i,units)>=MAX_KEYWORDS) then
+                  if (hrvRevCnt(i,units) >= MAX_KEYWORDS) then
                      call errMsg(revMaxKeyWds)
                      cycle allSpecies                                    !Try next species in loop
                   end if
                   if (.not.hasRevAmt(i,units)) then                      !Value not previously set by species specific keywords
                      do k = 1, hrvRevCnt(i,units)
                         if (hrvRevDia(i,units,k) == realFields(3)) then  !realFields(3) = diameter
-                           call errMsg(revDuplicate)
+                           call errMsg(revDuplicate)                     !Duplicate from previous "ALL" or species-group o species keyword
                            cycle allSpecies                              !Try next species in loop
                         end if
                      end do
-                     hrvRevCnt(i,units)        = hrvRevCnt(i,units) + 1
-                     k                         = hrvRevCnt(i,units)      !Represents a diameter
-                     hrvRevPrice(i,units,k)    = price
-                     hrvRevDia(i,units,k)      = realFields(3)
-                     hrvRevRate(i,units,k, : ) = tmpRates
-                     hrvRevDur(i,units,k, : )  = tmpDurations
-                     lastSpId                  = i                       !Indicates at least one species was set
+                     call assignRevValues()
+                     spId = i                                            !Indicates at least one species was set
                   end if
                end do allSpecies
-               if (lastSpId == 0) cycle readKeyWd                        !All species were previously set, go read another keyword
-            elseif (spId < 0) then                                       !A species group is specified
-               groupSpecies: do l = 2, ISPGRP(-spId,1) + 1
-                  i = ISPGRP(-spId,l)
+               if (spId == 0) cycle readKeyWd                            !All species were previously set, go read another keyword
+            elseif (spId < 0) then                                       !A species-group is specified
+               spGrp = -spId
+               groupSpecies: do l = 2, ISPGRP(spGrp,1) + 1
+                  i = ISPGRP(spGrp,l)                                    !Get the "lth" species of this species-group 
                   if (hrvRevCnt(i,units)>=MAX_KEYWORDS) then
                      call errMsg(revMaxKeyWds)
                      cycle groupSpecies                                  !Try next species in loop
                   end if
                   do k = 1, hrvRevCnt(i,units)
                      if (hrvRevDia(i,units,k) == realFields(3)) then     !realFields(3) = diameter
-                        call errMsg(revDuplicate)
+                        call errMsg(revDuplicate)                        !Duplicate from previous "ALL" or species-group keyword
                         cycle groupSpecies                               !Try next species in loop
                      end if
                   end do
-                  hasRevAmt(i,units)        = .TRUE.                     !Marks that a single species or species group revenue keyword has been specified
-                  hrvRevCnt(i,units)        = hrvRevCnt(i,units) + 1
-                  k                         = hrvRevCnt(i,units)         !Represents a diameter
-                  hrvRevPrice(i,units,k)    = price
-                  hrvRevDia(i,units,k)      = realFields(3)
-                  hrvRevRate(i,units,k, : ) = tmpRates
-                  hrvRevDur(i,units,k, : )  = tmpDurations
-                  lastSpId                  = i                          !Indicates at least one species was set
+                  hasRevAmt(i,units) = .TRUE.                            !Marks that a single species or species-group revenue keyword has been specified
+                  call assignRevValues()
+                  spId = i                                               !Indicates at least one species was set
                end do groupSpecies
-               if (lastSpId == 0) cycle readKeyWd                        !All species were previously set, go read another keyword
+               if (spId < 0) cycle readKeyWd                             !No species was set, max # keywords or all duplicates, go read another keyword
             else                                                         !Individual species specified
-               if (hrvRevCnt(spId,units) >= MAX_KEYWORDS) then
+               i = spId                                                  !i=spId needed for error message output
+               if (hrvRevCnt(i,units) >= MAX_KEYWORDS) then
                   call errMsg(revMaxKeyWds)
                   cycle readKeyWd                                        !Go read next keyword
                end if
-               do k = 1, hrvRevCnt(spId,units)                           !Represents a diameter
-                  if (hrvRevDia(spId,units,k) == realFields(3)) then     !realFields(3) = diameter
-                     call errMsg(revDuplicate)
+               do k = 1, hrvRevCnt(i,units)                              !Represents a diameter
+                  if (hrvRevDia(i,units,k) == realFields(3)) then        !realFields(3) = diameter
+                     call errMsg(revDuplicate)                           !Duplicate from previous "ALL" or species-group keyword
                      cycle readKeyWd                                     !Go read next keyword
                   end if
                end do
-               hasRevAmt(spId,units)        = .TRUE.                     !Marks that a single species or species group revenue keyword has been specified
-               hrvRevCnt(spId,units)        = hrvRevCnt(spId,units) + 1
-               k                            = hrvRevCnt(spId,units)      !Represents a diameter
-               hrvRevPrice(spId,units,k)    = price
-               hrvRevDia(spId,units,k)      = realFields(3)
-               hrvRevRate(spId,units,k, : ) = tmpRates
-               hrvRevDur(spId,units,k, : )  = tmpDurations
+               hasRevAmt(i,units) = .TRUE.                               !Marks that a single species or species-group revenue keyword has been specified
+               call assignRevValues()
             end if
 
             if (LKECHO) then
@@ -320,12 +305,11 @@ cc      integer, save                         :: specCstCnt, specRvnCnt
      &                      "FOR SPECIES ", a, ".")') KEYWRD,
      &                      realFields(1), trim(UNITS_LABEL(units)),
      &                      realFields(3), trim(adjustl(charFields(4)))
-               if (spId == 0) spId = lastSpId                            !Set species ID from ALL or group to real species - need for correct rate/duration values
-               do l = 1, rateCnt
+               do l = 1, rateCnt                                         !Use last species ID from "ALL" and species-group keywords
                   write (JOSTND,'(T13,"APPRECIATION RATE: ", F6.1,
-     &                                        "% FOR ", i4, " YEARS.")')
-     &                                       hrvRevRate(spId,units,k,l),
-     &                                       hrvRevDur(spId,units,k,l)
+     &                   "% FOR ", i4, " YEARS.")')
+     &                   hrvRevRate(spId,units,k,l),
+     &                   hrvRevDur(spId,units,k,l)
                end do
             end if
 
@@ -345,25 +329,25 @@ cc      integer, save                         :: specCstCnt, specRvnCnt
                do i = 1, MAXSP
                   if (lbsFt3Amt(i) <= 0.0) then                          !value not previously set
                      lbsFt3Amt(i) = realFields(1)
-                     lastSpId     = i                                    !Indicates at least one species was set
+                     spId = i                                            !Indicates at least one species was set
                   end if
                end do
-               if (lastSpId == 0) then
-***                  write (JOSTND,'(/,1x,a12, a8, " - KEYWORD IGNORED, ",
-***     &                  "ALL INDIVIDUAL SPECIES PREVIOUSLY SET, RECORD",
-***     &                  i4)') warn, KEYWRD, IRECNT
-***                  call RCDSET(1,.TRUE.)                                  !.TRUE. causes RCDSET to return,
+               if (spId == 0) then
                   call errMsg(lbsDupSp)
                   cycle readKeyWd                                        !Go read next keyword
                end if
-            else if (spId < 0) then                                      !Species group is specified
-               do i = 2, ISPGRP(-spId,1) + 1
+            else if (spId < 0) then                                      !A species-group is specified
+               spGrp = -spId
+               groupSp: do l = 2, ISPGRP(spGrp,1) + 1
+                  i = ISPGRP(spGrp,l)                                    !Get the "lth" species of this species-group 
                   if (lbsFt3Amt(i) > 0.0) then                           !Value  previously set for this species
-                  call errMsg(lbsDupSp)
-                  cycle readKeyWd                                        !Go read next keyword
-               end if
-                  lbsFt3Amt(ISPGRP(-spId,i)) = realFields(1)
-               end do
+                     call errMsg(lbsDupSp)
+                     cycle groupSp                                       !Try next species in loop
+                  end if
+                  lbsFt3Amt(i) = realFields(1)
+                  spId = i                                               !Indicates at least one species was set
+               end do groupSp
+               if (spId < 0) cycle readKeyWd                             !No species was set, max # keywords or all duplicates, go read another keyword
             else                                                         !Individual species specified
                if (lbsFt3Amt(spId) > 0.0) then                           !Value previously set for this species
                   call errMsg(lbsDupSp)
@@ -375,7 +359,7 @@ cc      integer, save                         :: specCstCnt, specRvnCnt
             if (LKECHO)
      &          write (JOSTND,'(/, 1x, a8, "   BIOMASS CONVERSION FOR ",
      &                       "SPECIES: ", a, ", BASED ON: ", F5.0,
-     &                       "POUNDS PER FT3.")') KEYWRD,
+     &                       " POUNDS PER FT3.")') KEYWRD,
      &                       trim(adjustl(charFields(2))), realFields(1)
 
 !        =================== CASE MECHCST ==============================
@@ -593,7 +577,6 @@ cc      integer, save                         :: specCstCnt, specRvnCnt
 !          Register SPECCST keyword on the Event Monitor
             call addEvent(SPEC_COST_ACTIVITY, 0, 1, 3)                   !Sets value of LMODE & errCode, error handled in addEvent
             if (errCode > 0) cycle readKeyWd                             !Go read next keyword
-cc            specCstCnt = specCstCnt + 1                                  !No known reason for this
 
             if (LKECHO)
      &         write (JOSTND,'(/,1x,a8, 3X, "$", f5.0, " SPECIAL COST ",
@@ -621,7 +604,6 @@ cc            specCstCnt = specCstCnt + 1                                  !No k
 !          Register SPECRVN keyword on the Event Monitor
             call addEvent(SPEC_REV_ACTIVITY, 0, 1, 3)                    !Sets value of LMODE & errCode, error handled in addEvent
             if (errCode > 0) cycle readKeyWd                             !Go read next keyword
-cc            specRvnCnt = specRvnCnt + 1                                  !No known reason for this
 
             if (LKECHO)
      &          write (JOSTND,'(/, 1x, a8, 3X, "$", f5.0, " SPECIAL ",
@@ -671,7 +653,7 @@ cc            specRvnCnt = specRvnCnt + 1                                  !No k
       return
 
 !    Given an activityId, return the keyword name
-      ENTRY ECKEY(activityId, keyword)                                  !activityId keyword index
+      ENTRY ECKEY(activityId, keyword)                                   !activityId keyword index
          keyword = KEYWORD_TABLE(activityId)
       return
 
@@ -845,29 +827,35 @@ cc            specRvnCnt = specRvnCnt + 1                                  !No k
             write(JOSTND,'(/, a12, 1x, 1x, a8,"   KEYWORD IGNORED, ",
      &           "MAX # KEYWORDS EXCEEDED FOR THIS SPECIES: ", a,
      &           ", UNITS-OF-MEASURE: ", a, ", & DIAMETER CLASS:", f5.1,
-*     &           ", RECORD:", i4)')  warn, KEYWRD, NSP(i,1)(1:2),        !NSP(i,1)(1:2) is character species code not including tree value class
-     &           ", RECORD:", i4)')  warn, KEYWRD,
-     &            trim(adjustl(charFields(4))),trim(UNITS_LABEL(units)),
-     &            realFields(3), IRECNT
+     &           ", RECORD:", i4)')  warn, KEYWRD, NSP(i,1)(1:2),        !NSP(i,1)(1:2) is character species code not including tree value class
+     &           trim(UNITS_LABEL(units)), realFields(3), IRECNT
          case (revDuplicate)
             write(JOSTND,'(/, a12, 1x, 1x, a8, "   KEYWORD IGNORED, "
      &            "VALUES PREVIOUSLY SET FOR THIS SPECIES: ", a,
      &            ", UNITS-OF-MEASURE: ", a, ", & DIAMETER CLASS:",
-*     &            f5.1, ", RECORD:", i4)') warn, KEYWRD, NSP(i,1)(1:2),  !NSP(i,1)(1:2) is character species code not including tree value class
-     &            f5.1, ", RECORD:", i4)') warn, KEYWRD,
-     &            trim(adjustl(charFields(4))),trim(UNITS_LABEL(units)),
-     &            realFields(3), IRECNT
+     &            f5.1, ", RECORD:", i4)') warn, KEYWRD, NSP(i,1)(1:2),  !NSP(i,1)(1:2) is character species code not including tree value class
+     &            trim(UNITS_LABEL(units)), realFields(3), IRECNT
          case (lbsDupSp)
             write(JOSTND,'(/, a12, 1x, a8, "   KEYWORD IGNORED, ",
      &            "VALUES PREVIOUSLY SET FOR THIS SPECIES: ", a,
      &            ", RECORD:", I4)') warn, KEYWRD,
      &            trim(adjustl(charFields(2))), IRECNT
-
-
          end select
          call RCDSET(1,.TRUE.)                                           !.TRUE. causes RCDSET to return,
          return
       end subroutine errMsg
+
+
+!    Assigns keyword values to revenue variables
+      subroutine assignRevValues()
+         hrvRevCnt(i,units)        = hrvRevCnt(i,units) + 1
+         k                         = hrvRevCnt(i,units)     !Index for a diameter
+         hrvRevPrice(i,units,k)    = price
+         hrvRevDia(i,units,k)      = realFields(3)
+         hrvRevRate(i,units,k, : ) = tmpRates
+         hrvRevDur(i,units,k, : )  = tmpDurations
+         return
+      end subroutine assignRevValues
 
 
       end subroutine ECIN
