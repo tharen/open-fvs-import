@@ -2,7 +2,7 @@
 # $Id$
 
 all : iet01 iet02 iet03  \
- climate climatePutGet
+ ffe_svs climate climatePutGet
 
 iet01 : 
 	@echo Test iet01, basic functionality 
@@ -33,6 +33,13 @@ iet03 :
 	-diff -w iet03.tmp iet03.tmp.save
 	rm iet03.tmp iet03.tmp.save
 	@echo Test iet03 ended
+
+ffe_svs:
+	@echo ffe_svs: Test FFE with SVS 
+	-../../bin/FVSiec --keywordfile=ffe_svs.key
+	-diff -w ffe_svs.key_007.svs ffe_svs.key_007.svs.save
+	@echo Test ffe_svs ended
+	
 
 climate:
 	@echo Test Climate-FVS 
