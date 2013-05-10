@@ -14,10 +14,10 @@ climbc :
 	
  
 mgmtbc : 
-	@echo Test MgmtBC 
-	-../../bin/FVSbcc < MgmtBC.rsp
-	grep -v "\-999" MgmtBC.sum      > MgmtBC.tmp
-	grep -v "\-999" MgmtBC.sum.save > MgmtBC.tmp.save
+	@echo "Test MgmtBC (with blanks in filenames)"
+	-../../bin/FVSbcc < "Mgmt BC.rsp"
+	grep -v "\-999" "Mgmt BC.sum"      > MgmtBC.tmp
+	grep -v "\-999" "Mgmt BC.sum.save" > MgmtBC.tmp.save
 	-diff -w MgmtBC.tmp MgmtBC.tmp.save
 	rm MgmtBC.tmp MgmtBC.tmp.save
 	@echo Test MgmtBC ended
