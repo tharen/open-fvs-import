@@ -5,7 +5,7 @@
 #UNITS ENGLISH
 ;                  trcl  stus             fang
 ;species        tr#  |crcl|   dbh   ht lang |edia crd  cr    crd  cr    crd  cr    crd  cr ex mk  xloc    yloc  z
-#GROUNDFILE ffe_svs.key_g100_c002_007.grd
+#GROUNDFILE ffe_svs_g100_c002_007.grd
 
 LP                 2  0 0 1  12.6   80. 0   0 0   6.6 0.34   6.6 0.34   6.6 0.34   6.6 0.34 1 0    1.10  108.30 0
 LP                 2  0 0 1  12.6   80. 0   0 0   6.6 0.34   6.6 0.34   6.6 0.34   6.6 0.34 1 0   24.33   82.00 0

@@ -37,7 +37,7 @@ iet03 :
 ffe_svs:
 	@echo ffe_svs: Test FFE with SVS 
 	-../../bin/FVSiec --keywordfile=ffe_svs.key
-	-diff -w ffe_svs.key_007.svs ffe_svs.key_007.svs.save
+	-diff -w ffe_svs_007.svs ffe_svs_007.svs.save
 	@echo Test ffe_svs ended
 	
 
