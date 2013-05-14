@@ -213,7 +213,7 @@ C     ADD PLANT ACTIVITIES, CODE IS  430
           PRMS(4)=0.                                   ! age
           PRMS(5)=0.                                   ! height
           PRMS(6)=0.                                   ! shade code
-          CALL OPADD (IY(ICYC+1)-1,430,0,6,PRMS,KODE)
+          CALL OPADD (IY(ICYC+1)-1,431,0,6,PRMS,KODE)
           I2=I2+1
           IF (DEBUG) WRITE (JOSTND,50) I,KODE,PRMS
    50     FORMAT (' IN CLAUESTB, I=',I2,' KODE=',I2,' PRMS=',6F8.3)

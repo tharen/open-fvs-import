@@ -196,13 +196,13 @@ C       smi.trds:d100    0.15582
         ENDIF
         
         IF (ABS(XRELGR-1.0).LT. .005) XRELGR=1.0
-        IF (XRELGR .GT. 4.) XRELGR = 4. 
         
         ! If the growth effects are above 1, then apply the one
         ! that results in the most growth. Otherwise apply the one
         ! that results in the least growth.
         PS = MIN(XGSITE,XRELGR,VSCORE(ISP(I)))
         IF (PS.GT. 0.99) PS=MAX(XGSITE,XRELGR,VSCORE(ISP(I)))
+        IF (PS .GT. 3.) XRELGR = 3. 
         TREEMULT(I)=1.- ( (1.-PS)*CLGROWMULT(ISP(I)) )
         IF (DEBUG) WRITE (JOSTND,10) I,JSP(ISP(I)),BIRTHYR,
      >             XDF,XPP,XWL,PS,XRELGR,TREEMULT(I)
