@@ -15,7 +15,8 @@ C
       
       IRLEN=0
 
-      ! if ON or BC then allow embedded spaces with path/file names; could remove CHR(33) quotation marks
+      ! if ON or BC then allow embedded spaces with path/file names
+      ! could also strip CHR(33) quotation marks with this sub.
       CALL VARVER(VVER)
       IF(VVER(:2).EQ.'BC'.OR.VVER(:2).EQ.'ON') THEN
          RECORD = ADJUSTL(RECORD)
