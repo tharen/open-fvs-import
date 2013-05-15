@@ -270,10 +270,16 @@ C                        OPTION NUMBER 2 -- CLIMDATA
             IF (INDXSPECIES(I).EQ.0) WRITE (JOSTND,294)
      >             I,JSP(I),PLNJSP(I)
   294       FORMAT (T13,'FVS INDEX=',I3,', ALPHA CODE=',A3,
-     >              ', FIA CODE=',A)
+     >              ', PLANT CODE=',A)
           ENDDO
         ENDIF
       ENDIF
+
+C     TURN ON CLIMATE ESTAB AND TURN OFF BASE ESTAB.      
+
+      LAESTB=.TRUE.
+      CALL ESNOAU ('********',LKECHO)
+            
       GOTO 10
   296 CONTINUE
       WRITE (JOSTND,297)
