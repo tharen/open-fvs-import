@@ -39,3 +39,28 @@ C
 C**   CALL BFWRIT (WK3, IPNT, ILIMIT, REALS, MXR, 2)
       RETURN
       END
+
+      SUBROUTINE VARCHPUT (CBUFF, IPNT, LNCBUF)
+      IMPLICIT NONE
+C----------
+C     Put variant-specific character data
+C----------
+C
+C
+      INCLUDE 'PRGPRM.F77'
+C
+C
+COMMONS
+C
+C
+      INTEGER LNCBUF
+      CHARACTER CBUFF(LNCBUF)
+      INTEGER IPNT
+      !INTEGER J
+      !IF (LENSTRINGS(1).GT.0) THEN
+      !  DO J=1,LENSTRINGS(1)
+      !    CALL CHWRIT(CBUFF,IPNT,LNCBUF,DSNIN(J:J),2)
+      !  ENDDO
+      !ENDIF
+      RETURN
+      END

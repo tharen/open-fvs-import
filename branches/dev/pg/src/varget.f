@@ -39,3 +39,31 @@ C
 C**   CALL BFREAD (WK3, IPNT, ILIMIT, REALS, MXR, 2)
       RETURN
       END
+
+      SUBROUTINE VARCHGET (CBUFF, IPNT, LNCBUF)
+      IMPLICIT NONE
+C----------
+C     Get variant-specific character data
+C----------
+C
+COMMONS
+C
+C
+      INCLUDE 'PRGPRM.F77'
+C
+C
+COMMONS
+C
+C
+      INTEGER LNCBUF
+      CHARACTER CBUFF(LNCBUF)
+      INTEGER IPNT
+      !INTEGER J
+      !IF (LENSTRINGS(1).GT.0) THEN
+      !  DO J=1,LENSTRINGS(1)
+      !    CALL CHREAD(CBUFF,IPNT,LNCBUF,DSNIN(J:J),2)
+      !  ENDDO
+      !ENDIF
+      !
+      RETURN
+      END
