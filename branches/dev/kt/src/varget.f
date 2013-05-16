@@ -61,4 +61,5 @@ C
       ! Stub for variants which need to get/put character data
       ! See /bc/varget.f and /bc/varput.f for examples of VARCHGET and VARCHPUT
       RETURN
-      ENDD
+      END
+      
