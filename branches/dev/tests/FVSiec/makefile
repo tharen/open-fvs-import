@@ -35,9 +35,12 @@ iet03 :
 	@echo Test iet03 ended
 
 ffe_svs:
-	@echo ffe_svs: Test FFE with SVS 
-	-../../bin/FVSiec --keywordfile=ffe_svs.key
+	@echo ffe_svs: Test FFE with SVS and stop/restart
+	-../../bin/FVSiec --keywordfile=ffe_svs.key --stoppoint=1,2003,ffe_svs.stop
+	-../../bin/FVSiec --restart=ffe_svs.stop
 	-diff -w ffe_svs_007.svs ffe_svs_007.svs.save
+	-diff -w ffe_svs_index.svs ffe_svs_index.svs.save
+	rm ffe_svs_*.svs ffe_svs_*.grd
 	@echo Test ffe_svs ended
 	
 

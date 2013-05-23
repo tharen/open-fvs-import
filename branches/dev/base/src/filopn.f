@@ -67,6 +67,7 @@ C----------
         ! These outputs will NOT be identical to output files created
         ! with nonstop runs: they are blocked into multi-stand sets 
         ! based on the stop point(s).
+
         if (i.eq.0) then
           cname = KWDFIL(1:lenkey-1)//".trl"
           inquire(unit=JOLIST,opened=LOPEN)
@@ -115,10 +116,10 @@ C----------
       CALL REVISE (VVER,REV)
         IF(VVER(:2).EQ.'SM') THEN
            WRITE(*,1) REV
- 1         FORMAT(/T20,'CR FVS VARIANT -- RV:',A10/)
+    1      FORMAT(/T20,'CR FVS VARIANT -- RV:',A10/)
         ELSE
            WRITE(*,2) VVER(:2),REV
- 2         FORMAT(/T20,A2,' FVS VARIANT -- RV:',A10/)
+    2      FORMAT(/T20,A2,' FVS VARIANT -- RV:',A10/)
         ENDIF
 C
       WRITE (*,'('' ENTER KEYWORD FILE NAME ('',I2.2,
@@ -288,7 +289,7 @@ C
         ENDIF
       ENDIF
       return
-10    lok = .false.
+   10 lok = .false.
       return
       END
 

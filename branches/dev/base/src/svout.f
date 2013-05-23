@@ -80,7 +80,7 @@ COMMONS
       CHARACTER*7 VVER
       CHARACTER*60 SUFFIX
       CHARACTER*23 PLTGEO
-      LOGICAL DEBUG
+      LOGICAL DEBUG,LOPEN
       CALL DBCHK (DEBUG,'SVOUT',5,ICYC)
       
       IF (DEBUG) WRITE (JOSTND,5) IYEAR, AMSG, JSVOUT, NSVOBJ,
@@ -121,6 +121,25 @@ C                       XXXXXX. XXXX. XXXX.
 
       IF (JSVOUT.EQ.0) RETURN
       IF (JSVOUT.LT.0) GOTO 26 ! PROCESSING IMAGE, BUT NOT OUTPUTING
+      
+C     Make sure that the index file is opened (could be closed if a 
+C     restart is being done.
+      
+      inquire(unit=JSVOUT,opened=LOPEN)
+      if (.not.LOPEN) then
+        SUFFIX='_index.svs'
+         print *,"filename2=",KWDFIL(:len_trim(KWDFIL)-4)//SUFFIX
+        open(unit=JSVOUT,file=KWDFIL(:len_trim(KWDFIL)-4)//SUFFIX,
+     >         position="append",err=1)
+        goto 3
+    1   continue
+        write (JOSTND,2) KWDFIL(:len_trim(KWDFIL)-4)//SUFFIX
+    2   format (/'**** FILE OPEN ERROR FOR FILE: ',A)
+        CALL RCDSET (2,.TRUE.)
+        JSVOUT=0
+        RETURN
+    3   continue
+      endif
       
       IF (IMETRIC.EQ.0) THEN
         IF (IPLGEM.LT.2) THEN
@@ -165,25 +184,26 @@ C       WATCH FOR DIRECTORY LEVELS...WE DON'T WANT THEM.
 C       TRY TO OPEN A FILE WITH THE DIRECTORY NAME INCLUDED.
 
         OPEN (UNIT=JSVPIC,FILE=TRIM(KWDFIL(:KYLAST)//'/'//SUFFIX),
-     >        STATUS="REPLACE",ERR=2)
-        WRITE (JSVOUT,1) NPLT(1:MAX(1,ISTLNB(NPLT))),IYEAR,
+     >        STATUS="REPLACE",ERR=12)
+
+        WRITE (JSVOUT,10) NPLT(1:MAX(1,ISTLNB(NPLT))),IYEAR,
      >      AMSG,KWDFIL(:KYLAST)//'/'//TRIM(SUFFIX)
-    1   FORMAT ('"Stand=',A,' Year=',I4.4,' ',A,'" "',A,'"')
+   10   FORMAT ('"Stand=',A,' Year=',I4.4,' ',A,'" "',A,'"')
         GOTO 20 
   
 C       IF THE OPEN FAILS, THEN OPEN ONE WITHOUT THE DIR NAME INCLUDED.
 
-    2   CONTINUE
-        OPEN (UNIT=JSVPIC,FILE=TRIM(SUFFIX),STATUS="REPLACE",ERR=4)
-        WRITE (JSVOUT,1) NPLT(1:MAX(1,ISTLNB(NPLT))),IYEAR,
+   12   CONTINUE
+        OPEN (UNIT=JSVPIC,FILE=TRIM(SUFFIX),STATUS="REPLACE",ERR=14)
+        WRITE (JSVOUT,10) NPLT(1:MAX(1,ISTLNB(NPLT))),IYEAR,
      >        AMSG,TRIM(SUFFIX)
         GOTO 20
-    4   CONTINUE
+   14   CONTINUE
 
 C       IF THIS OPEN FAILS, THEN BAG SVS OUTPUT.
 
-        WRITE (JOSTND,8) SUFFIX
-    8   FORMAT (/T13,'**** FILE OPEN ERROR FOR FILE: ',A)
+        WRITE (JOSTND,18) SUFFIX
+   18   FORMAT (/T13,'**** FILE OPEN ERROR FOR FILE: ',A)
         CALL RCDSET (2,.TRUE.)
 
 C       SETTING JSVOUT TO ZERO TURNS OFF SVS...WE'RE DONE.

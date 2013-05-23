@@ -48,10 +48,10 @@ C     a uniform ground surface of the indicated color.
 C>>>      IF (ICOLIDX.LT.0) ICOLIDX=2
 
       WRITE (JOSTND,10) KEYWRD,IPLGEM,IGRID
-   10 FORMAT (/1X,A8,'   PRODUCE SVS-READY DATA'/T13,
+   10 FORMAT (/A8,'   PRODUCE SVS-READY DATA'/T12,
      >  'PLOT GEOMETRY CODE = ',I2,
      >  ' (0=SQUARE, IGNORE POINTS; 1=SUBDIVIDED SQUARE; ',
-     >    '2=ROUND, IGNORE POINTS; 3=SUBDIVIDED CIRCLE)'/T13,
+     >    '2=ROUND, IGNORE POINTS; 3=SUBDIVIDED CIRCLE)'/T12,
      >  'GROUND FILE GRID RESOLUTION (ZERO IMPLIES NO GROUND FILE)= ',
      >  I3)
       IRPOLES=IFIX(ARRAY(3))
@@ -85,8 +85,8 @@ C>>>      IF (ICOLIDX.LT.0) ICOLIDX=2
      >   'SVS RUNS BUT NO OUTPUT FILES ARE PRODUCED.' 
    
 
-   15 FORMAT (T13,A)
-   16 FORMAT (T13,'COLOR INDEX= ',I4)
+   15 FORMAT (T12,A)
+   16 FORMAT (T12,'COLOR INDEX= ',I4)
 
       IF (JSVOUT.LT.0) RETURN
       
@@ -94,17 +94,17 @@ C>>>      IF (ICOLIDX.LT.0) ICOLIDX=2
 
       IF (NIMAGE.EQ.0) THEN
         SUFFIX='_index.svs'
-        CALL MYOPEN(JSVOUT,KWDFIL(1:ISTLNB(KWDFIL))//SUFFIX,
-     >       5,120,0,1,1,0,KODE)
-
-        IF (KODE.GT.0) THEN
-          WRITE (JOSTND,20) KWDFIL(1:ISTLNB(KWDFIL))//SUFFIX
-   20     FORMAT (/T13,'**** FILE OPEN ERROR FOR FILE: ',A)
-          CALL RCDSET (2,.TRUE.)
-          JSVOUT=0
-        ELSE
-          IF (JSVPIC.GT.0) WRITE (JSVOUT,'(''#TREELISTINDEX'')')
-        ENDIF
+        open(unit=JSVOUT,file=KWDFIL(:len_trim(KWDFIL)-4)//SUFFIX,
+     >       status="replace",err=19)
+        GOTO 21
+   19   CONTINUE
+        WRITE (JOSTND,20) KWDFIL(:len_trim(KWDFIL)-4)//SUFFIX
+   20   FORMAT (/T12,'**** FILE OPEN ERROR FOR FILE: ',A)
+        CALL RCDSET (2,.TRUE.)
+        JSVOUT=0
+        RETURN
+   21   CONTINUE
+        IF (JSVPIC.GT.0) WRITE (JSVOUT,'(''#TREELISTINDEX'')')
       ENDIF
       RETURN
       END
