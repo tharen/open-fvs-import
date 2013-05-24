@@ -87,11 +87,11 @@ C  Author Fred Martin, WA DNR,
      &                             annCostDur(annCostCnt,1:MAX_RATES))
 
             if (LKECHO) then
-               write (JOSTND,'(/, 1x, a8, "   ANNUAL COST OF $", F7.2,
+               write (JOSTND,'(/a8, "   ANNUAL COST OF $", F7.2,
      &              " WILL BE APPLIED FOR: ", a, ".")') KEYWRD,
      &              annCostAmt(annCostCnt), trim(adjustl(charFields(2)))
                do i = 1, rateCnt
-                  write (JOSTND,'(T13, "APPRECIATION RATE: ", F6.1,
+                  write (JOSTND,'(T12, "APPRECIATION RATE: ", F6.1,
      &                                         "% FOR", i4, " YEARS.")')
      &               annCostRate(annCostCnt,i), annCostDur(annCostCnt,i)
                end do
@@ -114,11 +114,11 @@ C  Author Fred Martin, WA DNR,
      &                             annRevDur(annRevCnt, 1:MAX_RATES))
 
             if (LKECHO) then
-               write (JOSTND,'(/,1x, a8, "   ANNUAL REVENUE OF $", F7.2,
+               write (JOSTND,'(/a8 , "   ANNUAL REVENUE OF $", F7.2,
      &                " WILL BE APPLIED FOR: ", a, ".")') KEYWRD,
      &                annRevAmt(annRevCnt), trim(adjustl(charFields(2)))
                do i = 1, rateCnt
-                  write (JOSTND,'(T13,"APPRECIATION RATE: ", F6.1,
+                  write (JOSTND,'(T12,"APPRECIATION RATE: ", F6.1,
      &                "% FOR", i4, " YEARS.")') annRevRate(annRevCnt,i),
      &                annRevDur(annRevCnt,i)
                end do
@@ -136,10 +136,10 @@ C  Author Fred Martin, WA DNR,
      &                             burnCostRate, burnCostDur)
 
             if (LKECHO) then
-               write (JOSTND,'(/, 1x, a8, "   COST: $", f5.0,
+               write (JOSTND,'(/a8 , "   COST: $", f5.0,
      &                              " PER ACRE.")') KEYWRD, burnCostAmt
                do i = 1, rateCnt
-                  write (JOSTND,'(T13,"APPRECIATION RATE: ", F6.1,
+                  write (JOSTND,'(T12,"APPRECIATION RATE: ", F6.1,
      &                                   "% FOR ", i4, " YEARS.")')
      &                                   burnCostRate(i), burnCostDur(i)
                end do
@@ -148,7 +148,7 @@ C  Author Fred Martin, WA DNR,
 !        ======================= CASE END ==============================
          case ("END")
             if (LKECHO)
-     &         write (JOSTND,'(/, 1x, a8,3x,"END ECONOMIC EXTENSION ",
+     &         write (JOSTND,'(/a8 ,3x,"END ECONOMIC EXTENSION ",
      &                                             "KEYWORDS.")') KEYWRD
          return                                                          !No more ECON keywords
 
@@ -169,11 +169,11 @@ C  Author Fred Martin, WA DNR,
      &                             fixHrvDur(fixHrvCnt, 1:MAX_RATES))
 
             if (LKECHO) then
-               write (JOSTND,'(/, 1x, a8, "   COST: $", f5.0,
+               write (JOSTND,'(/a8 , "   COST: $", f5.0,
      &                " PER ACRE, FOR: ", a, ".")') KEYWRD,
      &                fixHrvAmt(fixHrvCnt), trim(adjustl(charFields(2)))
                do i = 1, rateCnt
-                  write (JOSTND,'(T13, "APPRECIATION RATE: ", F6.1,
+                  write (JOSTND,'(T12, "APPRECIATION RATE: ", F6.1,
      &                                        "% FOR ", i4, " YEARS.")')
      &                                        fixHrvRate(fixHrvCnt, i),
      &                                        fixHrvDur(fixHrvCnt, i)
@@ -211,7 +211,7 @@ C  Author Fred Martin, WA DNR,
      &                    trim(UNITS_LABEL(varHrvUnits(varHrvCnt))),
      &                    varHrvDbhLo(varHrvCnt), varHrvDbhHi(varHrvCnt)
                do i = 1, rateCnt
-                  write (JOSTND,'(T13, "APPRECIATION RATE: ", F6.1,
+                  write (JOSTND,'(T12, "APPRECIATION RATE: ", F6.1,
      &                                        "% FOR ", i4, " YEARS.")')
      &                                        varHrvRate(varHrvCnt, i),
      &                                        varHrvDur(varHrvCnt, i)
@@ -300,13 +300,13 @@ C  Author Fred Martin, WA DNR,
             end if
 
             if (LKECHO) then
-               write (JOSTND,'(/, 1x, a8, "   HARVEST PRICE: $", f5.0,
+               write (JOSTND,'(/a8 , "   HARVEST PRICE: $", f5.0,
      &                      " PER ", a, " >=", f5.1, " INCHES DIB/DBH ",
      &                      "FOR SPECIES ", a, ".")') KEYWRD,
      &                      realFields(1), trim(UNITS_LABEL(units)),
      &                      realFields(3), trim(adjustl(charFields(4)))
                do l = 1, rateCnt                                         !Use last species ID from "ALL" and species-group keywords
-                  write (JOSTND,'(T13,"APPRECIATION RATE: ", F6.1,
+                  write (JOSTND,'(T12,"APPRECIATION RATE: ", F6.1,
      &                   "% FOR ", i4, " YEARS.")')
      &                   hrvRevRate(spId,units,k,l),
      &                   hrvRevDur(spId,units,k,l)
@@ -357,7 +357,7 @@ C  Author Fred Martin, WA DNR,
             end if
 
             if (LKECHO)
-     &          write (JOSTND,'(/, 1x, a8, "   BIOMASS CONVERSION FOR ",
+     &          write (JOSTND,'(/a8 , "   BIOMASS CONVERSION FOR ",
      &                       "SPECIES: ", a, ", BASED ON: ", F5.0,
      &                       " POUNDS PER FT3.")') KEYWRD,
      &                       trim(adjustl(charFields(2))), realFields(1)
@@ -374,11 +374,11 @@ C  Author Fred Martin, WA DNR,
      &                             rateCnt, mechCostRate, mechCostDur)
 
             if (LKECHO) then
-               write (JOSTND,'(/, 1x, a8, "   COST: $", f5.0,
+               write (JOSTND,'(/a8 , "   COST: $", f5.0,
      &                              " PER ACRE.")') KEYWRD, mechCostAmt
 
                do i = 1, rateCnt
-                  write (JOSTND,'(T13,"APPRECIATION RATE: ", F6.1,
+                  write (JOSTND,'(T12,"APPRECIATION RATE: ", F6.1,
      &                       "% FOR ", i4, " YEARS.")') mechCostRate(i),
      &                       mechCostDur(i)
                end do
@@ -390,12 +390,12 @@ C  Author Fred Martin, WA DNR,
                noOutputTables  = .TRUE.
                noLogStockTable = .TRUE.
                if (LKECHO)
-     &            write (JOSTND,'(/, 1x, a8,"   ALL ECON OUTPUT ",
+     &            write (JOSTND,'(/a8 ,"   ALL ECON OUTPUT ",
      &                                "TABLES ARE SUPPRESSED.")') KEYWRD
             else if (int(realFields(1)) == 2) then
                noLogStockTable = .TRUE.
                if (LKECHO)
-     &            write (JOSTND,'(/, 1x, a8,"   ECON LOG STOCK VOLUME/",
+     &            write (JOSTND,'(/a8 ,"   ECON LOG STOCK VOLUME/",
      &                            "VALUE TABLE IS SUPPRESSED.")') KEYWRD
             end if
 
@@ -416,12 +416,12 @@ C  Author Fred Martin, WA DNR,
      &                             fixPctDur(fixPctCnt,1:MAX_RATES))
 
             if (LKECHO) then
-               write(JOSTND,'(/, 1x, a8, "   COST: $", f5.0,
+               write(JOSTND,'(/a8 , "   COST: $", f5.0,
      &                " PER ACRE FOR:", a, ".")') KEYWRD,
      &                fixPctAmt(fixPctCnt), trim(adjustl(charFields(2)))
 
                do i = 1, rateCnt
-                   write (JOSTND,'(T13,"APPRECIATION RATE: ", F6.1,
+                   write (JOSTND,'(T12,"APPRECIATION RATE: ", F6.1,
      &                                        "% FOR ", i4, " YEARS.")')
      &                                        fixPctRate(fixPctCnt, i),
      &                                        fixPctDur(fixPctCnt, i)
@@ -443,7 +443,7 @@ C  Author Fred Martin, WA DNR,
             if (realFields(3) > 0.0) pctMinVolume = realFields(3)        !Else default value
 
             if (LKECHO)
-     &         write (JOSTND,'(/, 1x, a8,"   PRE-COMMERCIAL THINNING ",
+     &         write (JOSTND,'(/a8 ,"   PRE-COMMERCIAL THINNING ",
      &               " DEFINED AS REMOVALS <", F6.0, 1x, a,
      &               " VOLUME PER ACRE AND  QMD < ", F4.1, " INCHES.")')
      &               KEYWRD, pctMinVolume, tmpLabel, pctMinDbh
@@ -473,14 +473,14 @@ C  Author Fred Martin, WA DNR,
      &                             varPctDur(varPctCnt,1:MAX_RATES))
 
             if (LKECHO) then
-               write (JOSTND,'(/1x, a8, "   PCT COST: $", f5.0,
+               write (JOSTND,'(/a8, "   PCT COST: $", f5.0,
      &             " PER ", a, ", FOR TREES >= ", f5.1, " AND < ", f5.1,
      &             " INCHES DBH.")') KEYWRD, varPctAmt(varPctCnt),
      &                    trim(UNITS_LABEL(varPctUnits(varPctCnt))),
      &                    varPctDbhLo(varPctCnt), varPctDbhHi(varPctCnt)
 
                do i = 1, rateCnt
-                  write (JOSTND,'(T13, "APPRECIATION RATE: ", F6.1,
+                  write (JOSTND,'(T12, "APPRECIATION RATE: ", F6.1,
      &                                        "% FOR ", i4, " YEARS.")')
      &                                        varPctRate(varPctCnt,i),
      &                                        varPctDur(varPctCnt,i)
@@ -494,7 +494,7 @@ C  Author Fred Martin, WA DNR,
                cycle readKeyWd                                           !Go read next keyword
             else if (plntCostCnt > 0) then                               !Plant cost keyword previously read
                if (plntCostUnits(1) == int(realFields(2))) then          !Identical cost units previously specified
-                  write (JOSTND,'(1x, a8, "   PLANTING COSTS UNITS ",i2,
+                  write (JOSTND,'(a8, "   PLANTING COSTS UNITS ",i2,
      &                      " PREVIOUSLY SET, RECORD # IGNORED: ", i4)')
      &                      KEYWRD, plntCostUnits(1), IRECNT
                   call RCDSET(1,.TRUE.)                                  !.TRUE. causes RCDSET to return,
@@ -517,12 +517,12 @@ C  Author Fred Martin, WA DNR,
      &                            plntCostDur(plntCostCnt,1:MAX_RATES))
 
             if (LKECHO) then
-               write (JOSTND,'(/,1x,a8,"   COST: $", f5.0, " PER ", a)')
+               write (JOSTND,'(/a8,"   COST: $", f5.0, " PER ", a)')
      &                     KEYWRD, plntCostAmt(plntCostCnt),
      &                     trim(UNITS_LABEL(plntCostUnits(plntCostCnt)))
 
                do i = 1, rateCnt
-                  write (JOSTND,'(T13,"APPRECIATION RATE: ", F6.1,
+                  write (JOSTND,'(T12,"APPRECIATION RATE: ", F6.1,
      &                                     "% FOR ",i4," YEARS.")')
      &                                     plntCostRate(plntCostCnt, i),
      &                                     plntCostDur(plntCostCnt, i)
@@ -548,11 +548,11 @@ C  Author Fred Martin, WA DNR,
             if (errCode > 0) cycle readKeyWd                             !Go read next keyword
 
             if (LMODE .and. LKECHO) then
-               write (JOSTND, '(/,1X, A8, "   PRETEND MODE DELAYED", i4,
+               write (JOSTND, '(/a8 , "   PRETEND MODE DELAYED", i4,
      &                 " YEARS, CONTINUING FOR", i4, " YEARS")') KEYWRD,
      &                 int(realFields(1)), int(realFields(2))
             else if (LKECHO) then
-               write (JOSTND, '(/,1X, A8, "   PRETEND MODE STARTS YEAR",
+               write (JOSTND, '(/a8 , "   PRETEND MODE STARTS YEAR",
      &              "/CYCLE: ", i4, ", CONTINUING FOR", i4, " YEARS ")')
      &              KEYWRD, int(realFields(1)), int(realFields(2))
             end if
@@ -579,7 +579,7 @@ C  Author Fred Martin, WA DNR,
             if (errCode > 0) cycle readKeyWd                             !Go read next keyword
 
             if (LKECHO)
-     &         write (JOSTND,'(/,1x,a8, 3X, "$", f5.0, " SPECIAL COST ",
+     &         write (JOSTND,'(/a8, 3X, "$", f5.0, " SPECIAL COST ",
      &           "INCURRED FOR: ", a, ", IN YEAR/CYCLE: ", i4)') KEYWRD,
      &           realFields(3), trim(adjustl(charFields(2))),
      &           int(realFields(1))
@@ -606,7 +606,7 @@ C  Author Fred Martin, WA DNR,
             if (errCode > 0) cycle readKeyWd                             !Go read next keyword
 
             if (LKECHO)
-     &          write (JOSTND,'(/, 1x, a8, 3X, "$", f5.0, " SPECIAL ",
+     &          write (JOSTND,'(/a8 , 3X, "$", f5.0, " SPECIAL ",
      &            "REVENUE ACCRUED FOR: ", a, ", IN YEAR/CYCLE: ", i4)')
      &            KEYWRD, realFields(3), trim(adjustl(charFields(2))),
      &            int(realFields(1))
@@ -629,14 +629,14 @@ C  Author Fred Martin, WA DNR,
             if (realFields(3) <= 0.0) charFields(3) = " "                !Replace potential zero w/ blank
 
             if (LMODE .and. LKECHO) then
-               write (JOSTND, '(/,1x, a8, "   ECON START YEAR DELAYED",
+               write (JOSTND, '(/a8 , "   ECON START YEAR DELAYED",
      &          i4, " YEARS, DISCOUNT RATE:", f5.1, "%, Known SEV: $ ",
      &          a, ", SEV will be computed: ", a)')
      &         KEYWRD, int(realFields(1)), realFields(2),
      &         trim(adjustl(charFields(3))),
      &         trim(BOOLEAN(int(realFields(4))))
            else if (LKECHO) then
-               write (JOSTND, '(/, 1x, a8, "   ECON START YEAR/CYCLE: ",
+               write (JOSTND, '(/a8 , "   ECON START YEAR/CYCLE: ",
      &         i4, ", DISCOUNT RATE:", f5.1, "%, Known SEV: $ ", a,
      &         ", SEV will be computed: ", a)')
      &         KEYWRD, int(realFields(1)), realFields(2),
@@ -724,7 +724,7 @@ C  Author Fred Martin, WA DNR,
 
          read (IREAD,'(a80)',iostat=ios) record
          if (ios < 0) then                                               !EOF, should not happen before an END keyword
-            write (JOSTND,'(/,1x,8x,"   ERROR READING SUPPLEMENTAL ",
+            write (JOSTND,'(/8x,"   ERROR READING SUPPLEMENTAL ",
      &                                     "RATES & DURATIONS RECORD")')
             call ERRGRO(.FALSE., 2)                                      !.FALSE. causes ERRGRO not to return, 1 = invalid keyword
             CALL fvsGetRtnCode(IRTNCD)
@@ -738,10 +738,10 @@ C  Author Fred Martin, WA DNR,
             j      = j + 5
             read (fieldC,'(f5.0)',iostat=ios) fieldR(i)
             if (ios>0 .or. fieldR(i)<-100.0) then !Read error
-               write (JOSTND,'(/,1x,8x,"   ILLEGAL ENTRY IN VALUE RATE",
+               write (JOSTND,'(/8x,"   ILLEGAL ENTRY IN VALUE RATE",
      &                " CHANGE, RECORD:", i4, ", ALL RATE CHANGES ARE ",
      &                "IGNORED.")') IRECNT
-               write (JOSTND,'(1x, 8x, "PARAMETERS ARE: ", a80)') record
+               write (JOSTND,'(8x, "PARAMETERS ARE: ", a80)') record
                hasError = .TRUE.
                return
             end if
@@ -794,7 +794,7 @@ C  Author Fred Martin, WA DNR,
          end if
 
          if (errCode > 0)  then
-            write (JOSTND,'(/, a12, 1x, a8, "   KEYWORD FAILED TO ",
+            write (JOSTND,'(/a12, 1x, a8, "   KEYWORD FAILED TO ",
      &             "REGISTER ON EVENT MONITOR, RECORD: ", i4)')
      &             warn, KEYWRD, IRECNT
             call RCDSET(1,.TRUE.)                                        !.TRUE. causes RCDSET to return,
@@ -808,35 +808,35 @@ C  Author Fred Martin, WA DNR,
          integer, intent(in) :: msg
          select case (msg)
          case (badCycle)
-            write (JOSTND,'(/, a12, 1x, a8, "   KEYWORD IGNORED, ",
+            write (JOSTND,'(/a12, 1x, a8, "   KEYWORD IGNORED, ",
      &             "CYCLE/YEAR NEGATIVE OR MISSING, RECORD: ",I4)')
      &             warn, KEYWRD, IRECNT
          case (badUoM)
-            write (JOSTND,'(/, a12, 1x, a8, "   KEYWORD IGNORED, ",
+            write (JOSTND,'(/a12, 1x, a8, "   KEYWORD IGNORED, ",
      &             "UNIT-OF-MEASURE INCORRECTLY SPECIFIED, RECORD: ",
      &             i4)') warn, KEYWRD, IRECNT
          case (badValue)
-            write (JOSTND,'(/, a12, 1x, a8, "   KEYWORD IGNORED, NO ",
+            write (JOSTND,'(/a12, 1x, a8, "   KEYWORD IGNORED, NO ",
      &             "OR NEGATIVE COST/PRICE/VALUE ENTERED, RECORD:",
      &             i4)') warn, KEYWRD, IRECNT
          case (maxKeyWds)
-            write (JOSTND,'(/,1x,a12, "# ", a8, " KEYWORDS ",
+            write (JOSTND,'(/a12, "# ", a8, " KEYWORDS ",
      &             "ENTERED EXCEEDS MAXIMUM, RECORD", i4, " IGNORED.")')
      &             warn, KEYWRD, IRECNT
          case (revMaxKeyWds)
-            write(JOSTND,'(/, a12, 1x, 1x, a8,"   KEYWORD IGNORED, ",
+            write(JOSTND,'(/a12, 1x, 1x, a8,"   KEYWORD IGNORED, ",
      &           "MAX # KEYWORDS EXCEEDED FOR THIS SPECIES: ", a,
      &           ", UNITS-OF-MEASURE: ", a, ", & DIAMETER CLASS:", f5.1,
      &           ", RECORD:", i4)')  warn, KEYWRD, NSP(i,1)(1:2),        !NSP(i,1)(1:2) is character species code not including tree value class
      &           trim(UNITS_LABEL(units)), realFields(3), IRECNT
          case (revDuplicate)
-            write(JOSTND,'(/, a12, 1x, 1x, a8, "   KEYWORD IGNORED, "
+            write(JOSTND,'(/a12, 1x, 1x, a8, "   KEYWORD IGNORED, "
      &            "VALUES PREVIOUSLY SET FOR THIS SPECIES: ", a,
      &            ", UNITS-OF-MEASURE: ", a, ", & DIAMETER CLASS:",
      &            f5.1, ", RECORD:", i4)') warn, KEYWRD, NSP(i,1)(1:2),  !NSP(i,1)(1:2) is character species code not including tree value class
      &            trim(UNITS_LABEL(units)), realFields(3), IRECNT
          case (lbsDupSp)
-            write(JOSTND,'(/, a12, 1x, a8, "   KEYWORD IGNORED, ",
+            write(JOSTND,'(/a12, 1x, a8, "   KEYWORD IGNORED, ",
      &            "VALUES PREVIOUSLY SET FOR THIS SPECIES: ", a,
      &            ", RECORD:", I4)') warn, KEYWRD,
      &            trim(adjustl(charFields(2))), IRECNT

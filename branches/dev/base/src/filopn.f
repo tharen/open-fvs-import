@@ -10,19 +10,12 @@ C  IF PROMPTS ARE NOT WANTED, SET LPT FALSE.
 C
 COMMONS
 C
-C
       INCLUDE 'PRGPRM.F77'
-C
-C
       INCLUDE 'CONTRL.F77'
-C
-C
       INCLUDE 'ECON.F77'
-C
-C
+      INCLUDE 'SVDATA.F77'
       INCLUDE 'FVSSTDCM.F77'
-C
-C
+
 COMMONS
 C
       INTEGER LENKEY,KODE,I,LENNAM,ISTLNB,IRTNCD
@@ -263,6 +256,10 @@ C
       if (LOPEN) close(unit=JOLIST)
       inquire(unit=JOSUME,opened=LOPEN)
       if (LOPEN) close(unit=JOSUME)
+      if (JSVOUT.gt.0) then
+        inquire(unit=JSVOUT,opened=LOPEN)
+        if (LOPEN) close(unit=JSVOUT)
+      endif
 
       return
       end

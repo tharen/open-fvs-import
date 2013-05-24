@@ -23,7 +23,7 @@ COMMONS
 
 COMMONS
 
-      LOGICAL LNOTBK(7)
+      LOGICAL LNOTBK(7),LOPEN
       REAL ARRAY(7)
       CHARACTER*8 KEYWRD
       CHARACTER*10 SUFFIX
@@ -92,7 +92,8 @@ C>>>      IF (ICOLIDX.LT.0) ICOLIDX=2
       
       JSVOUT=90
 
-      IF (NIMAGE.EQ.0) THEN
+      inquire(unit=JSVOUT,opened=LOPEN)
+      if (.not.LOPEN) then
         SUFFIX='_index.svs'
         open(unit=JSVOUT,file=KWDFIL(:len_trim(KWDFIL)-4)//SUFFIX,
      >       status="replace",err=19)
@@ -104,7 +105,7 @@ C>>>      IF (ICOLIDX.LT.0) ICOLIDX=2
         JSVOUT=0
         RETURN
    21   CONTINUE
-        IF (JSVPIC.GT.0) WRITE (JSVOUT,'(''#TREELISTINDEX'')')
+        WRITE (JSVOUT,'(''#TREELISTINDEX'')')
       ENDIF
       RETURN
       END
