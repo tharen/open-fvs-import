@@ -1,13 +1,22 @@
 #summary Running FVS from VB.Net
 
-= Introduction =
+=Running FVS from VB.Net using the API=
 
-Add your content here.
+_Don Robinson, [http://www.essa.com ESSA] Technologies, May 2013_
 
+This wiki will document the process of writing VB.Net code to run FVS using the API. This code is under development and 8 of 22 API calls have been built and tested.
 
-= Details =
+Depending on the tool chain and variant name, there are small differences in the names of FVS DLLs and names of the API calls, respectively. These differences are very minor, and the sample code and instructions that will be provided will make it clear how to adapt to any combination of tool chain and variant. The examples to be provided are specific to the BC variant built with Visual Studio (see [BuildProcess_VisualStudio]), which is targeted for integration with the TELSA model.
 
-Add your content here.  Format your content with:
-  * Text in *bold* or _italic_
-  * Headings, paragraphs, and lists
-  * Automatic links to other wiki pages
+= Contents =
+
+<wiki:toc max_depth="2" />
+
+=Topics to be covered=
+
+{{{
+example of VB interfaces to FVS
+example of VB.Net code
+location of sample code and Visual Studio SLN file
+metrification issues
+}}}
