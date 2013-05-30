@@ -373,7 +373,7 @@ Example code is like a photograph: a few lines of working code are worth a 1,000
 
 == Example 1 Simple run ==
 
-Here a simple run of one stand simulated three with three different prescriptions. The keyword file and tree data for this run is in the `<open-fvs>/rFVS/tests/` directory. That directory is set as the working directory prior to any other commands be entered.  This run is the same as that found in `<open-fvs>/trunk/tests/FVSiec`, but in that case the run is done using the FVSiec _program_ rather than the _shared library_.
+Here is a simple run of one stand simulated with three different prescriptions. The keyword file and tree data for this run are in the `<open-fvs>/rFVS/tests/` directory. That directory is set as the working directory prior to any other commands being entered.  This run is the same as that found in `<open-fvs>/trunk/tests/FVSiec`, but in that case the run is done using the FVSiec _program_ rather than the _shared library_.
 
 {{{
 setwd ("<open-fvs>/rFVS/tests")  # Note: edit <open-fvs> to reflect your system.
