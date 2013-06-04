@@ -10,7 +10,7 @@ This document describes the FVS _Application Program Interface_ (API) that provi
 
 Note that the fact that FVS is written as a _procedural_ program rather than an _object oriented_ program means that the methods used in the FVS_API are not consistent with an object-oriented paradigm. Specific goals, for example, processing many stands in parallel through time, are achieved differently in FVS than would be accomplished if FVS were object oriented. The design of the API is keyed to this reality.
 
-The design of this API is driven by known and perceived needs and as those change, the API will change. The design was further dictated by the system used to call it. So far, that is only one system, the [http://www.r-project.org/ R System for Statistical Computing]. However, I know that [http://essa.com/ Don Robinson and Sarah Beukema] are targeting a system based on .Net and another programmer is working on calling FVS from Python. As these efforts progress, it is highly likely that the API will be augmented.
+The design of this API is driven by known and perceived needs and as those change, the API will change. The design was further dictated by the system used to call it. So far, that is only one system, the [http://www.r-project.org/ R System for Statistical Computing]. However, I know that [http://essa.com/ Don Robinson and Sarah Beukema] are targeting a system based on .Net [VB_DotNet_FVS VB.Net Wiki page] and another programmer is working on calling FVS from Python. As these efforts progress, it is highly likely that the API will be augmented.
 
 Speaking of R, there is a directory to this repository called _rFVS_. This is a collection of R functions used to run FVS on a wide variety of simulations. These functions also serve to demonstrate how to use the API that is described below. In the future, these R functions may become an R package; for now they documented in the [rFVS rFVS Wiki page].
 
@@ -27,7 +27,7 @@ What follows is the definition of subroutines designed to be called by the paren
 == Command Line ==
 
 {{{
-subroutne fvsSetCmdLine(theCmdLine,lenCL,rtnCode)
+subroutine fvsSetCmdLine(theCmdLine,lenCL,rtnCode)
 }}}
 
 Set the command line arguments. When FVS is run as a program, this value is specified on the command line as arguments to the program start (see [FVSCommandLine FVS Command Line] for definitions of this string). Values specified using this function take precedence over those set on the actual command line. This function also opens files for input as indicted by the values found and it can result in the FVS [FVS_API#Return_Code_State return code state] to be reset.
@@ -185,14 +185,14 @@ subroutine fvsTreeAttr(name,nch,action,ntrees,attr,rtnCode)
 Get or set attributes of the trees in the simulation. (The return code reported here are independent of the general return code.)
 
 ||Argument||Definition||
-||`name`||character string defining the tree attribute being being acted upon. ||
+||`name`||character string defining the tree attribute being being acted upon; 10 chars maximum||
 ||`nch`||integer number defining the length of _name_.||
-||`action`||action requested where, "get" signals that the current values defined in FVS should be returned as a vector in _attr_ and "set" signals that the current values in FVS should be changed to those specified in _attr_.||
+||`action`||action requested where, "get" signals that the current values defined in FVS should be returned as a vector in _attr_ and "set" signals that the current values in FVS should be changed to those specified in _attr_ ; 4 chars maximum||
 ||`ntrees`|| the length of the _attr_||
 ||`attr`||a vector of double precision (8-byte floats) of the attribute being processed.||
-||`rtnCode`||return codes, as follows: 0=OK, 1=_name_ not found, 2=_ntrees_ is greater than the maximum allowed, and 3=there were more or fewer trees the ntrees.||
+||`rtnCode`||return codes, as follows: 0=OK, 1=_name_ not found, 2=_ntrees_ is greater than the maximum allowed, 3=there were more or fewer trees than _ntrees_, 4=length of _name_ string was too large or small.||
 
-Tree sttributes that can be returned or set. The units of measure or the period length to which some values apply can depend on when, during the sequence of calculations in FVS, these data are accessed. Note that while you can set the value of these variables changing some of them will likely cause FVS to fail (_species_ is an example).
+Tree attributes that can be returned or set. The units of measure or the period length to which some values apply can depend on when, during the sequence of calculations in FVS, these data are accessed. Note that while you can set the value of these variables changing some of them will likely cause FVS to fail (_species_ is an example).
 
 ||Name||Definition||
 ||`tpa `||Trees per acre represented by the tree record.||
@@ -207,7 +207,7 @@ Tree sttributes that can be returned or set. The units of measure or the period 
 ||`age`||Age in years||
 ||`plot`||FVS internal numeric sub plot code|| 
 ||`tcuft`||Total cubic feet||
-||`mcuft`||Merchangalbe cubic feet||
+||`mcuft`||Merchantable cubic feet||
 ||`bdft`||Board feet||
 ||`mgmtcd  `||Tree value class or management code (1, 2, or 3)||
 ||`plotsize`||Size of plot tree was sampled from|| 
@@ -222,7 +222,7 @@ Tree sttributes that can be returned or set. The units of measure or the period 
 == FVS Stand Visualizaton (SVS)  ==
 
 {{{
-subroutine fvsSVSDimSizes(nsvsobjs, ndeadobjs, ncwdobjs,  mxsvsobjs, 
+subroutine fvsSVSDimSizes(nsvsobjs, ndeadobjs, ncwdobjs, mxsvsobjs, 
                           mxdeadobjs, mxcwdobjs)
 }}}
 
