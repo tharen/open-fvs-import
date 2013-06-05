@@ -189,10 +189,11 @@ C
          LHD=.FALSE.
          KOLIST=IABS(KOLIST)
       ENDIF
-
-C     MAKE SURE KOLIST IS OPEN
-      CALL openIfClosed (KOLIST,"trl",lok)
-      if (.not.lok) goto 200
+C
+C     MAKE SURE THE OUTPUT FILE IS OPENNED
+C
+      CALL openIfClosed (KOLIST,"trl",LOK)
+      IF (.NOT.LOK) RETURN
 C
 C     IF NO HEADING IS BEING WRITTEN, WRITE A MARKER AND THE NUMBER OF
 C     RECORDS WHICH FOLLOW.
