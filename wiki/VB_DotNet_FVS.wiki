@@ -4,7 +4,7 @@
 
 _Don Robinson, [http://www.essa.com ESSA] Technologies, June 2013_
 
-This Wiki page documents the key concepts for writing VB.Net code, so that .Net developers can run FVS using the API (see [FVS_API]). This code is still under development with 15 of 22 API calls ('Methods') built and tested. The existing methods provide templates for the completion of the interface, and new participants and developers are welcome.
+This Wiki page documents the key concepts for writing VB.Net code, so that .Net developers can create applications that use FVS through the API (see [FVS_API]). The example repository code is still under development with 15 of 22 API calls ('Methods') built and tested. These methods provide good templates for the completion of the interface, and new participants and developers are welcome.
 
 Depending on the tool chain and variant name, there are small differences in the names of FVS DLLs and names of the API calls, respectively. These differences are very minor, and the sample code and instructions should make it clear how to adapt to any combination of tool chain and variant. The example which is provided is specific to the BC variant built with Visual Studio (see [BuildProcess_VisualStudio]), which is targeted for integration with the [http://www.essa.com/telsa TELSA] model.
 
@@ -16,11 +16,11 @@ Depending on the tool chain and variant name, there are small differences in the
 There are 5 main files in the repository example. You may need to download this code first, as described in [DownloadingSourceCode]. Relative to the root of the SVN repository, the home directory of the example files and directories listed below is *`.\VB.Net-FVS`*.
 
 || *Filename* || *Purpose* || 
-|| .\FVS\FVS.sln || The VS2010 Solution file which implements the class and methods described on this Wiki page, and which demonstrates the use of these methods for calling the FVS-BC variant. ||
-|| .\FVS\FVS_API.vb || Class declarations, constants, definitions, properties and methods which are the basis for all the higher level VB code. ||
-|| .\FVS\FVS_Signatures.vb || Declarations for all the API calls. The declarations in this file use the explicit name of the main FVS-BC variant DLL (`FVS_bcc.dll`). This name will need to be modified for whichever variant is being called. The file also contains declarations of the VB data type for each argument found in the lower level call to the API. The argument lists conform to the data types of the arguments of the lower level API (see [FVS_API]). Depending on the data type and dimension, arguments may be passed by reference or by value. Argument lists that include character strings contain an additional 'Ansi' declaration. ||
+|| .\FVS\FVS.sln || The VS2010 Solution file which implements the Class and Methods described on this Wiki page and demonstrates their use with the FVS-BC variant. ||
+|| .\FVS\FVS_API.vb || Class declarations, Constants, Definitions, Properties and Methods which are the basis for all the higher level VB code. ||
+|| .\FVS\FVS_Signatures.vb || Declarations for all the API calls. The declarations in this file use the explicit name of the main FVS-BC variant DLL (`FVS_bcc.dll`). As currently written, this name will need to be modified for whichever variant is being used. The file also has declarations of the VB data type for each argument of the lower level call to the API, conforming to the data types of the arguments of the lower level API (see [FVS_API]). Depending on the data type and dimension, arguments may be passed by `ByReference`or `ByValue`. Argument lists that include character strings contain an additional 'Ansi' declaration. ||
 || .\Testing\Testing.vb || A working example of VB code which runs FVS.||
-|| .\Testing\bin\Debug || This subdirectory contains the FVS-BC variant DLLs which are called through the API (`FVS_bcc.dll, FVSfofem.dll` and `FVSsql.dll`). It also contains the keyword and Access database files used in the working example, and will be the location to which any temporary or permanent output files are written during the simulation. All DLL files created by the VS2010 build chain must be manually copied to this directory for the simulation to run. If you wish to code-walk into FVS Fortran/C/C++ code from within the VB application, the corresponding PDB (Program Data Base) files created by VS2010 during a *Debug* compile, must also be copied here. ||
+|| .\Testing\bin\Debug || This subdirectory contains the FVS-BC variant DLLs which are called through the API (`FVS_bcc.dll, FVSfofem.dll` and `FVSsql.dll`). It also contains the keyword and Access database files used in the working example, and is the location to which temporary and permanent output files are written during the simulation. All FVS DLLs created by the VS2010 build chain must be manually copied to this directory for the simulation to run. If you wish to code-walk into FVS Fortran/C/C++ code from within the VB application, the corresponding PDB (Program Data Base) files created by VS2010 during a *Debug* compile, must also be copied here. ||
 
 The repository contains other (undocumented) files and directories which are necessary to the VS2010 solution, but which are not altered by the developer. You can find more information about the project under the Code Sample section of this Wiki page.
 
@@ -34,7 +34,7 @@ There is a single private String variable `MeasurementType` used to specify whet
 The `New()` constructor sets the default value for `MeasurementType` when a member of the FVS_API class is declared.
 
 ===Constants===
-This code region encapsulates the constants used for metric/imperial unit conversion. If needed, additional constants can be borrowed from `/open-fvs/trunk/common/METRIC.F77` and implemented here. Seven constants are used so far.
+This code region encapsulates the constants used for metric/imperial unit conversion (e.g. `INtoCM`). If needed, additional constants can be borrowed from `/open-fvs/trunk/common/METRIC.F77` and implemented here. Seven constants are used so far.
 
 ===Properties===
 The `MeasurementType` property allows input and output units to be converted between imperial units (the default) and metric units. Internally FVS almost always uses imperial units for its submodels and calculations. Metric unts can be set by code like this (from `Testing.vb`):
@@ -79,9 +79,9 @@ Each API call is mirrored by a corresponding VB method, usually removing the pre
 || 22 || `SVSObjData` || `FVSSVSOBJDATA` || not yet implemented ||
 
 ==Annotated Code Sample==
-The Solution contains two projects: `FVS` and `Testing`. The `FVS` project contains the VB code required to call FVS and also defines the `FVS` namespace which is used by the `Testing` project to access all the methods.
+The Solution in the repository contains two projects: `FVS` and `Testing`. The `FVS` project contains the VB code (i.e., `FVS_API.vb` and `FVS_Signatures.vb`) required to call FVS and also defines the `FVS` namespace which is used by the `Testing` project to access all the methods.
 
-Developers are reminded that by default, arrays created in VB begin at 0; while those created in Fortran begin at 1 by default. When you wish to create an array of 20 integers, the VB declaration is:
+Developers are reminded that by default, arrays created in VB begin at 0; while those created in Fortran begin at 1 by default. (Although changing the VB default is an option, that has not been done so far.) When you wish to create an array of 20 integers, the VB declaration is:
 
 {{{
 Dim Summry(19) As Integer
@@ -101,7 +101,7 @@ The following code sample is borrowed from `Testing.vb`. The first code snip lin
 Imports FVS
 }}}
 
-An `fvs` object is created (along with any other variables necessary to your code) to allow you to write code employing the Methods and Properties of `FVS_API`, ultimately linking to FVS through the API.
+In the next section an `fvs` object is created (along with any other variables necessary to your code) to allow you to write code employing the Methods and Properties of `FVS_API`, ultimately linking to FVS through the API.
 
 {{{
 Dim fvs As New FVS_API
@@ -173,3 +173,12 @@ Do
 Loop Until ReturnCode <> 0
 
 }}}
+
+==Next Steps for Extending FVS with VB.Net==
+There are 3 top-level tasks that remain:
+
+  * create and test the remaining 7 VB Methods 
+  * investigate options to provide interfaces that are compiler independent, so that API calls work for both these forms: `FVSDIMSIZES` and `fvsdimsizes_`.
+  * investigate options to create tools that work across all variants, without the annoyance of having to recode the name of the target DLL based on variant and tool chain.
+
+In addition, there are possible improvements to the Methods that might make them more intuitive and useful. For example, loop-oriented Methods like `SpeciesCode` could be rewritten to fetch all species labels at once by moving the loop inside the Method. Improvements to argument checking might also be possible.
