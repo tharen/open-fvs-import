@@ -4,7 +4,7 @@
 
 _Don Robinson, [http://www.essa.com ESSA] Technologies, June 2013_
 
-This Wiki page documents the key concepts for writing VB.Net code, so that developers can write code to run FVS using the API (see [FVS_API]). This code is under development and 15 of 22 API calls ('Methods') have been built and tested. These methods provide templates for the completion of the interface, and new participants and developers are welcome.
+This Wiki page documents the key concepts for writing VB.Net code, so that .Net developers can run FVS using the API (see [FVS_API]). This code is still under development with 15 of 22 API calls ('Methods') built and tested. The existing methods provide templates for the completion of the interface, and new participants and developers are welcome.
 
 Depending on the tool chain and variant name, there are small differences in the names of FVS DLLs and names of the API calls, respectively. These differences are very minor, and the sample code and instructions should make it clear how to adapt to any combination of tool chain and variant. The example which is provided is specific to the BC variant built with Visual Studio (see [BuildProcess_VisualStudio]), which is targeted for integration with the [http://www.essa.com/telsa TELSA] model.
 
@@ -13,7 +13,7 @@ Depending on the tool chain and variant name, there are small differences in the
 <wiki:toc max_depth="3" />
 
 ==Getting the Source Files==
-There are 5 main files in the repository example. You may need to download this code first, as described in [DownloadingSourcCode]. Relative to the root of the SVN repository, the home directory of the example files and directories listed below is *`.\VB.Net-FVS`*.
+There are 5 main files in the repository example. You may need to download this code first, as described in [DownloadingSourceCode]. Relative to the root of the SVN repository, the home directory of the example files and directories listed below is *`.\VB.Net-FVS`*.
 
 || *Filename* || *Purpose* || 
 || .\FVS\FVS.sln || The VS2010 Solution file which implements the class and methods described on this Wiki page, and which demonstrates the use of these methods for calling the FVS-BC variant. ||
@@ -173,5 +173,3 @@ Do
 Loop Until ReturnCode <> 0
 
 }}}
-
-
