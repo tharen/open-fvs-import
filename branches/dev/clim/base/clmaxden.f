@@ -106,10 +106,10 @@ C       1.5819767 = (1./(1-EXP(-1.))) AND CAUSES XX=1 TO STAY 1.
         IF (XX .LT. .15) XX=.15
       ENDIF
       
-      IF (CLMXDENMULT .LT. 1.) THEN
-        MXDENMLT = XX**CLMXDENMULT
+      IF (XX .LT. 1.) THEN
+        MXDENMLT = 1.-((1.-XX)*CLMXDENMULT)
       ELSE
-        MXDENMLT = XX*CLMXDENMULT
+        MXDENMLT = 1.+((XX-1.)*CLMXDENMULT)
       ENDIF
       XMAX = XMAX * MXDENMLT
       
