@@ -301,22 +301,22 @@ Snag status codes:
 == Fire and Fuels Extension Attributes ==
 
 {{{
-subroutine fvsFFEAttrs(name,nch,action,ntrees,attr,rtnCode)
+subroutine fvsFFEAttrs(name,nch,action,nSpecies,attr,rtnCode)
 }}}
 
-Get or set attributes of the trees in the simulation. (The return code reported here are independent of the general return code.)
+Get or set FFE species attributes in the simulation. (The return code reported here are independent of the general return code.)
 
 ||Argument||Definition||
-||`name`||character string defining the tree attribute being being acted upon. ||
+||`name`||character string defining the species attribute being being acted upon. ||
 ||`nch`||integer number defining the length of _name_.||
 ||`action`||action requested where, "get" signals that the current values defined in FVS should be returned as a vector in _attr_ and "set" signals that the current values in FVS should be changed to those specified in _attr_.||
-||`nobjs`|| the length of the _attr_||
+||`nSpecies`|| the length of the _attr_||
 ||`attr`||a vector of double precision (8-byte floats) of the attribute being processed.||
-||`rtnCode`||return codes, as follows: 0=OK, 1=_name_ not found, 2=_ntrees_ is greater than the maximum allowed, and 3=there were more or fewer trees the ntrees.||
+||`rtnCode`||return codes, as follows: 0=OK, 1=_name_ not found, 2=_nSpecies_ is greater than the maximum allowed, 3=there were more or fewer trees than _nSpecies_, and 4=length of _name_ string was too large or small.||
 
 The following attributes can be accessed:
 
-||Name||_nobjs_ value||Definition||
+||Name||_nSpecies_ value||Definition||
 ||`fallyrs0`||`maxsp`||Number of years before all foliage will fall from a recently killed tree.||
 ||`fallyrs1`||`maxsp`||Number of years before all 0-.25 inch crown material will fall from a recently killed tree.||
 ||`fallyrs2`||`maxsp`||Number of years before all .25-1 inch crown material will fall from a recently killed tree.||
