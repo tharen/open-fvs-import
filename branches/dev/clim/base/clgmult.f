@@ -203,9 +203,9 @@ C       smi.trds:d100    0.15582
         IF (PS.GT. 0.99) PS=MAX(XGSITE,XRELGR,VSCORE(ISP(I)))
         IF (PS .GT. 3.) PS = 3. 
         IF (PS .LT. 1.) THEN
-          TREEMULT(I)=1.-((1.-PS)*CLGROWMULT(ISP(I))
+          TREEMULT(I)=1.-((1.-PS)*CLGROWMULT(ISP(I)))
         ELSE
-          TREEMULT(I)=1.+((PS-1.)*CLGROWMULT(ISP(I))
+          TREEMULT(I)=1.+((PS-1.)*CLGROWMULT(ISP(I)))
         ENDIF
         IF (DEBUG) WRITE (JOSTND,10) I,JSP(ISP(I)),BIRTHYR,
      >             XDF,XPP,XWL,PS,XRELGR,TREEMULT(I)
