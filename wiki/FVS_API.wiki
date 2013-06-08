@@ -10,9 +10,9 @@ This document describes the FVS _Application Program Interface_ (API) that provi
 
 Note that the fact that FVS is written as a _procedural_ program rather than an _object oriented_ program means that the methods used in the FVS_API are not consistent with an object-oriented paradigm. Specific goals, for example, processing many stands in parallel through time, are achieved differently in FVS than would be accomplished if FVS were object oriented. The design of the API is keyed to this reality.
 
-The design of this API is driven by known and perceived needs and as those change, the API will change. The design was further dictated by the system used to call it. So far, that is only one system, the [http://www.r-project.org/ R System for Statistical Computing]. However, I know that [http://essa.com/ Don Robinson and Sarah Beukema] are targeting a system based on .Net [VB_DotNet_FVS VB.Net Wiki page] and another programmer is working on calling FVS from Python. As these efforts progress, it is highly likely that the API will be augmented.
+The design of this API is driven by known and perceived needs and as those change, the API will change. The design was further dictated by the system used to call it. So far there are two systems which can use the API. The first is an interface to the [http://www.r-project.org/ R System for Statistical Computing]. The second system is based on VB.Net and is being developed at [http://www.essa.com/ ESSA] by Don Robinson and Sarah Beukema. A third developer is working on calling FVS from Python. As these efforts progress, it is highly likely that the API will be augmented.
 
-Speaking of R, there is a directory to this repository called _rFVS_. This is a collection of R functions used to run FVS on a wide variety of simulations. These functions also serve to demonstrate how to use the API that is described below. In the future, these R functions may become an R package; for now they documented in the [rFVS rFVS Wiki page].
+For more information about the interface to R, there is a directory to this repository called _rFVS_. This is a collection of R functions used to run FVS on a wide variety of simulations. These functions also serve to demonstrate how to use the API that is described below. In the future, these R functions may become an R package; for now they documented in the [rFVS rFVS Wiki page]. For a working example of the interface to VB.Net using Visual Studio 2010, see the FVS-VB.Net repository. The [VB_DotNet_FVS VB.Net] Wiki page describes the implementation of the interface and an annotated version of the working example in the repository.
 
 = Basic Idea =
 
@@ -22,7 +22,7 @@ Specifying the name of the keyword file is done by setting the `--keywordfile` a
 
 = API Reference =        
 
-What follows is the definition of subroutines designed to be called by the parent programs. On some operating systems, depending on how the FVS library is built, many routines within FVS besides those listed below could be called. It would be easy to distroy the the simulation if FVS routines are called out of order. User's are encouraged to take a minimalist approach, yet by all means do take an approach!
+What follows is the definition of subroutines designed to be called by the parent programs. On some operating systems, depending on how the FVS library is built, many routines within FVS besides those listed below could be called. It would be easy to destroy the simulation if FVS routines are called out of order. Users are encouraged to take a minimalist approach, yet by all means do take an approach!
 
 == Command Line ==
 
@@ -73,7 +73,7 @@ Set (or Get) the parameters that control start/restart while FVS is run as a sha
 ||`3`||Stop just before the second call to the Event Monitor.||
 ||`4`||Stop just after the second call to the Event Monitor.||
 ||`5`||Stop after growth and mortality has been computed, but prior to applying them.||
-||`6`||Stop just before the estab routines are called.||
+||`6`||Stop just before the ESTAB routines are called.||
 
 {{{
 subroutine fvsGetRestartcode (restartcode)
@@ -87,7 +87,7 @@ Returns the current value of the stop/restart code. This is an integer the indic
 ||`3`||Stop was done just before the second call to the Event Monitor.||
 ||`4`||Stop was done just after the second call to the Event Monitor.||
 ||`5`||Stop was done after growth and mortality has been computed, but prior to applying them.||
-||`6`||Stop was done just before the estab routines are called.||
+||`6`||Stop was done just before the ESTAB routines are called.||
 
 
 == Return Code State ==
@@ -140,7 +140,7 @@ Get dimension information for the version of FVS being run.
 subroutine fvsSummary(summary,icycle,ncycle,maxrow,maxcol,rtnCode)
 }}}
 
-Get a snap shot of the simulation of the current stand. (The return code reported here are independent of the general return code.)
+Get a snap shot of the simulation of the current stand. (The return code reported here is independent of the general return code.)
 
 ||Argument||Definition||
 ||`summary`||returned vector of 20 integer words that hold summary statistic attributes.||
@@ -182,7 +182,7 @@ _TODO:_ Document the list for the eastern variants.
 subroutine fvsTreeAttr(name,nch,action,ntrees,attr,rtnCode)
 }}}
 
-Get or set attributes of the trees in the simulation. (The return code reported here are independent of the general return code.)
+Get or set attributes of the trees in the simulation. (The return code reported here is independent of the general return code.)
 
 ||Argument||Definition||
 ||`name`||character string defining the tree attribute being being acted upon; 10 chars maximum||
@@ -241,7 +241,7 @@ Get dimension information for the version of FVS being run.
 subroutine fvsSVSObjData(name,nch,action,nobjs,attr,rtnCode)
 }}}
 
-Get or set attributes of the SVS attributs in the simulation. (The return code reported here are independent of the general return code.)
+Get or set attributes of the SVS attributs in the simulation. (The return code reported here is independent of the general return code.)
 
 ||Argument||Definition||
 ||`name`||character string defining the tree attribute being being acted upon. ||
@@ -304,7 +304,7 @@ Snag status codes:
 subroutine fvsFFEAttrs(name,nch,action,nSpecies,attr,rtnCode)
 }}}
 
-Get or set FFE species attributes in the simulation. (The return code reported here are independent of the general return code.)
+Get or set FFE species attributes in the simulation. (The return code reported here is independent of the general return code.)
 
 ||Argument||Definition||
 ||`name`||character string defining the species attribute being being acted upon. ||
@@ -331,7 +331,7 @@ The following attributes can be accessed:
 subroutine fvsEvmonAttr(name,nch,action,attr,rtnCode)
 }}}
 
-Get or set FVS Event Monitor variables. There are too many variables to list here, see [http://www.fs.fed.us/fmsc/fvs/documents/index.shtml FVS documentation] for more details. (The return code reported here are independent of the general return code.)
+Get or set FVS Event Monitor variables. There are too many variables to list here, see [http://www.fs.fed.us/fmsc/fvs/documents/index.shtml FVS documentation] for more details. (The return code reported here is independent of the general return code.)
 
 ||Argument||Definition||
 ||`name`||character string defining name of the Event Monitor attribute being being acted upon.||
@@ -348,15 +348,15 @@ subroutine fvsAddTrees(in_dbh,in_species,in_ht,in_cratio,
                        in_plot,in_tpa,ntrees,rtnCode)
 }}}
 
-Add more trees to a current simulation. All values are double precision vectors of length _ntrees_ except as noted below. (The return code reported here are independent of the general return code.)
+Add more trees to a current simulation. All values are double precision vectors of length _ntrees_ except as noted below. (The return code reported here is independent of the general return code.)
 
 ||Argument||Definition||
 ||`in_dbh`||dbh values for the additional trees.||
 ||`in_species`||internal FVS species codes for the additional trees.||
 ||`in_ht`||tree heights for the additional trees.||
-||`in_cratio`||crown ratios for the additional trees.||
-||`in_plot`||internal FVS plot indicies for the additional trees.||
-||`in_tpa`||number of trees per acre like the tree being added.||
+||`in_cratio`||crown ratios (%) for the additional trees.||
+||`in_plot`||internal FVS plot indices for the additional trees.||
+||`in_tpa`||number of trees per acre for the tree being added.||
 ||`ntrees`||a integer value, length of the vectors.||
 ||`rtnCode`||return code, where 0=OK, 1=there was not enough room to store the new trees.||
 
@@ -368,7 +368,7 @@ subroutine fvsSpeciesCode(fvs_code,fia_code,plant_code,
                           indx,nchfvs,nchfia,nchplant,rtnCode)
 }}}
 
-Get the FVS species codes.  (The return code reported here are independent of the general return code.)
+Get the FVS species codes.  (The return code reported here is independent of the general return code.)
 
 
 ||Argument||Definition||
@@ -391,7 +391,7 @@ subroutine fvsCutTrees(pToCut,nt,rtnCode)
 
 _TODO:_ Not yet implemented
 
-Specify the proportion of each existing tree record FVS should cut. (The return code reported here are independent of the general return code.)
+Specify the proportion of each existing tree record FVS should cut. (The return code reported here is independent of the general return code.)
 
 ||Argument||Definition||
 ||`pToCut`||double precision vector of proportions, one per tree.||
