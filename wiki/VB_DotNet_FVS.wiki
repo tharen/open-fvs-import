@@ -4,7 +4,7 @@
 
 _Don Robinson, [http://www.essa.com ESSA] Technologies, June 2013_
 
-This Wiki page documents the key concepts for writing VB.Net code, so that .Net developers can create applications that use FVS through the API (see [FVS_API]). The example repository code is still under development with 15 of 22 API calls ('Methods') built and tested. These methods provide good templates for the completion of the interface, and new participants and developers are welcome.
+This Wiki page documents the key concepts for writing VB.Net code, so that .Net developers can create applications that use FVS through the API (see [FVS_API]). The example repository code is still under development with 17 of 22 API calls ('Methods') built and tested. These methods provide good templates for the completion of the interface, and new participants and developers are welcome.
 
 Depending on the tool chain and variant name, there are small differences in the names of FVS DLLs and names of the API calls, respectively. These differences are very minor, and the sample code and instructions should make it clear how to adapt to any combination of tool chain and variant. The example which is provided is specific to the BC variant built with Visual Studio (see [BuildProcess_VisualStudio]), which is targeted for integration with the [http://www.essa.com/telsa TELSA] model.
 
@@ -56,7 +56,7 @@ Each API call is mirrored by a corresponding VB method, usually removing the pre
 
 ||    || *VB Method Name* || *FVS API Name* || *Notes* ||
 ||  1 || `DimSizes` || `FVSDIMSIZES` || ||
-||  2 || `SVSDimSizes`|| `FVSSVSDIMSIZES` || not yet implemented ||
+||  2 || `SVSDimSizes`|| `FVSSVSDIMSIZES` ||  ||
 ||  3 || `SetCmdLine` || `FVSSETCMDLINE` || ||
 ||  4 || `RunFVS` || `FVS` || Note different names ||
 ||  5 || `GetRtnCode` || `FVSGETRTNCODE` || ||
@@ -71,11 +71,11 @@ Each API call is mirrored by a corresponding VB method, usually removing the pre
 || 14 || `SpeciesCode` || `FVSSPECIESCODE` || ||
 || 15 || `Summary` || `FVSSUMMARY` || metric available ||
 || 16 || `TreeAttr` || `FVSTREEATTR` || metric available ||
-|| 17 || `AddActivity` || `FVSADDACTIVITY` || not yet implemented ||
-|| 18 || `AddTrees` || `FVSADDTREES` || not yet implemented ||
-|| 19 || `CutTrees` || `FVSCUTTREES` || not yet implemented ||
-|| 20 || `EvmonAttr` || `FVSEVMONATTR` || not yet implemented ||
-|| 21 || `FFEAttrs` || `FVSFFEATTRS` || not yet implemented ||
+|| 17 || `FFEAttrs` || `FVSFFEATTRS` || ||
+|| 18 || `AddActivity` || `FVSADDACTIVITY` || not yet implemented ||
+|| 19 || `AddTrees` || `FVSADDTREES` || not yet implemented ||
+|| 20 || `CutTrees` || `FVSCUTTREES` || not yet implemented ||
+|| 21 || `EvmonAttr` || `FVSEVMONATTR` || not yet implemented ||
 || 22 || `SVSObjData` || `FVSSVSOBJDATA` || not yet implemented ||
 
 ==Annotated Code Sample==
@@ -124,7 +124,7 @@ Next i
 
 }}}
 
-Next, set the command line and run FVS for the indicated keyword file (2 stands), stopping at 2020.
+Next, set the command line and run FVS for the indicated keyword file (containing 2 stands), stopping at 2020.
 
 {{{
 
@@ -147,12 +147,17 @@ Do
     iCycle = 2
     fvs.Summary(Summry, iCycle, nCycles, MaxRow, MaxCol, RC)
     fvs.DimSizes(nTrees, nCycles, nPlots, MaxTrees, MaxSpecies, MaxPlots, MaxCycles)
+
     Dim Diam(nTrees - 1) As Double
     Dim TPH(nTrees - 1) As Double
     Dim Vol(nTrees - 1) As Double
     fvs.TreeAttr("dbh", "get", nTrees, Diam, RC)
     fvs.TreeAttr("tpa", "get", nTrees, TPH, RC)
     fvs.TreeAttr("tcuft", "get", nTrees, Vol, RC)
+
+    Dim Cls5Yrs(MaxSpecies - 1) As Double
+    fvs.FFEAttrs("fallyrs5", "get", MaxSpecies, Cls5Yrs, RC)
+
     "' reduce TPH by 10%"
     For i = 0 To nTrees - 1
       TPH(i) *= 0.9D
@@ -177,7 +182,7 @@ Loop Until ReturnCode <> 0
 ==Next Steps for Extending FVS with VB.Net==
 There are 3 top-level tasks that remain:
 
-  * create and test the remaining 7 VB Methods 
+  * create and test the remaining 5 VB Methods 
   * investigate options to provide interfaces that are compiler independent, so that API calls work for both these forms: `FVSDIMSIZES` and `fvsdimsizes_`.
   * investigate options to create tools that work across all variants, without the annoyance of having to recode the name of the target DLL based on variant and tool chain.
 
