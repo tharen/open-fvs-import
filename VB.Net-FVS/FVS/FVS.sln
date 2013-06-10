@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual Studio 2010
 Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "FVS", "FVS.vbproj", "{2996B55C-E942-4CD0-AE96-9E864733FA83}"
 EndProject
-Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "Testing", "..\Testing\Testing.vbproj", "{21DCD9EA-9E2F-4251-B7B7-C90069B0DE42}"
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "Example", "..\Testing\Example.vbproj", "{21DCD9EA-9E2F-4251-B7B7-C90069B0DE42}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
