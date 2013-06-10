@@ -19,8 +19,8 @@ There are 5 main files in the repository example. You may need to download this 
 || .\FVS\FVS.sln || The VS2010 Solution file which implements the Class and Methods described on this Wiki page and demonstrates their use with the FVS-BC variant. ||
 || .\FVS\FVS_API.vb || Class declarations, Constants, Definitions, Properties and Methods which are the basis for all the higher level VB code. ||
 || .\FVS\FVS_Signatures.vb || Declarations for all the API calls. The declarations in this file use the explicit name of the main FVS-BC variant DLL (`FVS_bcc.dll`). As currently written, this name will need to be modified for whichever variant is being used. The file also has declarations of the VB data type for each argument of the lower level call to the API, conforming to the data types of the arguments of the lower level API (see [FVS_API]). Depending on the data type and dimension, arguments may be passed by `ByReference`or `ByValue`. Argument lists that include character strings contain an additional 'Ansi' declaration. ||
-|| .\Testing\Testing.vb || A working example of VB code which runs FVS.||
-|| .\Testing\bin\Debug || This subdirectory contains the FVS-BC variant DLLs which are called through the API (`FVS_bcc.dll, FVSfofem.dll` and `FVSsql.dll`). It also contains the keyword and Access database files used in the working example, and is the location to which temporary and permanent output files are written during the simulation. All FVS DLLs created by the VS2010 build chain must be manually copied to this directory for the simulation to run. If you wish to code-walk into FVS Fortran/C/C++ code from within the VB application, the corresponding PDB (Program Data Base) files created by VS2010 during a *Debug* compile, must also be copied here. ||
+|| .\Example\Example.vb || A working example of VB code which runs FVS.||
+|| .\Example\bin\Debug || This subdirectory contains the FVS-BC variant DLLs which are called through the API (`FVS_bcc.dll, FVSfofem.dll` and `FVSsql.dll`). It also contains the keyword and Access database files used in the working example, and is the location to which temporary and permanent output files are written during the simulation. All FVS DLLs created by the VS2010 build chain must be manually copied to this directory for the simulation to run. If you wish to code-walk into FVS Fortran/C/C++ code from within the VB application, the corresponding PDB (Program Data Base) files created by VS2010 during a *Debug* compile, must also be copied here. ||
 
 The repository contains other (undocumented) files and directories which are necessary to the VS2010 solution, but which are not altered by the developer. You can find more information about the project under the Code Sample section of this Wiki page.
 
@@ -37,7 +37,7 @@ The `New()` constructor sets the default value for `MeasurementType` when a memb
 This code region encapsulates the constants used for metric/imperial unit conversion (e.g. `INtoCM`). If needed, additional constants can be borrowed from `/open-fvs/trunk/common/METRIC.F77` and implemented here. Seven constants are used so far.
 
 ===Properties===
-The `MeasurementType` property allows input and output units to be converted between imperial units (the default) and metric units. Internally FVS almost always uses imperial units for its submodels and calculations. Metric unts can be set by code like this (from `Testing.vb`):
+The `MeasurementType` property allows input and output units to be converted between imperial units (the default) and metric units. Internally FVS almost always uses imperial units for its submodels and calculations. Metric unts can be set by code like this (from `Example.vb`):
 
 {{{
 fvs.MeasurementUnits = "metric"
@@ -79,7 +79,7 @@ Each API call is mirrored by a corresponding VB method, usually removing the pre
 || 22 || `SVSObjData` || `FVSSVSOBJDATA` || not yet implemented ||
 
 ==Annotated Code Sample==
-The Solution in the repository contains two projects: `FVS` and `Testing`. The `FVS` project contains the VB code (i.e., `FVS_API.vb` and `FVS_Signatures.vb`) required to call FVS and also defines the `FVS` namespace which is used by the `Testing` project to access all the methods.
+The Solution in the repository contains two projects: `FVS` and `Example`. The `FVS` project contains the VB code (i.e., `FVS_API.vb` and `FVS_Signatures.vb`) required to call FVS and also defines the `FVS` namespace which is used by the `Example` project to access all the methods.
 
 Developers are reminded that by default, arrays created in VB begin at 0; while those created in Fortran begin at 1 by default. (Although changing the VB default is an option, that has not been done so far.) When you wish to create an array of 20 integers, the VB declaration is:
 
@@ -95,7 +95,7 @@ Dim Diam(nTrees - 1) As Double
 
 to create an array of Doubles that upon return from FVS will hold the diameters of all the trees in a treelist with `nTrees` elements.
 
-The following code sample is borrowed from `Testing.vb`. The first code snip links the FVS assembly and namespace (which are part of the FVS project) to the Testing project and allows objects of the Class `FVS_API` to be created.
+The following code sample is borrowed from `Example.vb`. The first code snip links the FVS assembly and namespace (which are part of the `FVS` project) to the `Example` project and allows objects of the Class `FVS_API` to be created.
 
 {{{
 Imports FVS
@@ -141,9 +141,9 @@ Do
   fvs.RunFVS(ReturnCode)
   '" inspect the error code"
   fvs.GetICCode(RC)
-  '" fetch the 'Scen1' stand summary table for Cycle 2"
+  '" fetch the 'Scen2' stand summary table for Cycle 2"
   '" get some attributes and do simple manipulation of the treelist."
-  If (StandID = "Scen1") Then
+  If (StandID = "Scen2") Then
     iCycle = 2
     fvs.Summary(Summry, iCycle, nCycles, MaxRow, MaxCol, RC)
     fvs.DimSizes(nTrees, nCycles, nPlots, MaxTrees, MaxSpecies, MaxPlots, MaxCycles)
