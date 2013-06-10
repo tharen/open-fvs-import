@@ -2,7 +2,7 @@
 Option Explicit On
 Imports FVS
 
-Public Class Testing
+Public Class Example
 
    Private Sub ButtonCallFORTRAN_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ButtonCallFORTRAN.Click
 
