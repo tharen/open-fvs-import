@@ -56,6 +56,15 @@ Public Class FVS_API
       FVSDIMSIZES(nTrees, nCycles, nPlots, MaxTrees, MaxSpecies, MaxPlots, MaxCycles)
       Return
    End Sub
+   Public Sub SVSDimSizes(ByRef nSVSObjs As Integer,
+                            ByRef nDeadObjs As Integer,
+                            ByRef nCWDobjs As Integer,
+                            ByRef MaxSVSObjs As Integer,
+                            ByRef MaxDeadObjs As Integer,
+                            ByRef MaxCWDObjs As Integer)
+      FVSSVSDIMSIZES(nSVSObjs, nDeadObjs, nCWDobjs, MaxSVSObjs, MaxDeadObjs, MaxCWDObjs)
+      Return
+   End Sub
    Public Sub Summary(ByVal S As Integer(),
                            ByRef iCycle As Integer,
                            ByRef nCycle As Integer,
@@ -85,9 +94,7 @@ Public Class FVS_API
          S(15) = CInt(S(15) * FT3pACRtoM3pHA)
       End If
       Return
-
    End Sub
-
    Public Sub SetCmdLine(ByRef cmdLine As String,
                          ByRef RtnCode As Integer)
       Dim cmdLineLen As Integer = cmdLine.Length
@@ -263,6 +270,117 @@ Public Class FVS_API
             Attr(i) = Attr(i) * x
          Next i
       End If
+      Return
+   End Sub
+   Public Sub FFEAttrs(ByRef Name As String,
+                     ByRef Action As String,
+                     ByRef nSpecies As Integer,
+                     ByVal Attr() As Double,
+                     ByRef RtnCode As Integer)
+
+      ' see: http://code.google.com/p/open-fvs/wiki/FVS_API#Fire_and_Fuels_Extension_Attributes
+      ' string matches are case sensitive and exact
+
+      Dim NameLen As Integer = Name.Length
+      Dim i As Integer
+      Dim x As Double
+
+      Dim StrActionArray() As String = {"get", "set"}
+
+      Dim StrFound As Boolean = False
+      Dim StrTarget As String = Action
+      For Each Str As String In StrActionArray
+         If Str = StrTarget Then
+            StrFound = True
+            Exit For
+         End If
+      Next
+      If (StrFound = False) Then
+         Attr = Nothing
+         RtnCode = 1
+         Return
+      End If
+
+      Dim StrAttrArray() As String = {
+         "fallyrs0", "falllrs1", "fallyrs2", "fallyrs3", "fallyrs4",
+         "fallyrs5"}
+
+      ' Division operations mean that the HA unit are "per ha".
+      ' NB: 1D = 1.0 double precision
+      Dim MetricAttrArray() As Double = {
+         1D, 1D, 1D, 1D, 1D,
+         1D}
+
+      Dim StrIndx As Integer = 0
+      StrFound = False
+      StrTarget = Name
+      For Each Str As String In StrAttrArray
+         If Str = StrTarget Then
+            StrFound = True
+            Exit For
+         End If
+         StrIndx += 1
+      Next
+      If (StrFound = False) Then
+         Attr = Nothing
+         RtnCode = 1
+         Return
+      End If
+
+      ' To convert input from metric to the imperial required by FVS, multiply
+      ' by the inverse (1/X) of the constants if MetricAttrArray().
+
+      If (Action = "set" And Me.MeasurementUnits = "metric") Then
+         x = 1D / MetricAttrArray(StrIndx)
+         For i = 0 To Attr.Length - 1
+            Attr(i) = Attr(i) * x
+         Next i
+      End If
+
+      FVSFFEATTRS(Name, NameLen, Action, nSpecies, Attr, RtnCode)
+
+      ' Return imperial or metric units; based on relevant units
+      ' NOTE THAT the VB indexes are zero-based: Attr(0) is the first tree in the treelist
+
+      If (Action = "get" And Me.MeasurementUnits = "metric") Then
+         x = MetricAttrArray(StrIndx)
+         For i = 0 To Attr.Length - 1
+            Attr(i) = Attr(i) * x
+         Next i
+      End If
+      Return
+   End Sub
+   Public Sub AddTrees(ByVal DBH() As Double,
+                       ByVal Species() As Double,
+                       ByVal Height() As Double,
+                       ByVal CrownRatio() As Double,
+                       ByVal Plot() As Double,
+                       ByVal TPA() As Double,
+                       ByRef nTrees As Integer,
+                       ByRef RtnCode As Integer)
+
+
+      ' see: http://code.google.com/p/open-fvs/wiki/FVS_API#Add_Trees
+
+      If (DBH.Length <> nTrees Or Species.Length <> nTrees Or
+         Height.Length <> nTrees Or CrownRatio.Length <> nTrees Or
+         Plot.Length <> nTrees) Then
+         RtnCode = 1
+         Return
+      End If
+
+      ' To convert input from metric to the imperial required by FVS, multiply
+      ' by the inverse (1/X) of the constants if MetricAttrArray().
+
+      If (Me.MeasurementUnits = "metric") Then
+         For i = 0 To nTrees - 1
+            DBH(i) = DBH(i) * 1D / INtoCM
+            Height(i) = Height(i) * 1D / FTtoM
+            TPA(i) = TPA(i) * ACRtoHA
+         Next i
+      End If
+
+      FVSADDTREES(DBH, Species, Height, CrownRatio, Plot, TPA, nTrees, RtnCode)
 
       Return
    End Sub

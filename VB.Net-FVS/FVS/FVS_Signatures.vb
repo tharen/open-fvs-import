@@ -13,6 +13,13 @@ Public Module FVS_Signatures
                                                           ByRef MaxPlots As Integer,
                                                           ByRef MaxCycles As Integer)
 
+   Public Declare Sub FVSSVSDIMSIZES Lib "FVS_bcc.dll" (ByRef nSVSObjs As Integer,
+                                                          ByRef nDeadObjs As Integer,
+                                                          ByRef nCWDobjs As Integer,
+                                                          ByRef MaxSVSObjs As Integer,
+                                                          ByRef MaxDeadObjs As Integer,
+                                                          ByRef MaxCWDObjs As Integer)
+
    Public Declare Sub FVSSUMMARY Lib "FVS_bcc.dll" (ByVal Sumry As Integer(),
                                                          ByRef iCycle As Integer,
                                                          ByRef nCycle As Integer,
@@ -25,6 +32,22 @@ Public Module FVS_Signatures
                                                           ByVal Action As String,
                                                           ByRef nTrees As Integer,
                                                           ByVal Attr As Double(),
+                                                          ByRef RtnCode As Integer)
+
+   Public Declare Ansi Sub FVSFFEATTRS Lib "FVS_bcc.dll" (ByVal Name As String,
+                                                          ByRef NameLen As Integer,
+                                                          ByVal Action As String,
+                                                          ByRef nSpecies As Integer,
+                                                          ByVal Attr As Double(),
+                                                          ByRef RtnCode As Integer)
+
+   Public Declare Sub FVSADDTREES Lib "FVS_bcc.dll" (ByVal inDBH As Double(),
+                                                          ByVal inSpecies As Double(),
+                                                          ByVal inHeight As Double(),
+                                                          ByVal inCrownRatio As Double(),
+                                                          ByVal inPlot As Double(),
+                                                          ByVal inTPA As Double(),
+                                                          ByRef nTrees As Integer,
                                                           ByRef RtnCode As Integer)
 
    Public Declare Ansi Sub FVSSETCMDLINE Lib "FVS_bcc.dll" (ByVal cmdLine As String,

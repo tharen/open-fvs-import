@@ -29,6 +29,13 @@ Public Class Testing
       Dim MaxRow As Integer
       Dim MaxCol As Integer
 
+      Dim nSVSObj As Integer
+      Dim nDeadObj As Integer
+      Dim nCWDObj As Integer
+      Dim MaxSVSObj As Integer
+      Dim MaxDeadObj As Integer
+      Dim MaxCWDObj As Integer
+
       Dim KeywordFilename As String = ""
       Dim StandID As String = ""
       Dim CNID As String = ""
@@ -70,7 +77,10 @@ Public Class Testing
          If (StandID = "Scen1") Then
             iCycle = 2
             fvs.Summary(Summry, iCycle, nCycles, MaxRow, MaxCol, RC)
+
             fvs.DimSizes(nTrees, nCycles, nPlots, MaxTrees, MaxSpecies, MaxPlots, MaxCycles)
+            fvs.SVSDimSizes(nSVSObj, nDeadObj, nCWDObj, MaxSVSObj, MaxDeadObj, MaxCWDObj)
+
             Dim Diam(nTrees - 1) As Double
             Dim TPH(nTrees - 1) As Double
             Dim Vol(nTrees - 1) As Double
@@ -78,11 +88,41 @@ Public Class Testing
             fvs.TreeAttr("tpa", "get", nTrees, TPH, RC)
             fvs.TreeAttr("tcuft", "get", nTrees, Vol, RC)
 
+            Dim Cls0Yrs(MaxSpecies - 1) As Double
+            Dim Cls5Yrs(MaxSpecies - 1) As Double
+            fvs.FFEAttrs("fallyrs0", "get", MaxSpecies, Cls0Yrs, RC)
+            fvs.FFEAttrs("fallyrs5", "get", MaxSpecies, Cls5Yrs, RC)
+
             ' reduce TPH by 10%
             For i = 0 To nTrees - 1
                TPH(i) *= 0.9D
             Next i
             fvs.TreeAttr("tpa", "set", nTrees, TPH, RC)
+
+            ' add two new tree records; note types are all double
+            ' units here are metric
+            nTrees = 2
+            Dim DBH(nTrees - 1) As Double
+            Dim SPP(nTrees - 1) As Double
+            Dim HT(nTrees - 1) As Double
+            Dim CRWNRAT(nTrees - 1) As Double
+            Dim PLOT(nTrees - 1) As Double
+            Dim TPA(nTrees - 1) As Double
+            DBH(0) = 12.5
+            DBH(1) = 23.0
+            SPP(0) = 15
+            SPP(1) = 15
+            HT(0) = 14.0
+            HT(1) = 25.5
+            CRWNRAT(0) = 75
+            CRWNRAT(1) = 55
+            PLOT(0) = 1
+            PLOT(1) = 1
+            TPA(0) = 150
+            TPA(1) = 115
+            fvs.AddTrees(DBH, SPP, HT, CRWNRAT, PLOT, TPA, nTrees, RC)
+            ' check that new trees have been added
+            fvs.DimSizes(nTrees, nCycles, nPlots, MaxTrees, MaxSpecies, MaxPlots, MaxCycles)
 
          End If
 
@@ -94,6 +134,7 @@ Public Class Testing
       Loop Until ReturnCode <> 0
 
       fvs.Summary(Summry, iCycle, nCycles, MaxRow, MaxCol, ReturnCode)
+      Return
 
    End Sub
 
