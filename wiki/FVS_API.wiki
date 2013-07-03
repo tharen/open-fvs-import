@@ -176,6 +176,31 @@ The 20 values are as follows (in western variants, eastern variants differ, (see
 
 _TODO:_ Document the list for the eastern variants.
 
+
+== FVS Species Attributes ==
+
+{{{
+subroutine fvsSpeciesAttr(name,nch,action,attr,rtnCode)
+}}}
+
+Get or set attributes of the species in the simulation. (The return code reported here is independent of the general return code.) When `action` is "set", the 
+length of the vector must be `maxspecies`, see [FVS_API#FVS Dimensions].
+
+||Argument||Definition||
+||`name`||character string defining the tree attribute being being acted upon; 10 chars maximum||
+||`nch`||integer number defining the length of _name_.||
+||`action`||action requested where, "get" signals that the current values defined in FVS should be returned as a vector in _attr_ and "set" signals that the current values in FVS should be changed to those specified in _attr_ ; 4 chars maximum||
+||`attr`||a vector of double precision (8-byte floats) of the attribute being processed.||
+||`rtnCode`||return codes, as follows: 0=OK, 1=_name_ not found, 2=_ntrees_ is greater than the maximum allowed, 3=there were more or fewer trees than _ntrees_, 4=length of _name_ string was too large or small.||
+
+Species attributes that can be returned or set. The units of measure or the period length to which some values apply can depend on when, during the sequence of calculations in FVS, these data are accessed. 
+
+||Name||Definition||
+||`spccf `||CCF for each species, recomputed in FVS so setting will likely have no effect||
+||`spsdi`||SDI maximums for each species||
+||`spsiteindx`||Species site indices||
+
+
 == FVS Tree Attributes ==
 
 {{{
