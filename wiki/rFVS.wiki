@@ -90,7 +90,7 @@ Add new tree records to an existing simulation. Designed to be used to simulate 
 
 Argument:
 
-A matrix or dataframe that has values defined for the following attributes of new trees.
+A dataframe that has values defined for the following attributes of new trees.
 
 ||Name||Description||
 ||`dbh`||Diameter breast height (inches)||
@@ -194,6 +194,26 @@ A matrix of integer values with one row for each completed FVS cycle. The column
 
 Also see: [rFVS#fvsSetupSummary(sumTable) fvsSetupSummary(sumTable)] and [rFVS#fvsCompositeSum(sumList) fvsCompositeSum(sumList)]
 
+== fvsGetSpeciesAttrs(vars) ==
+
+{{{
+fvsGetSpeciesAttrs(vars)
+}}}
+
+Argument:
+
+A vector of strings whereby each string names an attribute to be returned. The 
+
+||Name||Description||
+||`spccf `||CCF for each species, recomputed in FVS so setting will likely have no effect||
+||`spsdi`||SDI maximums for each species||
+||`spsiteindx`||Species site indices||
+
+Return value:
+
+A dataframe of numeric values with one row for each species and a column for each attribute.
+
+Also see: fvsSetSpeciesAttrs(vars) 
 
 == fvsGetTreeAttrs(vars) ==
 
@@ -225,7 +245,7 @@ A vector of strings whereby each string names an attribute to be returned.
 
 Return value:
 
-A matrix of numeric values with one row for each tree and a column for each attribute.
+A dataframe of numeric values with one row for each tree and a column for each attribute.
 
 Also see: [rFVS#fvsSetTreeAttrs(vars) fvsSetTreeAttrs(vars)]
 
@@ -332,6 +352,27 @@ A named vector of values. The values will be NA if they were not defined.
 
 Also see: [rFVS#fvsGetEventMonitorVariables(vars) fvsGetEventMonitorVariables(vars)]
 
+== fvsSetSpeciesAttrs(vars) ==
+
+{{{
+fvsSetSpeciesAttrs(vars)
+}}}
+
+Argument:
+
+A named list of vectors (or a dataframe) where each vector (or column) is:
+  # of numeric type
+  # has no NAs
+  # has as many entries as there are defined species (variable `maxspecies` from fvsGetDims()).
+  
+Use the listed for `fvsGetSpeciesAttrs(vars)`. Vectors or columns that have other names are skipped.
+
+Return value:
+
+A scalar integer return code where 0 signals OK and 1 signals an error).
+
+Also see: [rFVS#fvsGetSpeciesAttrs(vars) fvsGetSpeciesAttrs(vars)]
+
 == fvsSetTreeAttrs(vars) ==
 
 {{{
@@ -345,7 +386,7 @@ A named list of vectors (or a dataframe) where each vector (or column) is:
   # has no NAs
   # has as many entries as there are defined trees (variable `ntrees` from fvsGetDims()).
   
-Use the listed for `fvsGetTreeAttrs(vars)`. Vectors or columns that have other names are skipped but a warning is posted.
+Use the listed for `fvsGetTreeAttrs(vars)`. Vectors or columns that have other names are skipped.
 
 Return value:
 
