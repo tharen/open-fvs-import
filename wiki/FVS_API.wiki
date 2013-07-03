@@ -234,6 +234,7 @@ Tree attributes that can be returned or set. The units of measure or the period 
 ||`tcuft`||Total cubic feet||
 ||`mcuft`||Merchantable cubic feet||
 ||`bdft`||Board feet||
+||`defect`||Defect coded as 11223344 as described below||
 ||`mgmtcd  `||Tree value class or management code (1, 2, or 3)||
 ||`plotsize`||Size of plot tree was sampled from|| 
 ||`crownwt0`||Weight of foliage (pounds)||
@@ -243,6 +244,12 @@ Tree attributes that can be returned or set. The units of measure or the period 
 ||`crownwt4`||Weight of 3-6 inch crown material (pounds)||
 ||`crownwt5`||Weight of 06-12 inch crown material (pounds)||
 ||`id`||Internal tree identification number||
+
+||Defect code||Definition||
+||11||input merchantable cubic volume defect percent||
+||22||input board foot defect percent||
+||33||applied merchantable cubic volume defect percent||
+||44||applied board foot defect percent||
 
 == FVS Stand Visualizaton (SVS)  ==
 
