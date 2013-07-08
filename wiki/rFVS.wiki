@@ -202,7 +202,7 @@ fvsGetSpeciesAttrs(vars)
 
 Argument:
 
-A vector of strings whereby each string names an attribute to be returned. The 
+A vector of strings whereby each string names an attribute to be returned. The names can be one or more of the following: 
 
 ||Name||Description||
 ||`spccf `||CCF for each species, recomputed in FVS so setting will likely have no effect||
@@ -213,7 +213,7 @@ Return value:
 
 A dataframe of numeric values with one row for each species and a column for each attribute.
 
-Also see: fvsSetSpeciesAttrs(vars) 
+Also see: [rFVS#fvsSetSpeciesAttrs(vars) fvsSetSpeciesAttrs(vars)] 
 
 == fvsGetTreeAttrs(vars) ==
 
@@ -379,7 +379,7 @@ A named list of vectors (or a dataframe) where each vector (or column) is:
   # has no NAs
   # has as many entries as there are defined species (variable `maxspecies` from fvsGetDims()).
   
-Use the listed for `fvsGetSpeciesAttrs(vars)`. Vectors or columns that have other names are skipped.
+Use the variable names listed for [rFVS#fvsGetSpeciesAttrs(vars) fvsGetSpeciesAttrs(vars)]. Vectors or columns that have other names are skipped.
 
 Return value:
 
