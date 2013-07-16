@@ -16,7 +16,7 @@ You will need Administrator privileges to install the necessary tools, so ensure
 
 Building with Visual Studio requires *Microsoft Visual Studio 2010* and the *Intel Fortran compiler 2012 (XE)*. More recent versions of Visual Studio (including free or lower cost "Express" versions), and other compliant compilers (such as earlier versions of Visual Studio) _may work_, but have not been tested. Information about VS2010 is found at [http://www.microsoft.com/visualstudio/eng/downloads www.microsoft.com]. Information about the Intel compiler is found at [http://software.intel.com/en-us/intel-visual-fortran-composer-xe-evaluation http://software.intel.com]. You must have these both installed before continuing. Explaining the use of VS2010 is beyond the scope of this wiki page.
 
-You will also need to install the *Cmake* system, which can be found at [http://cmake.org/cmake/resources/software.html http://cmake.org]. Download and install the latest version from the "Binary distributions" table. During the installation process for Windows, you will need to select the option "Add CMake to the system PATH..." for all users or current user. The Cmake build steps described below have been tested with Version 2.8.10.2 and require at least _Version 2.6_.
+You will also need to install the *Cmake* system, which can be found at [http://cmake.org/cmake/resources/software.html http://cmake.org]. Download and install the latest version from the "Binary distributions" table. During the installation process for Windows, you will need to select the option "Add CMake to the system PATH..." for all users or current user. If you get an error during the installation saying that the PATH is too long and cannot be edited, you will need to edit it manually.  The Cmake build steps described below have been tested with Version 2.8.10.2 and require at least _Version 2.6_.
 
 Your development work will likely mean that you will eventually merge your work into the trunk code. Please see the [Testing] wiki to learn about the requirements for testing model behavior prior to integrating code. Note that creating and running FVS tests requires the following (Unix) utilities: `make, echo, grep, diff` and  `rm`. 
 
@@ -38,7 +38,7 @@ At the command line type
 cmake -G"Visual Studio 10" .
 }}}
 
-This will begin the creation of VS2010 solution files (suffix: SLN) for _all_ FVS variants. In Visual Studio parlance, a "solution" creates one or more software systems based on projects that are the components of the solution. In this case of FVS, an executable file is the principal software system that is created, but 3 component DLLs are also created. Each variant's SLN will be placed in a sub-directory like this
+This will begin the creation of VS2010 solution files (suffix: SLN) for _all_ FVS variants, depending on how the GLOB tobuild command is set up in CMakeLists.txt. In Visual Studio parlance, a "solution" creates one or more software systems based on projects that are the components of the solution. In this case of FVS, an executable file is the principal software system that is created, but 3 component DLLs are also created. Each variant's SLN will be placed in a sub-directory like this
 
 {{{
 \MyFvsFiles\trunk\bin\FVSiec_CmakeDir
