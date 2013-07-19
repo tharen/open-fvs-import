@@ -71,12 +71,13 @@ Each API call is mirrored by a corresponding VB method, usually removing the pre
 || 14 || `SpeciesCode` || `FVSSPECIESCODE` || ||
 || 15 || `Summary` || `FVSSUMMARY` || *metric* available ||
 || 16 || `TreeAttr` || `FVSTREEATTR` || *metric* available ||
-|| 17 || `FFEAttrs` || `FVSFFEATTRS` || ||
-|| 18 || `AddTrees` || `FVSADDTREES` || *metric* available||
-|| 19 || `AddActivity` || `FVSADDACTIVITY` || not yet implemented ||
-|| 20 || `CutTrees` || `FVSCUTTREES` || not yet implemented ||
-|| 21 || `EvmonAttr` || `FVSEVMONATTR` || not yet implemented ||
-|| 22 || `SVSObjData` || `FVSSVSOBJDATA` || not yet implemented ||
+|| 17 || `SpeciesAttr` || `FVSSPECIESATTR` || not yet implemented ||
+|| 18 || `FFEAttrs` || `FVSFFEATTRS` || ||
+|| 19 || `AddTrees` || `FVSADDTREES` || *metric* available||
+|| 20 || `AddActivity` || `FVSADDACTIVITY` || not yet implemented ||
+|| 21 || `CutTrees` || `FVSCUTTREES` || not yet implemented ||
+|| 22 || `EvmonAttr` || `FVSEVMONATTR` || not yet implemented ||
+|| 23 || `SVSObjData` || `FVSSVSOBJDATA` || not yet implemented ||
 
 ==Annotated Code Sample==
 The Solution in the repository contains two projects: `FVS` and `Example`. The `FVS` project contains the VB code (i.e., `FVS_API.vb` and `FVS_Signatures.vb`) required to call FVS and also defines the `FVS` namespace which is used by the `Example` project to access all the methods.
@@ -208,7 +209,7 @@ Loop Until ReturnCode <> 0
 ==Next Steps for Extending FVS with VB.Net==
 There are 3 top-level tasks that remain:
 
-  * create and test the remaining 4 VB Methods; some of these will require a lot of work to implement in metric form, due to the large number of possible events.
+  * create and test the remaining not-yet-implemented VB Methods; some of these will require a lot of work to implement in metric form, due to the large number of possible events.
   * investigate options to provide interfaces that are compiler independent, so that API calls work for both these forms: `FVSDIMSIZES` and `fvsdimsizes_`.
   * investigate options to create tools that work across all variants, without the annoyance of having to recode the name of the target DLL based on variant and tool chain.
 
