@@ -22,7 +22,7 @@ C:\MinGW\bin
 
 One way to do this is to right-click the _My Computer_ icon on the Windows desktop and select Properties. Click the Advanced tab, then the Environment Variables button. Locate *PATH* or *Path* from either the User variables or System variables, then click Edit. At the end of the current set of PATH directories add "; C:\MinGW\bin". Then click OK buttons until you get back to the desktop.
 
-You will also need to install the *Cmake* software, which can be found at [http://cmake.org/cmake/resources/software.html http://cmake.org]. Download and install the latest version. The Cmake build steps described below have been tested with Version 2.8.10.2 and require at least _Version 2.6_.
+You will also need to install the *Cmake* software, which can be found at [http://cmake.org/cmake/resources/software.html http://cmake.org]. Download and install the latest version. The Cmake build steps described below have been tested with _Version 2.8_.
 
 Your development work will likely mean that you will eventually merge your work into the trunk code. Please see the [Testing] wiki to learn about the requirements for testing model behavior prior to integrating code. Note that creating and running FVS tests requires the following (Unix) utilities: `make, echo, grep, diff` and  `rm`. 
 
