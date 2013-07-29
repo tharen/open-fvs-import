@@ -94,11 +94,11 @@ C>>>      IF (ICOLIDX.LT.0) ICOLIDX=2
       inquire(unit=JSVOUT,opened=LOPEN)
       if (.not.LOPEN) then
         SUFFIX='_index.svs'
-        open(unit=JSVOUT,file=KWDFIL(:len_trim(KWDFIL)-4)//SUFFIX,
+        open(unit=JSVOUT,file=trim(KWDFIL)//SUFFIX,
      >       status="replace",err=19)
         GOTO 21
    19   CONTINUE
-        WRITE (JOSTND,20) KWDFIL(:len_trim(KWDFIL)-4)//SUFFIX
+        WRITE (JOSTND,20) trim(KWDFIL)//SUFFIX
    20   FORMAT (/T12,'**** FILE OPEN ERROR FOR FILE: ',A)
         CALL RCDSET (2,.TRUE.)
         JSVOUT=0
