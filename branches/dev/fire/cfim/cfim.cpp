@@ -124,7 +124,7 @@ static double maxparttemp=0.0;
 long idum;      /* for ranno */
 int ndim=4;       /* for fxn */
 double pemiss=1.0,femiss=1.0;       //emissivity of the particle and flame
-double attenuation=0.02;\
+double attenuation=0.02;
 double Lp=0.001,Wp=0.001,Wf=20.0;   //length and width of particle, width of flame
 
 static int radflag=0;       //if 0, quadruple integral Monte Carlo used;if 1, double integral Gaussian Quadrature used;
@@ -139,10 +139,15 @@ static int convectflag=0;   //if 0, gaussian profile of plume follows the "c" li
 //double Dx=1.0;      //distance from flm leading edge to particle center
 //TEMPORARY!!!TEMPORARY!!!TEMPORARY!!!TEMPORARY!!!TEMPORARY!!!TEMPORARY!!!
 
-#ifdef _WINDLL
+#ifdef CMPgcc
+extern "C" { __stdcall __declspec(dllexport) int cfim_driver_ (
+  float *CFIM_In,
+  float *CFIM_out,
+  float *fminfo);}
+#else
 extern "C" __declspec(dllexport) int CFIM_DRIVER (
-  float *CFMIN_Input,
-  float *CFIM_output,
+  float *CFIN_In,
+  float *CFIM_out,
   float *fminfo);
 #endif
 
