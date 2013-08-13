@@ -140,15 +140,22 @@ static int convectflag=0;   //if 0, gaussian profile of plume follows the "c" li
 //TEMPORARY!!!TEMPORARY!!!TEMPORARY!!!TEMPORARY!!!TEMPORARY!!!TEMPORARY!!!
 
 #ifdef CMPgcc
-extern "C" { __stdcall __declspec(dllexport) int cfim_driver_ (
-  float *CFIM_In,
-  float *CFIM_out,
-  float *fminfo);}
+  #ifdef unix
+    extern "C" __declspec(dllexport) int cfim_driver_ (                // GCC compiler, Unix OS
+      float *CFIN_In,
+      float *CFIM_out,
+      float *fminfo);
+  #else
+    extern "C" { __stdcall __declspec(dllexport) int cfim_driver_ (  // GCC compiler, Windows OS
+      float *CFIM_In,
+      float *CFIM_out,
+      float *fminfo);}
+  #endif
 #else
-extern "C" __declspec(dllexport) int CFIM_DRIVER (
-  float *CFIN_In,
-  float *CFIM_out,
-  float *fminfo);
+  extern "C" __declspec(dllexport) int CFIM_DRIVER (                 // VS2010 compiler, Windows OS
+    float *CFIN_In,
+    float *CFIM_out,
+    float *fminfo);
 #endif
 
 #ifdef CMPgcc
