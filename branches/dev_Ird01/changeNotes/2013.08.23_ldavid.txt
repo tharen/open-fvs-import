@@ -20,6 +20,6 @@ base\src\fvs.f   - Suppressed the reset of dead tree record pointer (IREC2) so
                    the index value would remain availabel for SpMcDBH recent 
                    mortality calculations. At same point in code, reset the TPA
                    (PROB) values back to sample design specs, because they had
-                   expanded based on mortality measurement period for density
-                   purposes in calibration process.
+                   been expanded based on mortality measurement period for
+                   density determination purposes in the calibration process.
                     
