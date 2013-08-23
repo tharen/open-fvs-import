@@ -287,7 +287,21 @@ C
 C     DONE WITH DEAD TREES THAT WERE PRESENT IN THE INVENTORY. PURGE
 C     THEM FROM THE LIST (VIA RESET POINTER)
 C
-      IREC2=MAXTP1
+C     Not done with dead trees evmon SpMcDBH function needs to access
+C     inventory dead trees to calculate values for those coded as
+C     recent mortality, tree history code 7 (IMC array) LRD 8/21/2013
+C         IREC2=MAXTP1
+C
+C     TPA REPRESENTATION ON DEAD TREE RECORDS HAD BEEN EXPANDED AS 
+C     DESCRIBED IN NOTRE FOR CALBRATION PURPOSES. SET THEM BACK FOR
+C     THE SPMCDBH FUNCTION.
+C
+      IF (IREC2 .LE. MAXTRE) THEN
+        DO 37 I = IREC2,MAXTRE
+          PROB(I) = PROB(I)/(FINT/FINTM)
+   37   CONTINUE
+      ENDIF
+C      
 C
 C     WESTERN ROOT DISEASE MODEL VER. 3.0 MODEL INITIALIZATION
 C

@@ -48,7 +48,7 @@ C
 C
 COMMONS
 C
-      INTEGER M,I1,I2,I3,I4,INDEX(MAXTRE),ISRTI
+      INTEGER M,I1,I2,I3,I4,INDEX(MAXTRE),ISRTI,IB
       LOGICAL LDEB,LACTV,LINCL
       REAL XLDREG(NXLDX),DUMSDI
       INTEGER ITMPDX(1)
@@ -181,6 +181,7 @@ C----------
 C       IF THE MANAGEMENT CODE (K) IS OUT OF RANGE, THEN: ISSUE ERROR 
 C       CODE.
 C----------
+clrd        IF (K.LT.0 .OR. K.GT.9) GOTO 1002
         IF (K.LT.0 .OR. K.GT.3) GOTO 1002
 C----------
 C       IF CALCULATING STAGE'S SDI, GET THE STAGE PARAMETERS
@@ -192,7 +193,7 @@ C----------
         CUT=0.
         DEAD=0.
         RES=0.
-        IDMI=0.
+        IDMI=0
         XLDBH=0.0
         XHDBH=1E30
         XLHT=0.0
@@ -235,10 +236,31 @@ C
         NTREES=0
         IF(CUT.GT.0. .AND. IPHASE.LT.2) GO TO 1001
         IF(RES.GT.0. .AND. IPHASE.LT.2) GO TO 1001
-        ILIM=ITRN
-        IF(CUT .NE. 0) ILIM=MAXTRE
+CLRD
+C       At this point, if recent mortality is selected (argument 8 = 1)
+C       and cycle is 1, then value for the input dead tree records coded
+C       as recent dead (tree history code/tree value class 7) is being 
+C       calculated and those records are stored at the end of the array.
+C       Also, the TPA for those dead tree records is stored in the live
+C       TPA array (PROB). IREC2 holds the index of first dead tree record.
+CLRD      
+        IF (LDEB)
+     &    WRITE (JOSTND,*) 'ICYC = ',ICYC,' IREC2=',IREC2,' K=',K
+
+        IF(ICYC .EQ. 1 .AND. DEAD .EQ. 1.0)THEN
+          K = 7
+          DEAD = 0.0
+C          IB = 2098     !IREC2
+          IB = IREC2
+          ILIM = MAXTRE
+        ELSE
+          IB = 1
+          ILIM=ITRN
+          IF(CUT .NE. 0) ILIM=MAXTRE
+        ENDIF
+
         IF (ILIM.GT.0) THEN
-          DO 190 I=1,ILIM
+          DO 190 I=IB,ILIM
           LINCL = .FALSE.
           IF(J.EQ.0 .OR. J.EQ.ISP(I))THEN
             LINCL = .TRUE.
@@ -340,7 +362,7 @@ C----------
 C
           ENDIF
   190     CONTINUE
-  192     CONTINUE
+
           IF (L.EQ.5 .OR. L.EQ.6 .OR. L.EQ.8 .OR. L.EQ.10) THEN
             IF (SUMP.GT.0.0001) THEN
               IF (L.EQ.5) XLDREG(1)=SQRT(XLDREG(1)/SUMP)
@@ -538,7 +560,7 @@ C----------
         IF (JARGS.GE.5) XHDBH = XLDREG(5)
         IF (JARGS.GE.6) XLHT  = XLDREG(6)
         IF (JARGS.GE.7) XHHT  = XLDREG(7)
-        IF (JARGS.GE.8) M     = XLDREG(8)
+        IF (JARGS.GE.8) M     = IFIX(XLDREG(8))
 
         IF ((M.EQ.1) .AND. (IPHASE.LT.2)) GOTO 1001
 
