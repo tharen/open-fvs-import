@@ -39,11 +39,11 @@ Table 1 - Scenarios used to study FVS execution performance
 
 A 30-stand FVS-CR simulation of each scenario was profiled using AMD CodeAnalyst. The results shown in Figure 1 show the absolute time spent in each of ten functional categories; those in Figure 2 show the relative time by scenario. What is clear from a comparison of the Base and Base–FM scenarios is the very high computational cost imposed by the FFE, and that most of this cost is due to volume calculations. In the Base scenario, about 45% of the time is spent in volume-functions. Moreover, about 90% of internal Math function calls are also related to volume calculations.
 
-[http://open-fvs.googlecode.com/svn/wiki/Perf_fig1.PNG]
+[http://open-fvs.googlecode.com/svn/wiki/Perf_fig1.png]
 
 _Figure 1 - Absolute time spent in each category of FVS subroutines. Vol = Volume; OS = Operating System; Math = Math functions; SV = Stand Visualization System; FM = Fire Model; G+Y = Growth & Yield; Sort = Sorting; MS = Dwarf Mistletoe; Ran = Random number; EV = Event Monitor. OS and Math categories are not accessible to the programmer._
 
-[http://open-fvs.googlecode.com/svn/wiki/Perf_fig2.PNG]
+[http://open-fvs.googlecode.com/svn/wiki/Perf_fig2.png]
 
 _Figure 2 - Relative time spent in each category of FVS subroutines, rescaled by scenario. Abbreviations: see Figure 1._
 
@@ -71,7 +71,7 @@ FVS has traditionally been run by entering the program name at the system comman
 
 The command line capability allowed for development of a new facility that causes the program to stop during a simulation. FVS creates a stop point file and writes to it the state of all the stands at the specified point in time and at the specified point in the simulation computations. The simulation can then be restarted, exactly recovering the state variables from the specified stop point file and continuing processing from where it left off. This stop/restart facility allows for the precise interaction of FVS with supervisory control programs, including changes to stand structure and management.
 
-A set of Application Program Interface (API) routines were developed for FORTRAN, VB.Net, and R applications. These routines allow users to interact programmatically with FVS. These APIs are documented in the [ http://code.google.com/p/open-fvs/wiki/FVS_API FVS_API] wiki, and are intended to be extensible and as needs are defined and refined, each can be elaborated. 
+A set of Application Program Interface (API) routines were developed for FORTRAN, VB.Net, and R applications. These routines allow users to interact programmatically with FVS. These APIs are documented in the [FVS_API] wiki, and are intended to be extensible and as needs are defined and refined, each can be elaborated. 
 
 The FVS program is run by calling a single API function, which returns when the simulation is over unless the program is requested to stop during the simulation. The request to stop is done by setting a stop point and stop year. The program returns when it reaches the designated stop point and then it picks up the calculations were it left off when it is called again. There are several ways to interact with the program between its "return" and when it is called again; each supported with an API function. 
 
