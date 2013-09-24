@@ -10,7 +10,7 @@ You will need the appropriate permissions (e.g., Administrator privileges in Win
 
 There are several different compiler packages that can be used to build the executables.  The *Rtools* toolkit package will be discussed here.  Refer to the appropriate wiki document for discussion of the others. Download the Rtools toolkit from [http://cran.r-project.org/bin/windows/Rtools/]. You will want to download the _latest_ Rtools package, or if you are an R user, get the version that corresponds to your version of R.
 
-Once you get the installer downloaded, run it.  Include all Components and any Additional Tasks. Then just click through the rest of the installation. Unfortunately, when the installation is complete you may not see a program icon like those typically added with an installation. 
+Once you get the installer downloaded, run it.  Include all Components and any Additional Tasks. Then just click through the rest of the installation. Unfortunately, when the installation is complete you may not see a program icon like those typically added with an installation.
 
 To test for successful installation of RTools you will need to open a Command Window. For example, on Windows this is done by clicking *Start > (All) Programs > Accessories > Command Prompt*. 
 
@@ -91,3 +91,5 @@ To remove all the programs, object files, and build directories, use the "clean"
 {{{
 make clean
 }}}
+
+If the make command does not work, you may have a PATH issue. Right-click the My Computer icon on the Windows desktop and select Properties. Click the Advanced tab, then the Environment Variables button. Locate PATH or Path from either the User variables or System variables, then click edit. At the end of the current set of PATH directories add ";c:\Rtools\bin; c:\Rtools\gcc-4.6.3\bin". Then click OK buttons until you get back to the desktop.
