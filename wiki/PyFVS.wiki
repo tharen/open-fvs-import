@@ -1,0 +1,120 @@
+#summary PyFVS provides a wrapper for using the FVS shared libraries in Python.
+
+=Introduction=
+PyFVS provides an interface to the FVS shared library in a Pythonic manner. PyFVS implements the full FVS API currently in development, as well as all FVS common data and arrays at run-time.
+
+==Usage Example==
+{{{
+import numpy
+import pyfvspnc as fvs
+
+#array to store cycle summary variables
+cycle_sum= numpy.zeros(20,dtype='I4')
+
+cmd = '--keywordfile=foo.key'
+fvs.fvssetcmdline(cmd)
+for year in range(2010,2120,10):
+  fvs.fvssetstoppointcodes(6,year)
+  fvs.fvs()
+
+  #get summary variables for the current growth cycle
+  fvs.fvssummary(cycle_sum)
+  
+  #get tree variables directly from the FVS arrays
+  #PyFVS returns Numpy Arrays
+  tn = fvs.contrl.itrn #current number of tree records
+  tpa = fvs.arrays.prob[:tn]
+  dbh = fvs.arrays.dbh[:tn]
+  baa = sum(dbh*dbh*0.005454154*tpa)
+
+  print 'Year: {:<d} BAA: {:<.1f}'.format(year,baa)
+}}}
+
+=Building PyFVS=
+There are currently two methods for generating the PyFVS wrapper library.  Both methods are cross platform (more-or-less) and use the GCC compiler tool chain.
+
+[Scons] is a flexible and complete build tool written in Python.  The SCons build system can be used instead of the CMake/Make build system.  Build arguments control compiled binary options.
+
+[Distutils] is the de-facto Python distribution toolset. A setup.py script is provided for building a FVS Python extension linked to a prebuilt shared library.
+
+=Build Tools=
+
+==Python==
+
+PyFVS is known to work with Python version 2.7 on Windows XP.  However, it will likely work with any version and distribution supported by SCons and F2PY (Numpy).  It should work with any Python distribution providing the standard library, Python.org, Python(x,y), ArcGIS, etc.
+
+_*Check your version*_
+<code language="shell">python -V</code>
+
+{{{
+import sys
+print sys.version
+}}}
+
+==F2PY==
+
+The F2PY Fortran interface generator is used to automate wrapping FVS subroutines and data objects into a Python CAPI extension.  F2PY is provided within the Numpy library.  Numpy is under the umbrella of SciPy, a suite of Python libraries for scientific and mathematical applications.  
+
+===Install Numpy===
+Numpy is available from several sources:
+
+  * [http://www.scipy.org/Download Official SciPy links]
+  * [http://www.lfd.uci.edu/~gohlke/pythonlibs/ Unofficial UC Irvine]
+  * [http://code.google.com/p/pythonxy/ Python(x,y)]
+  * `easy_install numpy`
+
+_*Useful F2PY references*_
+
+  * [http://www.scipy.org/F2py F2PY on SciPy]
+  * [http://cens.ioc.ee/projects/f2py2e/usersguide/index.html F2PY Reference Manual]
+  * [http://docs.scipy.org/doc/numpy-dev/user/c-info.python-as-glue.html Python as Glue]
+
+==MinGW==
+
+PyFVS uses the [http://www.gcc.org GCC] toolchain.  On Windows this means [http://www.mingw.org/ MinGW]. The MinGW [http://www.mingw.org/wiki/InstallationHOWTOforMinGW automated installer] is the easiest way to get MinGW setup properly.  Other MinGW distributions, eg. [http://cran.r-project.org/bin/windows/Rtools/ RTools] or [http://code.google.com/p/pythonxy/wiki/StandardPlugins#Other_packages Python(x,y)], should work as well with the proper environment variables.  However, since SCons is compiler agnostic, it should be possible to use most any Fortran and C compiler with minimal modifications to the SCons scripts.  Any modifications to support other compilers would be a welcome contribution.
+
+===Build Environment===
+_*Windows*_
+By default the MinGW setup does not modify your system path.  SCons expects to find the compiler tools in the system path.  The cleanest way to handle this is to use a batch file to setup the build environment.  This way you can ensure the build environment is not tainted by other tools that may be installed on the system.  Within the batch file you can add the MinGW\bin folder to the path, activate a Python virtual_env, etc.  See the build subfolder in the repository for an example batch file.  Executing all build commands from the resulting command window ensures SCons is operating in a clean, predicable environment.
+
+_*Linux*_
+Most Linux distributions will provide the GCC toolchain by default.  GCC version 4.5+ should work with the SCons build.
+
+==SCons==
+
+[http://www.scons.org Scons] is used to control the build process for PyFVS.  SCons is a Python library designed as a next generation software build environment.  SCons uses Python modules for build configuration.  Consequently, SCons is generally easier to learn and understand than other cryptic build tool languages.  Since Python is designed to be cross-platform, SCons is inherently cross-platform.  Additionally, SCons does not rely on platform specific tools to support file managment, etc.  SCons build scripts have complete access to the entire Python standard library, as well as any add-on libraries installed on the system.
+
+_*Install SCons*_
+  * [http://www.scons.org/download.php Scons Download]
+  * `easy_install scons`
+
+SCons will install a couple utility scripts and batch files to the scripts subfolder of you Python distribution.  This folder should be added to the build environments path variable.  The example batch file uses the [https://pypi.python.org/pypi/virtualenv virtualenv] tools to ensure this is setup properly.  Alternatively, the path can be added directly, eg. `set PATH=c:\python27\scripts;%PATH%`. 
+
+=Building a Python Extension=
+
+With the build environment established building a specific FVS variant, or group of variants is a simple process.
+
+  # Open a command window with the batch file you've established for the build environment.
+  # Change to the build subfolder, `cd build`.
+  # Execute a debug build for a single variant, `scons pnc`.
+  # Get a cup of coffee, the first build will take a few minutes.  Subsequent builds will only compile new or modified files.  
+
+By default the FVS shared lib and Python extension (libFVS_pnc.dll, pyfvspnc.pyd) will end up in the *pnc\debug\build* subfolder along with additional intermediate files.  See below to specify an install location.
+
+==Options==
+
+There are a several options that can be activated from the SCons command line.  More will be added and described seperately. To see the full list of implemented options execute `scons --help`.  The build options are listed at the bottom of the Scons help.
+
+  # Use static linking instead of shared libraries: `scons --static-pyext pnc`
+  # Build multiple variants with space seperated list: `scons pnc wcc`
+  # Install to the bin folder of the repository root: `scons pnc install`, `scons pnc wcc install`
+  # Change the default install folder: `scons pnc install --install-dir=c:\progs\fvs`
+  # Build a release version: `scons pnc --mode release`
+  # Cleanup all object files and most intermediate files: `scons pnc -c`
+
+==Notes==
+
+  * Options can be combined unless they logically conflict.  All variants specified will build with the same options.
+  * By default a debug version will be build.  Currently the release version merely adds an optimization compiler flag.
+  * Variants that can be built are identified by the FVS`*_`sourcelist.txt files in build folder.  Use the two or three letter code to identify the target variant.
+  * Building all variants, `scons all`, is currently not implemented.
