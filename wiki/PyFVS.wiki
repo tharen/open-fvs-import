@@ -31,7 +31,11 @@ for year in range(2010,2120,10):
 }}}
 
 =Building PyFVS=
-There are currently two methods for generating the PyFVS wrapper library.  Both methods are cross platform (more-or-less) and use the GCC compiler tool chain.
+Building the PyFVS extension modules can be enabled from the CMake configuration command line.  Additionally, the extension can be built with SCons.  However, SCons support will likely be dropped in the near future.
+
+[CMake] is the Open-FVS default build system.  Use the provided CmakeLists.txt file to build PyFVS extension modules linked to the standard FVS variant libraries.  To enable the PyFVS extensions add the CMake directive "-DPYEXT=1" to you configuration command line.
+
+CMake configuration example: `cmake -G"MinGW Makefiles" -DPYEXT=1 -DFVS_VARIANTS=pnc;wcc`
 
 [Scons] is a flexible and complete build tool written in Python.  The SCons build system can be used instead of the CMake/Make build system.  Build arguments control compiled binary options.
 
