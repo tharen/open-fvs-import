@@ -103,6 +103,8 @@ When complete, you will find these 4 key components in the variant sub-directory
 || *_libFVS_iec.so_*  || FORTRAN ||
 || *_libFVSsql.so_*   || C || 
 
+Note: When Mac OS X is used as the build environment, the `.so` suffix will be replaced with a `.dylib` suffix.
+
 ==Building the Executable in Batch==
 
 _This feature is not yet developed for Unix. It is a trivial shell script..._
