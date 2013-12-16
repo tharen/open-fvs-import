@@ -10,7 +10,7 @@
 #     "l64" on generic Linux x86_64.
 
 ifdef OS
- WIN = -DWINDOWS
+ DEFOS = -DWINDOWS
  OSARCH = w32
  ODBC = odbc32
  SLIBSUFX = .dll
@@ -18,7 +18,7 @@ ifdef OS
  PIC =      # never use PIC on this OSARCH type
 #not 32 bit windows, assume 64 bit Linux or mac osx.
 else
- WIN = 
+ DEFOS = -Dunix
  SLIBSUFX = .so
  PRGSUFX = 
  ifdef OSTYPE
@@ -47,7 +47,7 @@ endif
 #printvars: 
 #	@echo OS: $(OS)
 #	@echo OSTYPE: $(OSTYPE)
-#	@echo WIN: $(WIN)
+#	@echo DEFOS: $(DEFOS)
 #	@echo ODBC: $(ODBC)
 #	@echo SLIBSUFX: $(SLIBSUFX)
 #	@echo OSARCH: $(OSARCH)
@@ -55,14 +55,14 @@ endif
 # FC is the fortran compiler
 # FFLAGS are pasted to fortran
 # CC is the c compiler
-# CFLAGS are pased to C, of these CMPgcc is used by the fofem routines and WIN is used
+# CFLAGS are pased to C, of these CMPgcc is used by the fofem routines and DEFOS is used
 # by fvsSQL.c
 # LD is the linker
 
 export FC = gfortran 
 export FFLAGS = $(PIC) -g -Wall -ffpe-trap=invalid,zero
 export CC = gcc
-export CFLAGS = $(PIC) -DANSI -DCMP${CC} $(WIN)
+export CFLAGS = $(PIC) -DANSI -DCMP${CC} $(DEFOS)
 export LD = gfortran
 ifndef sourceFileList
 # TODO: See comment below regarding generl rules. We can change to this rule for all
