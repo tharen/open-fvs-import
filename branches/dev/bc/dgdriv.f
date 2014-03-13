@@ -215,8 +215,8 @@ C  - DR: 20 DECEMBER 99
 C  - not clear if this was part of V2; assume "yes"
 
       IF (LV2ATV) THEN
-        CALL SEIMORT(ISPC,DBH(I),X0)
-        DG(I) = DG(I) * X0
+        !CALL SEIMORT(ISPC,DBH(I),X0)
+        !DG(I) = DG(I) * X0
       ENDIF
 C----------
 C   CALL DGBND TO INSURE THAT DG DOES NOT EXCEED A MAXIMUM DG VALUE.
