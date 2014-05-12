@@ -2,7 +2,7 @@
 
 =The Build Process in Windows using MinGW=
 
-_Don Robinson, [http://www.essa.com ESSA] Technologies, March 2013_
+_Don Robinson, [http://www.essa.com ESSA] Technologies, May 2014_
 
 This wiki documents the process of setting things up on a Windows PC so you can build FVS executables from the source files in the open-fvs repository. Builds of 32-bit versions have been tested on XP SP3, and 64-bit builds may be tested by the end of 2013. For more information on the build process, including information for builds on other platforms please refer to [BuildProcess_UnixAlike], [BuildProcess_VisualStudio], or the [FAQ].
 
@@ -14,7 +14,7 @@ This wiki documents the process of setting things up on a Windows PC so you can 
 
 You will need Administrator privileges to install the necessary tools, so ensure you have that before proceeding.
 
-You will need to install the *MinGW (Minimalist GNU for Windows)* system. Information about MinGW can be found at [http://www.mingw.org/ www.mingw.org], and the MinGW install pack can be found at [http://sourceforge.net/projects/mingw/ http://sourceforge.net]. Download the latest version (package name: mingw-get-inst-20120426.exe). During installation make sure to choose the C, C++ and Fortran compilers for installation. The Cmake build steps described below have been tested using the default installation directory with the Version 4.7.2 compilers included in the 20120426 package. You will also need to modify the PATH environment variable to add the MinGW directory:
+You will need to install the *MinGW (Minimalist GNU for Windows)* system. Information about MinGW can be found at [http://www.mingw.org/ www.mingw.org], and the MinGW install pack can be found at [http://sourceforge.net/projects/mingw/files http://sourceforge.net]. Download the MinGW installer (mingw-get-setup.exe) and accept the default components(C, C++ and Fortran compilers). The Cmake build steps described below have been tested using the default installation directory with the Version 4.8.1 compilers. You will also need to modify the PATH environment variable to add the MinGW directory:
 
 {{{
 C:\MinGW\bin
@@ -38,7 +38,7 @@ cd \MyFvsFiles\trunk\bin
 
 Once you have navigated to the correct directory you are ready to use Cmake to create the MinGW Makefile. If MinGW is installed, Cmake should automatically detect it and build the Makefile for each FVS variant. (If this does not happen automatically, please post the problem so that it can be resolved.)
 
-At the command line type
+At the command line type (don't forget the '.' at the end!)
 
 {{{
 cmake -G"MinGW Makefiles" .
@@ -60,12 +60,17 @@ As Cmake creates each variant makefile you will see something like this:
 {{{
 -- Building FVS variant with MinGW
 -- tobuild = <...>/trunk/bin/FVSiec_sourceList.txt
--- The C compiler identification is GNU 4.7.2
+-- The C compiler identification is GNU 4.8.1
+-- The CXX compiler identification is GNU 4.8.1
 -- The Fortran compiler identification is GNU
 -- Check for working C compiler: C:/MinGW/bin/gcc.exe
 -- Check for working C compiler: C:/MinGW/bin/gcc.exe -- works
 -- Detecting C compiler ABI info
 -- Detecting C compiler ABI info - done
+-- Check for working CXX compiler: C:/MinGW/bin/g++.exe
+-- Check for working CXX compiler: C:/MinGW/bin/g++.exe -- works
+-- Detecting CXX compiler ABI info
+-- Detecting CXX compiler ABI info - done
 -- Check for working Fortran compiler: C:/MinGW/bin/gfortran.exe
 -- Check for working Fortran compiler: C:/MinGW/bin/gfortran.exe  -- works
 -- Detecting Fortran compiler ABI info
