@@ -29,9 +29,9 @@ C:\MinGW\msys\1.0\bin
 
 One way to do this is to right-click the _My Computer_ icon on the Windows desktop and select Properties. Click the Advanced tab, then the Environment Variables button. Locate *PATH* or *Path* from either the User variables or System variables, then click Edit. At the end of the current set of PATH directories add "; C:\MinGW\msys\1.0\bin". Then click OK buttons until you get back to the desktop.
 
-*rTools option*
+*Rtools option*
 
-The second package is recommended if you are already using rTools to build FVS; in which case the utilities are installed already. [TODO: complete documentation].
+The second package is recommended if you are already using rTools to build FVS; in which case the utilities are installed already. See the [BuildProcess_Rtools] page for more information.
 
 = Running Tests =
 
