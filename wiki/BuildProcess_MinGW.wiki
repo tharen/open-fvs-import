@@ -150,3 +150,6 @@ file: CMakeCache.txt
 }}}
 
 These files and directories contain information that is stored by CMake the first time it is run, and will "lock" CMake into always creating MinGW makefiles. Removing them allows CMake to create other kinds of build systems. 
+
+==Known Limitations==
+Builds of FVS created on a 32-bit platform by 32-bit MinGW utilities are not "CPU aware," and will not run on 64-bit Windows operating systems. 
