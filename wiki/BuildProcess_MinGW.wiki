@@ -107,9 +107,9 @@ When complete, you will find these 4 key components in the variant sub-directory
 
 || *Component Name*  || *Language* ||
 || *_FVSiec.exe_*   || FORTRAN ||
-|| *_FVSfofem.dll_* || C ||
-|| *_FVS_iec.dll_*  || FORTRAN ||
-|| *_FVSsql.dll_*   || C || 
+|| *_libFVSfofem.dll_* || C ||
+|| *_libFVS_iec.dll_*  || FORTRAN ||
+|| *_libFVSsql.dll_*   || C || 
 
 ==Building the Executable in Batch==
 
@@ -140,8 +140,11 @@ On a default MinGW installation the release-mode redistributables can be found h
 C:\MinGW\bin
 }}}
 
+The 32- or 64-bit DLL redistributables must match the 32- or 64-bit version of FVS. 
+
 ==Switching Between CMake Build Systems==
-Most of the time you will probably only want to build MinGW makefiles. However, developers may may need to test their code on a non-MinGW system, and therefore need to build FVS variants with Visual Studio 2010 (see [BuildProcess_VisualStudio]). If you need to do this, you should remove these files and directories before attempting to build with Visual Studio:
+Most of the time you will probably only want to build MinGW makefiles. However, developers may may need to test their code on a non-MinGW system
+like Visual Studio 2010 (see [BuildProcess_VisualStudio]) or switch between 32- and 64-bit builds. If you need to do this, you should remove these files and directories before attempting to build with Visual Studio:
 
 {{{
 directory: CMakeFiles
@@ -150,6 +153,3 @@ file: CMakeCache.txt
 }}}
 
 These files and directories contain information that is stored by CMake the first time it is run, and will "lock" CMake into always creating MinGW makefiles. Removing them allows CMake to create other kinds of build systems. 
-
-==Known Limitations==
-Builds of FVS created on a 32-bit platform by 32-bit MinGW utilities are not "CPU aware," and will not run on 64-bit Windows operating systems. 
