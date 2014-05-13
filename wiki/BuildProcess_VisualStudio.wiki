@@ -160,10 +160,10 @@ On a default Intel installation building a _64-bit_ version of FVS, the release-
 C:\Program Files (x86)\Intel\Composer XE\redist\intel64\compiler
 }}}
 
-The 32- or 64-bit DLL versions must match the 32- or 64-bit version of FVS that is being redistributed. 
+The 32- or 64-bit DLL redistributables must match the 32- or 64-bit version of FVS. 
 
 ==Switching Between CMake Build Systems==
-Most of the time you will probably only want to build Visual Studio Solution (SLN) files. However, developers may may need to test their code on a non-VS2010 system, and therefore need to build FVS variants with MinGW (see [BuildProcess_MinGW]). If you need to do this, you should remove these files and directories before attempting to  build with MinGW:
+Most of the time you will probably only want to build Visual Studio Solution (SLN) files. However, developers may may sometimes need to test their code on a non-VS2010 system like MinGW (see [BuildProcess_MinGW]) or switch between 32- and 64-bit builds. If you need to do this, you should remove these files and directories before attempting to build with an alternative toolchain:
 
 {{{
 directory: CMakeFiles
