@@ -65,4 +65,4 @@ A step in the development process is to add to the test library. There are a few
 = Operating System-Dependent Tests =
 
   * Tests of the Access data base (in `tests/ODBC`) rely on the Windows operating system with MS Office installed. [*TODO - Resolve the following conjecture by building and testing* The CPU-type for the FVS build must match the CPU-type of the MS Office installation. ODBC output from a 32-bit FVS build is compatible only with a 32-bit Office installation; likewise for 64-bit.]   
-  * Tests of the SQLite3 data base (in `tests/ODBC`) rely on having SQLite3 ODBC drivers installed on your system.
+  * Tests of the SQLite3 data base (in `tests/ODBC`) rely on having SQLite3 ODBC drivers installed on your system. Installation files for a variety of Operating Systems can be found at [http://www.ch-werner.de/sqliteodbc SQLite ODBC Driver]
