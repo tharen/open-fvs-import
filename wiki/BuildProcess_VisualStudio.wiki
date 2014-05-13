@@ -32,13 +32,21 @@ cd \MyFvsFiles\trunk\bin
 
 Once you have navigated to the correct directory you are ready to use Cmake to create a VS2010 solution file. If VS2010/Intel is installed, Cmake should automatically detect it and build the tools for VS2010. (If this does not happen automatically, please post the problem so that it can be resolved.)
 
-At the command line type (don't forget the '.' at the end!)
+If you are building a VS2010 solution for a _32-bit_ version of FVS, type the following at the command line type (don't forget the '.' at the end!)
 
 {{{
 cmake -G"Visual Studio 10" .
 }}}
 
-This will begin the creation of VS2010 solution files (suffix: SLN) for _all_ FVS variants, depending on how the GLOB tobuild command is set up in CMakeLists.txt. In Visual Studio parlance, a "solution" creates one or more software systems based on projects that are the components of the solution. In this case of FVS, an executable file is the principal software system that is created, but 3 component DLLs are also created. Each variant's SLN will be placed in a sub-directory like this
+If you are building a solution for a _64-bit_ version of FVS, type the following at the command line (including the '.'):
+
+{{{
+cmake -G"Visual Studio 10 Win64" .
+}}}
+
+It is not currently possible to have cmake create a VS2010 solution that can switch between building 32- and 64-bit versions of FVS within the same solution. For further specifics about 32- and 64-bit versions of FVS, see [#Redistributables Redistributables].
+
+Either of these commands will begin the creation of VS2010 solution files (suffix: SLN) for _all_ FVS variants, depending on how the GLOB tobuild command is set up in CMakeLists.txt. In Visual Studio parlance, a "solution" creates one or more software systems based on projects that are the components of the solution. In this case of FVS, an executable file is the principal software system that is created, but 3 component DLLs are also created. Each variant's SLN will be placed in a sub-directory like this
 
 {{{
 \MyFvsFiles\trunk\bin\FVSiec_CmakeDir
