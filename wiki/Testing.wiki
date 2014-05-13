@@ -17,7 +17,7 @@ The tests make use of standard Unix utilities: `make, echo, grep, diff` and `rm`
 
 The first package is recommended if you are building FVS with the MinGW toolchain, and is available as an optional component of the suite of MinGW utilities. Follow the steps shown here ([BuildProcess_MinGW]) to download, install and use the MinGW installer (mingw-get-setup.exe). In addition to the compiling tools, select "Basic Setup" and then choose the msys-base components as shown here:
 
-[http://open-fvs.googlecode.com/svn/wiki/MinGWb.png]
+[http://open-fvs.googlecode.com/svn/wiki/MinGW.png]
 
 This will download and install the additional utilities to the MinGW installation directory.
 
