@@ -44,9 +44,9 @@ If you are building a solution for a _64-bit_ version of FVS, type the following
 cmake -G"Visual Studio 10 Win64" .
 }}}
 
-It is not currently possible to have cmake create a VS2010 solution that can switch between building 32- and 64-bit versions of FVS within the same solution. For further specifics about 32- and 64-bit versions of FVS, see [#Redistributables Redistributables].
+It is not currently possible to have Cmake create a VS2010 solution that can toggle between building 32- and 64-bit versions of FVS within the same solution. For further specifics about 32- and 64-bit versions of FVS, see [#Redistributables Redistributables].
 
-Either of these commands will begin the creation of VS2010 solution files (suffix: SLN) for _all_ FVS variants, depending on how the GLOB tobuild command is set up in CMakeLists.txt. In Visual Studio parlance, a "solution" creates one or more software systems based on projects that are the components of the solution. In this case of FVS, an executable file is the principal software system that is created, but 3 component DLLs are also created. Each variant's SLN will be placed in a sub-directory like this
+Either of these Cmake commands will begin the creation of VS2010 solution files (suffix: SLN) for _all_ FVS variants, depending on how the GLOB tobuild command is set up in CMakeLists.txt. In Visual Studio parlance, a "solution" creates one or more software systems based on projects that are the components of the solution. In this case of FVS, an executable file is the principal software system that is created, but 3 component DLLs are also created. Each variant's SLN will be placed in a sub-directory like this
 
 {{{
 \MyFvsFiles\trunk\bin\FVSiec_CmakeDir
@@ -137,7 +137,7 @@ BuildAll_VS10.bat
 
 ==Redistributables==
 
-FVS executables created with VS2010/Intel - the EXE and 3 DLLs - can be freely distributed to others. If these are provided to users who do not have the Intel Fortran compiler installed (or whose components cannot be found by the PATH variable), the following files will need to be provided. When provided, they can be copied into the directory containing the FVS executable.
+FVS executables created with VS2010/Intel - the EXE and 3 DLLs - can be freely distributed to others. If these are provided to users who do not have the Intel Fortran compiler installed (or whose components cannot be found by the PATH variable), the following files will need to be provided. When provided, they can be copied into the directory containing the FVS executable. Please note the restriction on distributing certain _Debug_ DLLs.
 
 || *Component*      || *Debug* || *Release* || *Redistributable* ||
 || libifcoremd.dll  ||   || X || Yes ||
@@ -147,12 +147,20 @@ FVS executables created with VS2010/Intel - the EXE and 3 DLLs - can be freely d
 || libmmd.dll       || X || X || Yes ||
 || svml_dispmd.dll  ||   || X || Yes ||
 
-Please note the restriction on distributing certain _Debug_ DLLs. On a default Intel installation, the release-mode redistributables can be found in one of these locations:
+On a default Intel installation building a _32-bit_ version of FVS, the release-mode redistributables can be found in one of these locations:
 
 {{{
 C:\Program Files\Common Files\Intel\Shared Libraries\redist\ia32\compiler
 C:\Program Files\Common Files\Intel\ComposerXE-2011\redist\ia32\compiler
 }}}
+
+On a default Intel installation building a _64-bit_ version of FVS, the release-mode redistributables can be found here:
+
+{{{
+C:\Program Files (x86)\Intel\Composer XE\redist\intel64\compiler
+}}}
+
+The 32- or 64-bit DLL versions must match the 32- or 64-bit version of FVS that is being redistributed. 
 
 ==Switching Between CMake Build Systems==
 Most of the time you will probably only want to build Visual Studio Solution (SLN) files. However, developers may may need to test their code on a non-VS2010 system, and therefore need to build FVS variants with MinGW (see [BuildProcess_MinGW]). If you need to do this, you should remove these files and directories before attempting to  build with MinGW:
