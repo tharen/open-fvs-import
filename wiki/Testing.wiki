@@ -1,8 +1,37 @@
 #summary Testing Open-FVS: A Work That is Forever In Progress
 
+_Nick Crookston, USFS;  
+Don Robinson, [http://www.essa.com ESSA] Technologies, May 2014_
+
 = Introduction =
 
 This Wiki entry provides a brief overview of the testing scheme we have developed. There will be changes in this protocol as the development of open-fvs progresses. Your input is welcome.
+
+= Getting the Necessary Tools =
+
+You will need Administrator privileges to install the necessary tools, so ensure you have that before proceeding.
+
+The tests make use of standard Unix utilities: `make, echo, grep, diff` and `rm`, so carrying out the tests on Unix platforms requires no additional tools. Carrying out tests on Windows systems requires versions of these utilities that have been ported to Windows. There are two packages of free utilities that you may wish to install.
+
+*MinGW/MSys option*
+
+The first package is recommended if you are building FVS with the MinGW toolchain, and is available as an optional component of the suite of MinGW utilities. Follow the steps shown here ([BuildProcess_MinGW]) to download, install and use the MinGW installer (mingw-get-setup.exe). In addition to the compiling tools, select "Basic Setup" and then choose the msys-base components as shown here:
+
+[http://open-fvs.googlecode.com/svn/wiki/MinGWb.png]
+
+This will download and install the additional utilities to the MinGW installation directory.
+
+You will then need to modify the Windows *PATH* variable to make use of the new utilities, adding this directory:
+
+{{{
+C:\MinGW\msys\1.0\bin
+}}}
+
+One way to do this is to right-click the _My Computer_ icon on the Windows desktop and select Properties. Click the Advanced tab, then the Environment Variables button. Locate *PATH* or *Path* from either the User variables or System variables, then click Edit. At the end of the current set of PATH directories add "; C:\MinGW\msys\1.0\bin". Then click OK buttons until you get back to the desktop.
+
+*rTools option*
+
+The second package is recommended if you are already using rTools to build FVS; in which case the utilities are installed already. [TODO: complete documentation].
 
 = Running Tests =
 
@@ -35,7 +64,5 @@ A step in the development process is to add to the test library. There are a few
 
 = Operating System-Dependent Tests =
 
-  * Tests of the Access data base (in `tests/ODBC`) rely on the Windows operating system. 
+  * Tests of the Access data base (in `tests/ODBC`) rely on the Windows operating system with MS Office installed. [*TODO - Resolve the following conjecture by building and testing* The CPU-type for the FVS build must match the CPU-type of the MS Office installation. ODBC output from a 32-bit FVS build is compatible only with a 32-bit Office installation; likewise for 64-bit.]   
   * Tests of the SQLite3 data base (in `tests/ODBC`) rely on having SQLite3 ODBC drivers installed on your system.
-
-
