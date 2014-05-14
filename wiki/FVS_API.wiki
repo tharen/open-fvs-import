@@ -79,7 +79,7 @@ Set (or Get) the parameters that control start/restart while FVS is run as a sha
 subroutine fvsGetRestartcode (restartcode)
 }}}
 
-Returns the current value of the stop/restart code. This is an integer the indicates point within the FVS sequence of calculations were the program will start when subroutine fvs is called next (also see [FVSCommandLine FVS Command Line]. Values are as follows:
+Returns the current value of the stop/restart code. This is an integer the indicates point within the FVS sequence of calculations were the program will start when subroutine FVS is called next (also see [FVSCommandLine FVS Command Line]. Values are as follows:
 
 ||Stop Point Code||Definition||
 ||`1`||Stop was done just before the first call to the Event Monitor.||
@@ -263,10 +263,10 @@ Get dimension information for the version of FVS being run.
 ||Argument||Definition||
 ||`nsvsobjs`||returned number of tota objects defined in SVS storage.||
 ||`ndeadobjs`||returned number of dead tree objects defined in SVS storage.||
-||`ncwdobjs`||returned number of course wood objects defined in SVS storage.||
+||`ncwdobjs`||returned number of coarse wood objects defined in SVS storage.||
 ||`mxsvsobjs`||returned maximum number of live tree objects SVS can hold.||
 ||`mxdeadobjs`||returned maximum number of dead tree objects SVS can hold.||
-||`mxcwdobjs`||returned maximum number of course wood objects SVS can hold.||
+||`mxcwdobjs`||returned maximum number of coarse wood objects SVS can hold.||
 
 
 {{{
@@ -310,9 +310,9 @@ Object type codes:
    
 ||Value||Definition|| 
 ||`0`||The slot is open, no corresponding object exists||
-||`1`||An fvs tree||
+||`1`||An FVS tree||
 ||`2`||A snag record||
-||`3`||A fvs tree that is flagged for removal|| 
+||`3`||An FVS tree that is flagged for removal|| 
 ||`4`||CWD object (exclusive of fallen snags)||
 ||`5`||A snag record that is flagged for removal||
 
@@ -477,5 +477,5 @@ Fetch the integer code returned when FVS exits. A value of 0 means that no serio
 Here is a list of TODO items:
 
   # Finish the fvsCutTrees function.
-  # Set up the fvs function so that one can restart from the previous stand (assuming that the stand is stored in a stoppoint file. This would allow for making several projections from a stoppoint year into the future (upto a stoppoint year) for the same stand. This feature would be useful for treatment optimizations. There are two functions in the _API_ that are designed to support the functionality, but they have not yet been tested.
+  # Set up the FVS function so that one can restart from the previous stand (assuming that the stand is stored in a stoppoint file. This would allow for making several projections from a stoppoint year into the future (upto a stoppoint year) for the same stand. This feature would be useful for treatment optimizations. There are two functions in the _API_ that are designed to support the functionality, but they have not yet been tested.
   # Add a --treeDataFile option to the command line.
