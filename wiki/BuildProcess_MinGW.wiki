@@ -16,7 +16,11 @@ You will need Administrator privileges to install the necessary tools, so ensure
 
 You will need to install the *MinGW (Minimalist GNU for Windows)* system. Information about MinGW can be found at [http://www.mingw.org/ www.mingw.org]
 
-For _32-bit_ builds, the MinGW installer can be found at [http://sourceforge.net/projects/mingw/files http://sourceforge.net]. Download the installer ('mingw-get-setup.exe') and accept the default components(C, C++ and Fortran compilers). If you are planning on running FVS tests, refer to the [Tests] wiki page to see additional MingGW components that you may wish to consider.
+For _32-bit_ builds, the MinGW installer can be found at [http://sourceforge.net/projects/mingw/files http://sourceforge.net]. Download the Installation Manager ('mingw-get-setup.exe') and select the components shown below. 
+
+[http://open-fvs.googlecode.com/svn/wiki/MinGWb.png]
+
+If you are planning on running FVS tests, refer to the [Tests] wiki page to see additional MingGW components that you may wish to install. After selecting the components you need, they can be downloaded and installed by choosing "Installation > Update Catalogue" from the Installation Manager menu. This will download and install the additional utilities to the MinGW installation directory.
 
 For _64-bit_ builds, the MinGW installer can be found at 
 [http://sourceforge.net/projects/mingw-w64/?source=pdlp http://sourceforge.net]. Download the installer ('mingw-w64-instsall.exe'). Once the install has begun you will be asked to select 5 options:
