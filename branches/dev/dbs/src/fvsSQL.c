@@ -820,13 +820,19 @@ SQLRETURN SQLSetEnvAttr(
      SQLPOINTER   ValuePtr,
      SQLINTEGER   StringLength);
 */
+/*
+Note 3 arguments only; 4th argument (*StringLength) not required in FVS implementation.
+Note that contrary to the Microsoft pattern
+http://msdn.microsoft.com/en-us/library/ms709285%28v=vs.85%29.aspx
+we pass ValuePtr in as a SQLINTEGER and not a SQLPOINTER.
+ValuePtr is then cast as a SQLPOINTER in the ODBC call.
+*/
 
 #ifdef _WINDLL
 extern __declspec(dllexport) int FVSSQLSETENVATTR(
      SQLHENV    *EnvironmentHandle,
      SQLINTEGER *Attribute,
-     SQLPOINTER *ValuePtr,
-     SQLINTEGER *StringLength);
+     SQLINTEGER *ValuePtr);
 #endif
 
 #ifdef CMPgcc
@@ -836,15 +842,13 @@ int FVSSQLSETENVATTR(
 #endif
      SQLHENV    *EnvironmentHandle,
      SQLINTEGER *Attribute,
-     SQLPOINTER *ValuePtr,
-     SQLINTEGER *StringLength)
+     SQLINTEGER *ValuePtr)
 {
- int rtn = SQLSetEnvAttr(
+   int rtn = SQLSetEnvAttr(
    *EnvironmentHandle,
    *Attribute,
-   *ValuePtr,
-   0);             // works when ValuePtr points to a number.
-//  *StringLength);   should work
+   (SQLPOINTER) *ValuePtr,
+   (SQLINTEGER) 0);
  return rtn;
 }
 
