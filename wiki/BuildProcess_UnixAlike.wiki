@@ -4,7 +4,7 @@
 
 _Don Robinson, [http://www.essa.com ESSA] Technologies, May 2014_
 
-This wiki documents the process of setting things up on Unix so you can build FVS executables from the source files in the open-fvs repository. Builds of 32-bit versions have been tested using _Ubuntu Linux_. Builds of 64-bit versions are the next step but have not yet been tested. For more information on the build process, including information for builds on Windows please refer to [BuildProcess_MinGW], [BuildProcess_VisualStudio], or the [FAQ].
+This wiki documents the process of setting things up on Unix so you can build FVS executables from the source files in the open-fvs repository. Builds of 32-bit versions have been tested using _Ubuntu Linux_. Builds of 64-bit versions look promising but have not yet been documented. For more information on the build process, including information for builds on Windows please refer to [BuildProcess_MinGW], [BuildProcess_VisualStudio], or the [FAQ].
 
 = Contents =
 
@@ -12,7 +12,7 @@ This wiki documents the process of setting things up on Unix so you can build FV
 
 ==Getting the Necessary Tools==
 
-This documentation is based on building FVS on the Ubuntu variant of Linux (Ubuntu 12.04.2). It has been tested with Cmake 2.8.7 and gfortran 4.6.3. Your particular Unix OS might behave differently. You will probably need to download and install *Cmake*, *gfortran* and  *ODBC* software using commands like this:
+This documentation is based on building FVS on the Ubuntu variant of Linux (Ubuntu 12.04.4cmak). It has been tested with Cmake 2.8.7 and gfortran 4.6.3. Your particular Unix OS might behave differently. You will probably need to download and install *Cmake*, *gfortran* and  *ODBC* software using commands like this:
 
 {{{
 sudo -apt-get install gfortran
@@ -122,7 +122,7 @@ If you wish to interact with a SQL database file using a 32- or 64-bit Unix buil
 sudo apt-get install libsqliteodbc
 }}}
 
-After installation you will fine a text file `/etc/odbcinst.ini` on your system, with the following contents:
+After installation you will find the text file `/etc/odbcinst.ini` on your system, with the following contents:
 
 {{{
 [SQLite]
@@ -138,7 +138,7 @@ Setup           = /usr/lib/libsqlite3odbc.so
 UsageCount              = 1
 }}}
 
-If you wish to enable the automatic recognition by the FVS Database Extension, of SQL format database files with a `.db` suffix, the following lines must be added to this file:
+If you wish to enable the automatic recognition by the FVS Database Extension, of SQL-format database files with a `.db` suffix, the following lines must be added to this file:
 
 {{{
 [SQLite3 ODBC Driver]
