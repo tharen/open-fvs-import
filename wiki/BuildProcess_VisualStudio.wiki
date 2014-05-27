@@ -174,7 +174,7 @@ file: CMakeCache.txt
 These files and directories contain information that is stored by CMake the first time it is run, and will "lock" CMake into always creating VS2010 solutions. Removing them allows CMake to create other kinds of build systems.
 
 ==Working with Databases==
-FVS can interact with many common database formats: SQL, MS Access, MS Excel and probably others. Each of these target database formats requires special ODBC software drivers to enable input and output, and there are some limitations based on combinations of operating system, FVS tool chain and 32/64 bit versions of drivers. In all cases, there is a greater chance of first-time success if there consistency in the use of 32- or 64-bit components, as these are the configurations that have been tested.
+FVS can interact with many common database formats: SQL, MS Access, MS Excel and probably others. Each of these target database formats requires special ODBC software drivers to enable input and output, and there are some limitations based on combinations of operating system, FVS tool chain and 32/64 bit versions of drivers. In all cases, there is a greater chance of first-time success if there is consistency in the use of 32- or 64-bit components, as these are the configurations that have been tested.
 
 If you wish to interact with a SQL database file using a 32- or 64-bit VS2010/Intel build of FVS, 32- and 64-bit versions of the *SQLite3* database software for can be found [http://www.ch-werner.de/sqliteodbc here]. Installation of this software creates a System DSN ODBC driver that can interact with SQLite3 databases having a default `.db` filename suffix.
 
