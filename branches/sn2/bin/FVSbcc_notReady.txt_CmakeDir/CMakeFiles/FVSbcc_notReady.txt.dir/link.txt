@@ -1,0 +1,1 @@
+/usr/bin/gfortran      CMakeFiles/FVSbcc_notReady.txt.dir/Users/pradtke/Source/Climate-FVS/open-fvs/trunk/base/src/main.f.o  -o FVSbcc_notReady.txt  -lodbc libFVS_bcc_notReady.txt.dylib libFVSsql.dylib libFVSfofem.dylib -lodbc 

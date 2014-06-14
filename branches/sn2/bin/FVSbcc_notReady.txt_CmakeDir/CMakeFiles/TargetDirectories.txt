@@ -1,0 +1,6 @@
+/Users/pradtke/Source/Climate-FVS/open-fvs/trunk/bin/FVSbcc_notReady.txt_CmakeDir/CMakeFiles/FVS_bcc_notReady.txt.dir
+/Users/pradtke/Source/Climate-FVS/open-fvs/trunk/bin/FVSbcc_notReady.txt_CmakeDir/CMakeFiles/FVSbcc_notReady.txt.dir
+/Users/pradtke/Source/Climate-FVS/open-fvs/trunk/bin/FVSbcc_notReady.txt_CmakeDir/CMakeFiles/FVSfofem.dir
+/Users/pradtke/Source/Climate-FVS/open-fvs/trunk/bin/FVSbcc_notReady.txt_CmakeDir/CMakeFiles/FVSsql.dir
+/Users/pradtke/Source/Climate-FVS/open-fvs/trunk/bin/FVSbcc_notReady.txt_CmakeDir/CMakeFiles/dbstypedefs.dir
+/Users/pradtke/Source/Climate-FVS/open-fvs/trunk/bin/FVSbcc_notReady.txt_CmakeDir/CMakeFiles/mkdbsTypeDefs.dir

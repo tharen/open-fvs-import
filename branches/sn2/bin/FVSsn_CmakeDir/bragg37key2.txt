@@ -1,0 +1,36 @@
+ECHOSUM   
+SCREEN             6
+STDIDENT  
+37                  
+InvYear         2005
+COMMENT
+StdInfo        81110     232BQ        46       180         1      7.35
+END
+StdInfo          701     232BQ        46       180         1      7.35
+Locate       35.0406   79.3679
+Design           -10        10         5
+TimeInt            1         5
+NumCycle          10
+NoTriple  
+Climate
+ClimData
+GFDLCM21_A2
+C:\MinGW\msys\1.0\home\pradtke\Source\open-fvs\branches\sn2\bin\FVSsn_CmakeDir\FVSClimAttrs2.csv
+END
+COMMENT
+Debug              2
+END
+Sitecode          LL        70         1
+TreeList           0         3         0         1         0         0
+TreeData          15
+  37001      1LL  148    70                     0
+  37002      1LL  180    55                     0
+  37003      1LL  166    61                     0
+  37004      1LL  175    58                     0
+  37005      1LL  155    48                     0
+  37006      1LL  190    50                     0
+  37007      1LL  188    41                     0
+  37008      1LL  130    71                     0
+-999
+Process   
+STOP      

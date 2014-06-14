@@ -1,0 +1,6 @@
+C:/MinGW/msys/1.0/home/pradtke/Source/open-fvs/branches/sn2/bin/FVSsn_CmakeDir/CMakeFiles/FVS_sn.dir
+C:/MinGW/msys/1.0/home/pradtke/Source/open-fvs/branches/sn2/bin/FVSsn_CmakeDir/CMakeFiles/FVSfofem.dir
+C:/MinGW/msys/1.0/home/pradtke/Source/open-fvs/branches/sn2/bin/FVSsn_CmakeDir/CMakeFiles/FVSsn.dir
+C:/MinGW/msys/1.0/home/pradtke/Source/open-fvs/branches/sn2/bin/FVSsn_CmakeDir/CMakeFiles/FVSsql.dir
+C:/MinGW/msys/1.0/home/pradtke/Source/open-fvs/branches/sn2/bin/FVSsn_CmakeDir/CMakeFiles/dbstypedefs.dir
+C:/MinGW/msys/1.0/home/pradtke/Source/open-fvs/branches/sn2/bin/FVSsn_CmakeDir/CMakeFiles/mkdbsTypeDefs.dir
