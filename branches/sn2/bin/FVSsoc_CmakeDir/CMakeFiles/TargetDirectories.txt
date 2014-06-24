@@ -1,6 +1,0 @@
-C:/MinGW/msys/1.0/home/pradtke/Source/trunk/bin/FVSsoc_CmakeDir/CMakeFiles/FVS_soc.dir
-C:/MinGW/msys/1.0/home/pradtke/Source/trunk/bin/FVSsoc_CmakeDir/CMakeFiles/FVSfofem.dir
-C:/MinGW/msys/1.0/home/pradtke/Source/trunk/bin/FVSsoc_CmakeDir/CMakeFiles/FVSsoc.dir
-C:/MinGW/msys/1.0/home/pradtke/Source/trunk/bin/FVSsoc_CmakeDir/CMakeFiles/FVSsql.dir
-C:/MinGW/msys/1.0/home/pradtke/Source/trunk/bin/FVSsoc_CmakeDir/CMakeFiles/dbstypedefs.dir
-C:/MinGW/msys/1.0/home/pradtke/Source/trunk/bin/FVSsoc_CmakeDir/CMakeFiles/mkdbsTypeDefs.dir

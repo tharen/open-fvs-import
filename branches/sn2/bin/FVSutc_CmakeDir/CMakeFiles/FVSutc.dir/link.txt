@@ -1,3 +1,0 @@
-"C:\Program Files (x86)\CMake 2.8\bin\cmake.exe" -E remove -f CMakeFiles\FVSutc.dir/objects.a
-C:\strawberry\c\bin\ar.exe cr CMakeFiles\FVSutc.dir/objects.a @CMakeFiles\FVSutc.dir\objects1.rsp
-C:\strawberry\c\bin\gfortran.exe      -Wl,--whole-archive CMakeFiles\FVSutc.dir/objects.a -Wl,--no-whole-archive  -o FVSutc.exe -Wl,--out-implib,libFVSutc.dll.a -Wl,--major-image-version,0,--minor-image-version,0  -lodbc32 libFVS_utc.dll.a libFVSsql.dll.a libFVSfofem.dll.a -lodbc32 

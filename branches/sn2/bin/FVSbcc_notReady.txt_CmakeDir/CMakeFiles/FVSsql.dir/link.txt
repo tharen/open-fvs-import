@@ -1,1 +1,0 @@
-/usr/bin/cc   -dynamiclib -Wl,-headerpad_max_install_names   -o libFVSsql.dylib -install_name /Users/pradtke/Source/Climate-FVS/open-fvs/trunk/bin/FVSbcc_notReady.txt_CmakeDir/libFVSsql.dylib CMakeFiles/FVSsql.dir/Users/pradtke/Source/Climate-FVS/open-fvs/trunk/dbs/src/fvsSQL.c.o -lodbc 

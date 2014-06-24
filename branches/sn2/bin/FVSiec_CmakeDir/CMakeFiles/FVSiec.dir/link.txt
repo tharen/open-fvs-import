@@ -1,1 +1,0 @@
-/usr/bin/gfortran      CMakeFiles/FVSiec.dir/Users/pradtke/Source/Climate-FVS/open-fvs/trunk/base/src/main.f.o  -o FVSiec  -lodbc libFVS_iec.dylib libFVSsql.dylib libFVSfofem.dylib -lodbc 

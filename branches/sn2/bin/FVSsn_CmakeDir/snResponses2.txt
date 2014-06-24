@@ -1,6 +1,0 @@
-bragg37key2.txt
-NUL
-main_sn2.txt
-treelist_sn2.txt
-summary_sn2.txt
-NUL

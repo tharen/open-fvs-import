@@ -1,3 +1,0 @@
-"C:\Program Files (x86)\CMake 2.8\bin\cmake.exe" -E remove -f CMakeFiles\FVSncc.dir/objects.a
-C:\strawberry\c\bin\ar.exe cr CMakeFiles\FVSncc.dir/objects.a @CMakeFiles\FVSncc.dir\objects1.rsp
-C:\strawberry\c\bin\gfortran.exe      -Wl,--whole-archive CMakeFiles\FVSncc.dir/objects.a -Wl,--no-whole-archive  -o FVSncc.exe -Wl,--out-implib,libFVSncc.dll.a -Wl,--major-image-version,0,--minor-image-version,0  -lodbc32 libFVS_ncc.dll.a libFVSsql.dll.a libFVSfofem.dll.a -lodbc32 
