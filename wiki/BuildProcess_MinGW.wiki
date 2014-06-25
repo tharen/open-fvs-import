@@ -2,7 +2,7 @@
 
 =The Build Process in Windows using MinGW=
 
-_Don Robinson, [http://www.essa.com ESSA] Technologies, May 2014_
+_Don Robinson, [http://www.essa.com ESSA] Technologies, June 2014_
 
 This wiki documents the process of setting things up on a Windows PC so you can build FVS executables from the source files in the open-fvs repository. Builds of _32-bit_ versions have been tested on a clean WinXP SP3 VM; _64-bit_ builds have been tested on a clean Win7 SP1 VM. For more information on the build process, including information for builds on other platforms please refer to [BuildProcess_UnixAlike], [BuildProcess_VisualStudio], or the [FAQ].
 
@@ -128,7 +128,7 @@ At the command-line, type this to begin building the executable:
 mingw32-make
 }}}
 
-When complete, you will find these 4 key components in the variant sub-directory:
+The make utility filename is the same for both 32- and 64-bit builds. When complete, you will find these 4 key components in the variant sub-directory:
 
 || *Component Name*  || *Language* ||
 || *_FVSiec.exe_*   || FORTRAN ||
@@ -161,7 +161,7 @@ FVS executables created with MinGW - the EXE and 3 DLLs - can be freely distribu
 ||                      || libgcc_s_seh-1.dll   ||
 ||                      || libwinpthread-1.dll  ||
 
-On a default _32-bit_ installation, the redistributables can be found here: 
+Note that although the 32- and 64-bit build component DLLs may have the same filename, they are different binary files. 32- and 64-bit DLLs cannot be mixed. On a default _32-bit_ installation, the redistributables can be found here: 
 
 {{{
 C:\MinGW\bin
