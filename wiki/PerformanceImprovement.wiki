@@ -97,7 +97,7 @@ We now believe that code to take advantage of multi-core computers is best imple
 
 A new technology that was implemented during the project but which was not anticipated at the outset is the use of the open-fvs code repository system. Prior to this project the FVS source code was housed in an internal repository accessible only from inside the Forest Service firewall. The open-fvs repository was set up to make the source code and related files available so that university, private, other federal, and state organizations who wish to participate in enhancing FVS can do so without the impediments caused by not having access to the Forest Service's internal repository. 
 
-A second new technology that was not foreseen at the start of the project is the Cmake system, which allows all FVS to be built and tested using 3 tool chains ([BuildProcess_VisualStudio Visual Studio], [BuildProcess_MinGW MinGW] and [BuildProcess_Unix Unix]), including 32- and 64-bit versions.
+A second new technology that was not foreseen at the start of the project is the Cmake system, which allows all FVS to be built and tested using 3 tool chains ([BuildProcess_VisualStudio Visual Studio], [BuildProcess_MinGW MinGW] and [BuildProcess_UnixAlike Unix]), including 32- and 64-bit versions.
 
 =V. Management Implications=
 
