@@ -1,0 +1,473 @@
+      SUBROUTINE CLIN (DEBUG,LKECHO)
+      IMPLICIT NONE
+C----------
+C  $Id: clin.f 933 2013-06-11 15:19:27Z rhavis@msn.com $
+C----------
+C
+C     CLIMATE EXTENSION
+C
+COMMONS
+C
+      INCLUDE 'PRGPRM.F77'
+      INCLUDE 'CONTRL.F77'
+      INCLUDE 'PLOT.F77'
+      INCLUDE 'CLIMATE.F77'
+C
+COMMONS
+C
+      INTEGER    KWCNT
+      PARAMETER (KWCNT = 8)
+
+      CHARACTER*8  TABLE(KWCNT), KEYWRD,SISP
+      CHARACTER*10 KARD(7)
+      CHARACTER*2048 CHTMP,FMT
+      CHARACTER*40 CSTDID
+      CHARACTER*30 CCLIM,CYR,MUKEY
+      LOGICAL      LNOTBK(7),LKECHO,DEBUG
+      REAL         ARRAY(7),TMPATTRS(MXCLATTRS),SI,RSDI
+      INTEGER      KODE,IPRMPT,NUMBER,I,I1,I2,IYRTMP,IUTMP,IRTNCD
+      INTEGER      COMMALOC
+
+      DATA TABLE /
+     >     'END','CLIMDATA','MORTMULT','AUTOESTB','GROWMULT',
+     >     'MXDENMLT','CLIMREPT','SETATTR'/
+
+C
+C     **********          EXECUTION BEGINS          **********
+C
+
+C     SIGNAL THAT THE CLIMATE MODEL IS NOW ACTIVE.
+
+   10 CONTINUE
+C      IF(LKECHO) WRITE(JOSTND,50) KEYWRD,NUMBER
+C
+C
+      CALL KEYRDR (IREAD,JOSTND,DEBUG,KEYWRD,LNOTBK,
+     >             ARRAY,IRECNT,KODE,KARD,LFLAG,LKECHO)
+
+C      WRITE (JOSTND,'("Line 48 in clin.f. ARRAY = ",7F8.3)') ARRAY(1:7)
+
+
+C
+C  RETURN KODES 0=NO ERROR,1=COLUMN 1 BLANK OR ANOTHER ERROR,2=EOF
+C               LESS THAN ZERO...USE OF PARMS STATEMENT IS PRESENT.
+C
+
+      IF (KODE.LT.0) THEN
+         IPRMPT=-KODE
+      ELSE
+         IPRMPT=0
+      ENDIF
+      IF (KODE .LE. 0) GO TO 30
+      IF (KODE .EQ. 2) CALL ERRGRO(.FALSE.,2)
+
+      CALL fvsGetRtnCode(IRTNCD)
+
+      IF (IRTNCD.NE.0) RETURN
+
+
+      CALL ERRGRO (.TRUE.,6)
+      GOTO 10
+   30 CONTINUE
+      CALL FNDKEY (NUMBER,KEYWRD,TABLE,KWCNT,KODE,.FALSE.,JOSTND)
+
+C      IF(LKECHO) WRITE(JOSTND,50) KEYWRD,NUMBER
+   50 FORMAT (/A8,'   CLIMATE EXTENSION ACTIVE. NUMBER =',I2)
+
+C
+C     RETURN KODES 0=NO ERROR,1=KEYWORD NOT FOUND,2=MISSPELLING.
+C
+      IF (KODE .EQ. 0) GOTO 90
+      IF (KODE .EQ. 1) THEN
+         CALL ERRGRO (.TRUE.,1)
+         GOTO 10
+      ENDIF
+      GOTO 90
+C
+C     SPECIAL END-OF-FILE TARGET
+C
+   80 CONTINUE
+      CALL ERRGRO(.FALSE.,2)
+
+      CALL fvsGetRtnCode(IRTNCD)
+
+      IF (IRTNCD.NE.0) RETURN
+
+
+   90 CONTINUE
+C
+C     PROCESS OPTIONS
+C
+      GO TO( 100, 200, 300, 400, 500, 600, 700, 800), NUMBER
+
+  100 CONTINUE
+C                        OPTION NUMBER 1 -- END
+
+      LCLIMATE= NATTRS .GT. 0 .AND. NYEARS.GT. 0
+
+      IF(LKECHO .AND. LCLIMATE) WRITE(JOSTND,105) KEYWRD
+  105 FORMAT (/A8,'   CLIMATE EXTENSION ACTIVE, END OF OPTIONS.')
+      IF(LKECHO .AND. .NOT. LCLIMATE) WRITE(JOSTND,106) KEYWRD
+  106 FORMAT (/A8,'   CLIMATE EXTENSION MISSING REQUIRED DATA '
+     >        'AND IS NOT ACTIVE. END OF OPTIONS.')
+      RETURN
+
+  200 CONTINUE
+C                        OPTION NUMBER 2 -- CLIMDATA
+      NATTRS=0
+      NYEARS=0
+      INDXSPECIES=0
+      READ (IREAD,'(A)',END=80) CLIMATE_NAME
+      IRECNT = IRECNT+1
+      CLIMATE_NAME=ADJUSTL(CLIMATE_NAME)
+      READ (IREAD,'(A)',END=80) CHTMP  !GET THE FILE NAME
+      IRECNT = IRECNT+1
+      CHTMP=ADJUSTL(CHTMP)
+      IF(LKECHO)WRITE (JOSTND,210) KEYWRD,TRIM(CLIMATE_NAME),
+     >       TRIM(NPLT),TRIM(CHTMP)
+  210 FORMAT (/A8,T12,'READING ATTRS SCORES FOR CLIMATE=',A,
+     >        ' AT STAND=',A,' FROM FILE=',A)
+C      WRITE (JOSTND,'(T12,"Line 210 in clin.f. NYEARS = ")')
+      OPEN (NEWUNIT=IUTMP,FILE=TRIM(CHTMP),STATUS='OLD',ERR=298)
+      I2=0
+C---- Read climate attribute file first line (attribute labels)
+      READ (IUTMP,'(A)',END=296) CHTMP
+      I2=I2+1
+      READ (CHTMP,*,END=211) CSTDID,CCLIM,CYR,ATTR_LABELS  ! toss the first three
+  211 CONTINUE
+      IF (CSTDID .NE. "StandID") WRITE (JOSTND,212) TRIM(CSTDID)
+  212 FORMAT (T12,'ATTRS FILE CREATION TAG=',A)
+C      IF (CSTDID .NE. "StandID") WRITE (JOSTND,212) MXCLATTRS
+C  212 FORMAT (T12,'MXCLATTRS =',I4)
+          WRITE (JOSTND,213) ADJUSTR(ATTR_LABELS(1:15))
+          WRITE (JOSTND,214) ADJUSTR(ATTR_LABELS(16:29))
+  213     FORMAT ( T12,'ATTR_LABELS: ',15A8)
+  214     FORMAT ( T25,'',14A8)
+      DO I=1,MXCLATTRS
+        IF (ICHAR(ATTR_LABELS(I)(1:1)).EQ. 0 .OR.
+     >      ATTR_LABELS(I)(1:1).EQ.' ') EXIT
+        NATTRS=NATTRS+1
+      ENDDO
+  215 CONTINUE
+C---- Read climate attribute records
+      READ (IUTMP,'(A)',END=290) CHTMP
+      I2=I2+1
+      READ (CHTMP,220) FMT
+  220 FORMAT(A)
+      ! read first three fields in a record: StandID, Scenario, Year
+      COMMALOC = INDEX(FMT,',')
+      READ (FMT(1:COMMALOC-1),*) CSTDID   ! ignores any quotes around Stand ID
+      FMT = FMT((COMMALOC+1):LEN(FMT))
+      COMMALOC = INDEX(FMT,',')
+      READ (FMT(1:COMMALOC-1),*) CCLIM    ! ignores quotes around scenario name
+      FMT = FMT((COMMALOC+1):LEN(FMT))
+      COMMALOC = INDEX(FMT,',')
+      READ (FMT(1:COMMALOC-1),'(I4)') IYRTMP
+      FMT = FMT((COMMALOC+1):LEN(FMT))
+      ! attributes before mukey are reals
+      DO I=1,15   ! first 15 attributes: {mat, map, ..., smrsprpb}
+        IF (FMT(1:1).EQ.' '.OR.
+     >      FMT(1:1).EQ.'"') EXIT
+        COMMALOC = INDEX(FMT,',')
+        READ (FMT(1:COMMALOC-1),*) TMPATTRS(I)
+        FMT = FMT((COMMALOC+1):LEN(FMT))
+C        WRITE (JOSTND,212) MXCLATTRS
+      ENDDO
+      ! mukey, character
+      COMMALOC = INDEX(FMT,',')
+      READ (FMT(1:COMMALOC-1),*) MUKEY    ! ignores quotes around mukey
+      FMT = FMT((COMMALOC+1):LEN(FMT))
+      ! viability scores for each species
+      DO I=17,NATTRS-3    
+        IF (FMT(1:1).EQ.' '.OR.
+     >      FMT(1:1).EQ.'"') EXIT
+        COMMALOC = INDEX(FMT,',')
+        READ (FMT(1:COMMALOC-1),*) TMPATTRS(I)
+        FMT = FMT((COMMALOC+1):LEN(FMT))
+      ENDDO
+      ! site index (SI) and SI species (SISP) USDA Plants code
+      COMMALOC = INDEX(FMT,',')
+      READ (FMT,*) SI,SISP,RSDI  
+      TMPATTRS(NATTRS-2) = SI  
+      TMPATTRS(NATTRS) = RSDI  
+
+C      READ (CHTMP,*) CSTDID,CCLIM
+      IF (TRIM(CSTDID).NE.TRIM(NPLT)) GOTO 215
+      IF (TRIM(CCLIM) .NE.TRIM(CLIMATE_NAME)) GOTO 215
+
+C---- Update site species and site index
+      DO I=1,MAXSP
+        IF (PLNJSP(I) .EQ. SISP ) THEN
+          SITEAR(I) = SI
+          ISISP = I
+          EXIT
+        ENDIF
+      ENDDO
+C      WRITE (JOSTND,'(T12,"SITEAR = ",F5.1)') SITEAR(ISISP)
+
+      IF (NYEARS.EQ.0) THEN
+        NYEARS=1
+        YEARS(1)=IYRTMP
+        I1=1
+      ELSE
+        I1=0
+        DO I=1,NYEARS
+          IF (YEARS(I).NE.IYRTMP) CYCLE
+          I1=I
+          EXIT
+        ENDDO
+        IF (I1.EQ.0) THEN
+          IF (NYEARS.EQ.MXCLYEARS) THEN
+            WRITE (JOSTND,'(T12,"TOO MANY YEARS IN CLIMATE DATA.")')
+            NATTRS=0
+            NYEARS=0
+            INDXSPECIES=0
+            CLOSE (UNIT=IUTMP)
+            CALL RCDSET (2,.TRUE.)
+            GOTO 10
+          ENDIF
+          NYEARS=NYEARS+1
+          I1=NYEARS
+          YEARS(NYEARS)=IYRTMP
+        ENDIF
+      ENDIF
+      ATTRS(I1,1:NATTRS)=TMPATTRS(1:NATTRS)
+      GOTO 215
+  290 CONTINUE
+      IF(LKECHO)WRITE (JOSTND,291) I2,NATTRS,NYEARS
+  291 FORMAT (T12,'RECORDS READ=',I4,'; NUMBER OF ATTRIBUTES=',
+     >  I4,'; NUMBER OF YEARS=',I4)
+      IF (NYEARS*NATTRS.EQ.0) THEN
+        WRITE (JOSTND,'(T12,"NO CLIMATE DATA FOR THIS STAND.")')
+        NATTRS=0
+        NYEARS=0
+        INDXSPECIES=0
+        CLOSE (UNIT=IUTMP)
+        CALL RCDSET (2,.TRUE.)
+        GOTO 10
+      ENDIF
+      CLOSE (UNIT=IUTMP)
+      DO I1=1,NATTRS
+        IF ('dd5'  .EQ.TRIM(ATTR_LABELS(I1))) IXDD5  =I1
+        IF ('mat'  .EQ.TRIM(ATTR_LABELS(I1))) IXMAT  =I1
+        IF ('map'  .EQ.TRIM(ATTR_LABELS(I1))) IXMAP  =I1
+        IF ('mtcm' .EQ.TRIM(ATTR_LABELS(I1))) IXMTCM =I1
+        IF ('mtwm' .EQ.TRIM(ATTR_LABELS(I1))) IXMTWM =I1
+        IF ('gsp'  .EQ.TRIM(ATTR_LABELS(I1))) IXGSP  =I1
+        IF ('d100' .EQ.TRIM(ATTR_LABELS(I1))) IXD100 =I1
+        IF ('mmin' .EQ.TRIM(ATTR_LABELS(I1))) IXMMIN =I1
+        IF ('dd0'  .EQ.TRIM(ATTR_LABELS(I1))) IXDD0  =I1
+        IF ('gsdd5'.EQ.TRIM(ATTR_LABELS(I1))) IXGSDD5=I1
+        IF ('SI'.EQ.TRIM(ATTR_LABELS(I1))) IXPSITE=I1
+C -------SOME CLIMATE ATTRIBUTES NOT USED IN THE EAST
+C        IF ('DEmtwm'  .EQ.TRIM(ATTR_LABELS(I1))) IDEmtwm  =I1
+C        IF ('DEmtcm'  .EQ.TRIM(ATTR_LABELS(I1))) IDEmtcm  =I1
+C        IF ('DEdd5'   .EQ.TRIM(ATTR_LABELS(I1))) IDEdd5   =I1
+C        IF ('DEsdi'   .EQ.TRIM(ATTR_LABELS(I1))) IDEsdi   =I1
+C        IF ('DEdd0'   .EQ.TRIM(ATTR_LABELS(I1))) IDEdd0   =I1
+C        IF ('DEpdd5'  .EQ.TRIM(ATTR_LABELS(I1))) IDEmapdd5=I1
+        ! Seems like this line won't work, e.g., when IXMMIN < 0
+        IF (      IXMTCM.GT.0 .AND. IXMAT  .GT.0
+     >      .AND. IXGSP .GT.0 .AND. IXD100 .GT.0
+     >      .AND. IXMMIN.GT.0 .AND. IXDD0  .GT.0
+     >      .AND. IXDD5 .GT.0 .AND. IXPSITE.GT.0
+     >      .AND. IXGSDD5.GT.0
+     >      .AND. IDEmtwm   .GT. 0
+     >      .AND. IDEmtcm   .GT. 0
+     >      .AND. IDEdd5    .GT. 0
+     >      .AND. IDEsdi    .GT. 0
+     >      .AND. IDEdd0    .GT. 0
+     >      .AND. IDEmapdd5 .GT. 0) EXIT
+      ENDDO
+
+      ! assign species P/A col #s to INDXSPECIES(1:MAXSP)
+      DO I=1,MAXSP
+        DO I1=17,NATTRS-3
+          IF (JSP(I)(1:2).EQ.ATTR_LABELS(I1)(1:2)) THEN
+            INDXSPECIES(I)=I1
+C            WRITE (JOSTND,295) I1,JSP(I)(1:2),TRIM(ATTR_LABELS(I1)(1:2))
+            EXIT
+          ENDIF
+        ENDDO
+C        WRITE (JOSTND,295) INDXSPECIES(I),
+C     >  JSP(I)(1:2),TRIM(ATTR_LABELS(I1)(1:2))
+      ENDDO
+
+C     WRITE CLIMATE INFO TO MAIN OUTPUT FILE
+      IF(LKECHO) THEN
+        I2=1
+        DO I=1,NATTRS
+          CHTMP(I2:)=''
+          ! ALL ATTRIBUTES LABELED *USED* EXCEPT FOR MUKEY AND SISP
+          IF (I .NE. 16 .AND. I .NE. 28) CHTMP(I2:) = ' *USED*'
+C          IF (IXMTCM.EQ.I .OR. IXDD5.EQ.I   .OR. IXMAT  .EQ.I .OR.
+C     >       IXPSITE.EQ.I .OR. IXGSP.EQ.I   .OR. IXD100 .EQ.I .OR.
+C     >       IXGSDD5.EQ.I .OR. IXMMIN.EQ.I  .OR. IXDD0  .EQ.I .OR.
+C     >       IXMTWM .EQ.I .OR. IXMAP .EQ.I  .OR.
+C     >       IDEmtwm.EQ.I .OR. IDEmtcm.EQ.I .OR. IDEdd5.EQ.I  .OR.
+C     >       IDEdd0 .EQ.I .OR. IDEmapdd5.EQ.I.OR.IDEsdi.EQ.I )
+C     >        CHTMP(I2:) = ' *USED*'
+          DO I1=1,MAXSP
+            IF (TRIM(PLNJSP(I1)).EQ.TRIM(ATTR_LABELS(I))) THEN
+              WRITE (CHTMP(I2:),'(I3,"=",A)') I1,JSP(I1)
+              EXIT
+            ENDIF
+          ENDDO
+          I2=I2+8
+        ENDDO
+        I2=0
+        DO I=1,NATTRS,14  ! write them 14 at a time
+          I2=I2+14
+          IF (I2.GT.NATTRS) I2=NATTRS
+          WRITE (JOSTND,292) TRIM(CHTMP(((I-1)*8)+1:(I2*8)))
+  292     FORMAT (/T12,'CODES: ',A)
+          WRITE (JOSTND,293) ADJUSTR(ATTR_LABELS(I:I2))
+  293     FORMAT ( T12,'YEAR ',14A8)
+          FMT = ' T12,I4,1X'
+          DO I1=I,I2
+            FMT(1:1)=ATTR_LABELS(I1)(1:1)
+            CALL UPCASE(FMT(1:1))
+             IF (ATTR_LABELS(I1)(1:1).EQ.FMT(1:1)) THEN
+               IF (ATTR_LABELS(I1)(1:2).EQ.'DE') THEN
+                 FMT=TRIM(FMT)//',F8.2'
+               ELSE
+                 FMT=TRIM(FMT)//',F8.3'
+               ENDIF
+             ELSE
+               FMT=TRIM(FMT)//',F8.1'
+             ENDIF
+          ENDDO
+          FMT(1:1)='('
+          FMT = TRIM(FMT)//')'
+          DO I1=1,NYEARS
+            WRITE (JOSTND,FMT) YEARS(I1),ATTRS(I1,I:I2)
+          ENDDO
+        ENDDO
+        I2=0
+        DO I=1,MAXSP
+          IF (INDXSPECIES(I).EQ.0) I2=I2+1
+        ENDDO
+        IF (I2.GT.0) THEN
+          WRITE (JOSTND,'(/T12,''SPECIES WITHOUT ATTRIBUTES:'')')
+          DO I=1,MAXSP
+            IF (INDXSPECIES(I).EQ.0) WRITE (JOSTND,294)
+     >             I,JSP(I),PLNJSP(I)
+  294       FORMAT (T12,'FVS INDEX=',I3,', ALPHA CODE=',A3,
+     >              ', PLANT CODE=',A)
+          ENDDO
+        ENDIF
+      ENDIF
+
+  295 FORMAT ('IN CLIN, I1=',I2,' JSP=',A2,' ATTRIB=' A2)
+
+C     TURN OFF CLIMATE ESTAB FOR SOUTHERN VARIANT.      
+      LAESTB=.false.
+      CALL ESNOAU ('********',LKECHO)
+            
+      GOTO 10
+  296 CONTINUE
+      WRITE (JOSTND,297)
+  297 FORMAT (/,'********',T12,
+     >          'ERROR: FILE READ ERROR, DATA NOT STORED.')
+      NATTRS=0
+      NYEARS=0
+      INDXSPECIES=0
+      CLOSE (UNIT=IUTMP)
+      CALL RCDSET (2,.TRUE.)
+      GOTO 10
+  298 CONTINUE
+      WRITE (JOSTND,299)
+  299 FORMAT (T12,'FILE OPEN ERROR, FILE NOT READ.')
+      CALL RCDSET (2,.TRUE.)
+      GOTO 10
+  300 CONTINUE
+C                        OPTION NUMBER 3 -- MORTMULT
+      CALL SPDECD (1,I,NSP(1,1),JOSTND,IRECNT,KEYWRD,
+     >             ARRAY,KARD)
+      IF (I.GT.0 .AND. I.LE.MAXSP) THEN
+        IF (LNOTBK(2)) CLMRTMLT1(I)=ARRAY(2)
+        IF (LNOTBK(3)) CLMRTMLT2(I)=ARRAY(3)
+        IF(LKECHO)WRITE(JOSTND,310) KEYWRD,I,JSP(I),CLMRTMLT1(I),
+     >        CLMRTMLT2(I)
+  310   FORMAT (/A8,'   CLIMATE-CAUSED MORTALITY MULTIPLIERS',
+     >       ' FOR SPECIES ',I3,'=',A,' ARE ',2F12.4)
+      ELSE IF (I.EQ.0) THEN
+        IF (LNOTBK(2)) CLMRTMLT1 = ARRAY(2)
+        IF (LNOTBK(3)) CLMRTMLT2 = ARRAY(3)
+        IF(LKECHO)WRITE(JOSTND,315) KEYWRD,CLMRTMLT1(1),
+     >        CLMRTMLT2(1)
+  315   FORMAT (/A8,'   CLIMATE-CAUSED MORTALITY MULTIPLIERS',
+     >       ' FOR ALL SPECIES ARE',2F12.4)
+      ENDIF
+      GOTO 10
+  400 CONTINUE
+C                        OPTION NUMBER 4 -- AUTOESTB
+      IF (LNOTBK(1)) AESTOCK=ARRAY(1)
+      IF (LNOTBK(2)) AESNTREES=ARRAY(2)
+      IF (LNOTBK(3)) NESPECIES=IFIX(ARRAY(3))
+      IF (NESPECIES.GT.MAXSP) NESPECIES=MAXSP
+      LAESTB=.TRUE.
+      IF(LKECHO)WRITE(JOSTND,410) KEYWRD,AESTOCK,AESNTREES,NESPECIES
+  410 FORMAT (/A8,'   TURN ON AUTOMATIC',
+     >  ' ESTABLISHMENT IN THE CLIMATE MODEL. STOCKING THRESHOLD= ',
+     >  F6.2,' PERCENT; BASE NUMBER OF TREES/ACRE TO ADD ',F6.2/T12,
+     >  'MAXIMUM NUMBER OF SPECIES TO ADD =',I3)
+      CALL ESNOAU (KEYWRD,LKECHO)
+      GOTO 10
+  500 CONTINUE
+C                        OPTION NUMBER 5 -- GROWMULT
+      CALL SPDECD (1,I,NSP(1,1),JOSTND,IRECNT,KEYWRD,
+     >             ARRAY,KARD)
+C      WRITE (JOSTND,'("clin.f GROWMULT ARRAY= ",7F8.3)')ARRAY(1:7)
+      IF (I.GT.0 .AND. I.LE.MAXSP) THEN
+        IF (LNOTBK(2)) CLGROWMULT(I)=ARRAY(2)
+        IF(LKECHO)WRITE(JOSTND,510) KEYWRD,I,JSP(I),CLGROWMULT(I)
+  510   FORMAT (/A8,'   CLIMATE-CAUSED GROWTH MULTIPLIER',
+     >       ' FOR SPECIES ',I3,'=',A,' IS ',F12.4)
+      ELSE IF (I.EQ.0) THEN
+        IF (LNOTBK(2)) CLGROWMULT = ARRAY(2)
+        IF(LKECHO)WRITE(JOSTND,515) KEYWRD,CLGROWMULT(1)
+  515   FORMAT (/A8,'   CLIMATE-CAUSED GROWTH MULTIPLIER',
+     >       ' FOR ALL SPECIES IS',F12.4)
+      ENDIF
+      GOTO 10
+  600 CONTINUE
+C                        OPTION NUMBER 6 -- MXDENMLT
+      IF (LNOTBK(1)) CLMXDENMULT = ARRAY(1)
+      IF (LKECHO) WRITE(JOSTND,610) KEYWRD,CLMXDENMULT
+  610   FORMAT (/A8,'   CLIMATE-CAUSED MAXIMUM DENSITY ADJUSTMENT',
+     >          ' MULTIPLIER IS ',F10.4)
+      GOTO 10
+  700 CONTINUE
+C                        OPTION NUMBER 6 -- CLIMREPT
+      JCLREF = 0
+      IF (LKECHO) WRITE(JOSTND,710) KEYWRD
+  710   FORMAT (/A8,'   GENERATE FVS-CLIMATE REPORT.')
+      GOTO 10
+C                        OPTION NUMBER 7 -- SETATTR
+  800 CONTINUE
+      IF (NATTRS .LE. 0) THEN
+        CALL ERRGRO (.TRUE.,30)
+        WRITE (JOSTND,810) 
+  810   FORMAT (T12,'SETATTR KEYWORD MUST FOLLOW CLIMDATA KEYWORD.')
+        GOTO 10
+      ENDIF
+      KARD(1) = ADJUSTL(KARD(1))
+      IF (KARD(1) .EQ. " ") GOTO 825
+      DO I=1,NATTRS
+        IF (TRIM(KARD(1)).EQ.TRIM(ATTR_LABELS(I))) THEN
+          IF (LKECHO) WRITE(JOSTND,820) KEYWRD,TRIM(KARD(1)),
+     >       ATTRS(1:4,I),ARRAY(2:5)
+  820     FORMAT (/A8,'   ATTRIBUTE "',A,'" VALUES CHANGED FROM: ',
+     >            4F10.4,' TO: ',4F10.4)
+          ATTRS(1:4,I) = ARRAY(2:5)
+          GOTO 10
+        ENDIF
+      ENDDO  
+  825 CONTINUE
+      CALL ERRGRO (.TRUE.,4)
+      WRITE (JOSTND,830) 
+  830 FORMAT (T12,'SETATTR ATTRIBUTE STRING WAS NOT MATCHED.')
+      GOTO 10
+      RETURN
+      END
