@@ -201,9 +201,16 @@
 ../base/src/update.f
 ../base/src/upkey.f
 ../base/src/volkey.f
+../clim/east/clgmult.f
+../clim/east/clin.f
+../clim/east/clinit.f
+../clim/east/clmaxden.f
+../clim/east/clmorts.f
+../clim/east/clputget.f
 ../common/ARRAYS.F77
 ../common/CALCOM.F77
 ../common/CALDEN.F77
+../common/CLIMATE.F77
 ../common/COEFFS.F77
 ../common/CONTRL.F77
 ../common/CWDCOM.F77
