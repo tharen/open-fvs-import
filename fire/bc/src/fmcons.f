@@ -1,10 +1,7 @@
       SUBROUTINE FMCONS(FMOIS,BTYPE,PLAREA,IYR,ICALL,PSMOKE,PSBURN)
       IMPLICIT NONE
-C
-C  $Id$
-C
 C----------
-C  **FMCONS   FIRE-BC
+C  **FMCONS   FIRE--NI--DATE OF LAST REVISION:  12/09/10
 C----------
 *     CALLED FROM: FMBURN
 *                  FMPOFL
@@ -277,9 +274,9 @@ C       temporarily print intermediate output
             POTCONS(2,1) = PRBURN(1,1) * ACTWFC * 10
             POTCONS(2,2) = PLGBURN  * 10
             POTCONS(2,3) = PRBURN(1,11) * ACTFFC  * 10
-C            WRITE(JOSTND,333) IYR, POTCONS(2,1), PLGBURN, POTCONS(2,3)
-C  333       FORMAT(' YEAR POTCONS: SMALL, LARGE, DUFF+LITTER (T/HA)',
-C     >         I4,2X,3(F6.3,2X))
+            WRITE(JOSTND,333) IYR, POTCONS(2,1), PLGBURN, POTCONS(2,3)
+  333       FORMAT(' YEAR POTCONS: SMALL, LARGE, DUFF+LITTER (T/HA)',
+     >         I4,2X,3(F6.3,2X))
             POTCONS(2,1) = PRBURN(1,1)
             POTCONS(2,3) = PRBURN(1,11)
             POTCONS(2,2) = 0.0

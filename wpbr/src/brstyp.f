@@ -1,7 +1,6 @@
       SUBROUTINE BRSTYP
-      IMPLICIT NONE
 C**********************************************************************
-C  **BRSTYP       DATE OF LAST REVISION:  06/05/2014
+C  **BRSTYP       DATE OF LAST REVISION:  05/09/2001
 C----------------------------------------------------------------------
 C  Purpose:
 C  BRSTYP assigns stock types to individual tree records based on
@@ -55,15 +54,14 @@ C.... Common include files.
 C.... Local variable declarations.
 
       LOGICAL DEBUG
-      INTEGER STOCK, I1, I2, I3, I4, J, K, L, M
-      REAL SSUM, TXP, TXP1, TXP2, TXP3, TXP4, TXPS1, TXPS2, TXPS3,
-     &     TXPS4, X
+      INTEGER STOCK, I1, I2, I3, I4
+      REAL SSUM, TXP1, TXP2, TXP3, TXP4, TXPS1, TXPS2, TXPS3, TXPS4
 
 C.... Is debug requested?
 
       CALL DBCHK(DEBUG,'BRSTYP',6,ICYC)
       IF(DEBUG) WRITE(JOSTND,10) ICYC
-   10 FORMAT('Entering subroutine BRSTYP: cycle = ', I2)
+   10 FORMAT(' Entering subroutine BRSTYP: cycle = ', I2)
 
 C.... If no trees, then exit.
       IF (ITRN .EQ. 0) GO TO 120
@@ -257,6 +255,6 @@ C.... Common return.
 
   120 CONTINUE
       IF(DEBUG) WRITE (JOSTND, 300) ICYC
-  300 FORMAT('Leaving subroutine  BRSTYP: cycle = ', I2)
+  300 FORMAT(' Leaving subroutine  BRSTYP: cycle = ', I2)
       RETURN
       END

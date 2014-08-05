@@ -1,7 +1,6 @@
       SUBROUTINE BRCANK
-      IMPLICIT NONE
 C**********************************************************************
-C  **BRCANK       DATE OF LAST REVISION:  06/05/2014
+C  **BRCANK       DATE OF LAST REVISION:  04/03/2001
 C----------------------------------------------------------------------
 C  Purpose:
 C   BRCANK reads the canker data provided in the keyword list or
@@ -35,14 +34,14 @@ C.... Local variable declarations.
 
       CHARACTER*80 CREC
       LOGICAL DEBUG
-      INTEGER IBRID,ISTK,JJ,NN
+      INTEGER IBRID,ISTK,JJ
       REAL    CAGE,CNKCNT,COUT,CUP,GGIRD
 
 C.... See if we need to do some debug.
 
       CALL DBCHK(DEBUG,'BRCANK',6,ICYC)
       IF(DEBUG) WRITE(JOSTND,10) ICYC,ICIN,ICFMT
-  10  FORMAT('Entering subroutine BRCANK: cycle = ',I2,/,
+  10  FORMAT(' Entering subroutine BRCANK: cycle = ',I2,/,
      &       ' ICIN=',I3,' ICFMT=',A)
 
 C.... Read canker records. Note that all canker records will be read but
@@ -68,7 +67,7 @@ C.... standard output file. Records with "!" are not, just skipped.
    91 FORMAT (A)
       IF (CREC(1:1).EQ.'!') GOTO 90
       IF (CREC(1:1).EQ.'*') THEN
-         WRITE (JOSTND,'(/,T12,A)') CREC
+         WRITE (JOSTND,'(/,T13,A)') CREC
          GOTO 90
       ENDIF
 
@@ -136,7 +135,7 @@ C....    list.  This canker count record is required to be the last one
 C....    listed for the tree - that way we can make sure the count is
 C....    at least at large as the number of lethal cankers read in.
 
-         IF(CNKCNT.GT.0) ITCAN(JJ)=NINT(CNKCNT)
+         IF(CNKCNT.GT.0) ITCAN(JJ)=CNKCNT
          IF(ITCAN(JJ).LT.ILCAN(JJ)) ITCAN(JJ)=ILCAN(JJ)
          IF(DEBUG) WRITE(JOSTND,*) ' ID=',IBRTID(JJ),' AGE=',BRAGE(JJ),
      &     ' STOCK=',ISTOTY(JJ),' ITCAN=',ITCAN(JJ),' ILCAN=',ILCAN(JJ)
@@ -184,6 +183,6 @@ C.... Common return.
 
   400 CONTINUE
       IF(DEBUG) WRITE(JOSTND,300) ICYC
-  300 FORMAT('Leaving subroutine BRCANK: cycle = ',I2)
+  300 FORMAT(' Leaving subroutine BRCANK: cycle = ',I2)
       RETURN
       END

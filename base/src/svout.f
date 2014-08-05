@@ -1,7 +1,7 @@
       SUBROUTINE SVOUT(IYEAR,IFMCLFG,AMSG)
       IMPLICIT NONE
 C----------
-C  $Id$
+C  **SVOUT--BASE  DATE OF LAST REVISION: 08/10/10
 C----------
 C
 C     STAND VISUALIZATION GENERATION
@@ -69,9 +69,7 @@ COMMONS
 
 COMMONS
 
-      CHARACTER(*), PARAMETER :: SUFFIX = '_index.svs'
-      CHARACTER(*), PARAMETER :: STDTAG = '"Stand='
-      INTEGER IFMCLFG,IYEAR,KYLAST,ISTLNB,I,J,K,KYFRST,
+      INTEGER IFMCLFG,IYEAR,KYLAST,ISTLNB,I,J,K,KYFRST,ISLEN,KODE,
      >        NOUT,ISVOBJ,IPS,IDIR,ITC,IPUT,IX,ISNAG
       REAL    X,CW,CRAD,XICR,SNDI,SNHT,SNCRTO,SNCRDI,RAD,
      >        X1,Y1,X2,Y2,XM1,XM2,XM3
@@ -80,10 +78,11 @@ COMMONS
       CHARACTER*2 SPCD
       CHARACTER*4 SFILE
       CHARACTER*7 VVER
-      CHARACTER*100 CBUFF
+      CHARACTER*60 SUFFIX
       CHARACTER*23 PLTGEO
-      LOGICAL DEBUG,LOPEN
-      CALL DBCHK (DEBUG,'SVOUT',5,ICYC)     
+      LOGICAL DEBUG
+      CALL DBCHK (DEBUG,'SVOUT',5,ICYC)
+
       IF (DEBUG) WRITE (JOSTND,5) IYEAR, AMSG, JSVOUT, NSVOBJ,
      >  JSVPIC, NIMAGE, IFMCLFG
     5 FORMAT (/' IN SVOUT: IYEAR=',I5,' AMSG=',A,' JSVOUT=',I3,
@@ -121,38 +120,7 @@ C                       XXXXXX. XXXX. XXXX.
       ENDIF
 
       IF (JSVOUT.EQ.0) RETURN
-      IF (JSVOUT.LT.0) GOTO 26 ! PROCESSING IMAGE, BUT NOT OUTPUTING
-      
-C     Make sure that the index file is opened (could be closed if a 
-C     restart is being done.
 
-      inquire(unit=JSVOUT,opened=LOPEN)
-
-      if (.not.LOPEN) then
-        open(unit=JSVOUT,file=trim(KWDFIL)//SUFFIX,
-     >         status="old",err=7)
-
-c       find out the last used value of NIMAGE. 
-        
-        do 
-          read(jsvout,'(a)',end=2) CBUFF
-          if (CBUFF(:7).eq.STDTAG) NIMAGE=NIMAGE+1
-        enddo
-    2   continue
-        close(unit=JSVOUT)
-        
-        open(unit=JSVOUT,file=trim(KWDFIL)//SUFFIX,
-     >         position="append",err=7)
-        goto 9
-    7   continue
-        write (JOSTND,8) trim(KWDFIL)//SUFFIX
-    8   format (/'**** FILE OPEN ERROR FOR FILE: ',A)
-        CALL RCDSET (2,.TRUE.)
-        JSVOUT=0
-        RETURN
-    9   continue
-      endif
-      
       IF (IMETRIC.EQ.0) THEN
         IF (IPLGEM.LT.2) THEN
            PLTGEO='#PLOTSIZE 208.71 208.71'
@@ -175,62 +143,62 @@ C     THIS IS DONE TO INSURE THAT MULTIPLE RUNS ARE PROCESSED.
 
 C       FIND THE FIRST AND LAST CHAR OF THE KEYWORD NAME
 C       WATCH FOR DIRECTORY LEVELS...WE DON'T WANT THEM.
- 
-        KYLAST=len_trim(KWDFIL)
+
+        KYLAST=ISTLNB(KWDFIL)
         DO I=KYLAST,1,-1
-          IF (KWDFIL(I:I).EQ.'/' .OR. KWDFIL(I:I).EQ.'\') EXIT
+          IF (KWDFIL(I:I).EQ.'/' .OR. KWDFIL(I:I).EQ.'\') GOTO 6
           KYFRST=I
         ENDDO
+    6   CONTINUE
         IF (DEBUG) WRITE (JOSTND,*) 'KYFRST=',KYFRST,
      >    ' KYLAST=',KYLAST,' KWDFIL=',KWDFIL(KYFRST:KYLAST)
         IF (NIMAGE.LT.1000) THEN
-          WRITE (CBUFF,'(A,''_'',I3.3,''.svs'')')
+          WRITE (SUFFIX,'(A,''_'',I3.3,''.svs'')')
      >      KWDFIL(KYFRST:KYLAST),NIMAGE
         ELSE
-          WRITE (CBUFF,'(A,''_'',I6.6,''.svs'')')
+          WRITE (SUFFIX,'(A,''_'',I6.6,''.svs'')')
      >      KWDFIL(KYFRST:KYLAST),NIMAGE
         ENDIF
+        ISLEN=ISTLNB(SUFFIX)
         IF (DEBUG) WRITE (JOSTND,*) 'FILE OPEN=',
-     >    TRIM(KWDFIL(:KYLAST)//'/'//CBUFF)
+     >    TRIM(KWDFIL(:KYLAST)//'/'//SUFFIX)
 
-C       TRY TO OPEN A FILE WITH THE DIRECTORY NAME INCLUDED.
+C        TRY TO OPEN A FILE WITH THE DIRECTORY NAME INCLUDED.
 
-        OPEN (UNIT=JSVPIC,FILE=TRIM(KWDFIL(:KYLAST)//'/'//CBUFF),
-     >        STATUS="REPLACE",ERR=12)
+        CALL MYOPEN(JSVPIC,TRIM(KWDFIL(:KYLAST)//'/'//SUFFIX),
+     >    5,120,0,1,1,0,KODE)
+        IF (DEBUG) WRITE (JOSTND,*) 'KODE(FIRST)=',KODE
 
-        WRITE (JSVOUT,10) STDTAG,NPLT(1:MAX(1,ISTLNB(NPLT))),IYEAR,
-     >      AMSG,KWDFIL(:KYLAST)//'/'//TRIM(CBUFF)
-   10   FORMAT (A,A,' Year=',I4.4,' ',A,'" "',A,'"')
-        GOTO 20 
-  
 C       IF THE OPEN FAILS, THEN OPEN ONE WITHOUT THE DIR NAME INCLUDED.
 
-   12   CONTINUE
+        IF (KODE.GT.0) THEN
+          CALL MYOPEN(JSVPIC,SUFFIX(:ISLEN),5,120,0,1,1,0,KODE)
+          IF (KODE.GT.0) THEN
 
-        OPEN (UNIT=JSVPIC,FILE=TRIM(CBUFF),STATUS="REPLACE",ERR=14)
-        WRITE (JSVOUT,10) STDTAG,NPLT(1:MAX(1,ISTLNB(NPLT))),IYEAR,
-     >        AMSG,TRIM(CBUFF)
-        GOTO 20
-   14   CONTINUE
+C           IF THIS OPEN FAILS, THEN BAG SVS OUTPUT.
 
-C       IF THIS OPEN FAILS, THEN BAG SVS OUTPUT.
+            WRITE (JOSTND,8) SUFFIX
+    8       FORMAT (/T13,'**** FILE OPEN ERROR FOR FILE: ',A)
+            CALL RCDSET (2,.TRUE.)
 
-        WRITE (JOSTND,18) TRIM(CBUFF)
-   18   FORMAT (/T13,'**** FILE OPEN ERROR FOR FILE: ',A)
-        CALL RCDSET (2,.TRUE.)
+C           SETTING JSVOUT TO ZERO TURNS OFF SVS...WE'RE DONE.
 
-C       SETTING JSVOUT TO ZERO TURNS OFF SVS...WE'RE DONE.
-
-        JSVOUT=0
-        RETURN
-        
-   20   CONTINUE
+            JSVOUT=0
+            RETURN
+          ENDIF
+          CALL VARVER (VVER)
+          WRITE (JSVOUT,10) NPLT(1:MAX(1,ISTLNB(NPLT))),IYEAR,
+     >      AMSG,SUFFIX(:ISLEN)
+        ELSE
+          WRITE (JSVOUT,10) NPLT(1:MAX(1,ISTLNB(NPLT))),IYEAR,
+     >      AMSG,KWDFIL(:KYLAST)//'/'//SUFFIX(:ISLEN)
+   10     FORMAT ('"Stand=',A,' Year=',I4.4,' ',A,'" "',A,'"')
+        ENDIF
         NOUT=JSVPIC
       ELSE
         NOUT=JSVOUT
       ENDIF
-      
-  
+
       CALL VARVER (VVER)
       SELECT CASE (VVER(:2))
         CASE ('CS','LS','NE','SN')
@@ -381,8 +349,6 @@ C         ROUND PLOTS
         ENDIF
       ENDIF
 
-   26 CONTINUE ! BRANCH HERE WHEN SKIPPING OUTPUT.
-   
 C     IF THE FFE IS ACTIVE, CALL SVCWD TO GENERATE CWD OBJECTS
 
       IF ( LFMON ) CALL SVCWD(IYEAR)
@@ -426,7 +392,6 @@ C           FIRE OR BUG MODEL CALL.
 
             XICR = ABS(ICR(I))*.01
 
-            IF (JSVOUT.LT.0) GOTO 31 ! PROCESSING IMAGE, BUT NOT OUTPUTING
             IF (IMETRIC.EQ.0) THEN
               WRITE (NOUT,30) SPCD,I,ITC,0,IPS,DBH(I),HT(I),0,IDIR,
      >          0,CRAD,XICR,CRAD,XICR,CRAD,XICR,CRAD,XICR,
@@ -440,7 +405,6 @@ C           FIRE OR BUG MODEL CALL.
             ENDIF
    30       FORMAT (A,T16,I5,I3,2I2,F6.1,F6.0,I2,I4,I2,
      >        4(F6.1,1X,F4.2),2I2,2F8.2,I2)
-   31       CONTINUE
 C
           ELSEIF (IOBJTP(ISVOBJ).EQ.2 .OR. IOBJTP(ISVOBJ).EQ.5) THEN
 
@@ -482,10 +446,11 @@ C              3) Snag will be removed at the bottom of SVOUT.
 
             CALL SVSNAGE(IYEAR,IS2F(ISVOBJ),SNCRDI,SNCRTO,
      >        SNHT,SNDI)
-              
+
 C           Keep snags with diameter less than 1", for better
 C           agreement with FFE logic.
 
+C>>>        IF (SNDI .LT. 1 .OR. SNHT .LE. 0.) THEN
             IF ( SNHT .LE. 0.) THEN
               IF (ISTATUS(IS2F(ISVOBJ)).GT.0) NDEAD=NDEAD-1
               IF (DEBUG) THEN
@@ -554,43 +519,41 @@ C             have had their status code multiplied by -1.
               IF (ABS(ISTATUS(IS2F(ISVOBJ))) .EQ. 1) THEN
                 ITC = 0
                 IPS = 0
-                IDIR = IFIX(FALLDIR(IS2F(ISVOBJ)))
+                IDIR = FALLDIR(IS2F(ISVOBJ))
               ELSEIF (ABS(ISTATUS(IS2F(ISVOBJ))) .EQ. 2) THEN
                 ITC = 98
                 IPS = 0
-                IDIR = IFIX(FALLDIR(IS2F(ISVOBJ)))
+                IDIR = FALLDIR(IS2F(ISVOBJ))
               ELSEIF (ABS(ISTATUS(IS2F(ISVOBJ))) .EQ. 3) THEN
                 ITC = 94
                 IPS = 0
-                IDIR = IFIX(FALLDIR(IS2F(ISVOBJ)))
+                IDIR = FALLDIR(IS2F(ISVOBJ))
               ELSEIF (ABS(ISTATUS(IS2F(ISVOBJ))) .EQ. 4) THEN
                 ITC = 94
                 IPS = 3
-                IDIR = IFIX(FALLDIR(IS2F(ISVOBJ)))
+                IDIR = FALLDIR(IS2F(ISVOBJ))
               ELSEIF (ABS(ISTATUS(IS2F(ISVOBJ))) .EQ. 5) THEN
                 ITC = 97
                 IPS = 0
-                IDIR = IFIX(FALLDIR(IS2F(ISVOBJ)))
+                IDIR = FALLDIR(IS2F(ISVOBJ))
               ELSEIF (ABS(ISTATUS(IS2F(ISVOBJ))) .EQ. 6) THEN
                 ITC = 96
                 IPS = 0
-                IDIR = IFIX(FALLDIR(IS2F(ISVOBJ)))
+                IDIR = FALLDIR(IS2F(ISVOBJ))
               ELSEIF (ABS(ISTATUS(IS2F(ISVOBJ))) .EQ. 90) THEN
                 ITC = 90
                 IPS = 0
-                IDIR = IFIX(FALLDIR(IS2F(ISVOBJ)))
+                IDIR = FALLDIR(IS2F(ISVOBJ))
               ELSEIF (ABS(ISTATUS(IS2F(ISVOBJ))) .EQ. 91) THEN
                 ITC = 91
                 IPS = 0
-                IDIR = IFIX(FALLDIR(IS2F(ISVOBJ)))
+                IDIR = FALLDIR(IS2F(ISVOBJ))
               ELSEIF (ABS(ISTATUS(IS2F(ISVOBJ))) .EQ. 92) THEN
                 ITC = 92
                 IPS = 0
-                IDIR = IFIX(FALLDIR(IS2F(ISVOBJ)))
+                IDIR = FALLDIR(IS2F(ISVOBJ))
               ENDIF
             ENDIF
-            
-            IF( JSVOUT.LT.0) GOTO 32 ! PROCESSING IMAGE, BUT NOT OUTPUTING
 
             IF(IMETRIC.EQ.0) THEN
               WRITE (NOUT,30) SPCD,I,ITC,0,IPS,SNDI,SNHT,0,IDIR,
@@ -612,8 +575,6 @@ C              DRAW FLAME OBJECTS FOR THIS TREE
 C              TO HANDLE IOBJTP=3 OBJECTS, OR OBJECTS WHICH WILL B
 C              REMOVED AT THE END OF THIS CYCLE
 
-  32        CONTINUE ! BRANCH HERE IF NOT OUTPUTTING
-
 C
           ELSEIF (IOBJTP(ISVOBJ) .EQ. 4) THEN
 
@@ -633,7 +594,7 @@ C----------
             IPS = 3
             SNDI = CWDDIA(IS2F(ISVOBJ))
             SNHT = CWDLEN(IS2F(ISVOBJ))
-            IDIR = IFIX(CWDDIR(IS2F(ISVOBJ)))
+            IDIR = CWDDIR(IS2F(ISVOBJ))
             CRAD = 0
             XICR = 0
 
@@ -672,7 +633,6 @@ C     XSLOC(ISVOBJ): x location
 C     YSLOC(ISVOBJ): y location
 C     0: elevation
 C----------
-            IF( JSVOUT.LT.0) GOTO 33 ! PROCESSING IMAGE, BUT NOT OUTPUTING
 
             IF(IMETRIC.EQ.0) THEN
               WRITE (NOUT,1060) I, ITC, 0, IPS, SNDI, SNHT,
@@ -694,7 +654,6 @@ C----------
      &              4(F6.1,1X,F4.2),
      &              2I2,2F8.2,I2)
             ENDIF
-   33       CONTINUE
           ENDIF
         ENDIF
    40   CONTINUE
@@ -754,7 +713,6 @@ C----------
             SPROBS(IPUT,3) = SPROBS(ISNAG,3)
             SNGDIA(IPUT) = SNGDIA(ISNAG)
             SNGLEN(IPUT) = SNGLEN(ISNAG)
-            SNGCNWT(IPUT,0:3) = SNGCNWT(ISNAG,0:3)
             ISTATUS(ISNAG) = 0
             SPROBS(ISNAG,1) = 0
             SPROBS(ISNAG,2) = 0

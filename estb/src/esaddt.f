@@ -42,7 +42,7 @@ C     PROCESS ADDTREES KEYWORDS
 
       CALL OPFIND (1,MYACT,NTODO)
       IF (DEBUG) WRITE (JOSTND,5) NTODO
-    5 FORMAT ('IN ESADDT: OPTS NTODO=',I2)
+    5 FORMAT (' IN ESADDT: OPTS NTODO=',I2)
       IF (NTODO .GT. 0) THEN
         KDT = IY(ICYC+1)-1
         DO ITODO = 1,NTODO
@@ -56,7 +56,7 @@ C         GET THE METHOD SWITCH
             IMETH=INT(PRMS(2))
           ENDIF
           IF (DEBUG) WRITE (JOSTND,6) IMETH
-    6     FORMAT ('IN ESADDT, IMETH=',I2)
+    6     FORMAT (' IN ESADDT, IMETH=',I2)
 
           SELECT CASE (IMETH)
 
@@ -176,7 +176,7 @@ c             Data requirements for Blue Mountains estab model
               J = LEN_TRIM(FNAM)
               FNAM(J-3:J) = ".es2"
               CALL MYOPEN (FNO,FNAM(1:LEN_TRIM(FNAM)),
-     >          1,150,0,1,1,0,KODE)
+     >          5,150,0,1,1,0,KODE)
               IF (KODE .NE. 0) GOTO 101
               READ(FNO,'(I10)',END=101) IKEEP
               CALL OPRDAT(FNO,KODE)

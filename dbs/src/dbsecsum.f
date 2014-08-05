@@ -85,7 +85,7 @@ C $Id$
      &          // 'Mrch_Cubic_Volume int null, '
      &          // 'Mrch_BoardFoot_Volume int null, '
      &          // 'Discount_Rate double null, '
-     &          // 'Given_SEV double null, '
+     &          // 'Known_SEV double null, '
      &          // 'CONSTRAINT ' // tableName // '_PK '
      &          // 'PRIMARY KEY(CaseID, Year))'
         elseif(trim(DBMSOUT) .eq. 'EXCEL') then
@@ -108,7 +108,7 @@ C $Id$
      &          // 'Mrch_Cubic_Volume Int, '
      &          // 'Mrch_BoardFoot_Volume Int, '
      &          // 'Discount_Rate Number, '
-     &          // 'Given_SEV Number)'
+     &          // 'Known_SEV Number)'
         else
             SQLStmtStr = 'CREATE TABLE ' // tableName // ' ('
      &          // 'CaseID int, '
@@ -129,7 +129,7 @@ C $Id$
      &          // 'Mrch_Cubic_Volume int null, '
      &          // 'Mrch_BoardFoot_Volume int null, '
      &          // 'Discount_Rate real null, '
-     &          // 'Given_SEV real null, '
+     &          // 'Known_SEV real null, '
      &          // 'CONSTRAINT ' // tableName // '_PK '
      &          // 'PRIMARY KEY(CaseID, Year))'
         end if
@@ -157,7 +157,7 @@ C $Id$
      &   'Discounted_Cost, Discounted_Revenue, PNV, IRR, BC_Ratio,',
      &   'RRR, SEV, Value_of_Forest, Value_of_Trees,',
      &   'Mrch_Cubic_Volume, Mrch_BoardFoot_Volume, Discount_Rate,',
-     &   'Given_SEV)',
+     &   'Known_SEV)',
      &   'VALUES (',ICASE,',?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)'
       iRet = fvsSQLCloseCursor(StmtHndlOut)
       iRet = fvsSQLPrepare(StmtHndlOut, trim(SQLStmtStr),

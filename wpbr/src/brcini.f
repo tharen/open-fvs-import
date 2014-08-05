@@ -1,7 +1,6 @@
       SUBROUTINE BRCINI(IBRNO,HITE)
-      IMPLICIT NONE
 C**********************************************************************
-C  **BRCINI       DATE OF LAST REVISION:  06/05/2014
+C  **BRCINI       DATE OF LAST REVISION:  05/01/1994
 C----------------------------------------------------------------------
 C  Purpose:
 C  BRCINI uses the canker counts read from the canker data list
@@ -33,15 +32,14 @@ C.... Common include files.
       INCLUDE 'BRCOM.F77'
 
 C.... Local variable declarations.
-      INTEGER IBRNO, ITEMPC, J, NUMCNK
-      REAL    HITE, HITEBC, PBOLE, TOUT, TUP, XRAN, YRAN, ZRAN, CRLEN
+
       LOGICAL DEBUG
 
 C.... See if we need to do some debug.
 
       CALL DBCHK(DEBUG,'BRCINI',6,ICYC)
       IF(DEBUG) WRITE(JOSTND,23) ICYC
-  23  FORMAT('Entering subroutine BRCINI: cycle = ',I2)
+  23  FORMAT(' Entering subroutine BRCINI: cycle = ',I2)
 
 C.... Calculate crown length in centimeters.
 C.... Height to base of crown is already in centimeters but HITE
@@ -131,6 +129,6 @@ C....          be reset in routine BRCSTA.
 C.... Common return.
 
       IF(DEBUG) WRITE(JOSTND,330) ICYC
-  330 FORMAT('Leaving subroutine BRCINI: cycle = ',I2)
+  330 FORMAT(' Leaving subroutine BRCINI: cycle = ',I2)
       RETURN
       END

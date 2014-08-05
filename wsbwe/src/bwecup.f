@@ -1,7 +1,7 @@
       SUBROUTINE BWECUP
       IMPLICIT NONE
 C----------
-C  **BWECUP             DATE OF LAST REVISION:  08/28/13
+C  **BWECUP             DATE OF LAST REVISION:  02/28/12
 C----------
 C
 C     PROCESSES ALL OF THE STANDS IN A RUN FROM YEAR IBWYR1 TO IBWYR2.
@@ -48,8 +48,6 @@ C   14-JUL-2010 Lance R. David (FMSC)
 C      Added IMPLICIT NONE and declared variables as needed.
 C   28-FEB-2012 Lance R. David (FMSC)
 C      Added check for presence of host species and exit if none present.
-C   28-AUG-2013 Lance R. David (FMSC)
-C      Added loading of weather year into IEVENT array.
 C-----------------------------------------------------------------------------
 C
 COMMONS
@@ -128,20 +126,13 @@ C
            NEVENT=NEVENT+1
            IF (NEVENT.GT.250) THEN
              WRITE (JOBWP4,8250)
- 8250        FORMAT ('********   ERROR - WSBW: MORE THAN 250 ENTRIES!')
+ 8250        FORMAT ('   AAAIIEEEE!  MORE THAN 250 ENTRIES!  ')
              LP4 = .FALSE.
            ELSE
              IEVENT(NEVENT,1)=IYRCUR
              IEVENT(NEVENT,2)=7
              IEVENT(NEVENT,3)=0
              IEVENT(NEVENT,4)=11
-
-C            weather year is reported only if RAWS data is in use
-             IF (IWSRC .EQ. 3) THEN
-               IEVENT(NEVENT,5)=BWPRMS(11,IWYR)
-             ELSE
-               IEVENT(NEVENT,5)=0
-             ENDIF
            ENDIF
          ENDIF
       ENDIF

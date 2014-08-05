@@ -1,7 +1,6 @@
       SUBROUTINE BRCDEL(IVACT,INDXBR,J)
-      IMPLICIT NONE
 C**********************************************************************
-C  **BRCDEL       DATE OF LAST REVISION:  06/05/2014
+C  **BRCDEL       DATE OF LAST REVISION:  05/09/2006
 C----------------------------------------------------------------------
 C  Purpose:
 C  This routine deletes cankers by moving them from the bottom of the
@@ -34,13 +33,13 @@ C.... Common include files.
 C.... Local variable declarations.
 
       LOGICAL DEBUG
-      INTEGER INDXBR(*), J, IR, IREC, IV, IVAC, IVACT
+      INTEGER INDXBR(*)
 
 C.... See if we need to do some debug.
 
       CALL DBCHK(DEBUG,'BRCDEL',6,ICYC)
       IF(DEBUG) WRITE(JOSTND,9) ICYC
-   9  FORMAT('Entering subroutine BRCDEL: cycle = ',I2)
+   9  FORMAT(' Entering subroutine BRCDEL: cycle = ',I2)
 
 C.... Sort the index list such that vacancy pointers are at the top
 C.... of the list.  The absolute values of these pointers point to
@@ -101,6 +100,6 @@ C.... ITCAN(J)=ITCAN(J)-IVACT
 C.... Common return.
 
       IF(DEBUG) WRITE(JOSTND,22) ICYC
-   22 FORMAT('Leaving subroutine BRCDEL: cycle = ',I2)
+   22 FORMAT(' Leaving subroutine BRCDEL: cycle = ',I2)
       RETURN
       END

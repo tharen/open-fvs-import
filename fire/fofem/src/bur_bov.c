@@ -1,6 +1,4 @@
-//
-// $Id$
-//
+
 /*{*}{*}{*}{*}{*}{*}{*}{*}{*}{*}{*}{*}{*}{*}{*}{*}{*}{*}{*}{*}{*}{*}{*}{*}{*}
 * Name: bur_BOV.c     Burnups Output Values  Structure & Time Heat values
 * NOTE: I added to this module functions to save the time and heat values

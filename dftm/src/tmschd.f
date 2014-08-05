@@ -1,7 +1,7 @@
       SUBROUTINE TMSCHD 
       IMPLICIT NONE
 C---------- 
-C  **TMSCHD DATE OF LAST REVISION:  05/31/13
+C  **TMSCHD DATE OF LAST REVISION:  06/30/10 
 C---------- 
 C     
 C     THIS ROUTINE IS CALLED ONCE PER SIMULATION FROM DFTMIN AND  
@@ -13,14 +13,7 @@ C     N.L. CROOKSTON      MAY 1978 & JUNE 1981    INT -- MOSCOW
 C     
 C     THE CONCEPT FOR THE 'RANSCHED' OPTION IS FROM A. R.   
 C     STAGE. INT -- MOSCOW.   
-C
-C Revision History:
-C   01-APR-2013 Lance R. David (FMSC)
-C      A few variables defined locally were already defined
-C      in a common block. Local declaration removed.
-C
-C----------
-C
+C     
 COMMONS     
 C     
       INCLUDE 'PRGPRM.F77'
@@ -57,13 +50,15 @@ C     ITMYR = VECTOR OF MANUALLY SCHEDULED TM-YRS (VIA DATE). ITMYR IS
 C             EQUIVALENT TO TMYRS; HOWEVER IN THE IBM VERSION ITMYR     
 C             IS HALF-WORD.   
 C     
-      INTEGER I, I1, IBOUND, IDIFF, INVYR,
-     &        IPAST, ISPOT, 
-     &        ITMYR(41), IYI, IYLAST, KODE,
-     &        LAST, MOVE, MSCH, NEXT, NMSCH, NYR,
+      INTEGER I, I1, IBMTYP, IBOUND, IDFCOD, IDIFF, IGFCOD, INVYR,
+     &        IPAST, IPRBMT, ISPOT, ITMETH, ITMREP, ITMSCH, ITMSLV,
+     &        ITMYR(41), IYI, IYLAST, JODFEC, JODFTM, JOTMDK, KODE,
+     &        LAST, MOVE, MSCH, NACLAS, NCLAS, NEXT, NMSCH, NYR,
      &        TMBASE
 
-      REAL PRMS(1), SEL
+      REAL CNTDF, CNTGF, DFFBIO, DFPNEW, GFFBIO, GFPNEW, PRBSCL,
+     &     PRMS(1), SEL, TMASHD, TMDEFL, TMPN1, TMPRB,
+     &     TOPO, WEIGHT
 
       EQUIVALENCE (ITMYR(1), TMYRS(1))    
 
@@ -110,7 +105,7 @@ C     THE EVENT PROBABILITY (TMEVNT) MAY BE TOO DAMN SMALL OR
 C     EQUAL TO ZERO.    
 C     
       WRITE (JOSTND,50) TMEVNT
-   50 FORMAT (//,'***** WARNING:  TUSSOCK MOTH EVENT PROBABILITY',     
+   50 FORMAT (//,' ***** WARNING:  TUSSOCK MOTH EVENT PROBABILITY',     
      >        ' EQUALS:',E13.7,'.  NO OUTBREAKS SCHEDULED.')
       RETURN
 
@@ -137,7 +132,7 @@ C
 
       IF (IYI .GT. 0) GOTO 80 
       WRITE (JOSTND,75) 
-   75 FORMAT ( //,'***** ERROR IN SUBROUTINE TMSCHD.')     
+   75 FORMAT ( //,' ***** ERROR IN SUBROUTINE TMSCHD.')     
       STOP 200    
 
    80 CONTINUE    

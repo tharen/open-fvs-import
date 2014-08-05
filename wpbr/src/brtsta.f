@@ -1,7 +1,6 @@
       SUBROUTINE BRTSTA
-      IMPLICIT NONE
 C**********************************************************************
-C  **BRTSTA       DATE OF LAST REVISION:  06/05/2014
+C  **BRTSTA       DATE OF LAST REVISION:  05/09/2001
 C----------------------------------------------------------------------
 C  Purpose:
 C  BRTSTA determines the status of each tree based on the worst
@@ -42,14 +41,14 @@ C.... Common include files.
 
 C.... Local variable declarations.
 
-      INTEGER I1, I2, I3, I4, II, J, KT, MAXNO, NTIM
+      INTEGER I1, I2, I3, I4
       LOGICAL DEBUG
 
 C.... See if we need to do some debug.
 
       CALL DBCHK(DEBUG,'BRTSTA',6,ICYC)
       IF(DEBUG) WRITE(JOSTND,20) ICYC
-   20 FORMAT('Entering subroutine BRTSTA: cycle = ',I2)
+   20 FORMAT(' Entering subroutine BRTSTA: cycle = ',I2)
 
 C.... If no trees, return.
       IF (ITRN .EQ. 0) GO TO 55
@@ -247,6 +246,6 @@ C.... Common return.
 
    55 CONTINUE
       IF(DEBUG) WRITE(JOSTND,60) ICYC
-   60 FORMAT('Leaving subroutine BRTSTA: cycle = ',I2)
+   60 FORMAT(' Leaving subroutine BRTSTA: cycle = ',I2)
       RETURN
       END

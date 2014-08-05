@@ -1,7 +1,7 @@
       SUBROUTINE BWELIT
       IMPLICIT NONE
 C-----------
-C  **BWELIT                  DATE OF LAST REVISION:  08/28/13
+C  **BWELIT                  DATE OF LAST REVISION:  03/26/12
 C-----------
 C
 C THIS SUBROUTINE IS THE HEART OF THE BUDWORM DEFOLIATION
@@ -84,8 +84,8 @@ C   GMIN   - MIN. SHOOT LENGTH (FROM BECKWITH & KEMP 1984, SHEEHAN ET AL.1989)
 C   GODISP - TOTAL NUMBER OF BW LARVAE THAT DISPERSE
 C   GPERM2 - GRAMS OF FOLIAGE PER M2 (SET IN BLOCK DATA)
 C   IDONE  - TRACKS WHETHER FOLIAGE EXPANSION HAS BEEN CALC.FOR THIS HOST
-C   IEVENT - BW SPECIAL EVENT TABLE (X,1)=SIMULATION YEAR, (X,2)=HOST SPECIES,
-C            (X,3)=CROWN 3RD, (X,4)= EVENT CODE, (X,5)=YEAR OF RAWS WEATHER DATA.
+C   IEVENT - BW SPECIAL EVENT TABLE (X,1)=YEAR, (X,2)=HOST, (X,3)=CROWN,
+C            (X,4)= EVENT CODE FOR EVENT X
 C   INSTSP - PEAK INSTAR TARGETED BY SPRAYING(1=PEAK L4, 2=L5, 3=L6)
 C   ISTAGE - LIFE STAGE INDEX: 1=SMALL LARVAE, 2=LARGE LARVAE, 3=PUPAE
 C   IYRCUR - CURRENT YEAR (INTEGER)
@@ -149,8 +149,6 @@ C      Added test of host TPA (HOSTST) so that BWESLP is not used to
 C      determine dispersal mortality when no host trees are available.
 C   26-MAR-2012 Lance R. David (FMSC)
 C      Local variable IYRW changed to common variable IWYR
-C   28-AUG-2013 Lance R. David (FMSC)
-C      Added weather year (if using RAWS) to special events table.
 C----------------------------------------------------------------------
 C
 C     COMMONS
@@ -277,14 +275,13 @@ C
 
       IF (TOTALN.LT.1.0.AND.TOTALO.LT.1.0) THEN
          WRITE (JOWSBW,825) 
-  825    FORMAT ('********   ERROR BWElit 825: yikes! both TOTALN & ',
-     &           'TOTALO < 1!')
+  825    FORMAT (' BWElit 825: yikes! both TOTALN & TOTALO < 1!')
            GO TO 9000                                                  ! RETURN
       ENDIF
       IF (WTNFOL.LT.1.0) THEN
          WRITE (JOWSBW,830) IYRCUR,WTNFOL
-  830    FORMAT (/,'********   WARNING: WT.D NEW FOLIAGE IN YEAR ',
-     &       I4,' = ',F9.2)
+  830    FORMAT (/ ' WARNING: WT.D NEW FOLIAGE IN YEAR ',I4,' = ',
+     *       F9.2)
            GO TO 9000                                                  ! RETURN
       ENDIF
 C
@@ -426,12 +423,6 @@ C
                ICODE=9
                IF (SYNCH(IH).LE.0.40) ICODE=10
                IEVENT(NEVENT,4)=ICODE
-C              weather year is reported only if RAWS data is in use
-               IF (IWSRC .EQ. 3) THEN
-                 IEVENT(NEVENT,5)=BWPRMS(11,IWYR)
-               ELSE
-                 IEVENT(NEVENT,5)=0
-               ENDIF
              ENDIF
            ENDIF
            IF (SYNCH(IH).GE.0.90) IOUT6A(2)='100'
@@ -518,19 +509,13 @@ C
            NEVENT=NEVENT+1
            IF (NEVENT.GT.250) THEN
              WRITE (JOBWP4,8250)
- 8250        FORMAT ('********   ERROR - WSBW: MORE THAN 250 ENTRIES!')
+ 8250        FORMAT ('   AAAIIEEEE!  MORE THAN 250 ENTRIES!  ')
              LP4=.FALSE.
            ELSE
              IEVENT(NEVENT,1)=IYRCUR
              IEVENT(NEVENT,2)=IH
              IEVENT(NEVENT,3)=IC
              IEVENT(NEVENT,4)=3
-C            weather year is reported only if RAWS data is in use
-             IF (IWSRC .EQ. 3) THEN
-               IEVENT(NEVENT,5)=BWPRMS(11,IWYR)
-             ELSE
-               IEVENT(NEVENT,5)=0
-             ENDIF
            ENDIF
          ENDIF
          ACTNEW(IC,IH)=0.0
@@ -636,7 +621,7 @@ C
      *            DISPDR(IC)/TOTFOL
          ELSE
             WRITE (JOWSBW,125)
-  125       FORMAT ('YIKE! RAN OUT OF ALL FOLIAGE!!! DO SOMETHING!')
+  125       FORMAT (' YIKE! RAN OUT OF ALL FOLIAGE!!! DO SOMETHING!')
          ENDIF
          BW(IC,IH)=BW(IC,IH)+(DISPIN*(1.0-DISPMR))
          OUT1(IC,IH,2)=OUT1(IC,IH,2)+(DISPIN*(1.0-DISPMR))

@@ -634,13 +634,15 @@ C        implies there are less than 4 infected species in the stand)
      &                                       100.0
   270 CONTINUE
 
-C     TRANSLATE TOP 4 INFECTED SPECIES NUMBERS TO CHAR. STRINGS.
+C       TRANSLATE TOP 4 INFECTED SPECIES NUMBERS TO CHAR. STRINGS.
 
-      DO I = 1,4
-         INFNO = ISVSP4(I)
-         CSP(I) = '**'
-         IF(INFNO.NE.0) CSP(I) = CSPARR(INFNO)
-      ENDDO
+      IF (FSTMIS) THEN
+        DO I = 1,4
+          INFNO = ISVSP4(I)
+          CSP(I) = '**'
+          IF(INFNO.NE.0) CSP(I) = CSPARR(INFNO)
+        ENDDO
+      ENDIF
 
 C     CALL THE DBS MODULE TO OUTPUT DMDATA TO A DATABASE
 

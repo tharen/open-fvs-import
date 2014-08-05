@@ -2,7 +2,7 @@
      >                   ARRAY,KARD)
       IMPLICIT NONE
 C----------
-C  $Id$
+C  **KEYOPN--BASE   DATE OF LAST REVISION:  05/01/09
 C----------
 C
 C     PROCESSES THE OPEN KEYWORD.
@@ -76,11 +76,11 @@ C
 C
       WRITE (JOSTND,40) KEYWRD,IUNIT,CFOUR,CSTAT,IM,IFORM,
      >                  TRIM(RECORD(1:IRLEN))
-   40 FORMAT (/,A8,'   DATA SET REFERENCE NUMBER = ',I5,'; BLANK=',A4,
-     >       '; STATUS=',A7/T12,
+   40 FORMAT (/1X,A8,'   DATA SET REFERENCE NUMBER = ',I5,'; BLANK=',A4,
+     >       '; STATUS=',A7/T13,
      >       'MAXIMUM RECORD LENGTH (IGNORED ON SOME MACHINES) =',I4,
      >       '; FILE FORM=',I2,' (1=FORMATTED, 2=UNFORMATTED)',
-     >       /T12,'DATA SET NAME = ',A)
+     >       /T13,'DATA SET NAME = ',A)
 C
       IF(((KODE.EQ.1).AND.(EXTENSION.EQ.'KCP')).OR.
      &  ((KODE.EQ.1).AND.(EXTENSION.EQ.'ADD'))) THEN
@@ -88,7 +88,7 @@ C
       ELSE IF (KODE.EQ.1)THEN
         WRITE (JOSTND,50)
       ENDIF
-   50 FORMAT (/T12,'**********   OPEN FAILED   **********')
+   50 FORMAT (/T13,'**********   OPEN FAILED   **********')
       RETURN
    80 CONTINUE
       CALL ERRGRO(.FALSE.,2)

@@ -1,7 +1,7 @@
       SUBROUTINE GENRPT
       IMPLICIT NONE
 C----------
-C  $Id$
+C  **GENRPT--BASE   DATE OF LAST REVISION:   11/01/2011
 C----------
 C
 C     THIS ROUTINE HANDLES MULTIPLE PRINT REPORTS.  THAT IS
@@ -14,18 +14,18 @@ C
 C      
       COMMON /GENRCM/ JOSCRT,NRPTS,IFOPN
 
+#ifdef _WINDLL
 !DEC$ ATTRIBUTES DLLEXPORT,C,DECORATE,ALIAS:'GENRPT'::GENRPT
 !DEC$ ATTRIBUTES REFERENCE :: JROUT,IFID
+#endif
 
       INTEGER IFOPN,NRPTS,JOSCRT,IFID,KODE,JROUT,ID,IR
-      LOGICAL LOPEN
+      
       CHARACTER*140 RECORD
 
 C     INITIALIZE THIS ROUTINE.
 
       JOSCRT = 93
-      inquire(unit=JOSCRT,opened=LOPEN)
-      if (LOPEN) close(unit=JOSCRT)
       NRPTS  = 0
       IFOPN  = 0
       RETURN
@@ -36,32 +36,37 @@ C     RETURN A REPORT ID.  IF THE SCRATCH FILE IS NOT OPENED, IT
 C     OPENS IT.
 
       IF (IFOPN.EQ.0) THEN
-         open (unit=JOSCRT,file=TRIM(KWDFIL)//'_genrpt.txt',
-     -        position="append",err=1)
-         IFOPN = 1
+         RECORD=' '
+         CALL MYOPEN(JOSCRT,TRIM(KWDFIL)//'_genrpt.txt',5,
+     -        140,0,1,1,0,KODE)
+         IF (KODE.EQ.1) THEN
+            CALL ERRGRO (.TRUE.,26)
+            IFID=-1
+            RETURN
+         ELSE
+            IFOPN = 1
+         ENDIF
       ENDIF
+
       NRPTS=NRPTS+1
       IFID=NRPTS
-      RETURN
-
-    1 CONTINUE
-      CALL ERRGRO (.TRUE.,26)
-      IFID=-1
       RETURN
 
       ENTRY GETLUN (JROUT)
 
       IF (IFOPN.EQ.0) THEN
-         open (unit=JOSCRT,file=TRIM(KWDFIL)//'_genrpt.txt',
-     -        position="append",err=2)
-         IFOPN = 1
+         CALL MYOPEN(JOSCRT,TRIM(KWDFIL)//'_genrpt.txt',5,
+     -        140,0,1,1,0,KODE)
+         IF (KODE.EQ.1) THEN
+            CALL ERRGRO (.TRUE.,26)
+            JROUT=-1
+            RETURN
+         ELSE
+            IFOPN = 1
+         ENDIF
       ENDIF
-      JROUT=JOSCRT
-      RETURN
 
-    2 CONTINUE
-      CALL ERRGRO (.TRUE.,26)
-      JROUT=-1
+      JROUT=JOSCRT
       RETURN
 
       ENTRY GENPRT
@@ -80,12 +85,14 @@ C     USE ALTERNATIVE PROCESSING IF THERE ARE MANY REPORTS
 
          READ (JOSCRT,'(1X,I5,1X,A)',END=100) IR,RECORD
 
+   15    FORMAT(' GENPRT: IR ID RECORD:',2I5,A)
+C
          IF (RECORD(1:4).EQ.'$#*%' .AND. RECORD(5:).EQ.' ') THEN
    20       CONTINUE
                READ (JOSCRT,'(A)',END=100) RECORD
                IF (RECORD(1:4).EQ.'$#*%'.AND.RECORD(5:).EQ.' ')GOTO 10
                IF (IR.EQ.ID) WRITE (JOSTND,25) TRIM(RECORD)
-   25          FORMAT (A)
+   25          FORMAT (1X,A)
                GOTO 20
             ELSE
                IF (IR.EQ.ID) WRITE (JOSTND,25) TRIM(RECORD)

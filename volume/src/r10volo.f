@@ -1,5 +1,4 @@
-!== last modified  01-18-2013
-C 01/18/2013 Added stump and tip vol calculation
+!== last modified  10-31-2011
       SUBROUTINE R10VOLO(EQNUM,DBHOB,HTTOT,HT1PRD,HTYPE,MTOPP,TLOGS, 
      >       VOL,LOGSPAN,LOGDIA,logvol,BFPFLG,CUPFLG,ERRFLAG)
 
@@ -23,7 +22,7 @@ C 01/18/2013 Added stump and tip vol calculation
       REAL LOGDIA(21,3),CL,DI,W2,W1,BF11,BF12,LENGTH,LOGV
       REAL LOGSPAN(20),BF21,BF22,XINTT,SCFT,DIBL,DIBS
       REAL DBHOB,HTTOT,HT1PRD,THT,HMERCH,BFCHUG,BFTONG
-      REAL CUBMS,TLOGS,NLOG,STUMP
+      REAL CUBMS,TLOGS,NLOG
 
       LOGICAL CHECK
 
@@ -292,13 +291,7 @@ C--  CHECK FOR LOG DETAIL INFORMATION AND ASSIGN LOG GRADES,  *
 C--     LOG DEFECTS, AND NET VOLUMES FOR THE TREE             *
 C--        MOVED TO NETVOL.FOR
 C**************************************************************
-C     Calculate stump and tip volume
-      STUMP=1.0
-      IF(DBHOB.LT.36.0) STUMP=DBHOB/36.0
-      IF(LOGDIA(1,2).GT.0.0) VOL(14)=0.005454154*LOGDIA(1,2)**2*STUMP
-      IF(VOL(4).GT.0.0 .AND. VOL(1).GT.0.0)THEN
-        VOL(15)=VOL(1)-VOL(4)-VOL(14)
-      ENDIF
+
  1000 CONTINUE
 
       RETURN

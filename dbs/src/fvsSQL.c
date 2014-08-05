@@ -819,22 +819,14 @@ SQLRETURN SQLSetEnvAttr(
      SQLINTEGER   Attribute,
      SQLPOINTER   ValuePtr,
      SQLINTEGER   StringLength);
-
-Note that the specification listed above and found at 
-http://msdn.microsoft.com/en-us/library/ms709285%28v=vs.85%29.aspx
-is not consistent with the calling arguments we use below. In our
-implimentation, SQLSetEnvAttr is only called once to set the ODBC version
-and we have had problems getting all this to work in general. So, we 
-now use only 3 arguments and leave the 4th (*StringLength) as a zero. 
-
-DLRobinson and NLCrookston May 2014.
 */
 
 #ifdef _WINDLL
 extern __declspec(dllexport) int FVSSQLSETENVATTR(
      SQLHENV    *EnvironmentHandle,
      SQLINTEGER *Attribute,
-     SQLINTEGER *ValuePtr);
+     SQLPOINTER *ValuePtr,
+     SQLINTEGER *StringLength);
 #endif
 
 #ifdef CMPgcc
@@ -844,13 +836,15 @@ int FVSSQLSETENVATTR(
 #endif
      SQLHENV    *EnvironmentHandle,
      SQLINTEGER *Attribute,
-     SQLINTEGER *ValuePtr)
+     SQLPOINTER *ValuePtr,
+     SQLINTEGER *StringLength)
 {
-   int rtn = SQLSetEnvAttr(
+ int rtn = SQLSetEnvAttr(
    *EnvironmentHandle,
    *Attribute,
-   (SQLPOINTER) *ValuePtr,
-   (SQLINTEGER) 0);
+   *ValuePtr,
+   0);             // works when ValuePtr points to a number.
+//  *StringLength);   should work
  return rtn;
 }
 

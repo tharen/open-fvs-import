@@ -1,8 +1,7 @@
       SUBROUTINE MISPRT
-		  IMPLICIT NONE
-C----------
-C  $Id$
-C----------
+***********************************************************************
+*  **MISPRT--MS/M  Date of last revision:  04/21/09
+*----------------------------------------------------------------------
 *  Purpose:
 *     Produces dwarf mistletoe infection information and mortality
 *  summary output by cycle in table format to be appended to the
@@ -180,6 +179,7 @@ C----------
 *  21-APR-09; Lance R. David (FMSC)
 *        Variables IMOUT_ moved to MISCOM.(thanks to Don Robinson)
 ***********************************************************************
+      IMPLICIT NONE
       
 C     Parameter statements.
 

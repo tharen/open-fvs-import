@@ -1,7 +1,6 @@
       SUBROUTINE BRTARG
-      IMPLICIT NONE
 C**********************************************************************
-C  **BRTARG       DATE OF LAST REVISION:  06/05/2014
+C  **BRTARG       DATE OF LAST REVISION:  05/09/2001
 C----------------------------------------------------------------------
 C  Purpose:
 C  BRTARG calculates STAND TARGET, individual tree GROWTH INDEX,
@@ -62,16 +61,14 @@ C.... Common include files.
 
 C.... Local variable declarations.
 
-      INTEGER I1, I2, I3, I4, IIAG, ICLS, L, LL, M, MM
-      REAL    ACTRI, ARI, ARISUM, DFD, DFN, GIBR, GISUM,
-     &        HHT, RISUM, TBSUM
+      INTEGER I1, I2, I3
       LOGICAL DEBUG
 
 C.... See if we need to do some debug.
 
       CALL DBCHK(DEBUG,'BRTARG',6,ICYC)
       IF(DEBUG) WRITE(JOSTND,11) ICYC
-   11 FORMAT('Entering subroutine BRTARG: cycle = ',I2)
+   11 FORMAT(' Entering subroutine BRTARG: cycle = ',I2)
 
 C.... If no tree records, then return.
 
@@ -177,7 +174,7 @@ C....    The deviation factor was supplied by keyword. Use it.
 
          IF(DEBUG) THEN
             WRITE(JOSTND,40)
-   40       FORMAT('BRTARG: deviation factor supplied by keyword.')
+   40       FORMAT(' BRTARG: deviation factor supplied by keyword.')
          ENDIF
 
       ELSE IF(INCAN.GT.0.OR.IAGE.GE.10) THEN
@@ -197,7 +194,7 @@ C....    so this log function will not error.
 
          IF(DEBUG) THEN
             WRITE(JOSTND,50) DFN, DFD, DFACT(I4,1), I4
-   50       FORMAT('BRTARG: deviation factor calculated. DFN=',F12.6,
+   50       FORMAT(' BRTARG: deviation factor calculated. DFN=',F12.6,
      &             ' DFD=',F12.6,' DFACT=',F12.6,' SP=',I4)
          ENDIF
       ENDIF
@@ -217,6 +214,6 @@ C.... Common return.
 
   100 CONTINUE
       IF(DEBUG) WRITE(JOSTND,101) ICYC
-  101 FORMAT('Leaving subroutine BRTARG: cycle = ',I2)
+  101 FORMAT(' Leaving subroutine BRTARG: cycle = ',I2)
       RETURN
       END

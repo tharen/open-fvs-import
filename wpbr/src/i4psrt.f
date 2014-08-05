@@ -1,7 +1,6 @@
       SUBROUTINE I4PSRT(N,A,INDXBR,LSEQ)
-      IMPLICIT NONE
 C**********************************************************************
-C  **I4PSRT       DATE OF LAST REVISION:  06/05/2014
+C  **I4PSRT       DATE OF LAST REVISION:  05/10/1999
 C----------------------------------------------------------------------
 C  Purpose:
 C  I4PSRT is an INTEGER*4 ascending identification sort.
@@ -43,8 +42,6 @@ C.... Local variable declarations.
       INTEGER T,N
       INTEGER*4 A(*)
       INTEGER INDXBR(*),IPUSH(33)
-      INTEGER I, ICYC, IL, INDIL, INDIP, INDIU, INDKL, INDKU, IP,
-     &        ITOP, IU, JL, JU, KL, KU
 
 C.... See if we need to do some debug.
 

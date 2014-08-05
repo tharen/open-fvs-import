@@ -1,8 +1,6 @@
       SUBROUTINE DMNB (RQ, D, CNB)
-      IMPLICIT NONE
-C----------
-C  $Id$
-C----------
+
+C********************************************************************
 C **DMNB -- NISI  Date of last revision: 12/19/03
 C----------------------------------------------------------------------
 C Purpose:
@@ -90,7 +88,7 @@ C**********************************************************************
 C Subroutine argument list.
 
       INTEGER  RQ
-      REAL     D, x
+      REAL     D
       REAL     CNB
 
       DIMENSION CNB(0:DSTLEN)

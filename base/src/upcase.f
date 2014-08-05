@@ -1,7 +1,7 @@
       SUBROUTINE UPCASE (C)
       IMPLICIT NONE
 C----------
-C  $Id$
+C  **UPCASE DATE OF LAST REVISION:  07/23/08
 C----------
       INTEGER IP
       CHARACTER C

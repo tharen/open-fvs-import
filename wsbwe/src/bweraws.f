@@ -1,14 +1,12 @@
       SUBROUTINE BWERAWS
       IMPLICIT NONE
 C-----------
-C **BWERAWS                 DATE OF LAST REVISION:  09/05/13
+C **BWERAWS                  DATE OF LAST REVISION:  01/10/12
 C-----------
 C Part of the General Defoliator (GenDefol) model
 C
 C Processes RAWS daily climate data and loads the necessary
 C weather parameters for the General Defoliator model.
-C If a range of weather years has been specified, only those
-C years are processed.
 C
 C   PARAMETERS:
 C
@@ -114,10 +112,10 @@ C
 C  WEATH - Holds one year of weather data (3,365) (TMAX, TMIN, PRECIP)
 C          
 C  OBYRC - Outbreak year current, year of weather data to be processed.
+C   JDAY - Julian day used to cycle through 1 year of weather data.
 C DDAYSF - Degree days for foliage
 C DDAYSL - Degree days for larvae (budworm)
-C   JDAY - Julian day used to cycle through 1 year of weather data.
-C  LYRNG - Logical. True if range of RAWS weather years is to be processed.
+C
 C
 C Common files
       INCLUDE 'PRGPRM.F77'
@@ -137,22 +135,14 @@ C Define variables
      &     WLAT, WLONG, PRECIP, WEATH(3,365),
      &     PPTL2E, PRDL24, PPTL24, PRDL46, PPTL46, PRDL7, PPTL7,
      &     DDFALL, PRDE2B
-      LOGICAL LYRNG
      
 C Load static variables
+
+
 
 C initialize variables
       JDAY   = 0
       IYRCNT = 0
-      LYRNG  = .FALSE.
-C
-C Determine if range of weather years has been specified.
-C
-C FOR TESTING ONLY, LOAD STATIC YEAR RANGE. ******************
-C      IYRNG(1) = 1999
-C      IYRNG(2) = 2001
-C      WRITE(*,*) 'WEATHER YEAR RANGE: ',IYRNG(1),' TO ',IYRNG(2)
-      IF (IYRNG(1) .NE. 0 .AND. IYRNG(2) .NE. 0) LYRNG = .TRUE.
 C
 C Open weather file.  
 C
@@ -161,7 +151,7 @@ C
 C Check if Open was successful
 C
       IF (KODE.EQ.1) WRITE(JOSTND,11)
-   11 FORMAT (/T12,'**********   OPEN FAILED   **********')
+   11 FORMAT (/T13,'**********   OPEN FAILED   **********')
 
 C Read weather file
 C First read the header record and store info. Note that when FPA RAWS
@@ -202,33 +192,16 @@ C     Translate station name to upper case
 C       Header record WRCC ID does not match station ID for daily data.
 C       Write error message and exit
         WRITE (*,*)
-     &  'Weather data header record WRCC ID does not match data.'
+     &  "Weather data header record WRCC ID does not match data."
 C       Need to set error flag
         GOTO 450
       ENDIF
 
+C     IF (WYR .EQ. OBYRC .AND. WMON .EQ. 1 .AND. WDAY .EQ. 1) THEN
+C       at jan 1 of current outbreak year, start processing year
       IF (WMON .EQ. 1 .AND. WDAY .EQ. 1) THEN
 C
-C       At jan 1, start processing year.
-C       If a range of weather years is in play, check to see if this 
-C       year is in it. If not in range, move on to next Jan 1.
-C
-        IF (LYRNG) THEN
-C         Translate weather year from 2-digit to 4-digit.
-          IF (WYR .LE. 29) THEN
-            WYR = 2000 + WYR
-          ELSE
-            WYR = 1900 + WYR
-          ENDIF
-
-          IF (WYR .GE. IYRNG(1) .AND. WYR .LE. IYRNG(2)) THEN
-            CONTINUE
-          ELSE
-            GOTO 25
-          ENDIF
-        ENDIF
-C
-C       Process this year of data.
+C       At jan 1, start processing year
 C       Set record counter (JDAY) to 1 and initialize variables used
 C       in the annual weather processing.
 C
@@ -364,8 +337,8 @@ C
 
       WRITE (JOSTND, 310) WYR, DAYL2, DAYL4, DAYL7, DAYL8, 
      &       DAYF, DDAYSF, DDAYSL
-  310 FORMAT (/,6X,'WYR=',I4,' DAYL2=',I3,' DAYL4=',I3, ' DAYL7=',I3, 
-     &     ' DAYL8=',I3, ' DAYF=',I3,' DDAYSF=',F6.1,' DDAYSL=',F6.1)
+  310 FORMAT (/,6X,"WYR=",I4," DAYL2=",I3," DAYL4=",I3, " DAYL7=",I3, 
+     &     " DAYL8=",I3, " DAYF=",I3," DDAYSF=",F6.1," DDAYSL=",F6.1)
 
       BWPRMS(1,IYRCNT) = PRDL24
       BWPRMS(2,IYRCNT) = PRDL46
@@ -390,24 +363,23 @@ C     (Maybe add some corective measure, if possible, so that the
 C     run does not terminate. To be determined with Kathy Sheehan)
 C
   400 IF (IYRCNT .EQ. 0) THEN
-        Write (*,*) 'No complete years of weather data present.'
+        Write (*,*) "No complete years of weather data present."
       ELSE
         Write (*,410) IYRCNT, WFNAME
-  410   FORMAT (/,I2,' years of weather data processed from file: ',
+  410   FORMAT (/," ",I2," years of weather data processed from file: ",
      &          A)
 
-        WRITE (JOSTND,*) '       PRDL24  PRDL46   PRDL7  DDFALL  ',
-     &      'PRDE2B  TREEDD  PPTL24  PPTL46   PPTL7  PPTL2E     WYR'
+        WRITE (JOSTND,*) "       PRDL24  PRDL46   PRDL7  DDFALL  ",
+     &      "PRDE2B  TREEDD  PPTL24  PPTL46   PPTL7  PPTL2E     WYR"
         DO I2 = 1, IYRCNT
            WRITE (JOSTND,420) (BWPRMS(I,I2), I=1,11)
-  420      FORMAT (/,5X,11(2X,F6.1))
+  420      FORMAT (/,6X,11(2X,F6.1))
         END DO
       ENDIF
 
-C     Close weather data file and set final variables.
+C     Close weather data file and load final variables.
 C
   450 CLOSE (JOWE)
-      IWYR = 0
-      
+
       RETURN
       END

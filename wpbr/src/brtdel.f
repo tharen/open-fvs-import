@@ -1,7 +1,6 @@
       SUBROUTINE BRTDEL(IVAC,IREC)
-      IMPLICIT NONE
 C**********************************************************************
-C  **BRTDEL       DATE OF LAST REVISION:  06/05/2014
+C  **BRTDEL       DATE OF LAST REVISION:  05/01/1994
 C----------------------------------------------------------------------
 C  Purpose:
 C  This Blister Rust model subroutine is called from the FVS routine
@@ -23,14 +22,14 @@ C.... Common include files.
 
 C.... Local variable declarations.
 
-      INTEGER IVAC, IREC, J
-      LOGICAL LGO, DEBUG
+      INTEGER IVAC,IREC
+      LOGICAL LGO,DEBUG
 
 C.... See if we need to do some debug.
 
       CALL DBCHK(DEBUG,'BRTDEL',6,ICYC)
       IF(DEBUG) WRITE(JOSTND,15) ICYC
-   15 FORMAT('Entering subroutine BRTDEL: cycle = ',I2)
+   15 FORMAT(' Entering subroutine BRTDEL: cycle = ',I2)
 
 C.... Call BRATV to see if the Blister Rust Model is active for this
 C.... simulation.  If not, then return.
@@ -67,6 +66,6 @@ C.... Common return.
 
  1000 CONTINUE
       IF(DEBUG) WRITE(JOSTND,1010) ICYC
- 1010 FORMAT('Leaving subroutine BRTDEL: cycle = ',I2)
+ 1010 FORMAT(' Leaving subroutine BRTDEL: cycle = ',I2)
       RETURN
       END

@@ -1,6 +1,4 @@
-//
-// $Id$
-//
+
 /*{*}{*}{*}{*}{*}{*}{*}{*}{*}{*}{*}{*}{*}{*}{*}{*}{*}{*}{*}{*}{*}{*}{*}{*}{*}
 * Name: fof_sgv.c     Smoke Graphing values
 * Desc: Functions to deal with smoke graphing values

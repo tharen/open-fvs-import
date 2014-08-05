@@ -1,6 +1,6 @@
 Code segment FMCOM.
 C----------
-C  $Id$
+C  **FMCOM -- FIRE  DATE OF LAST REVISION: 06/29/10
 C----------
 *  PURPOSE:
 *     COMMON BLOCK VARIABLES RELATED TO THE FIRE MODEL ROUTINES.
@@ -41,7 +41,7 @@ C----------
 *                involve that variable should be re-examined (see FMSCRO)
 *     CWD2B2:    dimensioned like CWD2B, this is crown material from trees
 *                killed during the current FVS cycle.  It won't start falling
-*                until after it is added to CWD2B (at the end of the year).
+*                until after it is added to CWD2B at the start of the next cycle.
 *                **Indexed the same way as CWD2B**
 *     CWDVOL:    array for down woody debris, it holds down wood volume 
 *                in cuft/acre. Dimensioned like CWD, but without the litter and
@@ -152,7 +152,6 @@ C----------
 *                passed from FMSALV to FMEVMON for post-cut EM calculations
 *     MAXHT:     Maximum height of new snags in each species- and dbh-class
 *     MINHT:     minimum height of new snags in each species- and dbh-class
-*     NYRS:      number of years in a cycle. This is the same as IFINT in PLOT.F77
 *     NZERO:     Number of snags per stand that will be considered equal to 0.
 *     OLDCRL:    CRown Length of each tree record at end of the previous cycle
 *     OLDCOVTYP  :  OLD COVer TYPe - COVTYP in the previous cycle
@@ -189,10 +188,6 @@ C----------
 *                SALVSPA(I,2) = salvaged initially soft snags per acre in
 *                snag record i
 *     SCCF:      STAND-LEVEL CROWN COMPETITION FACTOR (PERCENTAGE)
-*     SETDECAY:  array (1:mxflcl, 1:4 for the decay rate class) that shows whether the 
-*                user had reset the surface fuel decay rate with the FuelDcay keyword.
-*                 -1 means the decay rate has not been set, a value greater than 0 is 
-*                the actual rate set for that class.
 *     SNGNEW:    New snags to add to list
 *     SNPRCL:    THE UPPER DBH FOR A GROUP OF SNAGS (FOR PRINTING ONLY)
 *                SNag PRint CLass
@@ -213,17 +208,8 @@ C----------
 *     TOTACR:    Total acrage in the landscape.
 *     V2T:       Volume (cuft) to (2) Tons conversion factor.
 *     YRDEAD:    YeaR of Death of the snags in each record.
-*     PREMST:    Live trees remomved set in FMTREM, used in FMEVTBM
-*     PREMCR:    Live crown removed set in FMTREM, used in FMEVTBM
-*     ISPCC:     Species removed set in FMTREM, used in FMEVTBM
-*     DBHC:      Tree DBH set in FMTREM, used in FMEVTBM
-*     HTC:       Tree height set in FMTREM, used in FMEVTBM
-*     CROWNWC:   Crown weight set in FMTREM, used in FMEVTBM
-*     ICYCRM:    Thinning cycle for TREEBIO function
-*     ITRNL:     Lenght of tree list at time of call to FMTREM from CUTS.
-*                Estab trees may enter simulation between the call
-*                to FMTREM and the call to FMEVTBM.
-*
+***********************************************************************
+
 C     VARIABLE DECLARATIONS: COMMON BLOCK FMCOM
 
       REAL     ALLDWN(MAXSP)
@@ -285,7 +271,6 @@ C     VARIABLE DECLARATIONS: COMMON BLOCK FMCOM
       REAL     MAXHT(MAXSP,19)
       REAL     MINHT(MAXSP,19)
       INTEGER  NSNAG
-      INTEGER  NYRS
       INTEGER  OLDCOVTYP, OLDICT, OLDICT2
       REAL     OLDICTWT(2)
       REAL     NZERO, OLDCRL(MAXTRE), OLDHT(MAXTRE), OLDCRW
@@ -294,13 +279,12 @@ C     VARIABLE DECLARATIONS: COMMON BLOCK FMCOM
       REAL     PBSOFT, PBSIZE, PBSMAL, PBTIME
       INTEGER  PBURNYR
       REAL     PERCOV
-      REAL     PRDUFF(MXFLCL,4)      
+      REAL     PRDUFF(MXFLCL)
       REAL     PRPILE(MXFLCL)
       REAL     PRSNAG
       REAL     PSOFT(MAXSP)
       REAL     SALVSPA(MXSNAG, 2)
       REAL     SCCF
-      REAL     SETDECAY(MXFLCL,4)      
       REAL     SNGNEW(MAXTRE)
       REAL     SNPRCL(6)
       INTEGER  SPS(MXSNAG)
@@ -316,10 +300,7 @@ C     VARIABLE DECLARATIONS: COMMON BLOCK FMCOM
       REAL     DBHSSALV(MXSNAG), HTIHSALV(MXSNAG)
       REAL     HTISSALV(MXSNAG), HTDEADSALV(MXSNAG)
       LOGICAL  HARDSALV(MXSNAG)
-      REAL     PREMST(MAXTRE),PREMCR(MAXTRE)
-      INTEGER  ISPCC(MAXTRE)
-      REAL     DBHC(MAXTRE),HTC(MAXTRE),CROWNWC(MAXTRE,0:5)
-      INTEGER  ICYCRM,ITRNL
+
 
       COMMON /FMCOM/
      &  ALLDWN, BURNYR, CANMHT, CBHCUT,
@@ -331,38 +312,19 @@ C     VARIABLE DECLARATIONS: COMMON BLOCK FMCOM
      &  FMICR, FMKOD, FMSLOP,FTREAT,
      &  FUAREA, GROW, HARD, HARTYP, HARVYR, HTDEAD, HTIH,
      &  HTIS, HTR1, HTR2, HTX, HTXSFT, ICANSP, ICBHMT,
-     &  ICYCRM, IFMYR1, IFMYR2, IFTYR, ISALVC, ISALVS, ISNGSM,
-     &  ITRNL, JCOUT, JFROUT,
+     &  IFMYR1, IFMYR2, IFTYR, ISALVC, ISALVS, ISNGSM,
+     &  JCOUT, JFROUT,
      &  JLOUT,  LANHED, LEAFLF,  LFMON, LFMON2, LFROUT,
      &  LDYNFM, LIMBRK, LDHEAD, LSHEAD, LVWEST, MAXHT, MINHT,
-     &  NSNAG, NYRS, NZERO, OLDCOVTYP, OLDCRL, OLDHT, OLDCRW,
+     &  NSNAG, NZERO, OLDCOVTYP, OLDCRL, OLDHT, OLDCRW,
      &  OLDICT,OLDICT2,OLDICTWT,
      &  PBFRIH, PBFRIS, PBSCOR, PBSOFT, PBSIZE,
      &  PBSMAL, PBTIME, PBURNYR, PERCOV,
      &  PRDUFF, PRSNAG, PSOFT, PRPILE, SALVSPA,
-     &  SCCF, SETDECAY, SNGNEW, SNPRCL, SPS, TCWD, TCWD2, TFALL,
+     &  SCCF, SNGNEW, SNPRCL, SPS, TCWD, TCWD2, TFALL,
      &  TODUFF, TONRMC, TONRMS, TONRMH,
      &  TOTACR, V2T, YRDEAD, LREMT, NSNAGSALV, HTDEADSALV,
-     &  SPSSALV, DBHSSALV, HTIHSALV, HTISSALV, HARDSALV,
-     &  PREMST,PREMCR,ISPCC,DBHC,HTC,CROWNWC
-
-***********************************************************************
-*     COMMON BLOCK **FMCLCOM**
-*     VARIABLES RELATED TO THE EFFECT OF CLIMATE ON FFE PARAMETERS
-*     THROUGH CWD DECAY RATE. IMPLEMENTED IN BC VARIANT (2013)
-*	   Dimensions of Q10CWD AND REFMATCWD arrays must equal
-*     to MXFLCL+1 from FMPARMS.F77
-*
-*     Q10CWD:      Q10 FOR THE MXFMCL+1 DECAY CLASSES; THE +1 IS FOR ROOT 
-*                  DECAY RATES, WHICH ARE NOT INCLUDED WITH CWD CATEGORIES
-*     REFMATCWD:   REFERENCE TEMPERATURE (CELSIUS) AT WHICH THE DECAY RATE
-*                  IS MEASURED. REFERENCE DECAY RATES SET IN FMVINIT
-***********************************************************************
-      
-C     VARIABLE DECLARATIONS: COMMON BLOCK FMCLCOM
-
-!      REAL     REFMATCWD(MXFLCL+1),Q10CWD(MXFLCL+1)
-!      COMMON /FMCLCOM/ REFMATCWD, Q10CWD
+     &  SPSSALV, DBHSSALV, HTIHSALV, HTISSALV, HARDSALV
 
 C.... End segment.
 

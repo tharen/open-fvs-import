@@ -1,8 +1,6 @@
 C.... Code segment FMFCOM.
 C----------
-C  $Id$
-C----------
-C  **FMFCOM  FIRE
+C  **FMFCOM  FIRE-BASE-DATE OF LAST REVISION:  08/22/11
 C----------
 *-----------------------------------------------------------------------
 *  PURPOSE:
@@ -18,7 +16,7 @@ C----------
 *     BURNCR: Burned amounts from the crown - only used for smoke production.
 *     BURNLV: Array holding the comsumed amounts of live fuels
 *              1=herbs, 2=shrubs
-*     BURNSEAS:Season assumed for simulated fire behavior and effects.
+*     BURNSEAS:Season assumed within the fuel model logic (used in LS-FFE only)
 *             1 = early spring (compact leaves), 2 = before greenup,
 *             3 = after greenup, 4 = fall
 *     CANCLS: CANOPY CLOSURE CLASS USED IN DETERMINING WIND SPEED CORRECTION
@@ -91,8 +89,8 @@ C----------
 *             potential flame lengths.
 *     POTPAB: The new percent area burned to use when calculating
 *             potential fire effects.  For 1 = severe, 2 = moderate.
-*     POTSEAS:The season to use when calculating potential fire
-*             behavior and effects.  For 1 = severe, 2 = moderate. 
+*     POTSEAS:The new season to use when calculating potential fire
+*             behavior.  For 1 = severe, 2 = moderate. (affects LS-FFE only)
 *             1 = early spring (compact leaves), 2 = before greenup,
 *             3 = after greenup, 4 = fall
 *     POTFSR: potential fire spread rate, in feet/min
@@ -365,13 +363,11 @@ C     CFIM_ON:  Logical: TRUE = YES, DEFAULT = FALSE (CFIM MODEL)
 C     CFIM_BD: Bulk Density (CFIM MODEL)
 C     CFIM_DC: Drought Condidtion Code (CFIM MODEL)
 C     CFIM_INPUT: INPUT INFORMATION FOR THE CFIM MODEL CALCULATIONS
-C	  POTCONS:	POTENTIAL FUEL CONSUMPTION
 
       LOGICAL CFIM_ON
       REAL    CFIM_BD, CFIM_DC, CFIM_INPUT(26)
-	  REAL	  POTCONS(3,3)
 	 
       COMMON /CFIMCOM/
-     &  CFIM_ON, CFIM_BD, CFIM_DC, CFIM_INPUT, POTCONS
+     &  CFIM_ON, CFIM_BD, CFIM_DC, CFIM_INPUT
 
 C.... End segment.

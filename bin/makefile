@@ -1,3 +1,4 @@
+
 #	$Id$	
 
 # Notes: If OS is defined, then then we are 32 bit windows, otherwise, we are Linix 
@@ -21,7 +22,6 @@ else
  WIN = 
  SLIBSUFX = .so
  PRGSUFX = 
- ODBC = odbc 
  ifdef OSTYPE
   ifeq ($(OSTYPE),linux)
     OSARCH = l64
@@ -31,28 +31,14 @@ else
     OSARCH = l64
     PIC = -fPIC  # always use PIC on this OSARCH type
   endif
- else
-  ifeq ($(shell uname),Linux)
-    OSARCH = l64
-    PIC = -fPIC
-  endif
  endif
  ifndef OSARCH
    OSARCH = osx
    PIC =      # never use PIC on this OSARCH type
-   ODBC = iodbc 
  endif
+ ODBC = odbc 
 endif
 
-#.PHONY: printvars
-#printvars: 
-#	@echo OS: $(OS)
-#	@echo OSTYPE: $(OSTYPE)
-#	@echo WIN: $(WIN)
-#	@echo ODBC: $(ODBC)
-#	@echo SLIBSUFX: $(SLIBSUFX)
-#	@echo OSARCH: $(OSARCH)
-#	@echo PIC: $(PIC)
 # FC is the fortran compiler
 # FFLAGS are pasted to fortran
 # CC is the c compiler
@@ -153,9 +139,6 @@ FVSwcc$(SLIBSUFX) FVSwcc$(PRGSUFX)  : $(addsuffix _sourceList.txt,FVSwcc) $(shel
 FVSwsc$(SLIBSUFX) FVSwsc$(PRGSUFX)  : $(addsuffix _sourceList.txt,FVSwsc) $(shell cat $(addsuffix _sourceList.txt,FVSwsc))
 	$(MAKE) --file=makefile FVSwsc.setup
 
-#FVSbcc$(SLIBSUFX) FVSbcc$(PRGSUFX)  : $(addsuffix _sourceList.txt,FVSbcc) $(shell cat $(addsuffix _sourceList.txt,FVSbcc))
-#	$(MAKE) --file=makefile FVSbcc.setup
-
 # TODO: These rules work in place of those listed above (they are generated), but only on Linux. 
 # when we adopt a newer make on windows builds
 #$(1)$(SLIBSUFX) $(1)$(PRGSUFX) : $$(addsuffix _sourceList.txt,$(1)) $$(shell cat $$(addsuffix _sourceList.txt,$(1)))
@@ -192,8 +175,8 @@ ifeq (${OSARCH},w32)
 	$(LD)         -o $(basename ../$@)$(PRGSUFX)  ../libfvsSQL.dll  $(filter-out fvsSQL.o       ,$(object))
 else
 %.prg : $(object) 
-	$(LD) -shared -o $(basename ../$@)$(SLIBSUFX) $(filter-out main.o,$(object)) -l$(ODBC) 
-	$(LD)         -o $(basename ../$@)$(PRGSUFX)  $(object) -l$(ODBC)    
+	$(LD) -shared -o $(basename ../$@)$(SLIBSUFX) -l $(ODBC) $(filter-out main.o,$(object))
+	$(LD)         -o $(basename ../$@)$(PRGSUFX)  -l $(ODBC) $(object)
 endif
 
 DBSTYPEDEFS.F77 : mkdbsTypeDefs.c

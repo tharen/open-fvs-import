@@ -1,8 +1,5 @@
       SUBROUTINE MISDAM(ITREE,ICODES)
-      IMPLICIT NONE
-C----------
-C  $Id$
-C----------
+***********************************************************************
 *  **MISDAM--MS  Date of last revision:  07/15/94
 *----------------------------------------------------------------------
 *  Purpose:
@@ -49,7 +46,6 @@ C.... Common include files.
 C.... Variable declarations.
 
       LOGICAL DEBUG
-      INTEGER ITREE, J
       INTEGER ICODES(6)
 
 C.... Data statements.

@@ -1,8 +1,6 @@
       SUBROUTINE DMCW(DMTRCW)
-      IMPLICIT NONE
-C----------
-C  $Id$
-C----------
+      
+C********************************************************************C
 C **DMCW --NISI Date of last revision: 05/19/94
 C This module has been made by modifing the COVER MODEL module CVCW
 C  Modified for Central Rockies.

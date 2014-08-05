@@ -1,8 +1,6 @@
       SUBROUTINE DMCW(DMTRCW)
-      IMPLICIT NONE
-C----------
-C  $Id$
-C----------
+      
+C********************************************************************C
 C **DMCW --NISI Date of last revision: 08/05/94
 C This module has been made by modifing the COVER MODEL module CVCW
 C  Modified for Western Sierra Nevada.

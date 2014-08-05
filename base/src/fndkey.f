@@ -2,7 +2,7 @@
      >                   ISIZE,KODE,DEBUG,IOUT)
       IMPLICIT NONE
 C----------
-C  $Id$
+C  **FNDKEY DATE OF LAST REVISION:  07/23/08
 C----------
 C    FUNCTION TO FIND A KEYWORD IN A TABLE.
 C

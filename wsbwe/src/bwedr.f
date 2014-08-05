@@ -1,7 +1,7 @@
       SUBROUTINE BWEDR
       IMPLICIT NONE
 C----------
-C  **BWEDR                  DATE OF LAST REVISION:  08/28/13
+C  **BWEDR                  DATE OF LAST REVISION:  07/14/10
 C----------
 C
 C     PROCESSES ONE STAND IN ONE YEAR OF A BUDWORM MODEL OUTBREAK.
@@ -55,8 +55,6 @@ C      Added Stand ID and comma delimiter to output tables, some header
 C      and column labels modified.
 C   14-JUL-2010 Lance R. David (FMSC)
 C      Added IMPLICIT NONE and declared variables as needed.
-C   28-AUG-2013 Lance R. David (FMSC)
-C      Added loading of weather year into IEVENT array.
 C
 C----------------------------------------------------------------------
 COMMONS
@@ -98,7 +96,7 @@ C     WRITE A MSG INDICATING WHICH STAND IS BEING PROCESSED.  DON'T
 C     COUNT LBWDAM (DAMAGE) AS NEEDING A HEADING.
 C
 c      WRITE (JOWSBW,117) IYRCUR,ISTAND,MGMID
-c  117 FORMAT (/,'PROCESSING:  YEAR=',I5,'; STAND NO=',I3,
+c  117 FORMAT (/' PROCESSING:  YEAR=',I5,'; STAND NO=',I3,
 c     >         '; MANAGEMENT ID= ',A4)
 C
 C     ZERO OUT THE TOTAL DEFOLIATION ARRAYS.
@@ -182,23 +180,17 @@ C        IF THE OUTBREAK HAS ENDED, SCHEDULE THE NEXT ONE
 C
          IF (KEND.EQ.1) THEN
             IF (LP5) WRITE (JOBWP5,180)
-  180       FORMAT (4X,6('----------'))
+  180       FORMAT (5X,6('----------'))
             NEVENT=NEVENT+1
             IF (NEVENT.GT.250) THEN
               WRITE (JOBWP5,8250)
- 8250         FORMAT ('********   ERROR - WSBW: MORE THAN 250 ENTRIES!')
+ 8250         FORMAT ('   AAAIIEEEE!  MORE THAN 250 ENTRIES!  ')
               LP5 = .FALSE.
             ELSE
                IEVENT(NEVENT,1)=IYREND
                IEVENT(NEVENT,2)=7
                IEVENT(NEVENT,3)=0
                IEVENT(NEVENT,4)=2
-C              weather year is reported only if RAWS data is in use
-               IF (IWSRC .EQ. 3) THEN
-                 IEVENT(NEVENT,5)=BWPRMS(11,IWYR)
-               ELSE
-                 IEVENT(NEVENT,5)=0
-               ENDIF
             ENDIF
             IF (LP6) WRITE (JOBWP6,8600) NPLT,IYRCUR,IYRCUR
  8600       FORMAT (A26,', ',I5,',',7X,'0,',7X,'0,',3(5X,'   ,'),

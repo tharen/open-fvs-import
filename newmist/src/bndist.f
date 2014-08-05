@@ -1,8 +1,6 @@
       SUBROUTINE BNDIST(M, V, err, UBound, PDF, End) 
-      IMPLICIT NONE
-C----------
-C  $Id$
-C----------
+      
+C********************************************************************
 C **BNDIST -- NISI  Date of last revision: April 15 1994 
 C--------------------------------------------------------------------
 C Purpose:
@@ -85,7 +83,7 @@ C Subroutine arguments.
 C Local variables.
       
       INTEGER method, jp, j
-      REAL    k, p, t1, t2, t3, sum, plast, pnow, z, GAMMLN, X
+      REAL    k, p, t1, t2, t3, sum, plast, pnow, z
       REAL    tol / 1.0e-6 /
 
 C >>>>>>>>>>>>>>>>>>>>>>>>>>>> READ THIS <<<<<<<<<<<<<<<<<<<<<<<<<<<<

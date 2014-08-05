@@ -1,8 +1,5 @@
       SUBROUTINE MISTOE
-      IMPLICIT NONE
-C----------
-C  $Id$
-C----------
+***********************************************************************
 *  **MISTOE--MS  Date of last revision:  03/10/05
 *----------------------------------------------------------------------
 *  Purpose:
@@ -140,6 +137,8 @@ C----------
 *        Removed local declaration of DMFLAG, variable is now in common.
 *        Also removed it as argument in call to MISINF.
 ***********************************************************************
+      IMPLICIT NONE
+
 C.... Parameter statements.
 
 C.... Parameter include files.

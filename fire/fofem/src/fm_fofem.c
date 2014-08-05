@@ -1,6 +1,3 @@
-//
-// $Id$
-//
 /*{*}{*}{*}{*}{*}{*}{*}{*}{*}{*}{*}{*}{*}{*}{*}{*}{*}{*}{*}{*}{*}{*}{*}{*}{*}{*}
 * Name: fm_fofem.c
 * Desc: Interface between the FFE-FVS and fofem for predicting Soil Heating.
@@ -53,35 +50,21 @@ void Test_In (float fr_In[]);
 *
 {*}{*}{*}{*}{*}{*}{*}{*}{*}{*}{*}{*}{*}{*}{*}{*}{*}{*}{*}{*}{*}{*}{*}{*}{*}*/
 
-
-#ifdef CMPgcc
-  #ifdef unix
-    extern int fm_fofem_ (                       // GCC compiler, Unix OS
-      float *fr_In,
-      float *fr_Out,
-      char  *cr_ErrMes);
-  #else
-    extern __declspec(dllexport) int fm_fofem_ ( // GCC compiler, Windows OS
-      float *fr_In,
-      float *fr_Out,
-      char  *cr_ErrMes);
-#endif
-#else
-  extern __declspec(dllexport) int FM_FOFEM (    // VS2010 compiler, Windows OS
-    float *fr_In,
-    float *fr_Out,
-    char  *cr_ErrMes);
+#ifdef _WINDLL
+extern __declspec(dllexport) int FM_FOFEM (
+  float *fr_In,
+  float *fr_Out,
+  char *cr_ErrMes);
 #endif
 
-
 #ifdef CMPgcc
-int fm_fofem_ (
+int fm_fofem_ (float fr_In[], float fr_Out[], char cr_ErrMes[])
 #else
 int FM_FOFEM (
-#endif
   float *fr_In,
   float *fr_Out,
   char *cr_ErrMes)
+#endif
 
 {
 int i;

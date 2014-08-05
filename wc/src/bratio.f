@@ -1,7 +1,7 @@
       FUNCTION BRATIO(IS,D,H)
       IMPLICIT NONE
 C----------
-C  **BRATIO--WC    DATE OF LAST REVISION:  09/09/13
+C  **BRATIO--WC    DATE OF LAST REVISION:  04/22/10
 C----------
 C
 C  FUNCTION TO COMPUTE BARK RATIOS.  THIS ROUTINE IS VARIANT SPECIFIC
@@ -52,18 +52,14 @@ C  2  DIB = a + bDOB
 C  3  DIB = a*DOB = a * DOB ** b, (eQ.1), WITH b= 1.0
 C  MODEL TYPE 1
 C----------
-      IF (D .GT. 0) THEN 
-        IF(BARKB(4,JBARK(IS)) .EQ. 1.)THEN
-          DIB=BARKB(2,JBARK(IS))*D**BARKB(3,JBARK(IS))
-          BRATIO=DIB/D
-        ELSEIF (BARKB(4,JBARK(IS)) .EQ. 2.)THEN
-          DIB=BARKB(2,JBARK(IS)) + BARKB(3,JBARK(IS))*D
-          BRATIO=DIB/D
-        ELSE
-          BRATIO= 0.9
-        ENDIF
+      IF(BARKB(4,JBARK(IS)) .EQ. 1.)THEN
+        DIB=BARKB(2,JBARK(IS))*D**BARKB(3,JBARK(IS))
+        BRATIO=DIB/D
+      ELSEIF (BARKB(4,JBARK(IS)) .EQ. 2.)THEN
+        DIB=BARKB(2,JBARK(IS)) + BARKB(3,JBARK(IS))*D
+        BRATIO=DIB/D
       ELSE
-        BRATIO = 0.99
+        BRATIO= 0.9
       ENDIF
 C
       IF(BRATIO .GT. 0.99) BRATIO= 0.99

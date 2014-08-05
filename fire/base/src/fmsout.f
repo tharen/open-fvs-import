@@ -1,8 +1,7 @@
       SUBROUTINE FMSOUT (IYR)
       IMPLICIT NONE
 C----------
-C  $Id$
-C  $Id$
+C  **FMSOUT--FIRE   DATE OF LAST REVISION:  12/17/04
 C----------
 *     SINGLE-STAND VERSION
 *     CALLED FROM: FMMAIN
@@ -35,6 +34,8 @@ C.... PARAMETER STATEMENTS.
 C.... PARAMETER INCLUDE FILES.
 
       INCLUDE 'PRGPRM.F77'
+Cppe      INCLUDE 'PPEPRM.F77'
+Cppe      INCLUDE 'PPCNTL.F77'
       INCLUDE 'FMPARM.F77'
 
 C.... COMMON INCLUDE FILES.
@@ -55,7 +56,7 @@ C.... VARIABLE DECLARATIONS.
       REAL     TOTDBH(MAXSP,100,6)
       REAL     TOTN
       REAL     PRMS(4)
-      LOGICAL  DEBUG, LOK
+      LOGICAL  DEBUG
       INTEGER MYACT(1)
       DATA MYACT/2512/
       INTEGER  IYR,NTODO,JDO,NPRM,IACTK,IDC,JCL,DBSKODE
@@ -73,14 +74,14 @@ C     FIRST CHECK TO SEE IF THE SNAG LIST IS TO BE PRINTED.
 
       DO 5 JDO = 1,NTODO
          CALL OPGET(JDO,4,JYR,IACTK,NPRM,PRMS)
-C         IF (JYR .NE. IYR) GOTO 5
-            ISNAGB = IYR
-            ISNAGE = IYR + PRMS(1)
+         IF (JYR .NE. IYR) GOTO 5
+            ISNAGB = JYR
+            ISNAGE = JYR + PRMS(1)
             ISNSTP = PRMS(2)
             IF (ISNSTP.EQ.0) ISNSTP=1
             JSNOUT = INT(PRMS(3))
             LSHEAD = PRMS(4).EQ.0
-            CALL OPDONE(JDO,IYR)
+            CALL OPDONE(JDO,JYR)
             GOTO 6
     5 CONTINUE
     6 CONTINUE
@@ -214,8 +215,7 @@ C
 
 C     Make sure JSNOUT is openned.
 
-      CALL openIfClosed (JSNOUT,"sng",LOK)
-      IF (.NOT.LOK) RETURN
+      CALL openIfClosed (JSNOUT,"sng")
 
 C     Print the snag output headings.
 
@@ -226,8 +226,7 @@ C     Print the snag output headings.
          WRITE(JSNOUT,211)
          WRITE(JSNOUT,220)
          WRITE(JSNOUT,222)
-  200    FORMAT(' ESTIMATED SNAG CHARACTERISTICS '
-     &          '(BASED ON STOCKABLE AREA), STAND ID=',A)
+  200    FORMAT(' ESTIMATED SNAG CHARACTERISTICS, STAND ID=',A)
   210    FORMAT(13X,'DEATH CURR',
      &         ' HEIGHT CURR VOLUME (FT3)      ',
      &         '   DENSITY (SNAGS/ACRE)  ')

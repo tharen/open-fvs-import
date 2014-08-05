@@ -1,7 +1,7 @@
       SUBROUTINE FMSVOL (II, XHT, VOL2HT, DEBUG, IOUT)
       IMPLICIT NONE
 C----------
-C  $Id$
+C  **FMSVOL FM--DATE OF LAST REVISION:  10/06/09
 C----------
 *     CALLED FROM: FMSOUT
 *                  FMDOUT
@@ -53,7 +53,7 @@ C.... VARIABLE DECLARATIONS.
       INTEGER  JS, ISPC, IT
       REAL     D, H, BARK, XHT, VOL2HT
       INTEGER  IOUT,II,JSP,IHT
-      REAL     XH,XD,BRATIO,D2H,BBFV,X
+      REAL     XH,XD,BRATIO,D2H,BBFV
 
 C     CALCULATE THE VOLUME
 
@@ -115,11 +115,7 @@ C     TKILL = LTKIL
       IF(CTKFLG .AND. LTKIL)
      1     CALL CFTOPK (ISPC,D,H,VN,VM,VMAX,LCONE,BARK,IHT)
 
-C     Give some small volume to very tiny trees.
-C     based on cone with D = 1"
-      X = 0.005454154 * H
-      VOL2HT = MAX(X,VN)
-      
+      VOL2HT = VN
       IF (LMERCH) VOL2HT = VM
 
       IF (DEBUG) WRITE(IOUT,40)ISPC,D,H,LCONE,VN

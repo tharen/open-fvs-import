@@ -1,7 +1,7 @@
-      SUBROUTINE FMIN (ICALL,NSP,LKECHO)  
+      SUBROUTINE FMIN (ICALL,NSP,LKECHO)
       IMPLICIT NONE
 C----------
-C  $Id:
+C  **FMIN  FIRE/M--DATE OF LAST REVISION:  01/11/11
 C----------
 C
 C     FIRE - FIRE & SNAG MODEL
@@ -27,7 +27,7 @@ C
 COMMONS
 C
       INTEGER    KWCNT
-      PARAMETER (KWCNT = 55)
+      PARAMETER (KWCNT = 53)
 
       CHARACTER*4  NSP(MAXSP,3)
       CHARACTER*8  TABLE(KWCNT), KEYWRD, PASKEY
@@ -52,7 +52,7 @@ C
      >     'POTFTEMP','SNAGPSFT','FUELMODL','DEFULMOD','CANCALC ',
      >     'POTFSEAS','POTFPAB ','SOILHEAT','CARBREPT','CARBCUT ',
      >     'CARBCALC','CANFPROF','FUELFOTO','FIRECALC','FMODLIST',
-     >     'DWDVLOUT','DWDCVOUT','FUELSOFT','USECFIM ','CFIMCALC'/
+     >     'DWDVLOUT','DWDCVOUT','FUELSOFT'/    
       DATA PHOTOREF / 'Fischer INT-96                      ',
      >                'Fischer INT-97                      ',
      >                'Fischer INT-98                      ',
@@ -143,7 +143,7 @@ C
      &      2100,2200,2300,2400,2500,2600,2700,2800,2900,3000,
      &      3100,3200,3300,3400,3500,3600,3700,3800,3900,4000,
      &      4100,4200,4300,4400,4500,4600,4700,4800,4900,5000,
-     &      5100,5200,5300,5400,5500), NUMBER
+     &      5100,5200,5300), NUMBER
 
   100 CONTINUE
 C                        OPTION NUMBER 1 -- SALVSP
@@ -849,27 +849,11 @@ C
             DKR(9,IDEC) = ARRAY(7)
          ENDIF
 
-C        set array SETDECAY so we know if the decay rates have been set by the user
-
-         IF (LNOTBK(2)) SETDECAY(10,IDEC) = ARRAY(2)
-         IF (LNOTBK(3)) SETDECAY(11,IDEC) = ARRAY(3)
-         IF (LNOTBK(4)) SETDECAY(1,IDEC) = ARRAY(4)
-         IF (LNOTBK(5)) SETDECAY(2,IDEC) = ARRAY(5)
-         IF (LNOTBK(6)) SETDECAY(3,IDEC) = ARRAY(6)
-         IF (LNOTBK(7)) THEN
-            SETDECAY(4,IDEC) = ARRAY(7)
-            SETDECAY(5,IDEC) = ARRAY(7)
-            SETDECAY(6,IDEC) = ARRAY(7)   
-            SETDECAY(7,IDEC) = ARRAY(7)
-            SETDECAY(8,IDEC) = ARRAY(7)
-            SETDECAY(9,IDEC) = ARRAY(7)            
-         ENDIF
-         
 C        NOW RE-DETERMINE THE DECAY RATE TO DUFF
          IF (ID .LT. 5) THEN
             DO 1620 I=1,10
                IF (DKR(I,IDEC) .GT. 1.0) DKR(I,IDEC) = 1.0
-               TODUFF(I,IDEC) = DKR(I,IDEC) * PRDUFF(I,IDEC)
+               TODUFF(I,IDEC) = DKR(I,IDEC) * PRDUFF(I)
  1620       CONTINUE
             IF(LKECHO)WRITE(JOSTND,1650) KEYWRD,IDEC,DKR(10,IDEC),
      &         DKR(11,IDEC),(DKR(I,IDEC),I=1,4)
@@ -877,11 +861,10 @@ C        NOW RE-DETERMINE THE DECAY RATE TO DUFF
             DO 1635 IDEC=1,4
               DO J=1,11
                 DKR(J,IDEC) = DKR(J,4)
-                SETDECAY(J,IDEC) = MIN(SETDECAY(J,4),1.0)
               ENDDO
               DO 1630 I=1,10
                 IF (DKR(I,IDEC) .GT. 1.0) DKR(I,IDEC) = 1.0
-                TODUFF(I,IDEC) = DKR(I,IDEC) * PRDUFF(I,IDEC)
+                TODUFF(I,IDEC) = DKR(I,IDEC) * PRDUFF(I)
  1630         CONTINUE
  1635       CONTINUE
 
@@ -913,57 +896,53 @@ C     CHANGE THE PROPORTION OF THE DECAY RATE THAT GOES TO DUFF (AS OPPOSED
 C     TO GOING TO THE AIR).  THIS CAN BE DONE FOR THE 3 SMALLEST FUEL
 C     CATEGORIES, EVERYTHING LARGER THAN 3" AND LITTER.
 C
-      IDEC = 0
       IF (LNOTBK(1)) THEN
-         ID = IFIX(ARRAY(1))
-         IDEC = ID
-         IF (ID .GT. 4) IDEC = 4
-         IF (ID .LE. 0) IDEC = 1
+         IDEC = IFIX(ARRAY(1))
+         IF (IDEC .LE. 0) IDEC = 1
 
          IF (LNOTBK(7)) THEN
             DO 1710 I=1,10
-               PRDUFF(I,IDEC) = ARRAY(7)
+               PRDUFF(I) = ARRAY(7)
  1710       CONTINUE
          ENDIF
-         IF (LNOTBK(2)) PRDUFF(10,IDEC) = ARRAY(2)
-         IF (LNOTBK(3)) PRDUFF(1,IDEC) = ARRAY(3)
-         IF (LNOTBK(4)) PRDUFF(2,IDEC) = ARRAY(4)
-         IF (LNOTBK(5)) PRDUFF(3,IDEC) = ARRAY(5)
+         IF (LNOTBK(2)) PRDUFF(10) = ARRAY(2)
+         IF (LNOTBK(3)) PRDUFF(1) = ARRAY(3)
+         IF (LNOTBK(4)) PRDUFF(2) = ARRAY(4)
+         IF (LNOTBK(5)) PRDUFF(3) = ARRAY(5)
          IF (LNOTBK(6)) THEN
-            PRDUFF(4,IDEC) = ARRAY(6)
-            PRDUFF(5,IDEC) = ARRAY(6)
-            PRDUFF(6,IDEC) = ARRAY(6)
-            PRDUFF(7,IDEC) = ARRAY(6)
-            PRDUFF(8,IDEC) = ARRAY(6)
-            PRDUFF(9,IDEC) = ARRAY(6)
+            PRDUFF(4) = ARRAY(6)
+            PRDUFF(5) = ARRAY(6)
+            PRDUFF(6) = ARRAY(6)
+            PRDUFF(7) = ARRAY(6)
+            PRDUFF(8) = ARRAY(6)
+            PRDUFF(9) = ARRAY(6)
          ENDIF
 
 C        NOW RE-DETERMINE THE DECAY RATES TO DUFF AND TO AIR
-         IF (ID .LE. 4) THEN
+         IF (IDEC .LE. 4) THEN
             DO 1720 I=1,10
-               IF (PRDUFF(I,IDEC) .GT. 1.0) PRDUFF(I,IDEC) = 1.0
-               IF (PRDUFF(I,IDEC) .LT. 0.0) PRDUFF(I,IDEC) = 0.0
-               TODUFF(I,IDEC) = PRDUFF(I,IDEC) * DKR(I,IDEC)
+               IF (PRDUFF(I) .GT. 1.0) PRDUFF(I) = 1.0
+               IF (PRDUFF(I) .LT. 0.0) PRDUFF(I) = 0.0
+               TODUFF(I,IDEC) = PRDUFF(I) * DKR(I,IDEC)
  1720       CONTINUE
 
             IF(LKECHO)WRITE(JOSTND,1750) KEYWRD,IDEC,
-     &         PRDUFF(10,IDEC), (PRDUFF(I,IDEC),I=1,4)
+     &         PRDUFF(10), (PRDUFF(I),I=1,4)
  1750       FORMAT (/1X,A8,'   THE PROPORTION OF THE DECOMPOSING ',
      &      ' MATERIAL WHICH GOES TO DUFF IN DECAY POOL ',I2,' IS:',
      &       /T13,'LITTER: ',F4.2,' 0-.64: ',F4.2,
      &      ' .64-2.5: ',F4.2,' 2.5-7.6: ',F4.2,' >7.6: ',F4.2)
          ELSE
             DO 1735 I=1,10
+               IF (PRDUFF(I) .GT. 1.0) PRDUFF(I) = 1.0
+               IF (PRDUFF(I) .LT. 0.0) PRDUFF(I) = 0.0
                DO 1730 IDEC=1,4
-                  PRDUFF(I,IDEC) = PRDUFF(I,4)
-                  IF (PRDUFF(I,IDEC) .GT. 1.0) PRDUFF(I,IDEC) = 1.0
-                  IF (PRDUFF(I,IDEC) .LT. 0.0) PRDUFF(I,IDEC) = 0.0
-                  TODUFF(I,IDEC) = PRDUFF(I,IDEC) * DKR(I,IDEC)
+                  TODUFF(I,IDEC) = PRDUFF(I) * DKR(I,IDEC)
  1730          CONTINUE
  1735       CONTINUE
 
-            IF(LKECHO)WRITE(JOSTND,1755) KEYWRD, PRDUFF(10,4),
-     &                                   (PRDUFF(I,4),I=1,4)
+            IF(LKECHO)WRITE(JOSTND,1755) KEYWRD, PRDUFF(10),
+     >        (PRDUFF(I),I=1,4)
  1755       FORMAT (/1X,A8,'   THE PROPORTION OF THE DECOMPOSING ',
      &      ' MATERIAL WHICH GOES TO DUFF IS',/T13,'LITTER: ',F4.2,
      &      ' 0-.64: ',F4.2,  
@@ -1395,8 +1374,7 @@ C
             DO 2920 I=1,11
                DKR(I,IDEC) = DKR(I,IDEC) * DKMULT
                IF (DKR(I,IDEC) .GT. 1.0) DKR(I,IDEC) = 1.0
-               IF (I .LE. 10) TODUFF(I,IDEC) = DKR(I,IDEC) 
-     !                         * PRDUFF(I,IDEC)
+               IF (I .LE. 10) TODUFF(I,IDEC) = DKR(I,IDEC) * PRDUFF(I)
  2920       CONTINUE
          ELSE
             ARRAY(IDEC) = 1.0
@@ -2155,7 +2133,7 @@ C
      >  CRDCAY,CDBRK(1)*INtoCM,CDBRK(2)*INtoCM
 
  4610 FORMAT(/1X,A8,T13,'CARBON REPORTS WILL BE BASED ON METHOD',
-     >      I2, ' (0=FFE, 1=JENKINS)',/T13, 'REPORT UNITS WILL BE',
+     >      I2, ' (0=JENKINS, 1=FFE)',/T13, 'REPORT UNITS WILL BE',
      >      I2, ' (0=IMPERIAL, 1=METRIC, 2 = METRIC TONS/ACRE)',/T13,
      >      'PROPORTION OF DEAD ROOTS DECAYING ANNUALLY WILL BE: ',
      >      F7.4,' (<0 = NO DEAD ROOTS)',/T13,
@@ -2579,126 +2557,6 @@ C
 
       MYACT = 2553
       CALL OPNEW(KODE,IDT,MYACT,NPARMS,PRMS)
-      GOTO 10
- 5400 CONTINUE
-C                        OPTION NUMBER 54 -- USECFIM
-C
-C     THIS KEYWORD TELLS THE MODEL TO USE THE CFIM FIRE CALCULATIONS INSTEAD
-C     OF THE DEFAULT FFE FIRE CALCULATIONS
-C
-      IF (ICALL .EQ. 2) THEN
-         WRITE(JOSTND,5404) KEYWRD
- 5404    FORMAT(/1X,A8,'   KEYWORD IS A STAND-LEVEL KEYWORD ONLY',
-     >      ' AND CANNOT BE INCLUDED WITH THE LANDSCAPE-LEVEL KEYWORDS')
-         GOTO 10
-      ENDIF
-
-      NPARMS= 7
-C     BULK DENSITY
-      PRMS(1) = 80.0
-C     DROUGHT CODE
-      PRMS(2) = 300
-C     fuel_density(kg/m^3)---rho_surf   				398.0
-      PRMS(3) = 398.0
-C     surface_area_to_volume_ratio(1/m)---sigma_surf			3092.0
-      PRMS(4) = 3092
-C     surface_area_to_volume_ratio(1/m)---sigma_can				5401.0
-      PRMS(5) = 5401.0
-C     canopy_fuel_particle_diameter(m)---diameter				0.00074
-      PRMS(6) = 0.00074
-C     canopy_fuel_particle_length(m)---length				0.10
-      PRMS(7) = 0.10
-
-      IDT = 1
-      IF (LNOTBK(1)) PRMS(1)= ARRAY(1)
-      IF (LNOTBK(2)) PRMS(2)= ARRAY(2)
-      IF (LNOTBK(3)) PRMS(3)= ARRAY(3)
-      IF (LNOTBK(4)) PRMS(4)= ARRAY(4)
-      IF (LNOTBK(5)) PRMS(5)= ARRAY(5)
-      IF (LNOTBK(6)) PRMS(6)= ARRAY(6)
-      IF (LNOTBK(7)) PRMS(7)= ARRAY(7)
-
-      DO 5409 I=1,NPARMS
-        IF (PRMS(I) .LT. 0) PRMS(I) = 0
-5409  CONTINUE
-
-      CFIM_ON = .TRUE.
-
-C           BULK DENSITY
-        CFIM_BD = PRMS(1)
-
-C           DROUGHT CODE
-        CFIM_DC = PRMS(2)
-
-C           fuel_density(kg/m^3)---rho_surf   				398.0
-        CFIM_INPUT(17) = PRMS(3)
-
-C           surface_area_to_volume_ratio(1/m)---sigma_surf			3092.0
-        CFIM_INPUT(16) = PRMS(4)
-
-C           surface_area_to_volume_ratio(1/m)---sigma_can				5401.0
-        CFIM_INPUT(19) = PRMS(5)
-
-C           canopy_fuel_particle_diameter(m)---diameter				0.00074
-        CFIM_INPUT(21) = PRMS(6)
-
-C           canopy_fuel_particle_length(m)---length				0.10
-        CFIM_INPUT(23) = PRMS(7)
-
-
-      IF(LKECHO)WRITE(JOSTND,5410) KEYWRD,(PRMS(I),I=1,7)
- 5410 FORMAT(/1X,A8,'   THE CFIM MODEL WILL BE USED FOR FIRE ',
-     >    'CALCULATIONS.', /T13, 
-     >    'BULK DENSITY=',F4.0, '; DROUGHT CODE=',I3/T13,
-     >    'FUEL DENS(KG/M3)=',F5.1,
-     >    '; SAV SURF=',F5.0,'; SAV CANOPY=',F5.0/T13,
-     >    'CAN. PARTICLE DIAM (M)=',F7.5,
-     >    '; CAN. PARTICLE LENGTH(M)=',F7.3)
-
-      GOTO 10
- 5500 CONTINUE
-C                        OPTION NUMBER 55 -- CFIMCALC
-C
-C     THIS KEYWORD SETS SOME PARAMETERS THAT CONTROL THE MINI-SIMULATION
-C     INSIDE THE CFIM MODEL. 
-C
-      IF (ICALL .EQ. 2) THEN
-         WRITE(JOSTND,5505) KEYWRD
- 5505    FORMAT(/1X,A8,'   KEYWORD IS A STAND-LEVEL KEYWORD ONLY',
-     >      ' AND CANNOT BE INCLUDED WITH THE LANDSCAPE-LEVEL KEYWORDS')
-         GOTO 10
-      ENDIF
-
-      NPARMS= 3
-C     time_step(s)---tstep						1
-      PRMS(1) = 1.0
-C     iterations---iters						150
-      PRMS(2) = 150.0
-C     x_starting_position(m)---xstart					8.0
-      PRMS(3) = 8.0
-
-      IDT = 1
-      IF (LNOTBK(1)) PRMS(1)= ARRAY(1)
-      IF (LNOTBK(2)) PRMS(2)= ARRAY(2)
-      IF (LNOTBK(3)) PRMS(3)= ARRAY(3)
-
-C           time_step(s)---tstep						1
-            IF (PRMS(1) .LT. 1) PRMS(1) = 1
-            CFIM_INPUT(7) = PRMS(1)
-
-C           iterations---iters						150
-            IF (PRMS(2) .LT. 1) PRMS(2) = 1            
-            CFIM_INPUT(8) = PRMS(2)
-
-C           x_starting_position(m)---xstart					8.0
-            IF (PRMS(3) .LT. 1) PRMS(3) = 1
-            CFIM_INPUT(9) = PRMS(3)
-
-      IF(LKECHO)WRITE(JOSTND,5510) KEYWRD,(PRMS(I),I=1,3)
- 5510 FORMAT(/1X,A8,'   THE INTERNAL CFIM FIRE CALCULATION WILL USE THE'
-     >    ' FOLLOWING PARAMETERS:', /T13,
-     >    'TIME STEP=',F3.0,' ITERATIONS=',F5.0,' START POS=',F5.0)
-
       GOTO 10
 C
 C.... Special entry to retrieve keywords.

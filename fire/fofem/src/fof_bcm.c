@@ -1,6 +1,5 @@
-//
-// $Id$
-//
+
+
 /*{*}{*}{*}{*}{*}{*}{*}{*}{*}{*}{*}{*}{*}{*}{*}{*}{*}{*}{*}{*}{*}{*}{*}{*}{*}
 * Name: fof_bcm.c    Burnup Consumed Manager
 * Desc: Functions to do run Burnup

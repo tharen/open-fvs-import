@@ -1,7 +1,6 @@
       SUBROUTINE BRICAL
-      IMPLICIT NONE
 C**********************************************************************
-C  **BRICAL       DATE OF LAST REVISION:  06/05/2014
+C  **BRICAL       DATE OF LAST REVISION:  11/06/2002
 C----------------------------------------------------------------------
 C  Purpose:
 C  BRIBA calculates the Rust Index based on exposure time.
@@ -47,7 +46,7 @@ C.... See if we need to do some debug.
 
       CALL DBCHK(DEBUG,'BRICAL',6,ICYC)
       IF(DEBUG) WRITE(JOSTND,10) ICYC
-   10 FORMAT('Entering subroutine BRICAL: cycle = ',I2)
+   10 FORMAT(' Entering subroutine BRICAL: cycle = ',I2)
 
 C.... Get current year and age.
 

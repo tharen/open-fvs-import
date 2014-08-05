@@ -7,20 +7,15 @@ C     PURPOSE: TO LIST THE ODBC DRIVERS ON THE MACHINE
 C     INPUT: JOSTND  - OUTPUT FILE REFERENCE NUMBER
 C
       INCLUDE 'DBSCOM.F77'
-
-#if _WIN64
-      !DEC$ ATTRIBUTES DLLIMPORT :: FVSSQLSETENVATTR
-      !DEC$ ATTRIBUTES DLLIMPORT :: FVSSQLALLOCHANDLE
-      !DEC$ ATTRIBUTES DLLIMPORT :: FVSSQLFREEHANDLE
-#else
+      
+#ifdef _WINDLL
       !DEC$ ATTRIBUTES DLLIMPORT :: _FVSSQLSETENVATTR
       !DEC$ ATTRIBUTES DLLIMPORT :: _FVSSQLALLOCHANDLE
-      !DEC$ ATTRIBUTES DLLIMPORT :: _FVSSQLFREEHANDLE
-
+      !DEC$ ATTRIBUTES DLLIMPORT :: _FVSSQLFREEHANDLE      
+#endif
       !DEC$ ATTRIBUTES ALIAS:'_FVSSQLSETENVATTR' :: FVSSQLSETENVATTR
       !DEC$ ATTRIBUTES ALIAS:'_FVSSQLALLOCHANDLE' :: FVSSQLALLOCHANDLE
       !DEC$ ATTRIBUTES ALIAS:'_FVSSQLFREEHANDLE' :: FVSSQLFREEHANDLE
-#endif
 C
       INTEGER(SQLHENV_KIND):: EnvHndl
       INTEGER(SQLSMALLINT_KIND)::DriverComplete
@@ -52,14 +47,14 @@ C
        print *
        print *, "name:",driver(:driverStrLen)
        WRITE (JOSTND,20) driverCount,driver(:driverStrLen)
-   20  FORMAT(/T12,'DRIVER ',I2,'; NAME: ',A,'; ATTRIBUTES:')
+   20  FORMAT(/T13,'DRIVER ',I2,'; NAME: ',A,'; ATTRIBUTES:')
        IF (attrStrLen.GT.0) THEN
          i1=1
          do i=1,attrStrLen
            IF (iachar(attr(i:i)).EQ.0) then
              print *, "attr:",attr(i1:(i-1))
              WRITE (JOSTND,30) attr(i1:(i-1))
-   30        FORMAT (T12,A)
+   30        FORMAT (T13,A)
              i1=i+1
            endif
          enddo
@@ -73,7 +68,7 @@ C
       iRet = fvsSQLFreeHandle(SQL_HANDLE_ENV, EnvHndl)
   100 CONTINUE
       IF (driverCount.EQ.0) WRITE (JOSTND,110) 
-  110 FORMAT (/T12,I3,'NO DRIVERS FOUND')
+  110 FORMAT (/T13,I3,'NO DRIVERS FOUND')
       RETURN
       END
      

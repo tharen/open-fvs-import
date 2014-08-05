@@ -1,8 +1,6 @@
       SUBROUTINE DMNTRD
-      IMPLICIT NONE
-C----------
-C  $Id$
-C----------
+
+C********************************************************************
 C **DMNTRD -- NISI  Date of last revision: April 10 1994 
 C----------------------------------------------------------------------
 C Purpose:
@@ -67,7 +65,7 @@ C**********************************************************************
       INCLUDE 'ARRAYS.F77'
       INCLUDE 'DMCOM.F77'
 
-      INTEGER   i, j, k, L,u, v
+      INTEGER   i, j, k, u, v
       REAL      x, Wt, Mult
       REAL      OldVal(CRTHRD,DEAD_BC)
       REAL      NewVal(CRTHRD,DEAD_BC)

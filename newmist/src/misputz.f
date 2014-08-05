@@ -1,8 +1,5 @@
       SUBROUTINE MISPUTZ(ITREE,IDMR)
-      IMPLICIT NONE
-C----------
-C  $Id$
-C----------
+***********************************************************************
 *  **MISPUTZ--MS  Date of last revision:  03/06/01
 *----------------------------------------------------------------------
 *  Purpose:
@@ -49,7 +46,7 @@ C.... Common include files.
 C.... Variable declarations.
 
       LOGICAL DEBUG
-      INTEGER I, J, K, KCOUNT, ITREE, IDMR
+      INTEGER I, J, KCOUNT
 
 C.... Data statements.
 

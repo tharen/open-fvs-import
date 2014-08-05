@@ -1,7 +1,7 @@
       SUBROUTINE LNKINT
       IMPLICIT NONE
 C----------
-C  $Id$
+C  **LNKINT DATE OF LAST REVISION:  07/23/08
 C----------
 C
 C

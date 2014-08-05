@@ -1,7 +1,7 @@
       SUBROUTINE FMPPGET (WK3, IPNT, ILIMIT)
       IMPLICIT NONE
 C----------
-C  $Id$
+C  **FMPPGET      DATE OF LAST REVISION: 06/29/10
 C----------
 C  Purpose:
 C     Get (read) the Fire Model data for a given stand from DA file.
@@ -23,7 +23,7 @@ C
 C.... Parameter statements.
 
       INTEGER MXL,MXR,MXI
-      PARAMETER (MXL=15,MXR=56,MXI=94)
+      PARAMETER (MXL=14,MXR=54,MXI=91)
 
 C.... Parameter include files.
 
@@ -107,37 +107,35 @@ C.... Parameter include files.
       ICFPE    = INTS( 64) 
       ICFPST   = INTS( 65)
       NSNAGSALV= INTS( 66)
-      NYRS     = INTS( 67)
+
 C------- Carbon reporting INTEGER variables --------
-      ICHABT   = INTS( 68)
-      ICHPAS   = INTS( 69)
-      ICHRVB   = INTS( 70)
-      ICHRVE   = INTS( 71)
-      ICHRVI   = INTS( 72)
-      ICMETRC  = INTS( 73)
-      ICMETH   = INTS( 74)
-      ICRPAS   = INTS( 75)
-      ICRPTB   = INTS( 76)
-      ICRPTE   = INTS( 77)
-      ICRPTI   = INTS( 78)
-      IDCHRV   = INTS( 79)
-      IDCRPT   = INTS( 80)
+      ICHABT   = INTS( 67)
+      ICHPAS   = INTS( 68)
+      ICHRVB   = INTS( 69)
+      ICHRVE   = INTS( 70)
+      ICHRVI   = INTS( 71)
+      ICMETRC  = INTS( 72)
+      ICMETH   = INTS( 73)
+      ICRPAS   = INTS( 74)
+      ICRPTB   = INTS( 75)
+      ICRPTE   = INTS( 76)
+      ICRPTI   = INTS( 77)
+      IDCHRV   = INTS( 78)
+      IDCRPT   = INTS( 79)
 C------- new FFE INTEGER variables --------    
-      IFLOGIC  = INTS( 81)
-      IFMSET   = INTS( 82)     
-      ICYCRM   = INTS( 83)
-      ITRNL    = INTS( 84)       
+      IFLOGIC  = INTS( 80)
+      IFMSET   = INTS( 81)      
 C------- new FFE INTEGER variables for down wood reports --------      
-      IDWPAS   = INTS( 85)
-      IDWRPB   = INTS( 86)
-      IDWRPE   = INTS( 87)
-      IDWRPI   = INTS( 88)
-      IDCPAS   = INTS( 89)
-      IDWCVB   = INTS( 90)
-      IDWCVE   = INTS( 91)
-      IDWCVI   = INTS( 92)
-      IDDWRP   = INTS( 93)
-      IDDWCV   = INTS( 94)  
+      IDWPAS   = INTS( 82)
+      IDWRPB   = INTS( 83)
+      IDWRPE   = INTS( 84)
+      IDWRPI   = INTS( 85)
+      IDCPAS   = INTS( 86)
+      IDWCVB   = INTS( 87)
+      IDWCVE   = INTS( 88)
+      IDWCVI   = INTS( 89)
+      IDDWRP   = INTS( 90)
+      IDDWCV   = INTS( 91)  
 
       NSNAGZ = MAX(NSNAG,1)
       CALL IFREAD (WK3, IPNT, ILIMIT, DKRCLS, MAXSP       , 2)
@@ -159,7 +157,6 @@ C------- new FFE INTEGER variables for down wood reports --------
       CALL IFREAD (WK3, IPNT, ILIMIT, YRDEAD, NSNAGZ      , 2)
       CALL IFREAD (WK3, IPNT, ILIMIT, FMICR, MAXTRE       , 2)
       CALL IFREAD (WK3, IPNT, ILIMIT, IFUELMON, MXDFMD    , 2)
-      CALL IFREAD (WK3, IPNT, ILIMIT, ISPCC, MAXTRE       , 2)
       
       CALL LFREAD (WK3, IPNT, ILIMIT, LOGICS,   MXL, 2)
       LANHED = LOGICS ( 1)
@@ -176,7 +173,6 @@ C------- new FFE INTEGER variables for down wood reports --------
       LATSHRB= LOGICS (12)
       LVWEST = LOGICS (13)
       LPRV89 = LOGICS (14)
-      CFIM_ON= LOGICS (15)
 
       CALL LFREAD (WK3, IPNT, ILIMIT, HARD, NSNAGZ,     2)
       CALL LFREAD (WK3, IPNT, ILIMIT, HARDSALV, NSNAGZ, 2)
@@ -240,9 +236,6 @@ C------- Carbon reporting REAL variables --------
 C-------new FFE REAL variables --------
       ULHV   = REALS ( 53)
       FOLMC  = REALS ( 54)
-C-------new CFIM variables --------
-      CFIM_BD= REALS ( 55)
-      CFIM_DC= REALS ( 56)
       
       CALL BFREAD (WK3, IPNT, ILIMIT, ALLDWN,       MAXSP  , 2)
       CALL BFREAD (WK3, IPNT, ILIMIT, CANCLS,        4     , 2)
@@ -306,7 +299,7 @@ C-------new CFIM variables --------
       CALL BFREAD (WK3, IPNT, ILIMIT, POTPAB, 2            , 2)
       CALL BFREAD (WK3, IPNT, ILIMIT, POTRINT, 2           , 2)
       CALL BFREAD (WK3, IPNT, ILIMIT, POTVOL, 2            , 2)
-      CALL BFREAD (WK3, IPNT, ILIMIT, PRDUFF, MXFLCL*4     , 2)
+      CALL BFREAD (WK3, IPNT, ILIMIT, PRDUFF, MXFLCL       , 2)
       CALL BFREAD (WK3, IPNT, ILIMIT, PRESVL, 2*8          , 2)
       CALL BFREAD (WK3, IPNT, ILIMIT, PREWND, 2            , 2)
       CALL BFREAD (WK3, IPNT, ILIMIT, PRPILE, MXFLCL       , 2)
@@ -343,15 +336,6 @@ C------- new FFE REAL variables --------
       CALL BFREAD (WK3, IPNT, ILIMIT, UBD,      2          , 2)
       CALL BFREAD (WK3, IPNT, ILIMIT, CWDVOL,  3*10*2*5    , 2)
       CALL BFREAD (WK3, IPNT, ILIMIT, CWDCOV,  3*10*2*5    , 2)
-      CALL BFREAD (WK3, IPNT, ILIMIT, PREMST,  MAXTRE      , 2)
-      CALL BFREAD (WK3, IPNT, ILIMIT, PREMCR,  MAXTRE      , 2)
-      CALL BFREAD (WK3, IPNT, ILIMIT, DBHC,  MAXTRE        , 2)
-      CALL BFREAD (WK3, IPNT, ILIMIT, HTC,  MAXTRE         , 2)
-      CALL BFREAD (WK3, IPNT, ILIMIT, CROWNWC, MAXTRE*6    , 2)
-      CALL BFREAD (WK3, IPNT, ILIMIT, SETDECAY, MXFLCL*4   , 2)      
-C------- new CFIM variables --------
-      CALL BFREAD (WK3, IPNT, ILIMIT, CFIM_INPUT, 26       , 2)
-      CALL BFREAD (WK3, IPNT, ILIMIT, POTCONS, 3*3         , 2)
-      
+                  
       RETURN
       END

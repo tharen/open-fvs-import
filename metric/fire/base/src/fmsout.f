@@ -1,7 +1,7 @@
       SUBROUTINE FMSOUT (IYR)
       IMPLICIT NONE
 C----------
-C  **FMSOUT--FIRE/M   DATE OF LAST REVISION:  04/08/14
+C  **FMSOUT--FIRE/M   DATE OF LAST REVISION:  12/17/04
 *     SINGLE-STAND VERSION
 *     CALLED FROM: FMMAIN
 *     CALLS:   FMSVOL
@@ -56,7 +56,7 @@ C.... VARIABLE DECLARATIONS.
       REAL     TOTDBH(MAXSP,100,6)
       REAL     TOTN
       REAL     PRMS(4)
-      LOGICAL  DEBUG, LOK
+      LOGICAL  DEBUG
       INTEGER MYACT(1)
       DATA MYACT/2512/
       INTEGER  IYR,NTODO,JDO,NPRM,IACTK,IDC,JCL,DBSKODE
@@ -74,14 +74,14 @@ C     FIRST CHECK TO SEE IF THE SNAG LIST IS TO BE PRINTED.
 
       DO 5 JDO = 1,NTODO
          CALL OPGET(JDO,4,JYR,IACTK,NPRM,PRMS)
-C         IF (JYR .NE. IYR) GOTO 5
-            ISNAGB = IYR
-            ISNAGE = IYR + PRMS(1)
+         IF (JYR .NE. IYR) GOTO 5
+            ISNAGB = JYR
+            ISNAGE = JYR + PRMS(1)
             ISNSTP = PRMS(2)
             IF (ISNSTP.EQ.0) ISNSTP=1
             JSNOUT = INT(PRMS(3))
             LSHEAD = PRMS(4).EQ.0
-            CALL OPDONE(JDO,IYR)
+            CALL OPDONE(JDO,JYR)
             GOTO 6
     5 CONTINUE
     6 CONTINUE
@@ -213,9 +213,9 @@ C
      &  TOTDS/ACRtoHA,YRLAST,DBSKODE)
       IF (DBSKODE.EQ.0) GOTO 500
 
-C     MAKE SURE JSNOUT IS OPEN
-      CALL openIfClosed (JSNOUT,"sng",lok)
-      if (.not.lok) goto 500
+C     Make sure JSNOUT is openned.
+
+      CALL openIfClosed (JSNOUT,"sng")
 
 C     Print the snag output headings.
 
@@ -238,6 +238,7 @@ C     Print the snag output headings.
   222    FORMAT(1X,76('-'))
          LSHEAD = .FALSE.
       ENDIF
+
 
 C     Print information on each snag printing-class, first dividing the
 C     the total heights and dbhs to get the class-averages.

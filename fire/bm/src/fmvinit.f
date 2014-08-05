@@ -1,7 +1,7 @@
       SUBROUTINE FMVINIT
       IMPLICIT NONE
 C----------
-C  **FMVINIT  FIRE-BM-DATE OF LAST REVISION: 04/25/13
+C  **FMVINIT  FIRE-BM-DATE OF LAST REVISION: 09/21/09
 C----------
 *  Purpose:
 *      Initialize variant-specific variables for the Fire Model
@@ -26,7 +26,7 @@ C
 COMMONS
 C
       INTEGER I,J
-      
+
       LVWEST    = .TRUE.  ! WESTERN VARIANT
 
       CANCLS(1) =  5.0
@@ -61,50 +61,24 @@ C----------
       POTEMP(1)=70.
       POTEMP(2)=70.
 C
-C     DECAY RATES BASED ON WORKSHOP RESULTS FOR KIM MELLEN-MCLEAN'S CWD MODEL
-C     FIRST BASE RATES ARE SET (BY DECAY RATE CLASS) AND THEN THEY ARE ADJUSTED
-C     BASED ON HABITAT TYPE (TEMPERATURE AND MOISTURE CATEGORY)
-
-      DKR(1,1) = 0.076 ! < 0.25"
-      DKR(2,1) = 0.076 ! 0.25 - 1"
-      DKR(3,1) = 0.076 ! 1 - 3"
-      DKR(4,1) = 0.019 ! 3 - 6"
-      DKR(5,1) = 0.019 ! 6 - 12"
-      DKR(6,1) = 0.019  ! 12 - 20"
-      DKR(7,1) = 0.019  ! 20 - 35"
-      DKR(8,1) = 0.019  ! 35 - 50"
-      DKR(9,1) = 0.019  !  > 50"
-
-      DKR(1,2) = 0.081 ! < 0.25"
-      DKR(2,2) = 0.081 ! 0.25 - 1"
-      DKR(3,2) = 0.081 ! 1 - 3"
-      DKR(4,2) = 0.025 ! 3 - 6"
-      DKR(5,2) = 0.025 ! 6 - 12"
-      DKR(6,2) = 0.025  ! 12 - 20"
-      DKR(7,2) = 0.025  ! 20 - 35"
-      DKR(8,2) = 0.025  ! 35 - 50"
-      DKR(9,2) = 0.025  !  > 50"
-      
-      DKR(1,3) = 0.090 ! < 0.25"
-      DKR(2,3) = 0.090 ! 0.25 - 1"
-      DKR(3,3) = 0.090 ! 1 - 3"
-      DKR(4,3) = 0.033 ! 3 - 6"
-      DKR(5,3) = 0.033 ! 6 - 12"
-      DKR(6,3) = 0.033  ! 12 - 20"
-      DKR(7,3) = 0.033  ! 20 - 35"
-      DKR(8,3) = 0.033  ! 35 - 50"
-      DKR(9,3) = 0.033  !  > 50"      
-
-      DKR(1,4) = 0.113 ! < 0.25"
-      DKR(2,4) = 0.113 ! 0.25 - 1"
-      DKR(3,4) = 0.113 ! 1 - 3"
-      DKR(4,4) = 0.058 ! 3 - 6"
-      DKR(5,4) = 0.058 ! 6 - 12"
-      DKR(6,4) = 0.058  ! 12 - 20"
-      DKR(7,4) = 0.058  ! 20 - 35"
-      DKR(8,4) = 0.058  ! 35 - 50"
-      DKR(9,4) = 0.058  !  > 50"
-
+C     BM DECAY RATES BASED ON NI OTHER VARIANTS, AS PER
+C     DESIGN DOCUMENT (BEUKEMA, 2000)
+C
+      DKR(1,1) =  0.12
+      DKR(2,1) =  0.12
+      DKR(3,1) =  0.09
+      DKR(4,1) =  0.015
+      DKR(5,1) =  0.015
+      DKR(6,1) =  0.015
+      DKR(7,1) =  0.015
+      DKR(8,1) =  0.015
+      DKR(9,1) =  0.015
+                
+      DO I = 1,9
+        DO J = 2,4
+          DKR(I,J) = DKR(I,1)
+        ENDDO
+      ENDDO
 C
 C  LITTER LOSS/YR (10) AND DUFF LOSS/YR (11)
 C
@@ -117,9 +91,9 @@ C     DUFF PRODUCTION RATES 'PRDUFF' ARE A PROPORTION OF THE OVERALL
 C     DECAY RATE: 'DKR'.
 C
       DO I = 1,10
+        PRDUFF(I) = 0.02
         DO J = 1,4
-          PRDUFF(I,J) = 0.02
-          TODUFF(I,J) = DKR(I,J) * PRDUFF(I,J)
+          TODUFF(I,J) = DKR(I,J) * PRDUFF(I)
         ENDDO
       ENDDO
 C
@@ -200,6 +174,7 @@ C
             DO J= 1,4
               HTX(I,J) =   1.0
             ENDDO
+            DKRCLS(I)  =   4
             LSW(I)     = .TRUE.
 C
 C  WESTERN LARCH (2 = WL) (uses similarity to PP for some WL attributes)
@@ -214,6 +189,7 @@ C
             DO J= 1,4
               HTX(I,J) =   1.0
             ENDDO
+            DKRCLS(I)  =   3
             LSW(I)     = .TRUE.
 C
 C  DOUGLAS-FIR (3 = DF)
@@ -228,6 +204,7 @@ C
             DO J= 1,4
               HTX(I,J) =   1.0
             ENDDO
+            DKRCLS(I)  =   3
             LSW(I)     = .TRUE.
 C
 C  GRAND FIR (4 = GF)
@@ -242,6 +219,7 @@ C
             DO J= 1,4
               HTX(I,J) =   1.0
             ENDDO
+            DKRCLS(I)  =   4
             LSW(I)     = .TRUE.
 C
 C  MOUNTAIN HEMLOCK (5 = MH) (mostly from western hemlock)
@@ -256,6 +234,7 @@ C
             DO J= 1,4
               HTX(I,J) =   1.0
             ENDDO
+            DKRCLS(I)  =   4
             LSW(I)     = .TRUE.
 C
 C  WESTERN JUNIPER (6 = WJ) -- USE SO WJ
@@ -270,6 +249,7 @@ C
             DO J= 1,4
               HTX(I,J) =   1.0 
             ENDDO
+            DKRCLS(I)  =   2 
             LSW(I)     = .TRUE.
 C
 C  LODGEPOLE PINE (7 = LP)
@@ -284,6 +264,7 @@ C
             DO J= 1,4
               HTX(I,J) =   1.0
             ENDDO
+            DKRCLS(I)  =   4
             LSW(I)     = .TRUE.
 C
 C  ENGELMANN SPRUCE (8 = ES)
@@ -298,6 +279,7 @@ C
             DO J= 1,4
               HTX(I,J) =   1.0
             ENDDO
+            DKRCLS(I)  =   4
             LSW(I)     = .TRUE.
 C
 C  SUBALPINE FIR (9 = AF)
@@ -312,6 +294,7 @@ C
             DO J= 1,4
               HTX(I,J) =   1.0
             ENDDO
+            DKRCLS(I)  =   4
             LSW(I)     = .TRUE.
 C
 C  PONDEROSA PINE (10 = PP)
@@ -326,6 +309,7 @@ C
             DO J= 1,4
               HTX(I,J) =   1.0
             ENDDO
+            DKRCLS(I)  =   4
             LSW(I)     = .TRUE.
 C
 C  WHITEBARK PINE (11 = WB) USE SO WB VALUES
@@ -340,6 +324,7 @@ C
             DO J= 1,4
               HTX(I,J) =   1.0 
             ENDDO
+            DKRCLS(I)  =   4 
             LSW(I)     = .TRUE.
 C
 C  LIMBER PINE (12 = LM) USE SO WB VALUES
@@ -354,6 +339,7 @@ C
             DO J= 1,4
               HTX(I,J) =   1.0 
             ENDDO
+            DKRCLS(I)  =   4 
             LSW(I)     = .TRUE.
 C
 C  PACIFIC YEW (13 = PY) USE SO PY VALUES
@@ -367,7 +353,8 @@ C
             FALLX(I)   =   1.0 
             DO J= 1,4
               HTX(I,J) =   1.0
-            ENDDO 
+            ENDDO
+            DKRCLS(I)  =   1 
             LSW(I)     = .TRUE.
 C
 C  ALASKA CEDAR (14 = YC) USE WC YC VALUES
@@ -382,6 +369,7 @@ C
             DO J= 1,4
               HTX(I,J) =   1.0
             ENDDO
+            DKRCLS(I)  =   2
             LSW(I)     = .TRUE.
 C
 C  QUAKING ASPEN (15 = AS) USE SO AS VALUES
@@ -396,6 +384,7 @@ C
             DO J= 1,4
               HTX(I,J) =   1.0 
             ENDDO
+            DKRCLS(I)  =   4 
             LSW(I)     = .FALSE.
 C
 C  BLACK COTTONWOOD (16 = CW) USE SO CW VALUES
@@ -410,6 +399,7 @@ C
             DO J= 1,4
               HTX(I,J) =   1.0 
             ENDDO
+            DKRCLS(I)  =   4 
             LSW(I)     = .FALSE.
 C
 C  OTHER SOFTWOODS (17 = OS) (USE BM PONDEROSA PINE)
@@ -424,6 +414,7 @@ C
             DO J= 1,4
               HTX(I,J) =   1.0
             ENDDO
+            DKRCLS(I)  =   4
             LSW(I)     = .TRUE.
 C
 C  OTHER HARDWOODS (18 = OH) USE SO OH VALUES
@@ -438,6 +429,7 @@ C
             DO J= 1,4
               HTX(I,J) =   1.0 
             ENDDO
+            DKRCLS(I)  =   4 
             LSW(I)     = .FALSE.
 C
         END SELECT
@@ -472,29 +464,6 @@ C
 C       CONVERT LB/FT**3 TO TONS/FT**3
 C
         V2T(I) = V2T(I) / 2000.0
-
-C
-C       SET THE DECAY RATE CLASS (DKRCLS)
-C
-        SELECT CASE (I)
-
-C         some pines, doug-fir, cedars 
-          CASE (1:3,6,11:14)
-            DKRCLS(I)  =   1
-
-C         lodgepole, spruce, hemlock
-          CASE (5,7,8)
-            DKRCLS(I)  =   2
-
-C         firs, some pines, oak
-          CASE (4,9,10,17)
-            DKRCLS(I)  =   3
-
-C         aspen, cottonwood, other hardwoods
-          CASE (15,16,18)
-            DKRCLS(I)  =   4
-            
-        END SELECT
 
       ENDDO
 C

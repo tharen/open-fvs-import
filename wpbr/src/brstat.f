@@ -1,7 +1,6 @@
       SUBROUTINE BRSTAT
-      IMPLICIT NONE
 C**********************************************************************
-C  **BRSTAT       DATE OF LAST REVISION:  06/05/2014
+C  **BRSTAT       DATE OF LAST REVISION:  05/10/2006
 C----------------------------------------------------------------------
 C  Purpose:
 C  BRSTAT calculates value for proportion of trees infected with
@@ -49,17 +48,16 @@ C.... Common include files.
 
 C.... Local variable declarations.
 
-      INTEGER I1, I2, I3, I4, II, ILLCAN, ISC, J, K, M, NLCAN
+      INTEGER I1, I2, I3, I4
       LOGICAL DEBUG
       REAL TPROB2(10),TRELN2(10),TRETN2(10),SUMNL2(10),SUMNT2(10),
-     &     SUMEC2(10),TRELN(NBRSP),SUMNL(NBRSP),SUMNT(NBRSP),
-     &     SUMEC(NBRSP),CURDBH, PROBJ
+     &   SUMEC2(10),TRELN(NBRSP),SUMNL(NBRSP),SUMNT(NBRSP),SUMEC(NBRSP)
 
 C.... See if we need to do some debug.
 
       CALL DBCHK(DEBUG,'BRSTAT',6,ICYC)
       IF(DEBUG) WRITE(JOSTND,111) ICYC
-  111 FORMAT('Entering subroutine BRSTAT: cycle = ',I2)
+  111 FORMAT(' Entering subroutine BRSTAT: cycle = ',I2)
 
 C.... Initialize variables for this cycle.
 
@@ -261,7 +259,7 @@ C....    (all cankers, lethal cankers, and expected cankers).
       IF(DEBUG) THEN
          WRITE(JOSTND,37) BRSPC(I4),THPROB(I4),TBRHMR(I4),PITCA(I4),
      &         PILCA(I4),AVTCPT(I4),AVLCPT(I4),AVECPT(I4)
-   37    FORMAT('IN BRSTAT: BRSPC=',A4,' THPROB=',F7.2,
+   37    FORMAT(' IN BRSTAT: BRSPC=',A4,' THPROB=',F7.2,
      &         ' TBRHMR=',F7.2,' PITCA=',F5.3,
      &         ' PILCA=',F5.3,' AVTCPT=',F7.3,' AVLCPT=',F5.3,
      &         ' AVECPT=',F5.3)
@@ -295,6 +293,6 @@ C.... Common return.
 
   100 CONTINUE
       IF(DEBUG) WRITE(JOSTND,113) ICYC
-  113 FORMAT('Leaving subroutine BRSTAT: cycle = ',I2)
+  113 FORMAT(' Leaving subroutine BRSTAT: cycle = ',I2)
       RETURN
       END

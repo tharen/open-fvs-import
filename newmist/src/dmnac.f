@@ -1,8 +1,6 @@
       SUBROUTINE DMNAC(A,B)
-      IMPLICIT NONE
-C----------
-C  $Id$
-C----------
+      
+C********************************************************************
 C **DMNAC -- NISI  Date of last revision: January 10, 2002
 C----------------------------------------------------------------------
 C Purpose:
@@ -48,7 +46,7 @@ C**********************************************************************
 C     LOCAL VARIABLES.
 
       INTEGER   I, J      
-      REAL      X, A, B, TMP(MXTHRX)
+      REAL      X, TMP(MXTHRX)
 
       DO J = 1, MXTHRX
         TMP(J) = EXP(DSTNCE(J) * B)

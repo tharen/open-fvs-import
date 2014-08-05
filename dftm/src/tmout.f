@@ -1,7 +1,7 @@
       SUBROUTINE TMOUT  
       IMPLICIT NONE
 C----------
-C  **TMOUT  DATE OF LAST REVISION:  05/31/13
+C  **TMOUT  DATE OF LAST REVISION:  06/30/10
 C----------
 C
 C     PRINT FINAL TUSSOCK MOTH ACTIVITY SUMMARY
@@ -9,14 +9,12 @@ C
 C     PART OF THE DFTM EXTENSION OF THE PROGNOSIS SYSTEM.
 C
 C Revision History:
-C   23-DEC-99; Lance R. David (FHTET-FC)
-C      Updated for expansion of FVS stand id (variable NPLT)
-C      from 8 to 26 characters.
-C   01-APR-2013 Lance R. David (FMSC)
-C      A few variables defined locally were already defined
-C      in a common block. Local declaration removed.
+C     23-DEC-99; Lance R. David (FHTET-FC)
+C        Updated for expansion of FVS stand id (variable NPLT)
+C        from 8 to 26 characters.
 C
-C----------
+C**********************************************************************
+
 C
 COMMONS
 C
@@ -34,7 +32,14 @@ C
 
       CHARACTER*132 PRNT
 
-      INTEGER I
+      INTEGER I, IBMTYP, IDFCOD, IEGTYP, IGFCOD, IPBMT, IPRBMT,
+     &        ITMETH, ITMREP, ITMSCH, ITMSLV, JODFEC, JODFTM,
+     &        JOTMDK, NACLAS, NCLAS
+
+      REAL B0, B1, CNTDF, CNTGF, DFEGG, DFFBIO, DFPNEW, DFREGG,
+     &     F1, G1, GFEGG, GFFBIO, GFPNEW, GFREGG, PRBSCL, R0, R1,
+     &     TMASHD, TMB0, TMB1, TMDEFL, TMPN1, TMPRB, TMR0,
+     &     TOPO, WEIGHT, X0, X1, Y1, Z1
 
       DATA YES /'YES'/,  NO /'NO'/
       LOGICAL LOPEN
@@ -76,16 +81,23 @@ C
 C     READY THE OUTPUT FILE FOR ANOTHER STAND.  
 C     
       REWIND JODFTM     
-C
+      GOTO 60     
+
    50 CONTINUE    
-C
-      WRITE (JOSTND,9016)NPLT   
- 9016 FORMAT (/22('-'),' DFTM OUTBREAK SUMMARY TABLE  ',25('-'),/,
-     >      'STAND ID = ',A26,//,    
-     >      '------ CYCLE ------',8X,'YEAR OF',T46,'CONDITIONAL',T67,  
-     >      'WAS THERE AN'/'NUMBER',T15,'YEARS',5X,'REGIONAL DFTM',    
-     >      T46,'PROBABILITY',10X,'OUTBREAK IN'/T28,'OUTBREAK',7X,
-     >      'OF STAND OUTBREAK         STAND?'/79('-')/)   
+      I = 0 
+      GOTO 70     
+
+   60 CONTINUE    
+      I = 1 
+
+   70 CONTINUE    
+      WRITE (JOSTND,9016) I, NPLT   
+ 9016 FORMAT (I1,22('-'),'  DFTM OUTBREAK SUMMARY TABLE  ',26('-'),/,
+     >      ' STAND ID = ',A26,//,    
+     >      ' ------ CYCLE ------',8X,'YEAR OF',T47,'CONDITIONAL',T68,  
+     >      'WAS THERE AN'/' NUMBER',T16,'YEARS',5X,'REGIONAL DFTM',    
+     >      T47,'PROBABILITY',10X,'OUTBREAK IN'/T29,'OUTBREAK',7X,
+     >      'OF STAND OUTBREAK         STAND?'/1X,79('-')/)   
 
       DO 140 I=1,NCYC   
         WASTHR = NO     
@@ -94,8 +106,8 @@ C
      >                       TMPRB(I), WASTHR   
         IF (TMYRS(I) .NE. 0) WRITE (JOSTND,9018) I, IY(I), IY(I+1),     
      >                       TMYRS(I), TMPRB(I), WASTHR     
- 9017   FORMAT(I3,I9,' -',I5,T45,F10.3,T71,A3)     
- 9018   FORMAT(I3,I9,' -',I5,I14,T45,F10.3,T71,A3) 
+ 9017   FORMAT(1X,I3,I9,' -',I5,T45,F10.3,T71,A3)     
+ 9018   FORMAT(1X,I3,I9,' -',I5,I14,T45,F10.3,T71,A3) 
   140 CONTINUE    
 
   200 CONTINUE

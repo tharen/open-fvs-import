@@ -1,7 +1,4 @@
       BLOCK DATA DMBLKD
-      IMPLICIT NONE
-C----------
-C  $Id$
 C----------
 C  **DMBLKD  DATE OF LAST REVISION:  02/15/96
 C----------
@@ -22,8 +19,6 @@ C
 C
 COMMONS
 C
-
-      INTEGER I
 
       DATA ( Shd1(i), i=    1,  120 ) /
      &     1,    98,     1,    18,     1,    10,     1,     9,

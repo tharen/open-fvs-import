@@ -1,7 +1,4 @@
       SUBROUTINE DMFSHD
-      IMPLICIT NONE
-C----------
-C  $Id$
 C----------
 C **DMFSHD --  DATE OF LAST REVISION: 02/16/96     
 C----------

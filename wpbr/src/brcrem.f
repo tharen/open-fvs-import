@@ -1,7 +1,6 @@
       SUBROUTINE BRCREM
-      IMPLICIT NONE
 C**********************************************************************
-C  **BRCREM       DATE OF LAST REVISION:  06/05/2014
+C  **BRCREM       DATE OF LAST REVISION:  05/09/2006
 C----------------------------------------------------------------------
 C  Purpose:
 C  BRCREM removes cankers that have been classified as inactive
@@ -42,16 +41,14 @@ C.... Common include files.
 
 C.... Local variable declarations.
 
-      INTEGER I1, I2, I3, ICNDX(10), ITSTAT, IVAC, J, K, M, NLCAN, 
-     &        ICANT
-      REAL HITE, PRHT, PRHTST, VALUE
+      INTEGER I1, I2, I3, ICNDX(10)
       LOGICAL DEBUG,PRUNED
 
 C.... Is debug requested?
 
       CALL DBCHK(DEBUG,'BRCREM',6,ICYC)
       IF(DEBUG) WRITE(JOSTND,111) ICYC
-  111 FORMAT('Entering subroutine BRCREM: cycle = ',I2)
+  111 FORMAT(' Entering subroutine BRCREM: cycle = ',I2)
 
 C.... If there are no trees, exit subroutine.
 
@@ -208,6 +205,6 @@ C.... Common return.
 
   300 CONTINUE
       IF(DEBUG) WRITE (JOSTND,333) ICYC
-  333 FORMAT('Leaving subroutine BRCREM: cycle = ',I2)
+  333 FORMAT(' Leaving subroutine BRCREM: cycle = ',I2)
       RETURN
       END

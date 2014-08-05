@@ -129,9 +129,7 @@ C     IF IT DOESN'T THEN WE NEED TO CREATE IT
      -             'BDefect int null,'//
      -             'TruncHt int null,'//
      -             'EstHt double null,'//
-     -             'ActPt int null,'//
-     -             'Ht2TDCF real null,'//
-     -             'Ht2TDBF real null)'
+     -             'ActPt int null)'
 
         ELSEIF(TRIM(DBMSOUT).EQ."EXCEL") THEN
           SQLStmtStr='CREATE TABLE FVS_TreeList('//
@@ -164,9 +162,7 @@ C     IF IT DOESN'T THEN WE NEED TO CREATE IT
      -             'BDefect int null,'//
      -             'TruncHt int null,'//
      -             'EstHt Number null,'//
-     -             'ActPt int null,'//
-     -             'Ht2TDCF real null,'//
-     -             'Ht2TDBF real null)'
+     -             'ActPt int null)'
         ELSE
           SQLStmtStr='CREATE TABLE FVS_TreeList('//
      -             'Id int primary key,'//
@@ -198,9 +194,7 @@ C     IF IT DOESN'T THEN WE NEED TO CREATE IT
      -             'BDefect int null,'//
      -             'TruncHt int null,'//
      -             'EstHt real null,'//
-     -             'ActPt int null,'//
-     -             'Ht2TDCF real null,'//
-     -             'Ht2TDBF real null)'
+     -             'ActPt int null)'
         ENDIF
         iRet = fvsSQLCloseCursor(StmtHndlOut)
         iRet = fvsSQLExecDirect(StmtHndlOut,trim(SQLStmtStr),
@@ -308,15 +302,15 @@ C           MAKE SURE WE DO NOT EXCEED THE MAX TABLE SIZE IN EXCEL
      -           MortPA,DBH,DG,
      -           HT,HTG,PctCr,CrWidth,MistCD,BAPctile,PtBAL,TCuFt,
      -           MCuFt,BdFt,MDefect,BDefect,TruncHt,
-     -           EstHt,ActPt,Ht2TDCF,Ht2TDBF) VALUES(',
+     -           EstHt,ActPt) VALUES(',
      -           TREEOUTID,',',ICASE,',',CHAR(39),TRIM(NPLT),CHAR(39),
      -           ',',JYR,',',IFINT,",'",ADJUSTL(TID),"',",I,",'",
-     -           CSPECIES,"',",IMC(I),',',ISPECL(I),',',ITRE(I),
+     -           CSPECIES,"',",IMC(I),',',ISPECL(I),
+     -           ',',ITRE(I),
      -           ',',P,',',DP,',',DBH(I),',',DGI,',',HT(I),',',HTG(I),
      -           ',',ICR(I),',',CW,',',IDMR,',',PCT(I),',',IPTBAL,',',
      -           CFV(I),',',WK1(I),',',BFV(I),',',ICDF,',',IBDF,',',
-     -           ((ITRUNC(I)+5)/100),',',ESTHT,',',IPVEC(ITRE(I)),
-     -           ',',HT2TD(I,2),',',HT2TD(I,1),')'
+     -           ((ITRUNC(I)+5)/100),',',ESTHT,',',IPVEC(ITRE(I)),')'
 
             iRet = fvsSQLCloseCursor(StmtHndlOut)
 
@@ -391,15 +385,15 @@ C           MAKE SURE WE DO NOT EXCEED THE MAX TABLE SIZE IN EXCEL
      -           MortPA,DBH,DG,
      -           HT,HTG,PctCr,CrWidth,MistCD,BAPctile,PtBAL,TCuFt,
      -           MCuFt,BdFt,MDefect,BDefect,TruncHt,
-     -           EstHt,ActPt,Ht2TDCF,Ht2TDBF) VALUES(',
+     -           EstHt,ActPt) VALUES(',
      -           TREEOUTID,',',ICASE,',',CHAR(39),TRIM(NPLT),CHAR(39),
      -           ',',JYR,',',IFINT,",'",ADJUSTL(TID),"',",I,",'",
-     -           CSPECIES,"',",IMC(I),',',ISPECL(I),',',ITRE(I),
+     -           CSPECIES,"',",IMC(I),',',ISPECL(I),
+     -           ',',ITRE(I),
      -           ',',P,',',DP,',',DBH(I),',',DGI,',',HT(I),',',HTG(I),
      -           ',',ICR(I),',',CW,',',IDMR,',',PCT(I),',',IPTBAL,',',
      -           CFV(I),',',WK1(I),',',BFV(I),',',ICDF,',',IBDF,',',
-     -           ((ITRUNC(I)+5)/100),',',ESTHT,',',IPVEC(ITRE(I)),
-     -           ',',HT2TD(I,2),',',HT2TD(I,1),')'
+     -           ((ITRUNC(I)+5)/100),',',ESTHT,',',IPVEC(ITRE(I)),')'
 
             iRet = fvsSQLCloseCursor(StmtHndlOut)
 

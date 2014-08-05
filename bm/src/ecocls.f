@@ -1,7 +1,7 @@
       SUBROUTINE ECOCLS(APASS,ASPEC,RSDI,RSI,ISFLAG,NUM,INDEX,ISEQ)
       IMPLICIT NONE
 C----------
-C  **ECOCLS---BM      DATE OF LAST REVISION:  03/19/14
+C  **ECOCLS---BM      DATE OF LAST REVISION:  02/24/10
 C----------
 C
 C  SETS DEFAULT MAX SDI VALUES, SITE INDICIES, AND SITE SPECIES
@@ -47,7 +47,7 @@ C----------
       PARAMETER (NENTRY=283)
       CHARACTER*4 SPC(NENTRY),ASPEC
       CHARACTER*6 SCIEN(NENTRY)
-      CHARACTER*8 APASS,PA(NENTRY)
+      CHARACTER*8 APASS,PA(NENTRY),PAHABTYP(NENTRY),PATEMP
       INTEGER FVSSEQ(NENTRY)
 C
       INTEGER ISEQ,INDEX,NUM,I,K,ISFLAG
@@ -227,7 +227,7 @@ C
      &'CES131  ','LAOC  ', 414,'WL  ',  83,   5,   1,   2,       ! P/P
      &'CES131  ','PIEN  ', 586,'ES  ',  72,   5,   0,   8,       ! P/P
      &'CES131  ','ABGR  ', 681,'GF  ',  77,   5,   0,   4,       ! P/P
-     &'CES131  ','ABLA2 ', 429,'AF  ',  69,   5,   0,   9/       ! P/P
+     &'CES131  ','ABLA2 ', 429,'AF  ',  69,   5,   1,   9/       ! P/P
 C
       DATA (PA(I),SCIEN(I),SDIMX(I),SPC(I),SITE(I),NUMBR(I),IFLAG(I),
      &     FVSSEQ(I),I=66,84) /
@@ -415,7 +415,7 @@ C
      &'CMS131  ','PICO  ', 283,'LP  ',  68,   4,   1,   7,       ! P/P
      &'CMS131  ','PIEN  ', 371,'ES  ',  0.,   4,   0,   8,       ! P/
      &'CMS131  ','ABLA  ', 520,'AF  ',  0.,   4,   0,   9,       ! P/
-     &'CMS131  ','TSME  ', 610,'MH  ',  16,   4,   0,   5,       ! C/P
+     &'CMS131  ','TSME  ', 610,'MH  ',  56,   4,   0,   5,       ! C/P
 C----------------------------------------------------------------------
 C   48 = TSME/VAME-WALLO                                 p. 230         
 C    Mountain hemlock/big huckleberry (Wallowa)          R6 E TP-255-86
@@ -423,7 +423,7 @@ C
      &'CMS231  ','PICO  ', 283,'LP  ',  68,   4,   1,   7,       ! P/P
      &'CMS231  ','PIEN  ', 371,'ES  ',  0.,   4,   0,   8,       ! P/ 
      &'CMS231  ','ABLA  ', 520,'AF  ',  0.,   4,   0,   9,       ! P/ 
-     &'CMS231  ','TSME  ', 745,'MH  ',  15,   4,   0,   5/       ! C/P
+     &'CMS231  ','TSME  ', 745,'MH  ',  58,   4,   0,   5/       ! C/P
 C
       DATA (PA(I),SCIEN(I),SDIMX(I),SPC(I),SITE(I),NUMBR(I),IFLAG(I),
      &     FVSSEQ(I),I=147,164) /
@@ -652,7 +652,7 @@ C
      &'CWG113  ','PSME  ', 446,'DF  ',  56,   5,   0,   3,       ! P/P
      &'CWG113  ','LAOC  ', 384,'WL  ',  59,   5,   0,   2,       ! P/P
      &'CWG113  ','PICO  ', 346,'LP  ',  76,   5,   0,   7,       ! P/P
-     &'CWG113  ','ABGR  ', 555,'GF  ',  52,   5,   0,   4,       ! P/P
+     &'CWG113  ','ABGR  ', 555,'GF  ',  52,   5,   1,   4,       ! P/P
 C-------------------------------------------------------------------
 C   80 = ABGR/BRVU                                       p. 67         
 C    Grand fir/Columbia brome                            R6 E TP-036-92

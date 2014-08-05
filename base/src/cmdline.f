@@ -7,16 +7,18 @@ c     library version of FVS but they are also called from within FVS.
 c
 c     Note that not all of the routines are designed to be part of the API
 
-c     Created in 2011 and 2012 by Nick Crookston, RMRS-Moscow
+c     Created in 2011 by Nick Crookston, RMRS-Moscow
 
       subroutine fvsSetCmdLine(theCmdLine,lenCL,IRTNCD)
       implicit none
 
       include "GLBLCNTL.F77"
 
+#ifdef _WINDLL
 !DEC$ ATTRIBUTES DLLEXPORT,C,DECORATE :: FVSSETCMDLINE
 !DEC$ ATTRIBUTES ALIAS : 'FVSSETCMDLINE' :: FVSSETCMDLINE
 !DEC$ ATTRIBUTES REFERENCE :: theCmdLine,lenCL,IRTNCD
+#endif
 
       integer :: i,n,irtn,ieq,iend,lenCL,IRTNCD
       logical fstat
@@ -24,15 +26,6 @@ c     Created in 2011 and 2012 by Nick Crookston, RMRS-Moscow
       character(len=lenCL) theCmdLine
       character(len=1024) cmdLcopy
 
-c     make sure the files are closed if resetting with the cmdLine.
-c     (this is only done if a none-zero return or restart code is set)
-
-      if (fvsRtnCode /= 0 .or. restartcode /= 0) call FILClose
-
-c     initialize the multiple report routine (this does not open a file)
-
-      call genrpt
-      
       keywordfile = " "
       maxStoppts = 6
       stopptfile = " "
@@ -137,16 +130,10 @@ c     there is no attached file.
         fvsRtnCode = 1
         return
    40   continue
-        read (jdstash,end=42) restartcode,oldstopyr,i,keywordfile(:i)
-        goto 43
-   42   continue
-        print *,"Premature end of data on file=",trim(restartfile)
-        fvsRtnCode = 1
-        return
-   43   continue
-        write (*,44) restartfile(:len_trim(restartfile)),
+        read (jdstash) restartcode,oldstopyr,i,keywordfile(:i)
+        write (*,41) restartfile(:len_trim(restartfile)),
      >          oldstopyr,restartcode
-   44   format (" Restarting from file=",A," Year=",I5,
+   41   format (" Restarting from file=",A," Year=",I5,
      >          " Stop point code=",I2)
 
 c       store the last used restart code that was used to store all the stands.
@@ -199,9 +186,11 @@ c     open/reopen the keyword/output file.
 
       include "GLBLCNTL.F77"
 
+#ifdef _WINDLL
 !DEC$ ATTRIBUTES DLLEXPORT,C,DECORATE :: FVSGETSTOPPOINTCODES
 !DEC$ ATTRIBUTES ALIAS : 'FVSGETSTOPPOINTCODES' :: FVSGETSTOPPOINTCODES
 !DEC$ ATTRIBUTES REFERENCE :: spptcd,spptyr
+#endif
 
       integer :: spptcd,spptyr
       spptcd = minorstopptcode
@@ -214,9 +203,11 @@ c     open/reopen the keyword/output file.
 
       include "GLBLCNTL.F77"
 
+#ifdef _WINDLL
 !DEC$ ATTRIBUTES DLLEXPORT,C,DECORATE :: FVSSETSTOPPOINTCODES
 !DEC$ ATTRIBUTES ALIAS : 'FVSSETSTOPPOINTCODES' :: FVSSETSTOPPOINTCODES
 !DEC$ ATTRIBUTES REFERENCE :: spptcd,spptyr
+#endif
 
       integer :: spptcd,spptyr
       minorstopptcode = spptcd
@@ -230,9 +221,11 @@ c     open/reopen the keyword/output file.
 
       include "GLBLCNTL.F77"
 
+#ifdef _WINDLL
 !DEC$ ATTRIBUTES DLLEXPORT,C,DECORATE :: FVSGETRESTARTCODE
 !DEC$ ATTRIBUTES ALIAS : 'FVSGETRESTARTCODE' :: FVSGETRESTARTCODE
 !DEC$ ATTRIBUTES REFERENCE :: restrtcd
+#endif
 
       integer :: restrtcd
       if (fvsRtnCode == 0) then
@@ -250,6 +243,11 @@ c     open/reopen the keyword/output file.
       implicit none
 
       include "GLBLCNTL.F77"
+
+#ifdef _WINDLL
+!DEC$ ATTRIBUTES DLLEXPORT,C,DECORATE,ALIAS : 'FVSRESTART' :: FVSRESTART
+!DEC$ ATTRIBUTES REFERENCE :: restrtcd
+#endif
 
       integer :: restrtcd
 
@@ -294,9 +292,15 @@ cc     -        " restrtcd=",restrtcd
 
       include "GLBLCNTL.F77"
 
+#ifdef _WINDLL
+!DEC$ ATTRIBUTES DLLEXPORT,C,DECORATE :: FVSRESTARTLASTSTAND
+!DEC$ ATTRIBUTES ALIAS : 'FVSRESTARTLASTSTAND' :: FVSRESTARTLASTSTAND
+!DEC$ ATTRIBUTES REFERENCE :: restrtcd
+#endif
+
       integer :: restrtcd
       if (readFilePos == -1) then
-        call fvsSetRtnCode (1)
+        fvsRtnCode = 1
         restrtcd = fvsRtnCode
       endif
 
@@ -312,9 +316,11 @@ cc     -        " restrtcd=",restrtcd
 
       include "GLBLCNTL.F77"
 
+#ifdef _WINDLL
 !DEC$ ATTRIBUTES DLLEXPORT,C,DECORATE :: FVSGETKEYWORDFILENAME
 !DEC$ ATTRIBUTES ALIAS:'FVSGETKEYWORDFILENAME' :: FVSGETKEYWORDFILENAME
 !DEC$ ATTRIBUTES REFERENCE :: fn,mxch,nch
+#endif
 
       integer :: mxch,nch
       character(mxch) fn
@@ -330,9 +336,11 @@ cc     -        " restrtcd=",restrtcd
       include "GLBLCNTL.F77"
       integer :: rtnCode
 
+#ifdef _WINDLL
 !DEC$ ATTRIBUTES DLLEXPORT,C,DECORATE :: FVSSETRTNCODE
 !DEC$ ATTRIBUTES ALIAS : 'FVSSETRTNCODE' :: FVSSETRTNCODE
 !DEC$ ATTRIBUTES REFERENCE :: rtnCode
+#endif
 
       fvsRtnCode = rtnCode
 
@@ -347,9 +355,11 @@ C     if in an error state, close the files.
       include "GLBLCNTL.F77"
       integer :: rtnCode
 
+#ifdef _WINDLL
 !DEC$ ATTRIBUTES DLLEXPORT,C,DECORATE :: FVSGETRTNCODE
 !DEC$ ATTRIBUTES ALIAS : 'FVSGETRTNCODE' :: FVSGETRTNCODE
 !DEC$ ATTRIBUTES REFERENCE :: rtnCode
+#endif
 
       rtnCode = fvsRtnCode
       return
@@ -371,7 +381,7 @@ c     note that this routine is called during the simulation
       stopstatcd = 0
 cc      print *,"in fvsStopPoint,LOCODE",LOCODE
       if (LOCODE == -1) then
-        restartcode = 100
+        restartcode = 0
         stopstatcd = 2
         ISTOPDONE = 1
         return

@@ -19,7 +19,6 @@
 ../base/src/comp.f
 ../base/src/comprs.f
 ../base/src/covolp.f
-../base/src/cutqfa.f
 ../base/src/cuts.f
 ../base/src/cwidth.f
 ../base/src/damcds.f
@@ -230,7 +229,6 @@
 ../common/GGCOM.F77
 ../common/GLBLCNTL.F77
 ../common/HTCAL.F77
-../common/INCLUDESVN.F77
 ../common/KEYCOM.F77
 ../common/METRIC.F77
 ../common/MULTCM.F77
@@ -348,7 +346,6 @@
 ../fire/base/common/FMPARM.F77
 ../fire/base/common/FMPROP.F77
 ../fire/base/common/FMSVCM.F77
-../fire/base/src/excfim.f
 ../fire/base/src/fmburn.f
 ../fire/base/src/fmcadd.f
 ../fire/base/src/fmcbio.f
@@ -531,6 +528,7 @@
 ../pg/src/ecnget.f
 ../pg/src/ecnput.f
 ../pg/src/fmppget.f
+../pg/src/fmpphv.f
 ../pg/src/fmppput.f
 ../pg/src/getstd.f
 ../pg/src/putgetsubs.f

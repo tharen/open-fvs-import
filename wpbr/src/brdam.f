@@ -1,7 +1,6 @@
       SUBROUTINE BRDAM(II,ICODES)
-      IMPLICIT NONE
 C**********************************************************************
-C  **BRDAM        DATE OF LAST REVISION:  06/05/2014
+C  **BRDAM        DATE OF LAST REVISION:  09/14/2000
 C----------------------------------------------------------------------
 C  Purpose:
 C   This subroutine processes damage codes to determine whether
@@ -38,7 +37,7 @@ C.... Common include files.
 
 C.... Local variable declarations.
 
-      INTEGER ICODES(6), II, J, ISEVRT
+      DIMENSION ICODES(6)
 
 C.... Process damage codes.
 

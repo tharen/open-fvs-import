@@ -1,7 +1,7 @@
       SUBROUTINE DBALL (ICYC)
       IMPLICIT NONE
 C----------
-C  $Id$
+C  **DBALL  DATE OF LAST REVISION:  07/23/08
 C----------
 C
 COMMONS

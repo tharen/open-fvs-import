@@ -1,38 +1,26 @@
-!== last modified  03-12-2014
+!== last modified  11-06-2009
 !== tdh added httwo = httot before prod 08
-C YW added to also check httot > 20 for prod 08 and changed subroutine PROD8 to return zero volume for height < 17.3
-C 01/18/2013 Added stump vol calculation (VOL(14))
-C YW 02/07/2014 Modified TOTHT and HT479 subroutine to make it calculate pulpwood broken height volume. 
-C               Broken height is entered to the field HT1PRD
-C YW 02/26/2014 Modified TOTHT subrouine to have broken height less then HTTWO and also set HTTOT variable when 
-C               total height is passed in with UPSHT1(HTTWO) variable befor cal TOTHT subroutine.
-C YW 03/12/2014 Fixed HT479 for smal tree problem (HT2<17.3)
+!== RNH changed name of include file to R8DIB.INC
       SUBROUTINE R8VOL2(VOLEQ,VOL,DBHOB,HTONE,HTTWO,MTOPP,HTTOT,CTYPE,
      >                  ERRFLAG)
 C      *** SUBROUTINE TO CALCULATE NEW VOLUMES ***
 C      ***          FOR REGION 8               ***
-C      This routine is used for calculating volumes using
-C      Clarks profile models.
-
-C      FVS is allowed to call the 4,7,9 models with total height
-C      only.  The model calculates merch height and returns
-C      appropriate volumes.  FVS calls the pulpwood model to get
-C      ht to the 4" and merch cubic vol.  If it is a saw tree
-C      it calls the 7/9" model and reports total merch as saw
-C      volume plus topwood.
 
 C      *** WRITTEN BY KEN CORMIER AND BRAD JONES ***
 
 C      *** CREATED:  06-18-91 ***
-CREV   Revised TDH 06/01/11 Changed error handling/goto 998.
-    
+C      ***  PASSED VARIABLES ***
+
+      
+      
       IMPLICIT NONE
 
-C      ***  PASSED VARIABLES ***
-      INTEGER ERRFLAG !,I,J
+C      CHARACTER*2 STRC
+      INTEGER ERRFLAG,I,J
       character*10 VOLEQ
 	    CHARACTER*1 CTYPE
       REAL VOL(15),DBHOB,HTONE,HTTWO,DF1,MTOPP,HTTOT,fclss
+
 
 C      *** LOCAL VARIABLES ***
       INTEGER SPEC,GEOA,EQN,SPECPR,GEOAPR,EQNPR,SPGRP
@@ -46,7 +34,8 @@ C      *** LOCAL VARIABLES ***
       REAL DIBMEN(49,3), TOTAL(49,7), NINE(34,6)
       REAL SEVEN(15,6), FOUR(49,6), TOPRAT(3)
       REAL OTOTAL(49,7)
-      
+
+
 C      *** INCLUDE COMMON BLOCKS ***
 
 c       COMMON /AREA3A/ IPOINT,LSTREC,SRTIN,SRTOUT,ERRFLAG,DAX,TMP1,TMP2,
@@ -312,33 +301,21 @@ C      *** ARRAYS FOR HOLDING COEFFICIENTS ***
 
 C     END  ! BLOCK DATA !
 
-C- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
-
       READ(VOLEQ(8:10),'(I3)')SPEC
 C       READ (SP,'(I3)') SPEC
       READ(VOLEQ(2:2),'(I1)')GEOA
 	
 C       GEOA = INT ((VOLEQ(2) - 800) / 10)
-      IF (GEOA.LT.1 .OR. GEOA.GT.9 .OR. GEOA.EQ.8)THEN
-         ERRFLAG = 1
-         GO TO 999
-      ENDIF
+      IF (GEOA.LT.1 .OR. GEOA.GT.9 .OR. GEOA.EQ.8) GO TO 998
 
       READ(VOLEQ(3:3),'(I1)')EQN
 C       EQN  = VOLEQ(2) - (800 + GEOA * 10)
 
-      
-      IF(EQN. NE. 0 .AND. EQN .NE. 4 .AND. EQN .NE. 7 .AND. EQN .NE. 9
-     > .AND. EQN .NE. 8) THEN
-        ERRFLAG = 1  
-        GO TO 999
-      ENDIF
-     
-      IF (EQN.EQ.0 .AND. HTTWO.LT.20 .AND. HTTOT.LT.20) THEN
-        ERRFLAG = 10
-        GO TO 999
-      ENDIF
-      
+      IF(EQN.NE.0.AND.EQN.NE.4.AND.EQN.NE.7.AND.EQN.NE.9.AND.EQN.NE.8)
+     *    GO TO 998
+
+      IF (EQN.EQ.0 .AND. HTTWO.LT.20 .AND. HTTOT.LT.20) GO TO 998
+
       IF (SPEC.EQ.123 .OR. SPEC.EQ.197) THEN
          SPEC = 100
       ELSEIF  (SPEC.EQ.268) THEN       
@@ -361,55 +338,37 @@ c     *********************************************
 c        check for httwo equal zero and totht > 0
       IF((EQN.EQ.4.OR.EQN.EQ.7.OR.EQN.EQ.9).AND.
      >             (HTTOT.GT.0.AND.HTTWO.LE.0.AND.CTYPE.EQ.'F'))THEN
-	  IF(HTTOT .LT. 20) THEN
-	     ERRFLAG = 4
-	     GOTO 999
-        ENDIF
-	  THTFLAG = 1
-	ELSE
-  	  THTFLAG = 0
+	       IF(HTTOT .LT. 20) THEN
+	          ERRFLAG = 4
+	          GOTO 999
+         END IF
+	       THTFLAG = 1
+	    ELSE
+  	     THTFLAG = 0
       ENDIF
 
       IF (SPEC.EQ.SPECPR .AND. EQN.EQ.EQNPR .AND. GEOA.EQ.GEOAPR) THEN
-         
          IF(EQN.EQ.0) THEN
-c  Modified the total height equation work for broken top
-c  The broken height is entered to the field HT1PRD (YW 02/07/2014)
-           IF(HTONE.GT.0.5)THEN
-             IF(HTTOT.LT.0.01) HTTOT = HTTWO
-             CALL TOTHT(VOL,DBHOB,HTTOT,HTONE,FIXDI,SPEC,SPGRP,
-     >              TR,TC,TE,TP,TB,TA,AD,BD,TAF,TBF,TRO,TCO,TEO,
-     >              TPO,TBO,TAO,TAFI,TBFI,THTFLAG)            
-           ELSE
              CALL TOTHT(VOL,DBHOB,HTTOT,HTTWO,FIXDI,SPEC,SPGRP,
      >              TR,TC,TE,TP,TB,TA,AD,BD,TAF,TBF,TRO,TCO,TEO,
-     >              TPO,TBO,TAO,TAFI,TBFI,THTFLAG) 
-           ENDIF
-	   ELSEIF(EQN.EQ.8) THEN
-	      
-	      IF(HTTWO.LT.20.AND.HTTOT.GT.20) HTTWO = HTTOT
+     >              TPO,TBO,TAO,TAFI,TBFI,THTFLAG)       
+	    ELSEIF(EQN.EQ.8) THEN
+	      IF(HTTWO.LT.20) HTTWO = HTTOT
 	      CALL PROD8(VOL,DBHOB,HTTWO,FIXDI,SPEC,SPGRP,TR,TC,TE,TP,TB,
      >       TA,AD,BD,TAF,TBF,TRO,TCO,TEO,TPO,TBO,TAO,TAFI,TBFI,MTOPP)
-     
-         ELSE
-        
-            IF(THTFLAG.EQ.1) THEN
+      ELSE
+        IF(THTFLAG.EQ.1) THEN
                CALL TOTHT(VOL,DBHOB,HTTOT,HTTWO,FIXDI,SPEC,SPGRP,
-     >          TR,TC,TE,TP,TB,TA,AD,BD,TAF,TBF,TRO,TCO,TEO,
-     >          TPO,TBO,TAO,TAFI,TBFI,THTFLAG)       
-	       
-	          HTONE = HTTWO
-	       
-            ENDIF
+     >                TR,TC,TE,TP,TB,TA,AD,BD,TAF,TBF,TRO,TCO,TEO,
+     >                TPO,TBO,TAO,TAFI,TBFI,THTFLAG)       
+	         HTONE = HTTWO
+        ENDIF
 
-            CALL HT479(EQN,VOL,DBHOB,HTONE,HTTWO,FIXDI,FCLSS,SPEC,SPGRP,
-     >           R,C,E,P,Q,AD,BD,AF,BF,TOPRAT)
-
-C        IF FVS, USE FCLASS TO FIND VOLUME TO 4 INCH TOP
-         ENDIF
-        
-        GO TO 999
-      
+        CALL HT479(EQN,VOL,DBHOB,HTONE,HTTWO,FIXDI,FCLSS,SPEC,SPGRP,  
+     >               R,C,E,P,Q,AD,BD,AF,BF,TOPRAT)
+C               IF FVS, USE FCLASS TO FIND VOLUME TO 4 INCH TOP
+	    ENDIF
+         GO TO 999
       ENDIF
       SPECPR = SPEC
       EQNPR = EQN
@@ -446,8 +405,7 @@ C     BINARY SEARCH FOR CORRECT COEFFICIENTS
                 SPECPR = 0
                 EQNPR = 0
                 GEOAPR = 0
-                ERRFLAG = 6
-                GO TO 999
+                GO TO 998
 	!SET GEOAPR TO 9 AND RETRY THE SEARCH
 	       ELSE                  
                 GEOA = 9
@@ -462,10 +420,7 @@ C     BINARY SEARCH FOR CORRECT COEFFICIENTS
 C     END BINARY SEARCH
 
       SPGRP = R8CF(PTR,3) + .5                 
-      IF (SPGRP.NE.100 .AND. SPGRP.NE.300 .AND. SPGRP.NE.500)THEN
-        ERRFLAG = 6
-        GO TO 999
-      ENDIF
+      IF (SPGRP.NE.100 .AND. SPGRP.NE.300 .AND. SPGRP.NE.500) GO TO 998
 
       AD = R8CF(PTR,4)
       BD = R8CF(PTR,5)
@@ -494,10 +449,7 @@ C     END BINARY SEARCH
             FIRST = HALF
          ENDIF
 	!DID NOT FIND A MATCH
-            IF(LASTFLAG.EQ.1 .AND. DONEFLAG.EQ.0) THEN
-               ERRFLAG = 6
-               GO TO 999
-            ENDIF   
+            IF(LASTFLAG.EQ.1 .AND. DONEFLAG.EQ.0) GO TO 998   
    10 CONTINUE
 C     END BINARY SEARCH
 
@@ -529,10 +481,7 @@ C***********************************************************************
                FIRST = HALF 
             ENDIF
 	!DID NOT FIND A MATCH
-            IF(LASTFLAG.EQ.1 .AND. DONEFLAG.EQ.0)THEN
-               ERRFLAG = 6
-               GO TO 999   
-            ENDIF
+            IF(LASTFLAG.EQ.1 .AND. DONEFLAG.EQ.0) GO TO 998   
    20    CONTINUE
 
          TR = TOTAL (TOTCNT,2)
@@ -561,25 +510,16 @@ C***********************************************************************
       ENDIF
 
       IF ((EQN.EQ.0 .OR. EQN.EQ.8)) THEN
-	   IF(HTTWO.LT.20.AND.HTTOT.GT.20) HTTWO = HTTOT
+	   IF(HTTWO.LT.20) HTTWO = HTTOT
 
          IF(EQN.EQ.8) THEN
 	      CALL PROD8(VOL,DBHOB,HTTWO,FIXDI,SPEC,SPGRP,TR,TC,TE,TP,TB,
      >       TA,AD,BD,TAF,TBF,TRO,TCO,TEO,TPO,TBO,TAO,TAFI,TBFI,MTOPP)
          ELSE
-c  Modified the total height equation work for broken top
-c  The broken height is entered to the field HT1PRD (YW 02/07/2014)
-           IF(HTONE.GT.0.5)THEN
-             IF(HTTOT.LT.0.01) HTTOT = HTTWO
-             CALL TOTHT(VOL,DBHOB,HTTOT,HTONE,FIXDI,SPEC,SPGRP,
-     >              TR,TC,TE,TP,TB,TA,AD,BD,TAF,TBF,TRO,TCO,TEO,
-     >              TPO,TBO,TAO,TAFI,TBFI,THTFLAG)            
-           ELSE
-         
            CALL TOTHT(VOL,DBHOB,HTTOT,HTTWO,FIXDI,SPEC,SPGRP,
      >                TR,TC,TE,TP,TB,TA,AD,BD,TAF,TBF,TRO,TCO,TEO,
      >                TPO,TBO,TAO,TAFI,TBFI,THTFLAG)
-           ENDIF
+
 	   ENDIF
 
       ELSEIF (EQN.EQ.4) THEN
@@ -604,10 +544,7 @@ c  The broken height is entered to the field HT1PRD (YW 02/07/2014)
                FIRST = HALF
             ENDIF
 	!DID NOT FIND A MATCH
-            IF(LASTFLAG.EQ.1 .AND. DONEFLAG.EQ.0) THEN
-               ERRFLAG = 6
-               GO TO 999
-            ENDIF
+            IF(LASTFLAG.EQ.1 .AND. DONEFLAG.EQ.0) GO TO 998
    40    CONTINUE
 
          R = FOUR (FOURCNT,2)
@@ -630,8 +567,7 @@ C        IF FVS, USE FCLASS TO FIND VOLUME TO 4 INCH TOP
             I = I + 1
             GO TO 60
          ELSEIF (INT(SEVEN(I,1)+.5).GT.SPEC .OR. I.GT.15) THEN
-            ERRFLAG = 6
-            GO TO 999
+            GO TO 998
          ENDIF
 
          R = SEVEN (I,2)
@@ -669,10 +605,7 @@ C        IF FVS, USE FCLSS TO FIND VOLUME TO 4 INCH TOP
                FIRST = HALF
             ENDIF
 	!DID NOT FIND A MATCH
-            IF(LASTFLAG.EQ.1 .AND. DONEFLAG.EQ.0) THEN
-               ERRFLAG = 6
-               GO TO 999
-            ENDIF
+            IF(LASTFLAG.EQ.1 .AND. DONEFLAG.EQ.0) GO TO 998
    80    CONTINUE
          R = NINE(NINECNT,2)
          C = NINE(NINECNT,3)
@@ -687,13 +620,15 @@ C        IF FVS, USE FCLSS TO FIND VOLUME TO 4 INCH TOP
 C        IF FVS, USE FCLASS TO FIND VOLUME TO 4 INCH TOP
 
       ELSE
-      !   GO TO 998
+         GO TO 998
 
       ENDIF
-      
- 999  CONTINUE
+
+      GO TO 999
+
+ 998  ERRFLAG = 6
  
-      RETURN
+ 999  RETURN
       END
 
 
@@ -716,11 +651,7 @@ C      *** DECLARE LOCAL VARIABLES ***
      >      HT,SEG1,SEG2,SEG3,LOWER,UPPER,L1,L2,L3,U1,U2,U3,S1,S2,S3,
      >      VO,WO,XO,YO,ZO,DBH2,DBH3,FCDOB,FCDOB2,UPPERD,UPPERD2
       INTEGER IS,IB,IT,IM,I1,I2,I3,I4,I5,I6
-      REAL FCMIN, FCDIB, VOLINI,DIB,HT2TMP
-      
-C     ***Testing variables
-      REAL FCLSCLC
-      FCLSCLC = 0.0
+      REAL FCMIN, FCDIB, VOLINI,DIB
 
       VOLINI = 0.0
       FCDIB = 0.0
@@ -735,8 +666,7 @@ C      CALCULATE DIAMETER AT 17.3 FEET (FORMCLASS)
 C      THT = TREEHT
 
   2   FCLSS = DBH * (AF + BF * (17.3/THT)**2)
-      FCLSCLC = FCLSS
-      IF (FCLSS.LT.0.0) FCLSS = 0.0
+      IF (FCLSS.LT.0) FCLSS = 0.0
 
       IF (SPEC.EQ.221 .OR. SPEC.EQ.222 .OR. SPEC.EQ.544) GO TO 8
 
@@ -804,25 +734,21 @@ C      SET INDICATOR VARIABLES
 
 C      CALCULATE HEIGHT  *******************************************
 
-C     Save HTTWO to a tmp variable
-      HT2TMP = HTTWO
+
 C -- INITIALIZE SEG* VARIABLES
-       IF(IS.EQ.1) THEN
+      IF(IS.EQ.1) THEN
          HTTWO = THT*(1-((UPPERD2/DBH2-1)/WO+VO)**(1/RO))
-       ELSEIF(IB.EQ.1) THEN
+      ELSEIF(IB.EQ.1) THEN
          HTTWO = THT*(1-(XO-(DBH2-UPPERD2)/ZO)**(1/PO))
-       ELSE
+      ELSE
           V1 = THT - 17.3
           QA = BO + IM*((1-BO)/AO**2)
           QB = -2 * BO - IM * 2*((1-BO)/AO)
           QC = BO + (1-BO)*IM - UPPERD2/FCDOB2
           V2 = (-QB - (SQRT(QB**2 - 4*QA*QC)))/(2*QA)
           HTTWO = (17.3 + V1*V2)
-       ENDIF
-C -- When broken height is entered, use the broken height to calc volume
-      IF(HT2TMP.GT.0.1.AND.HT2TMP.LT.HTTWO)THEN
-        HTTWO = HT2TMP
       ENDIF
+
 c     height to the upper top
       IF (HTTWO.LT.4.5) HTTWO = 4.5
        
@@ -894,14 +820,6 @@ C      CALCULATE CUBIC VOLUME
       IF (VOL(4).LT.0.3) VOL(4) = 0.3
 c      VOL(5) = VOL(4)
 
-c      OPEN (UNIT=FCLSOUT, FILE='fclass.txt', ACCESS = 'APPEND',
-c     &       STATUS='UNKNOWN')
-c	       WRITE (FCLSOUT,100)DBH,',',FCLSS,',',FCLSCLC
-c 100         FORMAT(F4.1,A,F4.1,A,F4.1)
-c      CLOSE(FCLSOUT)
-C      Calculate stump vol
-       VOL(14)=0.005454154*DIB**2*LOWER       
-
   998 RETURN
       END
 
@@ -921,17 +839,9 @@ C      *** DECLARE PASSED VARIABLES ***
        REAL TOPRAT(3)
 
 C      *** DECLARE LOCAL VARIABLES ***
-       REAL VOL4,VOLM,VOL79,NLE,YR,AT,BT,CT,STFAC,STUMP
-       REAL DIB,FCLSS,HT, HT1, HT2, FCMIN, FCDIB, VOLINI     
-       
-C     ***Testing variables
-      REAL FCLSCLC
-      FCLSCLC = 0.0 
-      IF(EQN.EQ.4)THEN
-        STUMP=0.5
-      ELSE
-        STUMP=1.0
-      ENDIF
+       REAL VOL4,VOLM,VOL79,NLE,YR,AT,BT,CT,STFAC
+       REAL DIB,FCLSS,HT, HT1, HT2, FCMIN, FCDIB, VOLINI      
+
        VOLINI = 0.0                                           
        FCDIB = 0.0                                            
        HT1 = THT1
@@ -940,23 +850,10 @@ C     ***Testing variables
        STFAC = 1.0
        IF (EQN.EQ.4) THEN
          IF (HT2.LE.17.3) THEN
-C This fix small tree problem for the 20140227 fix         
-           IF (HT1.GT.0.0.AND.THT1.LT.THT2) THEN
-C           Broken height recorded
-              STFAC = (THT1 - 0.5) / (17.31 - 0.5)
-              HT1 = 17.31
-            ELSE
-              STFAC = (THT2 - 0.5) / (17.31 - 0.5)
-              HT2 = 17.31
-            ENDIF
+           STFAC = (THT2 - 0.5) / (17.31 - 0.5)
+           HT2 = 17.31
          ENDIF
-C Modified the 4" height equation to work for broken height
-C The broken height is entered to the field HT1PRD (YW 02/07/2014)
-         IF(THT1.GT.0.0.AND.THT1.LT.THT2) THEN
-           HT = HT1
-         ELSE
-           HT = HT2
-         ENDIF
+         HT = HT2
        ELSE IF (EQN.EQ.7.OR.EQN.EQ.9) THEN
          IF (HT2.LE.17.3) THEN
            STFAC = (HT1 - 1.0) / (17.3 - 1.0)
@@ -974,7 +871,6 @@ C      CALCULATE DBH INSIDE BARK
 C      CALCULATE DIAMETER AT 17.3 FEET (FORMCLASS)
 
    2   FCLSS = DBH * (AF + BF * (17.3/HT2)**2)
-       FCLSCLC = FCLSS
        IF (FCLSS.LT.FIXDI) FCLSS = FIXDI
 
        IF (SPEC.EQ.221 .OR. SPEC.EQ.222 .OR. SPEC.EQ.544) GO TO 8
@@ -1071,7 +967,7 @@ c         VOL(5) = VOL(4) - (VOL(4)*DEF1)/100
          VOL4 = YR * VOL79 * STFAC
          VOL(7) = VOL4 - vol(4)
          VOL(8) = VOL(7)
- 
+
        ELSE
          VOL(5) = VOL(4)
 C--  USE VOL(4) INSTEAD OF VOLM BECAUSE IT HAS BEEN ADJUSTED
@@ -1079,13 +975,6 @@ C--  FOR SHORT PULPWOOD TREES
 C--      VOL(5) = VOLM
 
        ENDIF
-C      Calculate stump vol
-       VOL(14)=0.005454154*DIB**2*STUMP       
-!       OPEN (UNIT=FCLSOUT, FILE='fclass.txt', ACCESS = 'APPEND',
-!     &       STATUS='UNKNOWN')
-!	       WRITE (FCLSOUT,100)DBH,',',FCLSS,',',FCLSCLC
-! 100         FORMAT(F4.1,A,F4.1,A,F4.1)
-!      CLOSE(FCLSOUT)
 
  999   RETURN
        END
@@ -1269,13 +1158,6 @@ C      *** DECLARE LOCAL VARIABLES ***
       INTEGER LAST,TOPLOP,I,FIRST,HALF,ERRFLG
       REAL MHT,TOP1,MINLEN,STUMP,HT2,VOLM,VOL4,Q
 	
-C     return Zero volume for tree height less than 17.3 (YW 10/11/2012)
-	IF (TREEHT.LT.17.3) THEN
-	  VOL(4) = 0.0
-	  VOL(7) = 0.0
-	  RETURN
-	ENDIF
-	
       MINLEN = 12.0
 	STUMP = 0.5
       Q = 0
@@ -1438,13 +1320,10 @@ C     IF HEIGHT MINUS STUMP IS GE 12.0, FIND VOLUME
 C     FIND TOPWOOD VOLUME
          VOL(4) = VOLM
 	   VOL(7) = VOL4 - VOLM
-	   IF(VOL(7).LT.0.0001) VOL(7) = 0.0
 	 ELSE
 	   VOL(4) = 0
          VOL(7) = VOL4
        ENDIF
-C     calculate stump vol
-      VOL(14)=0.005454154*DBHIB**2*STUMP       
 C     RETURN VOLUMES
 
 

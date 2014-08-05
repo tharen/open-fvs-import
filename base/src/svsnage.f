@@ -1,7 +1,7 @@
       SUBROUTINE SVSNAGE(IYEAR,IDEAD,SNCRDI,SNCRTO,SNHT,SNDI)
       IMPLICIT NONE
 C----------
-C  $Id$
+C  **SVSNAGE--BASE  DATE OF LAST REVISION: 11/30/09
 C----------
 C
 C     STAND VISUALIZATION GENERATION
@@ -52,11 +52,11 @@ C
 COMMONS
 
       CHARACTER VVER*7
-      INTEGER IDEAD, ISTMLT, ITIDIF, ITSTYR, ICURYR,
-     &        IYEAR, J, KSP, NFALLD
-      REAL    DFALLN, DKTIME, EXPFALL, FALLNUM, FALRATE,
+      INTEGER HRATE2, IDEAD, ISTMLT, ISVOBJ, ITIDIF, ITSTYR, ICURYR,
+     &        IYEAR, J, K, KSP, NFALLD
+      REAL    DFALLN, DKTIME, EXPFALL, FACTOR, FALLNUM, FALRATE,
      &        HTSNEW, PFALL, RSMAL, RSOFT, SNCRDI, SNCRTO, SNDI,
-     &        SNHT, X, X1, XHMOD, XPROB
+     &        SNHT, X, X1, XHMOD, XPROB, Y
       DOUBLE PRECISION SAVESO
       LOGICAL DEBUG, LDOWN
       DATA ITSTYR / -999 /
@@ -144,9 +144,9 @@ C  the sign on the status code--it'll be set back at the end of this
 C  routine.
 C----------
       IF ( ISTATUS(IDEAD) .LT. 0 ) THEN
-         ISTMLT = -1
+         ISTMLT = (-1.0)
       ELSE
-         ISTMLT = 1
+         ISTMLT = 1.0
       ENDIF
       ISTATUS(IDEAD) = ISTATUS(IDEAD) * ISTMLT
 

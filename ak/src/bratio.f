@@ -1,7 +1,7 @@
       FUNCTION BRATIO(IS,D,H)
       IMPLICIT NONE
 C----------
-C  **BRATIO--AK   DATE OF LAST REVISION:  09/09/13
+C  **BRATIO--AK   DATE OF LAST REVISION:  05/08/12
 C
 C     SPECIES LIST FOR ALASKA VARIANT.
 C
@@ -26,12 +26,8 @@ C----------
 C  RED ALDER AND COTTONWOOD (FROM PN VARIANT)
 C----------
       IF(IS.EQ.10 .OR. IS.EQ.11) THEN
-        IF (D .GT. 0) THEN
-          DIB=0.075256 + 0.94373*D
-          BRATIO=DIB/D
-        ELSE
-          BRATIO = 0.99
-        ENDIF
+        DIB=0.075256 + 0.94373*D
+        BRATIO=DIB/D
       ELSE
 C----------
 C  EQUATIONS FOR OTHER SPECIES

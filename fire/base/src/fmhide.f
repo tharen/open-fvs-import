@@ -1,7 +1,7 @@
       SUBROUTINE FMHIDE (ISTD, IYR)
       IMPLICIT NONE
 C----------
-C  $Id$
+C  **FMHIDE  FIRE--DATE OF LAST REVISION:  09/29/09
 C----------
 C
 C     CALLED FROM: FMMAIN 

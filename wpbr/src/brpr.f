@@ -1,7 +1,6 @@
       SUBROUTINE BRPR
-      IMPLICIT NONE
 C**********************************************************************
-C  **BRPR         DATE OF LAST REVISION:  06/05/2014
+C  **BRPR         DATE OF LAST REVISION:  05/01/1994
 C----------------------------------------------------------------------
 C  Purpose:
 C  BRPR performs the following functions:
@@ -37,7 +36,7 @@ C.... See if we need to do some debug.
 
       CALL DBCHK(DEBUG,'BRPR',4,ICYC)
       IF(DEBUG) WRITE(JOSTND,10) ICYC
-   10 FORMAT('Entering subroutine BRPR: cycle = ',I2)
+   10 FORMAT(' Entering subroutine BRPR: cycle = ',I2)
 
 C.... See if Blister Rust model is being used in this simulation.
 C.... If not, then return.
@@ -79,6 +78,6 @@ C.... Common return.
 
    90 CONTINUE
       IF(DEBUG) WRITE(JOSTND,100) ICYC
-  100 FORMAT('Leaving subroutine BRPR: cycle = ',I2)
+  100 FORMAT(' Leaving subroutine BRPR: cycle = ',I2)
       RETURN
       END

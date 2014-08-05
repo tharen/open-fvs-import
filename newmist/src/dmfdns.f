@@ -1,8 +1,6 @@
       SUBROUTINE DMFDNS (Sp, Ptr, Index, P, D)
-      IMPLICIT NONE
-C----------
-C  $Id$
-C----------
+
+C********************************************************************
 C **DMFDNS -- NISI  Date of last revision April 7 1994
 C--------------------------------------------------------------------
 C Purpose:

@@ -1,7 +1,7 @@
       SUBROUTINE EVKEY (CTOK,NUM,IRC)
       IMPLICIT NONE
 C----------
-C  $Id$
+C  **EVKEY  DATE OF LAST REVISION:  07/23/08
 C----------
 C
 C     CALLED FROM ALGCMP

@@ -1,10 +1,7 @@
       SUBROUTINE FMCFIM (IYR, FMD, UWIND, IBYRAM, FLAMEHT, CANBURN, ROS)
       IMPLICIT NONE
-C
-C  $Id$
-C
 C----------
-C  **FMCFIM  FIRE-BC
+C  **FMCFIM  FIRE--DATE OF LAST REVISION:  3/27/11
 C----------
 C
 C     CALLED FROM: FMBURN
@@ -33,7 +30,7 @@ C
 C
 COMMONS
 C
-      integer iyr, RC
+      integer iyr
       integer FMD
       character VVER*7
       real CFIM_OUTPUT(10)
@@ -47,11 +44,16 @@ C
       INTEGER CANBURN, INB
       REAL ACTWFC, ACTFFC, FFC, WFC, SURFUEL
 
-      !DEC$ ATTRIBUTES DLLIMPORT :: CFIM_DRIVER
-
-      !DEC$ ATTRIBUTES ALIAS : '_CFIM_DRIVER' :: CFIM_DRIVER
-      
-      integer CFIM_DRIVER   
+      interface
+	  subroutine CFIM_DRIVER(CFIM_INPUT,CFIM_OUTPUT,FMINFO)
+        !dec$ attributes alias:'_CFIM_DRIVER'::CFIM_DRIVER
+        real      CFIM_INPUT(*)
+	  real      CFIM_OUTPUT(*)
+        real      FMINFO(*)
+	  end subroutine
+      end interface
+!      external CFIM_driver
+!      integer  CFIM_driver
 
 C     check for debug
 
@@ -70,7 +72,7 @@ C     heat_content(J/kg)---hc						18600.0
       CFIM_INPUT(18) = 18600.0
 
 C     DEPENDS ON STAND CONDITION OR USER-DEFINED FIRE VARIABLES
-C     10m_wind(m/s)---10   (test=7)   
+C     10m_wind(m/s)---u10   (test=7)   
       MWIND = UWIND * MItoKM * 1000. / (60. * 60.)
       CFIM_INPUT(1) = MWIND
       
@@ -167,8 +169,7 @@ C       DEPTH AND MOIS OF EXTINCTION
           FMINFO(12) = DEPTH
           FMINFO(13) = MEXT(1)
 
-        RC = 0
-        RC = CFIM_DRIVER(CFIM_INPUT,CFIM_OUTPUT,FMINFO)
+        CALL CFIM_DRIVER(CFIM_INPUT,CFIM_OUTPUT,FMINFO)
 
 C	    CFIM_output[0] = maxparttemp;
 C	    CFIM_output[1] = flag;0.

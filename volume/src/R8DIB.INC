@@ -1,6 +1,4 @@
-c== last modified  10-21-2002
-
-      INTEGER I,J
+c== last modified  02-08-2012
       
       REAL R8CF(182,18)
       

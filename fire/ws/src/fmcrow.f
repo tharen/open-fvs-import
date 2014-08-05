@@ -1,7 +1,7 @@
       SUBROUTINE FMCROW
       IMPLICIT NONE
 C----------
-C  **FMCROW  FIRE-WS DATE OF LAST REVISION:  10/29/13
+C  **FMCROW  FIRE-WS DATE OF LAST REVISION:  01/10/12
 C----------
 C     CALLED FROM: FMSDIT, FMPRUN
 C     CALLS        RDPSRT
@@ -85,9 +85,9 @@ C    21 = GB BRISTLECONE PINE      -                 9
 C    22 = BIGCONE DOUGLAS-FIR      Douglas-fir       3
 C    23 = REDWOOD                  giant sequoia    19
 C    24 = MOUNTAIN HEMLOCK         -                24
-C    25 = WESTERN JUNIPER          juniper          16
-C    26 = UTAH JUNIPER             juniper          16
-C    27 = CALIFORNIA JUNIPER       juniper          16
+C    25 = WESTERN JUNIPER          R.M. juniper     16
+C    26 = UTAH JUNIPER             lodgepole pine   16
+C    27 = CALIFORNIA JUNIPER       lodgepole pine   16
 C    28 = CALIFORNIA LIVE OAK      tanoak           17
 C    29 = CANYON LIVE OAK          tanoak           17
 C    30 = BLUE OAK                 CA black oak     21
@@ -174,8 +174,6 @@ C       COPY TEMPORARY VALUES TO FFE ARRAY
 
         DO J = 0,5
           CROWNW(I,J) = XV(J)
-          IF (DEBUG) WRITE(JOSTND,*) 'I=',I,' size=',J,
-     &    ' CROWNW=',CROWNW(I,J)
         ENDDO
 
   999 CONTINUE

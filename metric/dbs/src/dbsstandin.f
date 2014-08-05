@@ -1,14 +1,17 @@
       SUBROUTINE DBSSTANDIN(SQLSTR,LKECHO)
-      IMPLICIT NONE
-C----------
-C  $Id$
-C----------
+C
+C  **DBSSTANDIN--DBS/M  DATE OF LAST REVISION:  11/21/12
+C
 C     PURPOSE: TO POPULATE FVS STAND LEVEL DATA FROM THE DATABASE
 C     AUTH: D. GAMMEL -- SEM -- AUGUST 2002
 C     OVERHAUL: NL CROOKTON -- RMRS MOSCOW -- SEPTEMBER 2004
 C---
 COMMONS
-
+      use f90SQLConstants
+      use f90SQLStructures
+      use f90SQL
+      IMPLICIT NONE
+C
       INCLUDE  'PRGPRM.F77'
       INCLUDE  'ARRAYS.F77'
       INCLUDE  'COEFFS.F77'
@@ -24,8 +27,10 @@ COMMONS
       INCLUDE  'VARCOM.F77'
       INCLUDE  'DBSCOM.F77'
       INCLUDE  'METRIC.F77'
+
 COMMONS
-      CHARACTER*100 ColName
+
+      CHARACTER*21 ColName
       CHARACTER*5000 SQLSTR
       CHARACTER*20 KARD12
       CHARACTER(LEN=11) CECOREG
@@ -165,7 +170,8 @@ C     MAKE SURE WE HAVE AN OPEN CONNECTION
 
 C     ALLOCATE A STATEMENT HANDLE
 
-      iRet = fvsSQLAllocHandle(SQL_HANDLE_STMT,ConnHndlIn,StmtHndlIn)
+      CALL f90SQLAllocHandle(SQL_HANDLE_STMT,ConnHndlIn,StmtHndlIn,
+     -                          iRet)
       IF (iRet.NE.SQL_SUCCESS .AND.
      -    iRet.NE. SQL_SUCCESS_WITH_INFO) THEN
         CALL  DBSDIAGS(SQL_HANDLE_DBC,ConnHndlIn,
@@ -174,8 +180,7 @@ C     ALLOCATE A STATEMENT HANDLE
 
 C       EXECUTE QUERY
 
-        iRet=fvsSQLExecDirect(StmtHndlIn,trim(SQLSTR),
-     -            int(len_trim(SQLSTR),SQLINTEGER_KIND))
+        CALL f90SQLExecDirect(StmtHndlIn,trim(SQLSTR),iRet)
 
         CALL DBSDIAGS(SQL_HANDLE_STMT,StmtHndlIn,
      -             'STANDIN:Query: '//trim(SQLSTR))
@@ -183,14 +188,13 @@ C       EXECUTE QUERY
 
 C     GET NUMBER OF COLUMNS RETURNED
 
-      iRet = fvsSQLNumResultCols(StmtHndlIn,ColumnCount)
+      CALL f90SQLNumResultCols(StmtHndlIn,ColumnCount,iRet)
 
 C     INITIALIZE DATA ARRAY THAT BINDS TO COLUMNS
-      DO ColNumber = 1,ColumnCount
 
-        iRet = fvsSQLDescribeCol (StmtHndlIn, ColNumber, ColName,
-     -   int(LEN(ColName),SQLSMALLINT_KIND), NameLen, DType,
-     -   NColSz, NDecs, Nullable)
+      DO ColNumber = 1,ColumnCount
+        CALL f90SQLDescribeCol (StmtHndlIn, ColNumber, ColName,
+     -   NameLen, DType, NColSz, NDecs, Nullable, iRet)
 
         DO I = 1, NameLen
           CALL UPCASE(ColName(I:I))
@@ -201,269 +205,263 @@ C       BIND COLUMNS TO THEIR VARIABLES
         SELECT CASE(ColName(1:NameLen))
 
          CASE('STAND_CN')
-          iRet = fvsSQLBindCol (StmtHndlIn,ColNumber,SQL_F_CHAR,
-     -           TMP_DBCN,int(LEN(TMP_DBCN),SQLLEN_KIND),
-     -           DBCN_LI)
+          CALL f90SQLBindCol (StmtHndlIn,ColNumber,SQL_F_CHAR,
+     -       TMP_DBCN,loc(DBCN_LI), iRet)
 
          CASE('STAND_ID')
-          IF(DType.EQ.SQL_CHAR.OR.DType.EQ.SQL_VARCHAR.OR.
-     -       DType.EQ.SQL_LONGVARCHAR) THEN
-
-            iRet = fvsSQLBindCol (StmtHndlIn,ColNumber,SQL_F_CHAR,
-     -        CSTAND,int(LEN(CSTAND),SQLLEN_KIND),Stand_LI)
+          IF(DType.EQ.SQL_CHAR.OR.DType.EQ.SQL_VARCHAR) THEN
+            CALL f90SQLBindCol (StmtHndlIn,ColNumber,SQL_F_CHAR,
+     -        CSTAND,loc(Stand_LI), iRet)
             LSTDISNUM=.FALSE.
           ELSE
-            iRet = fvsSQLBindCol (StmtHndlIn,ColNumber,SQL_F_INTEGER,
-     -        ISTANDDATA(28),int(4,SQLLEN_KIND),Stand_LI)
+            CALL f90SQLBindCol (StmtHndlIn,ColNumber,SQL_F_SLONG,
+     -        ISTANDDATA(28),loc(Stand_LI), iRet)
             LSTDISNUM=.TRUE.
           ENDIF
 
          CASE('INV_YEAR')
-          iRet = fvsSQLBindCol (StmtHndlIn,ColNumber,SQL_F_INTEGER,
-     -        ISTANDDATA(1),int(4,SQLLEN_KIND),IY_LI)
+          CALL f90SQLBindCol (StmtHndlIn,ColNumber,SQL_F_SLONG,
+     -        ISTANDDATA(1),loc(IY_LI), iRet)
 
          CASE('LATITUDE')
-          iRet = fvsSQLBindCol (StmtHndlIn,ColNumber,SQL_F_FLOAT,
-     -        RSTANDDATA(2),int(4,SQLLEN_KIND),Lat_LI)
+          CALL f90SQLBindCol (StmtHndlIn,ColNumber,SQL_F_FLOAT,
+     -        RSTANDDATA(2),loc(Lat_LI), iRet)
 
          CASE('LONGITUDE')
-          iRet = fvsSQLBindCol (StmtHndlIn,ColNumber,SQL_F_FLOAT,
-     -        RSTANDDATA(3),int(4,SQLLEN_KIND),Long_LI)
+          CALL f90SQLBindCol (StmtHndlIn,ColNumber,SQL_F_FLOAT,
+     -        RSTANDDATA(3),loc(Long_LI), iRet)
 
          CASE('REGION')
-          iRet = fvsSQLBindCol (StmtHndlIn,ColNumber,SQL_F_INTEGER,
-     -        ISTANDDATA(29),int(4,SQLLEN_KIND),Region_LI)
+          CALL f90SQLBindCol (StmtHndlIn,ColNumber,SQL_F_SLONG,
+     -        ISTANDDATA(29),loc(Region_LI), iRet)
 
          CASE('FOREST')
-          iRet = fvsSQLBindCol (StmtHndlIn,ColNumber,SQL_F_INTEGER,
-     -        ISTANDDATA(30),int(4,SQLLEN_KIND),Forest_LI)
+          CALL f90SQLBindCol (StmtHndlIn,ColNumber,SQL_F_SLONG,
+     -        ISTANDDATA(30),loc(Forest_LI), iRet)
 
          CASE('DISTRICT')
-          iRet = fvsSQLBindCol (StmtHndlIn,ColNumber,SQL_F_INTEGER,
-     -        ISTANDDATA(31),int(4,SQLLEN_KIND),District_LI)
+          CALL f90SQLBindCol (StmtHndlIn,ColNumber,SQL_F_SLONG,
+     -        ISTANDDATA(31),loc(District_LI), iRet)
 
          CASE('COMPARTMENT')
-          iRet = fvsSQLBindCol (StmtHndlIn,ColNumber,SQL_F_INTEGER,
-     -        ISTANDDATA(32),int(4,SQLLEN_KIND),Compartment_LI)
+          CALL f90SQLBindCol (StmtHndlIn,ColNumber,SQL_F_SLONG,
+     -        ISTANDDATA(32),loc(Compartment_LI), iRet)
 
-         CASE('ECOREGION')
-          IF(DType.EQ.SQL_CHAR.OR.DType.EQ.SQL_VARCHAR.OR.
-     -       DType.EQ.SQL_LONGVARCHAR) THEN
-            iRet = fvsSQLBindCol (StmtHndlIn,ColNumber,SQL_F_CHAR,
-     -        CECOREG,int(LEN(CECOREG),SQLLEN_KIND),Ecoregion_LI)
+         CASE('ECOREGION')  
+          IF(DType.EQ.SQL_CHAR.OR.DType.EQ.SQL_VARCHAR) THEN
+            CALL f90SQLBindCol (StmtHndlIn,ColNumber,SQL_F_CHAR,
+     -        CECOREG,loc(Ecoregion_LI), iRet)
             LECOISNUM =.FALSE.
           ELSE
-            iRet = fvsSQLBindCol (StmtHndlIn,ColNumber,SQL_F_INTEGER,
-     -        ISTANDDATA(54),int(4,SQLLEN_KIND),Ecoregion_LI)
+            CALL f90SQLBindCol (StmtHndlIn,ColNumber,SQL_F_SLONG,
+     -        ISTANDDATA(54),loc(Ecoregion_LI), iRet)
             LECOISNUM=.TRUE.
           ENDIF
 
          CASE('LOCATION')
-          iRet = fvsSQLBindCol (StmtHndlIn,ColNumber,SQL_F_INTEGER,
-     -        ISTANDDATA(4),int(4,SQLLEN_KIND),Location_LI)
+          CALL f90SQLBindCol (StmtHndlIn,ColNumber,SQL_F_SLONG,
+     -        ISTANDDATA(4),loc(Location_LI), iRet)
 
          CASE('HABITAT','PV_CODE')
-          IF(DType.EQ.SQL_CHAR.OR.DType.EQ.SQL_VARCHAR.OR.
-     -       DType.EQ.SQL_LONGVARCHAR) THEN
-            iRet = fvsSQLBindCol (StmtHndlIn,ColNumber,SQL_F_CHAR,
-     -        CHAB,int(LEN(CHAB),SQLLEN_KIND),Habitat_LI)
+          IF(DType.EQ.SQL_CHAR.OR.DType.EQ.SQL_VARCHAR) THEN
+            CALL f90SQLBindCol (StmtHndlIn,ColNumber,SQL_F_CHAR,
+     -        CHAB,loc(Habitat_LI), iRet)
             LHABISNUM =.FALSE.
           ELSE
-            iRet = fvsSQLBindCol (StmtHndlIn,ColNumber,SQL_F_INTEGER,
-     -        ISTANDDATA(5),int(4,SQLLEN_KIND),Habitat_LI)
+            CALL f90SQLBindCol (StmtHndlIn,ColNumber,SQL_F_SLONG,
+     -        ISTANDDATA(5),loc(Habitat_LI), iRet)
             LHABISNUM=.TRUE.
           ENDIF
 
          CASE('PV_REF_CODE')
-          iRet = fvsSQLBindCol (StmtHndlIn,ColNumber,SQL_F_INTEGER,
-     -        NUMPVREF,int(4,SQLLEN_KIND),PvRefCode_LI)
+          CALL f90SQLBindCol (StmtHndlIn,ColNumber,SQL_F_SLONG,
+     -        NUMPVREF,loc(PvRefCode_LI), iRet)
 
          CASE('AGE')
-          iRet = fvsSQLBindCol (StmtHndlIn,ColNumber,SQL_F_INTEGER,
-     -        ISTANDDATA(6),int(4,SQLLEN_KIND),Age_LI)
+          CALL f90SQLBindCol (StmtHndlIn,ColNumber,SQL_F_SLONG,
+     -        ISTANDDATA(6),loc(Age_LI), iRet)
 
          CASE('ASPECT')
-          iRet = fvsSQLBindCol (StmtHndlIn,ColNumber,SQL_F_FLOAT,
-     -        RSTANDDATA(7),int(4,SQLLEN_KIND),Aspect_LI)
+          CALL f90SQLBindCol (StmtHndlIn,ColNumber,SQL_F_FLOAT,
+     -        RSTANDDATA(7),loc(Aspect_LI), iRet)
 
          CASE('SLOPE')
-          iRet = fvsSQLBindCol (StmtHndlIn,ColNumber,SQL_F_FLOAT,
-     -        RSTANDDATA(8),int(4,SQLLEN_KIND),Slope_LI)
+          CALL f90SQLBindCol (StmtHndlIn,ColNumber,SQL_F_FLOAT,
+     -        RSTANDDATA(8),loc(Slope_LI), iRet)
 
          CASE('ELEVATION')
-          iRet = fvsSQLBindCol (StmtHndlIn,ColNumber,SQL_F_FLOAT,
-     -        RSTANDDATA(9),int(4,SQLLEN_KIND),Elev_LI)
+          CALL f90SQLBindCol (StmtHndlIn,ColNumber,SQL_F_FLOAT,
+     -        RSTANDDATA(9),loc(Elev_LI), iRet)
 
          CASE('ELEVFT')
-          iRet = fvsSQLBindCol (StmtHndlIn,ColNumber,SQL_F_FLOAT,
-     -        RSTANDDATA(33),int(4,SQLLEN_KIND),ElevFt_LI)
+          CALL f90SQLBindCol (StmtHndlIn,ColNumber,SQL_F_FLOAT,
+     -        RSTANDDATA(33),loc(ElevFt_LI), iRet)
 
          CASE('BASAL_AREA_FACTOR')
-          iRet = fvsSQLBindCol (StmtHndlIn,ColNumber,SQL_F_FLOAT,
-     -        RSTANDDATA(10),int(4,SQLLEN_KIND),Basal_LI)
+          CALL f90SQLBindCol (StmtHndlIn,ColNumber,SQL_F_FLOAT,
+     -        RSTANDDATA(10),loc(Basal_LI), iRet)
 
          CASE('INV_PLOT_SIZE')
-          iRet = fvsSQLBindCol (StmtHndlIn,ColNumber,SQL_F_FLOAT,
-     -        RSTANDDATA(11),int(4,SQLLEN_KIND),PlotArea_LI)
+          CALL f90SQLBindCol (StmtHndlIn,ColNumber,SQL_F_FLOAT,
+     -        RSTANDDATA(11),loc(PlotArea_LI), iRet)
 
          CASE('BRK_DBH')
-          iRet = fvsSQLBindCol (StmtHndlIn,ColNumber,SQL_F_FLOAT,
-     -        RSTANDDATA(12),int(4,SQLLEN_KIND),BPDBH_LI)
+          CALL f90SQLBindCol (StmtHndlIn,ColNumber,SQL_F_FLOAT,
+     -        RSTANDDATA(12),loc(BPDBH_LI), iRet)
 
          CASE('NUM_PLOTS')
-          iRet = fvsSQLBindCol (StmtHndlIn,ColNumber,SQL_F_INTEGER,
-     -        ISTANDDATA(13),int(4,SQLLEN_KIND),NumPlots_LI)
+          CALL f90SQLBindCol (StmtHndlIn,ColNumber,SQL_F_SLONG,
+     -        ISTANDDATA(13),loc(NumPlots_LI), iRet)
 
          CASE('NONSTK_PLOTS')
-          iRet = fvsSQLBindCol (StmtHndlIn,ColNumber,SQL_F_INTEGER,
-     -        ISTANDDATA(14),int(4,SQLLEN_KIND),NonStock_LI)
+          CALL f90SQLBindCol (StmtHndlIn,ColNumber,SQL_F_SLONG,
+     -        ISTANDDATA(14),loc(NonStock_LI), iRet)
 
          CASE('SAM_WT')
-          iRet = fvsSQLBindCol (StmtHndlIn,ColNumber,SQL_F_FLOAT,
-     -        RSTANDDATA(15),int(4,SQLLEN_KIND),SamWt_LI)
+          CALL f90SQLBindCol (StmtHndlIn,ColNumber,SQL_F_FLOAT,
+     -        RSTANDDATA(15),loc(SamWt_LI), iRet)
 
          CASE('STK_PCNT')
-          iRet = fvsSQLBindCol (StmtHndlIn,ColNumber,SQL_F_FLOAT,
-     -        RSTANDDATA(16),int(4,SQLLEN_KIND),Stock_LI)
+          CALL f90SQLBindCol (StmtHndlIn,ColNumber,SQL_F_FLOAT,
+     -        RSTANDDATA(16),loc(Stock_LI), iRet)
 
          CASE('DG_TRANS')
-          iRet = fvsSQLBindCol (StmtHndlIn,ColNumber,SQL_F_INTEGER,
-     -        ISTANDDATA(17),int(4,SQLLEN_KIND),DGT_LI)
+          CALL f90SQLBindCol (StmtHndlIn,ColNumber,SQL_F_SLONG,
+     -        ISTANDDATA(17),loc(DGT_LI), iRet)
 
          CASE('DG_MEASURE')
-          iRet = fvsSQLBindCol (StmtHndlIn,ColNumber,SQL_F_INTEGER,
-     -        ISTANDDATA(18),int(4,SQLLEN_KIND),DGM_LI)
+          CALL f90SQLBindCol (StmtHndlIn,ColNumber,SQL_F_SLONG,
+     -        ISTANDDATA(18),loc(DGM_LI), iRet)
 
          CASE('HTG_TRANS')
-          iRet = fvsSQLBindCol (StmtHndlIn,ColNumber,SQL_F_INTEGER,
-     -        ISTANDDATA(19),int(4,SQLLEN_KIND),HTT_LI)
+          CALL f90SQLBindCol (StmtHndlIn,ColNumber,SQL_F_SLONG,
+     -        ISTANDDATA(19),loc(HTT_LI), iRet)
 
          CASE('HTG_MEASURE')
-          iRet = fvsSQLBindCol (StmtHndlIn,ColNumber,SQL_F_INTEGER,
-     -        ISTANDDATA(20),int(4,SQLLEN_KIND),HTM_LI)
+          CALL f90SQLBindCol (StmtHndlIn,ColNumber,SQL_F_SLONG,
+     -        ISTANDDATA(20),loc(HTM_LI), iRet)
 
          CASE('MORT_MEASURE')
-          iRet = fvsSQLBindCol (StmtHndlIn,ColNumber,SQL_F_INTEGER,
-     -        ISTANDDATA(21),int(4,SQLLEN_KIND),Mort_LI)
+          CALL f90SQLBindCol (StmtHndlIn,ColNumber,SQL_F_SLONG,
+     -        ISTANDDATA(21),loc(Mort_LI), iRet)
 
          CASE('SITE_SPECIES')
-          IF(DType.EQ.SQL_CHAR.OR.DType.EQ.SQL_VARCHAR.OR.
-     -       DType.EQ.SQL_LONGVARCHAR) THEN
-            iRet = fvsSQLBindCol (StmtHndlIn,ColNumber,SQL_F_CHAR,
-     -        CSITECODE,int(LEN(CSITECODE),SQLLEN_KIND),SiteSp_LI)
+          IF(DType.EQ.SQL_CHAR.OR.DType.EQ.SQL_VARCHAR) THEN
+            CALL f90SQLBindCol (StmtHndlIn,ColNumber,SQL_F_CHAR,
+     -        CSITECODE,loc(SiteSp_LI), iRet)
             LSITEISNUM=.FALSE.
           ELSE
-            iRet = fvsSQLBindCol (StmtHndlIn,ColNumber,SQL_F_INTEGER,
-     -        ISTANDDATA(34),int(4,SQLLEN_KIND),SiteSp_LI)
+            CALL f90SQLBindCol (StmtHndlIn,ColNumber,SQL_F_SLONG,
+     -        ISTANDDATA(34),loc(SiteSp_LI), iRet)
             LSITEISNUM=.TRUE.
           ENDIF
 
          CASE('SITE_INDEX')
-          iRet = fvsSQLBindCol (StmtHndlIn,ColNumber,SQL_F_FLOAT,
-     -      RSTANDDATA(35),int(4,SQLLEN_KIND),SiteIndx_LI)
+          CALL f90SQLBindCol (StmtHndlIn,ColNumber,SQL_F_FLOAT,
+     -      RSTANDDATA(35),loc(SiteIndx_LI), iRet)
 
          CASE('MAX_BA')
-          iRet = fvsSQLBindCol (StmtHndlIn,ColNumber,SQL_F_FLOAT,
-     -        RSTANDDATA(22),int(4,SQLLEN_KIND),MaxB_LI)
+          CALL f90SQLBindCol (StmtHndlIn,ColNumber,SQL_F_FLOAT,
+     -        RSTANDDATA(22),loc(MaxB_LI), iRet)
 
          CASE('MAX_SDI')
-          iRet = fvsSQLBindCol (StmtHndlIn,ColNumber,SQL_F_FLOAT,
-     -      RSTANDDATA(36),int(4,SQLLEN_KIND),MaxSDI_LI)
+          CALL f90SQLBindCol (StmtHndlIn,ColNumber,SQL_F_FLOAT,
+     -      RSTANDDATA(36),loc(MaxSDI_LI), iRet)
 
          CASE('MODEL_TYPE')
-          iRet = fvsSQLBindCol (StmtHndlIn,ColNumber,SQL_F_INTEGER,
-     -        ISTANDDATA(25),int(4,SQLLEN_KIND),Model_LI)
+          CALL f90SQLBindCol (StmtHndlIn,ColNumber,SQL_F_SLONG,
+     -        ISTANDDATA(25),loc(Model_LI), iRet)
 
          CASE('PHYSIO_REGION')
-          iRet = fvsSQLBindCol (StmtHndlIn,ColNumber,SQL_F_INTEGER,
-     -        ISTANDDATA(26),int(4,SQLLEN_KIND),PhysioR_LI)
+          CALL f90SQLBindCol (StmtHndlIn,ColNumber,SQL_F_SLONG,
+     -        ISTANDDATA(26),loc(PhysioR_LI), iRet)
 
          CASE('FOREST_TYPE')
-          iRet = fvsSQLBindCol (StmtHndlIn,ColNumber,SQL_F_INTEGER,
-     -        ISTANDDATA(27),int(4,SQLLEN_KIND),ForType_LI)
+          CALL f90SQLBindCol (StmtHndlIn,ColNumber,SQL_F_SLONG,
+     -        ISTANDDATA(27),loc(ForType_LI), iRet)
 
          CASE('STATE')
-          iRet = fvsSQLBindCol (StmtHndlIn,ColNumber,SQL_F_INTEGER,
-     -        ISTANDDATA(37),int(4,SQLLEN_KIND),State_LI)
+          CALL f90SQLBindCol (StmtHndlIn,ColNumber,SQL_F_SLONG,
+     -        ISTANDDATA(37),loc(State_LI), iRet)
 
          CASE('COUNTY')
-          iRet = fvsSQLBindCol (StmtHndlIn,ColNumber,SQL_F_INTEGER,
-     -        ISTANDDATA(38),int(4,SQLLEN_KIND),Connty_LI)
+          CALL f90SQLBindCol (StmtHndlIn,ColNumber,SQL_F_SLONG,
+     -        ISTANDDATA(38),loc(Connty_LI), iRet)
 
          CASE('FUEL_0_1')
-          iRet = fvsSQLBindCol (StmtHndlIn,ColNumber,SQL_F_FLOAT,
-     -        RSTANDDATA(39),int(4,SQLLEN_KIND), Fuel0_LI)
+          CALL f90SQLBindCol (StmtHndlIn,ColNumber,SQL_F_FLOAT,
+     -        RSTANDDATA(39), loc(Fuel0_LI), iRet)
          CASE('FUEL_1_3','FUEL_1_3_H')
-          iRet = fvsSQLBindCol (StmtHndlIn,ColNumber,SQL_F_FLOAT,
-     -        RSTANDDATA(40),int(4,SQLLEN_KIND), Fuel1_LI)
+          CALL f90SQLBindCol (StmtHndlIn,ColNumber,SQL_F_FLOAT,
+     -        RSTANDDATA(40), loc(Fuel1_LI), iRet)
          CASE('FUEL_3_6','FUEL_3_6_H')
-          iRet = fvsSQLBindCol (StmtHndlIn,ColNumber,SQL_F_FLOAT,
-     -        RSTANDDATA(41),int(4,SQLLEN_KIND), Fuel3_LI)
+          CALL f90SQLBindCol (StmtHndlIn,ColNumber,SQL_F_FLOAT,
+     -        RSTANDDATA(41), loc(Fuel3_LI), iRet)
          CASE('FUEL_6_12','FUEL_6_12_H')
-          iRet = fvsSQLBindCol (StmtHndlIn,ColNumber,SQL_F_FLOAT,
-     -        RSTANDDATA(42),int(4,SQLLEN_KIND), Fuel6_LI)
+          CALL f90SQLBindCol (StmtHndlIn,ColNumber,SQL_F_FLOAT,
+     -        RSTANDDATA(42), loc(Fuel6_LI), iRet)
          CASE('FUEL_GT_12','FUEL_12_20','FUEL_12_20_H')
-          iRet = fvsSQLBindCol (StmtHndlIn,ColNumber,SQL_F_FLOAT,
-     -        RSTANDDATA(43),int(4,SQLLEN_KIND), Fuel12_LI)
+          CALL f90SQLBindCol (StmtHndlIn,ColNumber,SQL_F_FLOAT,
+     -        RSTANDDATA(43), loc(Fuel12_LI), iRet)
          CASE('FUEL_LITTER')
-          iRet = fvsSQLBindCol (StmtHndlIn,ColNumber,SQL_F_FLOAT,
-     -        RSTANDDATA(44),int(4,SQLLEN_KIND), FuelLt_LI)
+          CALL f90SQLBindCol (StmtHndlIn,ColNumber,SQL_F_FLOAT,
+     -        RSTANDDATA(44), loc(FuelLt_LI), iRet)
          CASE('FUEL_DUFF')
-          iRet = fvsSQLBindCol (StmtHndlIn,ColNumber,SQL_F_FLOAT,
-     -        RSTANDDATA(45),int(4,SQLLEN_KIND), FuelDf_LI)
+          CALL f90SQLBindCol (StmtHndlIn,ColNumber,SQL_F_FLOAT,
+     -        RSTANDDATA(45), loc(FuelDf_LI), iRet)
          CASE('FUEL_0_25','FUEL_0_25_H')
-          iRet = fvsSQLBindCol (StmtHndlIn,ColNumber,SQL_F_FLOAT,
-     -        RSTANDDATA(46),int(4,SQLLEN_KIND), Fuel025_LI)
+          CALL f90SQLBindCol (StmtHndlIn,ColNumber,SQL_F_FLOAT,
+     -        RSTANDDATA(46), loc(Fuel025_LI), iRet)
          CASE('FUEL_25_1','FUEL_25_1_H')
-          iRet = fvsSQLBindCol (StmtHndlIn,ColNumber,SQL_F_FLOAT,
-     -        RSTANDDATA(47),int(4,SQLLEN_KIND), Fuel251_LI)
+          CALL f90SQLBindCol (StmtHndlIn,ColNumber,SQL_F_FLOAT,
+     -        RSTANDDATA(47), loc(Fuel251_LI), iRet)
          CASE('FUEL_20_35','FUEL_20_35_H')
-          iRet = fvsSQLBindCol (StmtHndlIn,ColNumber,SQL_F_FLOAT,
-     -        RSTANDDATA(48),int(4,SQLLEN_KIND), Fuel20_LI)
+          CALL f90SQLBindCol (StmtHndlIn,ColNumber,SQL_F_FLOAT,
+     -        RSTANDDATA(48), loc(Fuel20_LI), iRet)
          CASE('FUEL_35_50','FUEL_35_50_H')
-          iRet = fvsSQLBindCol (StmtHndlIn,ColNumber,SQL_F_FLOAT,
-     -        RSTANDDATA(49),int(4,SQLLEN_KIND), Fuel35_LI)
+          CALL f90SQLBindCol (StmtHndlIn,ColNumber,SQL_F_FLOAT,
+     -        RSTANDDATA(49), loc(Fuel35_LI), iRet)     
          CASE('FUEL_GT_50','FUEL_GT_50_H')
-          iRet = fvsSQLBindCol (StmtHndlIn,ColNumber,SQL_F_FLOAT,
-     -        RSTANDDATA(50),int(4,SQLLEN_KIND), Fuel50_LI)
+          CALL f90SQLBindCol (StmtHndlIn,ColNumber,SQL_F_FLOAT,
+     -        RSTANDDATA(50), loc(Fuel50_LI), iRet)
 
          CASE('FUEL_0_25_S')
-          iRet = fvsSQLBindCol (StmtHndlIn,ColNumber,SQL_F_FLOAT,
-     -        RSTANDDATA(55),int(4,SQLLEN_KIND), FuelS025_LI)
+          CALL f90SQLBindCol (StmtHndlIn,ColNumber,SQL_F_FLOAT,
+     -        RSTANDDATA(55), loc(FuelS025_LI), iRet)
          CASE('FUEL_25_1_S')
-          iRet = fvsSQLBindCol (StmtHndlIn,ColNumber,SQL_F_FLOAT,
-     -        RSTANDDATA(56),int(4,SQLLEN_KIND), FuelS251_LI)
+          CALL f90SQLBindCol (StmtHndlIn,ColNumber,SQL_F_FLOAT,
+     -        RSTANDDATA(56), loc(FuelS251_LI), iRet)
          CASE('FUEL_1_3_S')
-          iRet = fvsSQLBindCol (StmtHndlIn,ColNumber,SQL_F_FLOAT,
-     -        RSTANDDATA(57),int(4,SQLLEN_KIND), FuelS1_LI)
+          CALL f90SQLBindCol (StmtHndlIn,ColNumber,SQL_F_FLOAT,
+     -        RSTANDDATA(57), loc(FuelS1_LI), iRet)
          CASE('FUEL_3_6_S')
-          iRet = fvsSQLBindCol (StmtHndlIn,ColNumber,SQL_F_FLOAT,
-     -        RSTANDDATA(58),int(4,SQLLEN_KIND), FuelS3_LI)
+          CALL f90SQLBindCol (StmtHndlIn,ColNumber,SQL_F_FLOAT,
+     -        RSTANDDATA(58), loc(FuelS3_LI), iRet)
          CASE('FUEL_6_12_S')
-          iRet = fvsSQLBindCol (StmtHndlIn,ColNumber,SQL_F_FLOAT,
-     -        RSTANDDATA(59),int(4,SQLLEN_KIND), FuelS6_LI)
+          CALL f90SQLBindCol (StmtHndlIn,ColNumber,SQL_F_FLOAT,
+     -        RSTANDDATA(59), loc(FuelS6_LI), iRet)
          CASE('FUEL_12_20_S')
-          iRet = fvsSQLBindCol (StmtHndlIn,ColNumber,SQL_F_FLOAT,
-     -        RSTANDDATA(60),int(4,SQLLEN_KIND), FuelS12_LI)
+          CALL f90SQLBindCol (StmtHndlIn,ColNumber,SQL_F_FLOAT,
+     -        RSTANDDATA(60), loc(FuelS12_LI), iRet)
          CASE('FUEL_20_35_S')
-          iRet = fvsSQLBindCol (StmtHndlIn,ColNumber,SQL_F_FLOAT,
-     -        RSTANDDATA(61),int(4,SQLLEN_KIND), FuelS20_LI)
+          CALL f90SQLBindCol (StmtHndlIn,ColNumber,SQL_F_FLOAT,
+     -        RSTANDDATA(61), loc(FuelS20_LI), iRet)
          CASE('FUEL_35_50_S')
-          iRet = fvsSQLBindCol (StmtHndlIn,ColNumber,SQL_F_FLOAT,
-     -        RSTANDDATA(62),int(4,SQLLEN_KIND), FuelS35_LI)
+          CALL f90SQLBindCol (StmtHndlIn,ColNumber,SQL_F_FLOAT,
+     -        RSTANDDATA(62), loc(FuelS35_LI), iRet)     
          CASE('FUEL_GT_50_S')
-          iRet = fvsSQLBindCol (StmtHndlIn,ColNumber,SQL_F_FLOAT,
-     -        RSTANDDATA(63),int(4,SQLLEN_KIND), FuelS50_LI)
+          CALL f90SQLBindCol (StmtHndlIn,ColNumber,SQL_F_FLOAT,
+     -        RSTANDDATA(63), loc(FuelS50_LI), iRet)
 
          CASE('FUEL_MODEL')
-          iRet = fvsSQLBindCol (StmtHndlIn,ColNumber,SQL_F_INTEGER,
-     -        ISTANDDATA(51),int(4,SQLLEN_KIND), FuelModel_LI)
+          CALL f90SQLBindCol (StmtHndlIn,ColNumber,SQL_F_SLONG,
+     -        ISTANDDATA(51), loc(FuelModel_LI), iRet)
          CASE('PHOTO_REF')
-          iRet = fvsSQLBindCol (StmtHndlIn,ColNumber,SQL_F_INTEGER,
-     -        ISTANDDATA(52),int(4,SQLLEN_KIND), FotoRef_LI)
+          CALL f90SQLBindCol (StmtHndlIn,ColNumber,SQL_F_SLONG,
+     -        ISTANDDATA(52), loc(FotoRef_LI), iRet)
          CASE('PHOTO_CODE')
-          iRet = fvsSQLBindCol (StmtHndlIn,ColNumber,SQL_F_CHAR,
-     -        CFotoCode,int(LEN(CFotoCode),SQLLEN_KIND), FotoCode_LI)
+          CALL f90SQLBindCol (StmtHndlIn,ColNumber,SQL_F_CHAR,
+     -        CFotoCode, loc(FotoCode_LI), iRet)
         END SELECT
 
       ENDDO
@@ -472,7 +470,7 @@ C       BIND COLUMNS TO THEIR VARIABLES
 
 C     Fetch the Row Data
 
-      iRet = fvsSQLFetch(StmtHndlIn)
+      CALL f90SQLFetch(StmtHndlIn,iRet)
       IF (iRet.NE.SQL_SUCCESS.AND.
      -    iRet.NE.SQL_SUCCESS_WITH_INFO) THEN
         IF (iRet.EQ.SQL_NO_DATA) THEN
@@ -484,7 +482,7 @@ C     Fetch the Row Data
         ENDIF
       ENDIF
 
-      iRet = fvsSQLFreeHandle(SQL_HANDLE_STMT, StmtHndlIn)
+      CALL f90SQLFreeHandle(SQL_HANDLE_STMT, StmtHndlIn, iRet)
 
 C     DEFINE VVER IN CASE IT IS NEEDED.
 
@@ -608,7 +606,7 @@ C
    45    CONTINUE
          KARD12  = ADJUSTL(CHAB(1:20))
          ARRAY2 = ISTANDDATA(5)
-         IF(VVER(:2).EQ.'SE' .OR. (VVER(:2).EQ.'SN' .AND.
+         IF(VVER(:2).EQ.'SE' .OR. (VVER(:2).EQ.'SN' .AND. 
      >   Ecoregion_LI.NE.SQL_NULL_DATA)) THEN
            KODTYP=0
            ICL5=0
@@ -660,7 +658,7 @@ C
           ENDIF
    51      FORMAT (T13,'ECOLOGICAL UNIT:',T30,A:
      >              ' CONVERTED TO CODE: ',I4)
-        ENDIF
+        ENDIF 
       ENDIF
 
       IF(Age_LI.NE.SQL_NULL_DATA) THEN
@@ -678,23 +676,24 @@ C
       IF(Elev_LI.NE.SQL_NULL_DATA .AND.
      >   ElevFT_LI.EQ.SQL_NULL_DATA) THEN
          IF(RSTANDDATA(9).GT.0)ELEV = RSTANDDATA(9)*MtoFT/100.
-         IF(LKECHO)WRITE(JOSTND,'(T13,''ELEVATION: '',T35,F6.1)')
-     &     ELEV*100./MtoFt
+         IF(LKECHO)WRITE(JOSTND,'(T13,''ELEVATION: '',T35,F6.1)') 
+     >     ELEV*100./MtoFt
       ENDIF
       IF(ElevFT_LI.NE.SQL_NULL_DATA ) THEN
          IF (VVER(1:2).EQ.'AK') THEN
             IF(RSTANDDATA(33).GT.0.)ELEV = RSTANDDATA(33)*MtoFt/10.
             IF(LKECHO)WRITE(JOSTND,10) RSTANDDATA(33),ELEV*10./MtoFt
+   10       FORMAT (T13,'ELEVFT: ',T35,F6.1,' CONVERTED TO: ',F6.1)
          ELSE
             IF(RSTANDDATA(33).GT.0.)ELEV = RSTANDDATA(33)*MtoFT/100.
             IF(LKECHO)WRITE(JOSTND,10) RSTANDDATA(33),ELEV*100./MtoFt
+   11       FORMAT (T13,'ELEVFT: ',T35,F6.1,' CONVERTED TO: ',F6.1)
          ENDIF
       ENDIF
-   10 FORMAT (T13,'ELEVFT: ',T35,F6.1,' CONVERTED TO: ',F6.1)
       IF(Basal_LI.NE.SQL_NULL_DATA) THEN
          BAF = RSTANDDATA(10)
          IF(LKECHO)WRITE(JOSTND,'(T13,''BASAL_AREA_FACTOR: '',
-     >   T35,F6.1)') BAF
+     >   T35,F6.1)') BAF 
          IF (BAF .LT. 0.0) THEN
             BAF = BAF / HAtoACR
          ELSE
@@ -704,7 +703,7 @@ C
       IF(PlotArea_LI.NE.SQL_NULL_DATA) THEN
          FPA = RSTANDDATA(11)
          IF(LKECHO)WRITE(JOSTND,'(T13,''INV_PLOT_SIZE: '',T35,F6.0)')FPA
-         FPA = FPA * ACRtoHA
+         FPA = FPA * ACRtoHA        
       ENDIF
       IF(BPDBH_LI.NE.SQL_NULL_DATA) THEN
          BRK = RSTANDDATA(12)
@@ -822,7 +821,7 @@ C     SITE INDEX PROCESSING
                CSITECODE=NSP(ISISP,1)(1:2)
             ENDIF
         ENDIF
-         IF(LKECHO)WRITE(JOSTND,30) RSTANDDATA(35),TRIM(CSITECODE)
+         IF(LKECHO)WRITE(JOSTND,30) RSTANDDATA(35)*MtoFT,TRIM(CSITECODE)
    30    FORMAT (T13,'SITE_INDEX: ',T35,F6.1,' FOR SPECIES: ',A)
 
       ENDIF
@@ -1011,7 +1010,7 @@ C     FUEL LOAD PARAMETERS
      >   RSTANDDATA(60)
       ELSE
          RSTANDDATA(60) = -1.
-      ENDIF
+      ENDIF 
       IF(FuelS20_LI.NE.SQL_NULL_DATA) THEN
          LFMYES2 = .TRUE.
          IF(LKECHO)WRITE(JOSTND,'(T13,''FUEL_20_35_S: '',T33,F8.3)')
@@ -1050,19 +1049,19 @@ C     FUEL PHOTO REFERENCE
       LFOTO = .FALSE.
       IF(FOTOREF_LI.NE.SQL_NULL_DATA) THEN
          LFOTO = .TRUE.
-
+         
          IF ((ISTANDDATA(52) .NE. 4) .AND. (ISTANDDATA(52) .NE. 10)
      >   .AND. (ISTANDDATA(52) .GE. 1) .AND. (ISTANDDATA(52) .LE. 32))
      >   THEN
            REF = PHOTOREF(ISTANDDATA(52))
          ELSE
            REF = 'UNKNOWN'
-           LFOTO = .FALSE.
+           LFOTO = .FALSE.  
          ENDIF
          IF(LKECHO)WRITE (JOSTND,55) ISTANDDATA(52), REF
-
+ 
    55    FORMAT (T13,'PHOTO_REF: ',T35,I6, ' = ',A)
-
+ 
       ELSE
          ISTANDDATA(52) = -1.
       ENDIF
@@ -1090,22 +1089,22 @@ C     FUEL PHOTO CODE
       FOTODATA(2) = FKOD
 
 C     Schedule an activity that changes the initial fuel values. This mimics
-C     the method used in the fire model.  First the fuels photo series photo
+C     the method used in the fire model.  First the fuels photo series photo 
 C     selected is set, followed by tons/acre entered directly.
 
       CALL  FMLNKD(LFMLK)
-
+      
       IF (LFMLK.AND.LFOTO.AND.LFOTO2) THEN
          CALL OPNEW(I,1,2548,2,FOTODATA(1))
-      ELSEIF (LFOTO.AND.LFOTO2.AND. .NOT. LFMLK) THEN
+      ELSEIF (LFOTO.AND.LFOTO2.AND. .NOT. LFMLK) THEN 
         WRITE(JOSTND,
      >  '(T13,''FIRE MODEL NOT LINKED, FUELS PHOTO DATA IGNORED.'')')
-      ELSEIF ((FOTOREF_LI.NE.SQL_NULL_DATA) .OR.
+      ELSEIF ((FOTOREF_LI.NE.SQL_NULL_DATA) .OR. 
      >        (FotoCode_LI.NE.SQL_NULL_DATA)) THEN
         WRITE(JOSTND,'(T13,''MISSING PHOTO ''
      >  ''REFERENCE OR PHOTO CODE, FUELS PHOTO DATA IGNORED.'')')
       ENDIF
-
+     
       IF (LFMLK.AND.LFMYES) THEN
         DO I=39,50
             RSTANDDATA(I) = RSTANDDATA(I) * TMtoTI / HAtoACR
@@ -1117,7 +1116,7 @@ C     selected is set, followed by tons/acre entered directly.
 
       IF (LFMLK.AND.LFMYES2) THEN
         DO I = 55,63
-            RSTANDDATA(I) = RSTANDDATA(I) * TMtoTI / HAtoACR
+            RSTANDDATA(I) = RSTANDDATA(I) * TMtoTI / HAtoACR        
         ENDDO
         CALL OPNEW(I,1,2553,9,RSTANDDATA(55))
       ENDIF

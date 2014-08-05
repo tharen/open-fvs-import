@@ -1,8 +1,6 @@
       SUBROUTINE DMAUTO (TrgDMR, RQ, D, S)
-      IMPLICIT NONE
-C----------
-C  $Id$
-C----------
+      
+C********************************************************************
 C **DMAUTO -- NISI  Date of last revision: April 7 1994 
 C--------------------------------------------------------------------
 C Purpose:

@@ -1,7 +1,7 @@
       SUBROUTINE DFOLE8 
       IMPLICIT NONE
 C---------- 
-C  **DFOLE8 DATE OF LAST REVISION:  04/01/13
+C  **DFOLE8 DATE OF LAST REVISION:  06/30/10 
 C---------- 
 C     
 C  DFTM MODEL SUBROUTINE - JIM COLBERT - JAN 1978.    
@@ -11,11 +11,6 @@ C
 C  *** S(0) MODULE V3.1 DFTM MODEL ***    
 C     
 C******************************************************     
-C  REVISION HISTORY:
-C    01-APR-2013 Lance R. David (FMSC)
-C      A few variables defined locally were already defined
-C      in a common block. Local declaration removed.
-C----------
 C     
 COMMONS     
 C     
@@ -27,7 +22,8 @@ C
 C     
 COMMONS     
 C     
-      INTEGER II,I
+      INTEGER II,I,JCLASS,IZ6,ICOUNT,IC,KP,K
+      REAL G19,X7,X6,X5,Z3,Z2,Z5,Z4,G19OUT,DPCENT
 
       II = K(3) - 1     
 

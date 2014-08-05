@@ -1,7 +1,7 @@
       SUBROUTINE LNKCHN (ITREE)
       IMPLICIT NONE
 C----------
-C  $Id$
+C  **LNKCHN DATE OF LAST REVISION:  07/23/08
 C----------
 C
 C

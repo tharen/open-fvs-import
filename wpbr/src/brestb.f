@@ -1,7 +1,6 @@
       SUBROUTINE BRESTB(TIME,ITYP,ISSP)
-      IMPLICIT NONE
 C**********************************************************************
-C  **BRESTB       DATE OF LAST REVISION:  06/05/2014
+C  **BRESTB       DATE OF LAST REVISION:  05/09/2000
 C----------------------------------------------------------------------
 C  Purpose:
 C  BRESTB sets the Blister Rust variables for new trees that are
@@ -42,14 +41,14 @@ C.... Common include files.
 C.... Local variable declarations.
 
       LOGICAL DEBUG
-      INTEGER IIAGO, ITYP, ISSP
-      REAL    BRDBH, BRHT, CRLEN, GIBR, TBSUM, TIME
+      INTEGER ITYP,ISSP
+      REAL CRLEN,TIME
 
 C.... Is debug requested?
 
       CALL DBCHK(DEBUG,'BRESTB',6,ICYC)
       IF(DEBUG) WRITE(JOSTND,10) ICYC
-   10 FORMAT('Entering subroutine BRESTB: cycle = ',I2)
+   10 FORMAT(' Entering subroutine BRESTB: cycle = ',I2)
 
 C.... If tree species is not host, no processing is performed.
 C.... If Stock Type is 5, it will be reset in BRSTYP.
@@ -105,6 +104,6 @@ C....    current cycle.
 C.... Common return.
 
       IF(DEBUG) WRITE(JOSTND,300) ICYC
-  300 FORMAT('Leaving subroutine BRESTB: cycle = ',I2)
+  300 FORMAT(' Leaving subroutine BRESTB: cycle = ',I2)
       RETURN
       END

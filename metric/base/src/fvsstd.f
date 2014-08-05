@@ -1,7 +1,7 @@
       SUBROUTINE FVSSTD (IWHO)
       IMPLICIT NONE
 C----------
-C  $Id$
+C  **FVSSTD--BASE/M  DATE OF LAST REVISION: 03/05/10
 C----------
 C
 C     CREATE A FILE FOR FVSTAND POST-PROCESSOR INPUT.
@@ -39,7 +39,7 @@ C----------
       CHARACTER CISN*11,TIM*8,DAT*10,VVER*7,TID*8,CLAB1*4,CLAB2*3
       CHARACTER REV*10
       INTEGER*4 IDCMP1,IDCMP2
-      LOGICAL LPPACT,LOK
+      LOGICAL LPPACT
       DATA MYACT/204/
       DATA IDCMP1,IDCMP2/10000000,20000000/
       DATA CLAB1/'TREE','CUT '/
@@ -79,22 +79,16 @@ C----------
 C----------
 C  IF THE OUTPUT FILE IS NOT OPEN, OPEN IT.
 C----------
-!      IF(.NOT.FSTOPEN) THEN
-!        CALL MYOPEN(KOLIST,KWDFIL(1:ISTLNB(KWDFIL))//'.fst',
-!     >              5,170,0,1,1,0,KODE)
-!        IF(KODE .GT. 0) THEN
-!          WRITE(JOSTND,*) ' FVSSTAND FILE DID NOT OPEN'
-!          CALL RCDSET (2,.TRUE.)
-!          GO TO 200
-!        ENDIF
-!        FSTOPEN=.TRUE.
-!      ENDIF
-!
-
-C     MAKE SURE KOLIST IS OPENED
-      CALL openIfClosed (KOLIST,"fst",lok)
-      if (.not.lok) goto 220
-      
+      IF(.NOT.FSTOPEN) THEN
+        CALL MYOPEN(KOLIST,KWDFIL(1:ISTLNB(KWDFIL))//'.fst',
+     >              5,170,0,1,1,0,KODE)
+        IF(KODE .GT. 0) THEN
+          WRITE(JOSTND,*) ' FVSSTAND FILE DID NOT OPEN'
+          CALL RCDSET (2,.TRUE.)
+          GO TO 200
+        ENDIF
+        FSTOPEN=.TRUE.
+      ENDIF
 C----------
 C  LET IP BE THE RECORD OUTPUT COUNT
 C  SET THE OUTPUT REPORTING YEAR.
@@ -127,7 +121,6 @@ C----------
 C         CALL OPDONE(ITODO,JYR)
         ENDIF
       ENDIF
-     
 C----------
 C  WRITE A MARKER AND THE NUMBER OF RECORDS WHICH FOLLOW.
 C

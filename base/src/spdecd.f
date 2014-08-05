@@ -2,7 +2,7 @@
      >                   KEYWRD,ARRAY,KARD)
       IMPLICIT NONE
 C----------
-C  $Id$
+C  **SPDECD--BASE   DATE OF LAST REVISION:  06/04/12
 C----------
 C
 C     DECODE THE SPECIES CODE.

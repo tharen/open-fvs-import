@@ -1,4 +1,3 @@
-
 c $Id$
 
 c     This is a collection of routines that provide an interface to 
@@ -14,9 +13,11 @@ c     Created in late 2011 by Nick Crookston, RMRS-Moscow
       include "CONTRL.F77"
       include "PLOT.F77"
 
+#ifdef _WINDLL
 !DEC$ ATTRIBUTES DLLEXPORT,C,DECORATE,ALIAS:'FVSDIMSIZES'::FVSDIMSIZES
 !DEC$ ATTRIBUTES REFERENCE :: NTREES, NCYCLES, NPLOTS, MAXTREES
 !DEC$ ATTRIBUTES REFERENCE :: MAXSPECIES, MAXPLOTS, MAXCYCLES
+#endif
 
       integer :: ntrees,ncycles,nplots,maxtrees,maxspecies,maxplots,
      -           maxcycles
@@ -38,9 +39,11 @@ c     Created in late 2011 by Nick Crookston, RMRS-Moscow
       include "CONTRL.F77"
       include "OUTCOM.F77"
 
+#ifdef _WINDLL
 !DEC$ ATTRIBUTES DLLEXPORT,C,DECORATE,ALIAS:'FVSSUMMARY'::FVSSUMMARY
 !DEC$ ATTRIBUTES REFERENCE :: SUMMARY, ICYCLE, NCYCLES, MAXROW
 !DEC$ ATTRIBUTES REFERENCE :: MAXCOL, RTNCODE
+#endif
       
       integer :: summary(20),icycle,ncycles,maxrow,maxcol,rtnCode
       
@@ -68,26 +71,20 @@ c     attr    = a vector of length data, always "double"
 c     rtnCode = 0 is OK, 1= "name" not found,
 c               2= ntrees is greater than maxtrees, not all data transfered
 c               3= there were more/fewer than ntrees.
-c               4= the length of the "name" string was too big or small
 c
       include "PRGPRM.F77"
-      include "FMPARM.F77"
-      include "FMCOM.F77"
       include "ARRAYS.F77"
       include "CONTRL.F77"
 
+#ifdef _WINDLL
 !DEC$ ATTRIBUTES DLLEXPORT,C,DECORATE,ALIAS:'FVSTREEATTR'::FVSTREEATTR
 !DEC$ ATTRIBUTES REFERENCE :: NAME, NCH, ACTION, NTREES, ATTR, RTNCODE
+#endif      
 
       integer :: nch,rtnCode,ntrees
       real(kind=8)      :: attr(ntrees)
       character(len=10) :: name
       character(len=4)  :: action
-
-      if (nch == 0 .or. nch > 10) then
-        rtnCode = 4
-        return
-      endif
 
       name=name(1:nch)
       action=action(1:3)
@@ -103,13 +100,11 @@ c
         rtnCode = 3
         return
       endif
+
       select case(name)
       case ("tpa")
         if (action=="get") attr = prob(:itrn)
         if (action=="set") prob(:itrn) = real(attr,4)
-      case ("mort")
-        if (action=="get") attr = wk2(:itrn)
-        if (action=="set") wk2(:itrn) = real(attr,4)
       case ("dbh")
         if (action=="get") attr = dbh(:itrn)
         if (action=="set") dbh(:itrn) = real(attr,4)
@@ -124,7 +119,7 @@ c
         if (action=="set") htg(:itrn) = real(attr,4)
       case ("crwdth")
         if (action=="get") attr = crwdth(:itrn)
-        if (action=="set") crwdth(:itrn) = real(attr,4)
+        if (action=="set") ht(:itrn) = real(attr,4)
       case ("cratio")
         if (action=="get") attr = icr(:itrn)
         if (action=="set") icr(:itrn) = int(attr,4)
@@ -137,97 +132,6 @@ c
       case ("plot")
         if (action=="get") attr = itre(:itrn)
         if (action=="set") itre(:itrn) = int(attr,4)
-      case ("tcuft")
-        if (action=="get") attr = cfv(:itrn)
-        if (action=="set") cfv(:itrn) = real(attr,4)
-      case ("mcuft")
-        if (action=="get") attr = wk1(:itrn)
-        if (action=="set") wk1(:itrn) = real(attr,4)
-      case ("bdft")
-        if (action=="get") attr = bfv(:itrn)
-        if (action=="set") bfv(:itrn) = real(attr,4)
-      case ("defect")
-        if (action=="get") attr = defect(:itrn)
-        if (action=="set") defect(:itrn) = real(attr,4)
-      case ("mgmtcd")
-        if (action=="get") attr = imc(:itrn)
-        if (action=="set") imc(:itrn) = int(attr,4)
-      case ("plotsize")
-        if (action=="get") attr = pltsiz(:itrn)
-        if (action=="set") pltsiz(:itrn) = int(attr,4)
-      case ("crownwt0")
-        if (action=="get") attr = crownw(:itrn,0)
-        if (action=="set") crownw(:itrn,0) = real(attr,4)
-      case ("crownwt1")
-        if (action=="get") attr = crownw(:itrn,1)
-        if (action=="set") crownw(:itrn,1) = real(attr,4)
-      case ("crownwt2")
-        if (action=="get") attr = crownw(:itrn,2)
-        if (action=="set") crownw(:itrn,2) = real(attr,4)
-      case ("crownwt3")
-        if (action=="get") attr = crownw(:itrn,3)
-        if (action=="set") crownw(:itrn,3) = real(attr,4)
-      case ("crownwt4")
-        if (action=="get") attr = crownw(:itrn,4)
-        if (action=="set") crownw(:itrn,4) = real(attr,4)
-      case ("crownwt5")
-        if (action=="get") attr = crownw(:itrn,5)
-        if (action=="set") crownw(:itrn,5) = real(attr,4)
-      case ("id")
-        if (action=="get") attr = idtree(:itrn)
-        if (action=="set") idtree(:itrn) = int(attr,4)
-      case default
-        rtnCode = 1
-        attr = 0
-      end select
-
-      return
-      end
-
-
-      subroutine fvsSpeciesAttr(name,nch,action,attr,rtnCode)
-      implicit none
-
-c     set and/or gets the named species attributes
-c     name    = char string of the variable name,
-c     nch     = the number of characters in "name" (case sensitive)
-c     action  = char string that is one of "set" or "get" (case sensitive)
-c     attr    = a vector of length data, always "double"
-c     rtnCode = 0 is OK, 1= "name" not found,
-c               4= the length of the "name" string was too big or small
-c
-      include "PRGPRM.F77"
-      include "PLOT.F77"
-
-!DEC$ ATTRIBUTES DLLEXPORT,C,DECORATE:: FVSSPECIESATTR
-!DEC$ ATTRIBUTES ALIAS:'FVSSPECIESATTR'::FVSSPECIESATTR
-!DEC$ ATTRIBUTES REFERENCE :: NAME, NCH, ACTION, ATTR, RTNCODE
-
-      integer :: nch,rtnCode
-      real(kind=8)      :: attr(MAXSP)
-      character(len=10) :: name
-      character(len=4)  :: action
-
-      if (nch == 0 .or. nch > 10) then
-        rtnCode = 4
-        return
-      endif
-
-      name=name(1:nch)
-      action=action(1:3)
-
-      rtnCode = 0
-
-      select case(name)
-      case ("spccf")
-        if (action=="get") attr = reldsp
-        if (action=="set") reldsp = real(attr,4)
-      case ("spsiteindx")
-        if (action=="get") attr = sitear
-        if (action=="set") sitear = real(attr,4)
-      case ("spsdi")
-        if (action=="get") attr = sdidef
-        if (action=="set") sdidef = real(attr,4)
       case default
         rtnCode = 1
         attr = 0
@@ -249,13 +153,13 @@ c     rtnCode = 0 is OK, 1=action is "get" and variable
 c               is known to be undefined. 2= "name" not found, 
 c
       include "PRGPRM.F77"
-      include "FMPARM.F77"
-      include "FMCOM.F77"
       include "ARRAYS.F77"
       include "OPCOM.F77"
 
+#ifdef _WINDLL
 !DEC$ ATTRIBUTES DLLEXPORT,C,DECORATE,ALIAS:'FVSEVMONATTR'::FVSEVMONATTR
 !DEC$ ATTRIBUTES REFERENCE :: NAME, NCH, ACTION, ATTR, RTNCODE
+#endif      
 
       integer :: nch,rtncode,iv,i
       double precision  :: attr
@@ -491,14 +395,6 @@ c
         iv=449
       case ("ecbdft")
         iv=450
-      case ("shrubwt")
-        if (action=="get") attr = flive(1)
-        if (action=="set") flive(1) = real(attr,4)
-        return        
-      case ("herbwt")
-        if (action=="get") attr = flive(2)
-        if (action=="set") flive(2) = real(attr,4)                
-        return
       case default
         iv=0
       end select
@@ -569,7 +465,7 @@ c
       implicit none
 
 c     rtnCode = 0 when all is OK
-c               1 when there is no room for the ntrees
+c               1 when there isn't room for the ntrees
 c                 or when ntrees is zero
       
       include "PRGPRM.F77"
@@ -581,9 +477,11 @@ c                 or when ntrees is zero
       include "ESTREE.F77"
       include "STDSTK.F77"
 
+#ifdef _WINDLL
 !DEC$ ATTRIBUTES DLLEXPORT,C,DECORATE,ALIAS:'FVSADDTREES'::FVSADDTREES
 !DEC$ ATTRIBUTES REFERENCE :: IN_DBH, IN_SPECIES, IN_HT, IN_CRATIO
 !DEC$ ATTRIBUTES REFERENCE :: IN_PLOT, IN_TPA, NTREES, RTNCODE
+#endif      
       
       real(kind=8) :: in_dbh(ntrees),in_species(ntrees),
      -    in_ht(ntrees),in_cratio(ntrees),in_plot(ntrees),
@@ -669,10 +567,12 @@ c     indx    = species index
       include "PRGPRM.F77"
       include "PLOT.F77"
 
+#ifdef _WINDLL
 !DEC$ ATTRIBUTES DLLEXPORT,ALIAS:'FVSSPECIESCODE'::FVSSPECIESCODE
 !DEC$ ATTRIBUTES C,DECORATE :: FVSSPECIESCODE
 !DEC$ ATTRIBUTES REFERENCE :: FVS_CODE, FIA_CODE, PLANT_CODE, INDX
 !DEC$ ATTRIBUTES REFERENCE :: NCHFVS, NCHFIA, NCHPLANT, RTNCODE
+#endif         
 
       integer :: indx,nchfvs,nchfia,nchplant,rtnCode
       character(len=4) :: fvs_code
@@ -703,8 +603,10 @@ c     indx    = species index
       include "ARRAYS.F77"
       include "CONTRL.F77"
 
+#ifdef _WINDLL
 !DEC$ ATTRIBUTES DLLEXPORT,C,DECORATE,ALIAS:'FVSCUTTREES'::FVSCUTTREES
 !DEC$ ATTRIBUTES REFERENCE :: PTOCUT, NTREES, RTNCODE
+#endif         
 
       integer :: ntrees,rtnCode
       double precision :: pToCut(ntrees)
@@ -715,7 +617,7 @@ c     indx    = species index
       endif
       
       print *,"Not yet implemented"
-      rtnCode = 1
+      rntCode = 1
       return
       end
       
@@ -724,8 +626,10 @@ c     indx    = species index
       include "PRGPRM.F77"
       include "PLOT.F77"
 
+#ifdef _WINDLL
 !DEC$ ATTRIBUTES DLLEXPORT,C,DECORATE,ALIAS:'FVSSTANDID'::FVSSTANDID
 !DEC$ ATTRIBUTES REFERENCE :: SID, SCN, MID, NCSID, NCCN, NCMID
+#endif  
 
       integer :: ncsID,ncCN,ncmID
       character(len=26) sID
@@ -745,8 +649,10 @@ c     indx    = species index
       subroutine fvsCloseFile(filename,nch)
       implicit none
       
+#ifdef _WINDLL
 !DEC$ ATTRIBUTES DLLEXPORT,C,DECORATE,ALIAS:'FVSCLOSEFILE'::FVSCLOSEFILE
 !DEC$ ATTRIBUTES REFERENCE :: FILENAME, NCH
+#endif
 
 C     this routine closes "filename" if it is opened, it is not called
 C     from within FVS. nch is the length of filename.
@@ -772,9 +678,11 @@ C     add an activity to the schedule.
       include "PRGPRM.F77"
       include "CONTRL.F77"
 
+#ifdef _WINDLL
 !DEC$ ATTRIBUTES DLLEXPORT,ALIAS:'FVSADDACTIVITY'::FVSADDACTIVITY
 !DEC$ ATTRIBUTES C,DECORATE :: FVSADDACTIVITY
 !DEC$ ATTRIBUTES REFERENCE :: IDT, IACTK, INPRMS, NPRMS, RTNCODE
+#endif      
       
       integer :: i,idt,iactk,nprms,rtnCode,kode
       integer, parameter :: mxtopass=20
@@ -795,452 +703,4 @@ C     add an activity to the schedule.
       endif
       return 
       end
-      
-      subroutine fvsSVSDimSizes(nsvsobjs,ndeadobjs,ncwdobjs,
-     -                          mxsvsobjs,mxdeadobjs,mxcwdobjs)
-      implicit none
-      include "PRGPRM.F77"
-      include "SVDATA.F77"
-      include "SVDEAD.F77"
 
-!DEC$ ATTRIBUTES DLLEXPORT,C,DECORATE :: FVSSVSDIMSIZES
-!DEC$ ATTRIBUTES ALIAS:'FVSSVSDIMSIZES':: FVSSVSDIMSIZES
-!DEC$ ATTRIBUTES REFERENCE :: NSVSOBJS,NDEADOBJS,NCWDOBJS
-!DEC$ ATTRIBUTES REFERENCE :: MXSVSOBJS,MXDEADOBJS,MXCWDOBJS
-
-      integer :: nsvsobjs,  ndeadobjs,  ncwdobjs,  
-     -           mxsvsobjs, mxdeadobjs, mxcwdobjs 
-      
-      nsvsobjs   =  NSVOBJ
-      ndeadobjs  =  NDEAD
-      ncwdobjs   =  NCWD
-      mxsvsobjs  =  MXSVOB
-      mxdeadobjs =  MXDEAD
-      mxcwdobjs  =  MXCWD
-      return
-      end
-
-      subroutine fvsSVSObjData(name,nch,action,nobjs,attr,rtnCode)
-      implicit none
-
-c     set and/or gets the named SVS object attributes
-c     name    = char string of the variable name,
-c     nch     = the number of characters in "name" (case sensitive)
-c     action  = char string that is one of "set" or "get" (case sensitive)
-c     nobjs   = the number of objects, length of data
-c     attr    = a vector of length data, always "double"
-c     rtnCode = 0 is OK, 
-c               1= "name" not found,
-c               2= nobjs is greater than the corresponding max, no data transfered.
-c               3= there were more/fewer than nobjs.
-c               4= the length of the "name" string was too big or small
-
-      include "PRGPRM.F77"
-      include "CONTRL.F77"
-      include "PLOT.F77"
-      include "SVDATA.F77"
-      include "SVDEAD.F77"
-      
-!DEC$ ATTRIBUTES DLLEXPORT,C,DECORATE :: FVSSVSOBJDATA
-!DEC$ ATTRIBUTES ALIAS:'FVSSVSOBJDATA':: FVSSVSOBJDATA
-!DEC$ ATTRIBUTES REFERENCE :: NAME, NCH, ACTION, NOBJS, ATTR, RTNCODE
-
-      integer :: nch,rtnCode,nobjs
-      real(kind=8)      :: attr(nobjs)
-      character(len=10) :: name
-      character(len=4)  :: action
-      
-      if (nch == 0 .or. nch > 10) then
-        rtnCode = 4
-        return
-      endif
-        
-      name=name(1:nch)
-      action=action(1:3)
-
-      rtnCode = 0
-      
-      select case(name)
-      
-C     ALL object section (the locations, etc):
-        
-      case ("objtype")  
-        if (nobjs > MXSVOB) then
-          attr = 0
-          rtnCode = 2
-          return
-        endif
-        if (nobjs /= NSVOBJ) then
-          attr = 0
-          rtnCode = 3
-          return
-        endif
-        if (action=="get") attr = IOBJTP(:nsvobj)
-        if (action=="set") IOBJTP(:nsvobj) = int(attr,4) 
-
-      case ("objindex")  
-        if (nobjs > MXSVOB) then
-          attr = 0
-          rtnCode = 2
-          return
-        endif
-        if (nobjs /= NSVOBJ) then
-          attr = 0
-          rtnCode = 3
-          return
-        endif
-        if (action=="get") attr = IS2F(:nsvobj)
-        if (action=="set") IS2F(:nsvobj) = int(attr,4) 
-
-      case ("xloc")  
-        if (nobjs > MXSVOB) then
-          attr = 0
-          rtnCode = 2
-          return
-        endif
-        if (nobjs /= NSVOBJ) then
-          attr = 0
-          rtnCode = 3
-          return
-        endif
-        if (action=="get") attr = XSLOC(:nsvobj)
-        if (action=="set") XSLOC(:nsvobj) = real(attr,4) 
-
-      case ("yloc")  
-        if (nobjs > MXSVOB) then
-          attr = 0
-          rtnCode = 2
-          return
-        endif
-        if (nobjs /= NSVOBJ) then
-          attr = 0
-          rtnCode = 3
-          return
-        endif
-        if (action=="get") attr = YSLOC(:nsvobj)
-        if (action=="set") YSLOC(:nsvobj) = real(attr,4) 
-        
-C     SNAG section:
-        
-      case ("snagdbh")
-        if (nobjs > MXDEAD) then
-          attr = 0
-          rtnCode = 2
-          return
-        endif
-        if (nobjs /= NDEAD) then
-          attr = 0
-          rtnCode = 3
-          return
-        endif
-        if (action=="get") attr = SNGDIA(:ndead)
-        if (action=="set") SNGDIA(:ndead) = real(attr,4)
-        
-      case ("snaglen")
-        if (nobjs > MXDEAD) then
-          attr = 0
-          rtnCode = 2
-          return
-        endif
-        if (nobjs /= NDEAD) then
-          attr = 0
-          rtnCode = 3
-          return
-        endif
-        if (action=="get") attr = SNGLEN(:ndead)
-        if (action=="set") SNGLEN(:ndead) = real(attr,4)
-
-      case ("snagyear")
-        if (nobjs > MXDEAD) then
-          attr = 0
-          rtnCode = 2
-          return
-        endif
-        if (nobjs /= NDEAD) then
-          attr = 0
-          rtnCode = 3
-          return
-        endif
-        if (action=="get") attr = IYRCOD(:ndead)
-        if (action=="set") IYRCOD(:ndead) = int(attr,4)
-        
-        
-      case ("snagspp")
-        if (nobjs > MXDEAD) then
-          attr = 0
-          rtnCode = 2
-          return
-        endif
-        if (nobjs /= NDEAD) then
-          attr = 0
-          rtnCode = 3
-          return
-        endif
-        if (action=="get") attr = ISNSP(:ndead)
-        if (action=="set") ISNSP(:ndead) = int(attr,4)
-                
-      case ("snagfdir")
-        if (nobjs > MXDEAD) then
-          attr = 0
-          rtnCode = 2
-          return
-        endif
-        if (nobjs /= NDEAD) then
-          attr = 0
-          rtnCode = 3
-          return
-        endif
-        if (action=="get") attr = FALLDIR(:ndead)
-        if (action=="set") FALLDIR(:ndead) = real(attr,4)
-        
-      case ("snagstat")
-        if (nobjs > MXDEAD) then
-          attr = 0
-          rtnCode = 2
-          return
-        endif
-        if (nobjs /= NDEAD) then
-          attr = 0
-          rtnCode = 3
-          return
-        endif
-        if (action=="get") attr = ISTATUS(:ndead)
-        if (action=="set") ISTATUS(:ndead) = int(attr,4) 
-
-      case ("snagwt0")
-        if (nobjs > MXDEAD) then
-          attr = 0
-          rtnCode = 2
-          return
-        endif
-        if (nobjs /= NDEAD) then
-          attr = 0
-          rtnCode = 3
-          return
-        endif
-        if (action=="get") attr = SNGCNWT(:ndead,0)
-        if (action=="set") SNGCNWT(:ndead,0) = real(attr,4) 
-
-      case ("snagwt1")
-        if (nobjs > MXDEAD) then
-          attr = 0
-          rtnCode = 2
-          return
-        endif
-        if (nobjs /= NDEAD) then
-          attr = 0
-          rtnCode = 3
-          return
-        endif
-        if (action=="get") attr = SNGCNWT(:ndead,1)
-        if (action=="set") SNGCNWT(:ndead,1) = real(attr,4) 
-
-      case ("snagwt2")
-        if (nobjs > MXDEAD) then
-          attr = 0
-          rtnCode = 2
-          return
-        endif
-        if (nobjs /= NDEAD) then
-          attr = 0
-          rtnCode = 3
-          return
-        endif
-        if (action=="get") attr = SNGCNWT(:ndead,2)
-        if (action=="set") SNGCNWT(:ndead,2) = real(attr,4) 
-
-      case ("snagwt3")
-        if (nobjs > MXDEAD) then
-          attr = 0
-          rtnCode = 2
-          return
-        endif
-        if (nobjs /= NDEAD) then
-          attr = 0
-          rtnCode = 3
-          return
-        endif
-        if (action=="get") attr = SNGCNWT(:ndead,3)
-        if (action=="set") SNGCNWT(:ndead,3) = real(attr,4) 
-
-C     CWD section:
-
-      case ("cwddia") 
-        if (nobjs > MXCWD) then
-          attr = 0
-          rtnCode = 2
-          return
-        endif
-        if (nobjs /= NCWD) then
-          attr = 0
-          rtnCode = 3
-          return
-        endif
-        if (action=="get") attr = cwddia(:ncwd)
-        if (action=="set") cwddia(:ncwd) = real(attr,4) 
-        
-      case ("cwdlen") 
-        if (nobjs > MXCWD) then
-          attr = 0
-          rtnCode = 2
-          return
-        endif
-        if (nobjs /= NCWD) then
-          attr = 0
-          rtnCode = 3
-          return
-        endif
-        if (action=="get") attr = cwdlen(:ncwd)
-        if (action=="set") cwdlen(:ncwd) = real(attr,4) 
-        
-      case ("cwdpil") 
-        if (nobjs > MXCWD) then
-          attr = 0
-          rtnCode = 2
-          return
-        endif
-        if (nobjs /= NCWD) then
-          attr = 0
-          rtnCode = 3
-          return
-        endif
-        if (action=="get") attr = cwdpil(:ncwd)
-        if (action=="set") cwdpil(:ncwd) = real(attr,4) 
-        
-      case ("cwddir")
-        if (nobjs > MXCWD) then
-          attr = 0
-          rtnCode = 2
-          return
-        endif
-        if (nobjs /= NCWD) then
-          attr = 0
-          rtnCode = 3
-          return
-        endif
-        if (action=="get") attr = cwddir(:ncwd)
-        if (action=="set") cwddir(:ncwd) = real(attr,4) 
-        
-      case ("cwdwt")  
-        if (nobjs > MXCWD) then
-          attr = 0
-          rtnCode = 2
-          return
-        endif
-        if (nobjs /= NCWD) then
-          attr = 0
-          rtnCode = 3
-          return
-        endif
-        if (action=="get") attr = cwdwt(:ncwd)
-        if (action=="set") cwdwt(:ncwd) = real(attr,4) 
-        
-      case default
-        rtnCode = 1
-        attr = 0
-      end select
-      
-      return
-      end
-
-      subroutine fvsFFEAttrs(name,nch,action,nobjs,attr,rtnCode)
-      implicit none
-
-c     set and/or gets the named FFE variables
-c     name    = char string of the variable name,
-c     nch     = the number of characters in "name" (case sensitive)
-c     action  = char string that is one of "set" or "get" (case sensitive)
-c     nobjs   = the number of objects, length of data
-c     attr    = a vector of length data, always "double"
-c     rtnCode = 0 is OK, 
-c               1= "name" not found,
-c               2= nobjs is greater than the corresponding max, no data transfered.
-c               3= there were more/fewer than nobjs.
-c               4= the length of the "name" string was too big or small
-
-      include "PRGPRM.F77"
-      include 'FMPARM.F77'
-      include 'FMCOM.F77'
-
-!DEC$ ATTRIBUTES DLLEXPORT,C,DECORATE :: FVSFFEATTRS
-!DEC$ ATTRIBUTES ALIAS:'FVSFFEATTRS':: FVSFFEATTRS
-!DEC$ ATTRIBUTES REFERENCE :: NAME, NCH, ACTION, NOBJS, ATTR, RTNCODE
-
-      integer :: nch,rtnCode,nobjs
-      real(kind=8)      :: attr(nobjs)
-      character(len=10) :: name
-      character(len=4)  :: action
-      
-      if (nch == 0 .or. nch > 10) then
-        rtnCode = 4
-        return
-      endif
-        
-      name=name(1:nch)
-      action=action(1:3)
-
-      rtnCode = 0
-      
-      select case(name)
-
-      case ("fallyrs0")
-        if (nobjs /= MAXSP) then
-          attr = 0
-          rtnCode = 3
-          return
-        endif
-        if (action=="get") attr = TFALL(1:MAXSP,0)
-        if (action=="set") TFALL(1:MAXSP,0) = real(attr,4) 
-
-      case ("fallyrs1")
-        if (nobjs /= MAXSP) then
-          attr = 0
-          rtnCode = 3
-          return
-        endif
-        if (action=="get") attr = TFALL(1:MAXSP,1)
-        if (action=="set") TFALL(1:MAXSP,1) = real(attr,4) 
-
-      case ("fallyrs2")
-        if (nobjs /= MAXSP) then
-          attr = 0
-          rtnCode = 3
-          return
-        endif
-        if (action=="get") attr = TFALL(1:MAXSP,2)
-        if (action=="set") TFALL(1:MAXSP,2) = real(attr,4) 
-
-      case ("fallyrs3")
-        if (nobjs /= MAXSP) then
-          attr = 0
-          rtnCode = 3
-          return
-        endif
-        if (action=="get") attr = TFALL(1:MAXSP,3)
-        if (action=="set") TFALL(1:MAXSP,3) = real(attr,4) 
-
-      case ("fallyrs4")
-        if (nobjs /= MAXSP) then
-          attr = 0
-          rtnCode = 3
-          return
-        endif
-        if (action=="get") attr = TFALL(:MAXSP,4)
-        if (action=="set") TFALL(:MAXSP,4) = real(attr,4) 
-
-      case ("fallyrs5")
-        if (nobjs /= MAXSP) then
-          attr = 0
-          rtnCode = 3
-          return
-        endif
-        if (action=="get") attr = TFALL(:MAXSP,5)
-        if (action=="set") TFALL(:MAXSP,5) = real(attr,4) 
-
-      case default
-        rtnCode = 1
-        attr = 0
-      end select
-      
-      return
-      end

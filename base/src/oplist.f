@@ -1,7 +1,7 @@
       SUBROUTINE OPLIST (LFIRST,NPLT,MGMID,ITITLE)
       IMPLICIT NONE
 C----------
-C  $Id$
+C  **OPLIST--BASE   DATE OF LAST REVISION:  04/01/11
 C----------
 C
 C     OPTION PROCESSING ROUTINE - NL CROOKSTON - JAN 1981 - MOSCOW
@@ -43,46 +43,46 @@ C
       LOGICAL LINE,LFIRST,LPPEON
       CHARACTER*8 KEYWRD,UNKNOW,TITL,SCHED,SUMMR
       CHARACTER*4 TAB2(17)
-      PARAMETER (NTRSLT=156)
+      PARAMETER (NTRSLT=151)
       INTEGER ITRSL1(NTRSLT),ITRSL2(NTRSLT)
       DATA ITRSL1/
      >       33,   80,   81,   82,   90,   91,   92,   93,   94,   95,
      >       96,   97,   98,   99,  100,  101,  102,  110,  111,  120,
      >      198,  199,  200,  201,  202,  203,  204,  205,  215,  216,
      >      217,  218,  222,  223,  224,  225,  226,  227,  228,  229,
-     >      230,  231,  232,  233,  234,  235,  236,  237,  248,  249,
-     >      250,  260,  427,  428,  429,  430,  431,  432,  440,  442,
-     >      443,  450,  490,  491,  492,  493,  555,  810,  811,  900,
-     >     1001, 1002, 1003, 1004, 1005, 1006, 1007, 1008, 1009, 2001,
-     >     2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2150, 2151,
-     >     2152, 2153, 2154, 2155, 2156, 2157, 2158, 2159, 2160, 2208,
-     >     2209, 2210, 2320, 2401, 2402, 2403, 2414, 2415, 2416, 2417,
-     >     2430, 2431, 2432, 2433, 2501, 2503, 2504, 2505, 2506, 2507,
-     >     2508, 2512, 2515, 2520, 2521, 2522, 2523, 2525, 2527, 2528,
-     >     2529, 2530, 2538, 2539, 2544, 2545, 2547, 2548, 2549, 2550,
-     >     2551, 2552, 2553, 2605, 2606, 2607, 2608, 2609, 2701, 2702,
-     >     2703, 2704, 2801, 2802, 2803, 2804/
+     >      230,  231,  232,  233,  234,  235,  236,  248,  249,  250,
+     >      260,  427,  428,  429,  430,  431,  432,  440,  442,  443,
+     >      450,  490,  491,  492,  493,  555,  810,  811,  900, 1001,
+     >     1002, 1003, 1004, 1005, 1006, 1007, 1008, 1009, 2001, 2002,
+     >     2003, 2004, 2005, 2006, 2007, 2008, 2009, 2150, 2151, 2152,
+     >     2153, 2154, 2155, 2156, 2157, 2158, 2159, 2160, 2208, 2209,
+     >     2210, 2320, 2401, 2402, 2403, 2414, 2415, 2416, 2417, 2430,
+     >     2431, 2432, 2433, 2501, 2503, 2504, 2505, 2506, 2507, 2508,
+     >     2512, 2515, 2520, 2521, 2522, 2523, 2525, 2527, 2528, 2529,
+     >     2530, 2538, 2539, 2544, 2545, 2547, 2548, 2549, 2550, 2551,
+     >     2552, 2553, 2605, 2606, 2607, 2608, 2609, 2701, 2702, 2703,
+     >     2704/
 C
       DATA ITRSL2/
      >       33,   17,   96,  102,    3,   58,   62,   70,   59,  207,
      >       45,   88,  110,  111,  118,  616,  603,   38,   37,  138,
      >      135,   92,   48,   49,   71,  103,  107,  120,   41,   42,
      >       43,   44,   23,   24,   25,   26,   27,   28,   29,   30,
-     >      112,  115,   35,  122,  124,  129,  136,  141,  128,  108,
-     >       78,   34,  216,  211,  212,  202,  203,  229,  213,  215, 
-     >       93,  226,  203,  204,  230,  205,  406,  306,  336,  512,
-     >      901,  902,  903,  904,  905,  906,  910,  911,  916, 1001,
-     >     1004, 1005, 1002, 1007, 1010, 1011, 1023, 1024, 1114, 1108,
-     >     1114, 1109, 1116, 1114, 1114, 1124, 1114, 1124, 1114, 1208,
-     >     1209, 1210, 1320, 1401, 1402, 1403, 1414, 1415, 1416, 1417,
-     >     1430, 1431, 1432, 1433, 1501, 1543, 1504, 1505, 1506, 1507,
-     >     1508, 1512, 1515, 1520, 1521, 1522, 1523, 1525, 1527, 1528,
-     >     1533, 1534, 1538, 1539, 1544, 1545, 1547, 1548, 1549, 1550,
-     >     1551, 1552, 1553, 1601, 1602, 1603, 1604, 1605, 1301, 1302,
-     >     1303, 1304,  703,  704,  705,  706/
+     >      112,  115,   35,  122,  124,  129,  136,  128,  108,   78,
+     >       34,  216,  211,  212,  202,  203,  229,  213,  215,   93,
+     >      226,  203,  204,  230,  205,  406,  306,  336,  512,  901,
+     >      902,  903,  904,  905,  906,  910,  911,  916, 1001, 1004,
+     >     1005, 1002, 1007, 1010, 1011, 1023, 1024, 1114, 1108, 1114,
+     >     1109, 1116, 1114, 1114, 1124, 1114, 1124, 1114, 1208, 1209,
+     >     1210, 1320, 1401, 1402, 1403, 1414, 1415, 1416, 1417, 1430,
+     >     1431, 1432, 1433, 1501, 1543, 1504, 1505, 1506, 1507, 1508,
+     >     1512, 1515, 1520, 1521, 1522, 1523, 1525, 1527, 1528, 1533,
+     >     1534, 1538, 1539, 1544, 1545, 1547, 1548, 1549, 1550, 1551,
+     >     1552, 1553, 1601, 1602, 1603, 1604, 1605, 1301, 1302, 1303, 
+     >     1304/
 C
       DATA TAB2/'CMPU','BASE','ESTB','DFTM','MPB', 'COVR',
-     >          'DBS ','CLIM','    ','RUST','MIST','WSBE','DFB',
+     >          'DBS ','    ','    ','RUST','MIST','WSBE','DFB',
      >          'WPBM','RDIS','FIRE','ECON'/
       DATA UNKNOW/'*UNKNOWN'/,SCHED/'SCHEDULE'/,SUMMR/'SUMMARY '/
       DATA IDISPO/'DELETED OR CANCELED ',
@@ -102,7 +102,7 @@ C                     300-399  DFTM
 C                     400-499  MPB
 C                     500-599  COVER
 C                     600-699  DBS  (DATABASE KEYWORDS)
-C                     700-799  CLIMATE-FVS
+C                     700-799  ** free spot **
 C                     800-899  ** free spot **
 C                     900-999  BRUST
 C                    1000-1099 MIST
@@ -131,15 +131,15 @@ C
       TITL=SUMMR
       IF (LFIRST) TITL=SCHED
       WRITE (JOSTND,10) TITL,NPLT,MGMID,ITITLE
-   10 FORMAT (//T54,'ACTIVITY ',A8//'STAND ID= ',A26,
-     >        '    MGMT ID= ',A4,4X,A72//130('-'))
+   10 FORMAT (//T55,'ACTIVITY ',A8//' STAND ID= ',A26,
+     >        '    MGMT ID= ',A4,4X,A72//1X,130('-'))
       IF (LFIRST) WRITE (JOSTND,11)
-   11 FORMAT(/'CYCLE  DATE  EXTENSION  KEYWORD   DATE  PARAMETERS:'/
-     >        '-----  ----  ---------  --------  ----  ',90('-'))
+   11 FORMAT(/' CYCLE  DATE  EXTENSION  KEYWORD   DATE  PARAMETERS:'/
+     >        ' -----  ----  ---------  --------  ----  ',90('-'))
       IF (.NOT.LFIRST) WRITE (JOSTND,12)
-   12 FORMAT(/'CYCLE  DATE  EXTENSION  KEYWORD   DATE  ',
+   12 FORMAT(/' CYCLE  DATE  EXTENSION  KEYWORD   DATE  ',
      >        'ACTIVITY DISPOSITION  PARAMETERS:'/
-     >        '-----  ----  ---------  --------  ----  ',20('-'),
+     >        ' -----  ----  ---------  --------  ----  ',20('-'),
      >      2X,68('-'))
 C
 C     IF THIS THE SECOND CALL (LFIRST=FALSE) MAKE SURE THAT THE DATE
@@ -179,15 +179,15 @@ C
       I1=IMGPTS(ICY,1)
       IF (I1.GT.0) GOTO 30
       IF (LINE) WRITE (JOSTND,15)
-   15 FORMAT ()
+   15 FORMAT (' ')
       LINE=.FALSE.
       WRITE (JOSTND,20) ICY,IY(ICY)
-   20 FORMAT (I4,I7)
+   20 FORMAT (1X,I4,I7)
       GOTO 160
    30 CONTINUE
       LINE=.TRUE.
       WRITE (JOSTND,35) ICY,IY(ICY)
-   35 FORMAT (/I4,I7)
+   35 FORMAT (/1X,I4,I7)
 C
 C     IF THERE ARE NO ACTIVITIES DURING THE CYCLE;
 C     THEN: BRANCH TO END CYCLE.
@@ -258,7 +258,7 @@ C
       CALL DBSKEY(KEY,KEYWRD)
       GOTO 61
    48 CONTINUE
-      CALL CLKEY(KEY,KEYWRD)
+C  ** free spot **
       GO TO 61
    49 CONTINUE
 C  ** free spot **
@@ -308,7 +308,7 @@ C     IF WRITTING THE COMPUTE'S, THEN ONLY WRITE 1 PARM.
 C
       IF (LOC.EQ.1) J2=J1
       WRITE (JOSTND,60) TAB2(LOC),KEYWRD,IDT,(PARMS(J),J=J1,J2)
-   60 FORMAT (T16,A4,T25,A8,I6,((T41,8F10.2)))
+   60 FORMAT (T17,A4,T26,A8,I6,((T42,8F10.2)))
       GOTO 150
    90 CONTINUE
 C
@@ -328,10 +328,10 @@ C
       IF (LOC.EQ.1) J2=J1
       IF(K.EQ.0) WRITE(JOSTND,91) TAB2(LOC),KEYWRD,IDT,ID,
      >           (PARMS(J),J=J1,J2)
-   91 FORMAT (T16,A4,T25,A8,I6,'  DONE IN',I5,((T63,6F10.2)))
+   91 FORMAT (T17,A4,T26,A8,I6,'  DONE IN',I5,((T64,6F10.2)))
       IF(K.GT.0) WRITE(JOSTND,92) TAB2(LOC),KEYWRD,IDT,
      >           IDISPO(K),(PARMS(J),J=J1,J2)
-   92 FORMAT (T16,A4,T25,A8,I6,2X,A20,((T63,6F10.2)))
+   92 FORMAT (T17,A4,T26,A8,I6,2X,A20,((T64,6F10.2)))
       GOTO 140
    95 CONTINUE
       IF(K.EQ.0) WRITE(JOSTND,91) TAB2(LOC),KEYWRD,IDT,ID
@@ -348,7 +348,7 @@ C
 C     WRITE END-OF-TABLE
 C
       WRITE (JOSTND,180)
-  180 FORMAT (130('-'))
+  180 FORMAT (1X,130('-'))
       RETURN
 C
 C
@@ -401,7 +401,7 @@ C
       CALL DBSKEY(KEY,KEYWRD)
       GOTO 261
   248 CONTINUE
-      CALL CLKEY(KEY,KEYWRD)
+C  ** FREE SPOT **
       GO TO 261
   249 CONTINUE
 C  ** FREE SPOT **

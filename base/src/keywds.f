@@ -1,7 +1,7 @@
       BLOCK DATA KEYWDS
       IMPLICIT NONE
 C----------
-C  $Id$
+C  **KEYWDS--BASE   DATE OF LAST REVISION:  10/31/2011
 C----------
 C
 C     SEE **MAIN** FOR DICTIONARY OF VARIABLE NAMES.
@@ -53,6 +53,6 @@ C
      >     'POINTREF','ECHO','NOECHO','CYCLEAT','ATRTLIST'/
       DATA (TABLE(I),I=136,150) /
      >     'THINRDSL','MORTMSB ','SETSITE ','CLIMATE ','SDICALC ',
-     >     'THINQFA ','        ','        ','        ','        ',
+     >     '        ','        ','        ','        ','        ',
      >     '        ','        ','        ','        ','        '/
       END

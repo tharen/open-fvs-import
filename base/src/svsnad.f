@@ -1,7 +1,7 @@
-      SUBROUTINE SVSNAD(IYEAR,ISNADD,NSNGS,ISWTCH)
+      SUBROUTINE SVSNAD(IYEAR,ISNADD,NSNAG,ISWTCH)
       IMPLICIT NONE
 C----------
-C  $Id$
+C  **SVSNAD--BASE  DATE OF LAST REVISION: 05/30/08
 C----------
 C
 C     STAND VISUALIZATION GENERATION
@@ -13,7 +13,7 @@ C
 C     USED FOR PROCESSING SNAG ADDING INFORMATION
 C
 C     ISNADD = VECTOR OF SNAGS THAT NEED TO BE ADDED
-C     NSNGS  = NUMBER OF SNAGS THAT NEED TO BE ADDED
+C     NSNAG  = NUMBER OF SNAGS THAT NEED TO BE ADDED
 C     IYEAR  = CURRENT YEAR
 C     IYOFTD = YEAR OF TREE DEATH
 C     ISWTCH = 0 IF SVESTB CALLED SVSNAD DIRECTLY
@@ -28,10 +28,6 @@ COMMONS
 C
 C
       INCLUDE 'PRGPRM.F77'
-      INCLUDE 'FMPARM.F77'
-C
-C
-      INCLUDE 'FMCOM.F77'
 C
 C
       INCLUDE 'SVDEAD.F77'
@@ -45,7 +41,7 @@ C
 C
       INCLUDE 'SVDATA.F77'
 C
-
+C
       INCLUDE 'CONTRL.F77'
 C
 C
@@ -65,9 +61,9 @@ C
       INTEGER INDEX(MXDEAD)
       INTEGER IBACK(MXDEAD)
 
-      INTEGER ISWTCH,NSNGS,IYEAR,ITCYC,IYOFTD,IX,ISVOBJ,ISNAG,I,IXX,
+      INTEGER ISWTCH,NSNAG,IYEAR,ITCYC,IYOFTD,IX,ISVOBJ,ISNAG,I,IXX,
      >        IDEAD,HRATE2,ITIDIF,IIX,IPUT,J,K
-      REAL    X,CHPOS,XHMOD,Y,FACTOR,TEMP,SNDI,SNHT,SNCRTO,
+      REAL    X,CHPOS,CW,CCFT,XHMOD,Y,FACTOR,TEMP,SNDI,SNHT,SNCRTO,
      >        SNCRDI,XPROB
 
       LOGICAL DEBUG
@@ -82,6 +78,8 @@ C
       ENDIF
 C
 C     TO DETERMINE IF SVCUTS(1) CALLED IT, OR SVMORTS(0)
+C
+
 C
 C     INITIALIZE THE ILYEAR
 C
@@ -128,76 +126,76 @@ C
 C
 C     RETURN IF NO OBJECTS TO ADD
 C
-      IF (NSNGS .EQ. 0) RETURN
+      IF (NSNAG .EQ. 0) RETURN
 C
       IF (DEBUG) THEN
          DO ISVOBJ=1,NSVOBJ
             IF (IOBJTP(ISVOBJ).EQ.2)
      >         WRITE (JOSTND,*) '   IS2F(',ISVOBJ,')=',IS2F(ISVOBJ)
          ENDDO
-         WRITE(JOSTND,1020) NSNGS
- 1020    FORMAT(/, '    SNAG RECORDS TO ADD (NSNGS)=',I4)
+         WRITE(JOSTND,1020) NSNAG
+ 1020    FORMAT(/, '    SNAG RECORDS TO ADD (NSNAG)=',I4)
       ENDIF
 C
 C     CALCULATE THE SCORES FOR THE SNAGS BEING ADDED.
 C
-      DO ISNAG=1,NSNGS
+      DO ISNAG=1,NSNAG
          I=ISNADD(ISNAG)
          ADDSCO(I) = DBH(IS2F(I))*DBH(IS2F(I))*HT(IS2F(I))
       ENDDO
 C
 C     IF THERE IS ENOUGH ROOM, ADD THE SNAGS
 C
-      IF (MXDEAD - NDEAD .GE. NSNGS) THEN
+      IF (MXDEAD - NDEAD .GE. NSNAG) THEN
          IXX=0
          ISNAG=0
          DO IDEAD=1,MXDEAD
 
 C           LOOPS THROUGH THE LIST OF SNAGS TO FIND AN OPEN SPOT
 
-            IF (ISTATUS(IDEAD).EQ.0 .AND. NSNGS.GT.ISNAG) THEN
+            IF (ISTATUS(IDEAD).EQ.0 .AND. NSNAG.GT.ISNAG) THEN
 
 C              WE FOUND AN OPEN SPOT, AND STILL HAVE SNAGS TO ADD
 
-               ISNSP(IDEAD)=ISP(IS2F(ISNADD(NSNGS-ISNAG)))
-               IF (IOBJTP(ISNADD(NSNGS-ISNAG)) .EQ. -3) THEN
+               ISNSP(IDEAD)=ISP(IS2F(ISNADD(NSNAG-ISNAG)))
+               IF (IOBJTP(ISNADD(NSNAG-ISNAG)) .EQ. -3) THEN
+
+C**               PRINT *, 'IOBJTP IS -3'
 
                   ISTATUS(IDEAD)=1
                   CALL SVRANN(X)
                   FALLDIR(IDEAD) = IFIX(360. *X +.5)
                   CRNRTO(IDEAD)=99.
-                  OLEN(IDEAD)=HT(IS2F(ISNADD(NSNGS-ISNAG)))*
-     >                 ICR(IS2F(ISNADD(NSNGS-ISNAG)))*.01
+                  OLEN(IDEAD)=HT(IS2F(ISNADD(NSNAG-ISNAG)))*
+     >                 ICR(IS2F(ISNADD(NSNAG-ISNAG)))*.01
                   SNGLEN(IDEAD)=OLEN(IDEAD)
-                  CHPOS=HT(IS2F(ISNADD(NSNGS-ISNAG)))-
+                  CHPOS=HT(IS2F(ISNADD(NSNAG-ISNAG)))-
      >                 OLEN(IDEAD)
 
 C                 0.0174532778 IS APPROXIMATELY PI/180.
 
-                  XSLOC(ISNADD(NSNGS-ISNAG))=XSLOC(ISNADD(NSNGS-ISNAG))
+                  XSLOC(ISNADD(NSNAG-ISNAG))=XSLOC(ISNADD(NSNAG-ISNAG))
      >                 +CHPOS*SIN(FALLDIR(IDEAD)*0.0174532778)
-                  YSLOC(ISNADD(NSNGS-ISNAG))=YSLOC(ISNADD(NSNGS-ISNAG))
+                  YSLOC(ISNADD(NSNAG-ISNAG))=YSLOC(ISNADD(NSNAG-ISNAG))
      >                 +CHPOS*COS(FALLDIR(IDEAD)*0.0174532778)
-                  ODIA(IDEAD)=DBH(IS2F(ISNADD(NSNGS-ISNAG)))*
-     >                 OLEN(IDEAD)/HT(IS2F(ISNADD(NSNGS-ISNAG)))
+                  ODIA(IDEAD)=DBH(IS2F(ISNADD(NSNAG-ISNAG)))*
+     >                 OLEN(IDEAD)/HT(IS2F(ISNADD(NSNAG-ISNAG)))
                   SNGDIA(IDEAD)=ODIA(IDEAD)
-                  CRNDIA(IDEAD)=CRWDTH(IS2F(ISNADD(NSNGS-ISNAG)))
-                  SNGCNWT(IDEAD,0:3)=
-     >                 CROWNW(IS2F(ISNADD(NSNGS-ISNAG)),0:3)
-                  OIDTRE(IDEAD)=IDTREE(IS2F(ISNADD(NSNGS-ISNAG)))
+                  CRNDIA(IDEAD)=CRWDTH(IS2F(ISNADD(NSNAG-ISNAG)))
+
+                  OIDTRE(IDEAD)=IDTREE(IS2F(ISNADD(NSNAG-ISNAG)))
 
                ELSE
-                  OLEN(IDEAD)=HT(IS2F(ISNADD(NSNGS-ISNAG)))
+                  OLEN(IDEAD)=HT(IS2F(ISNADD(NSNAG-ISNAG)))
                   SNGLEN(IDEAD)=OLEN(IDEAD)
-                  ODIA(IDEAD)=DBH(IS2F(ISNADD(NSNGS-ISNAG)))
+                  ODIA(IDEAD)=DBH(IS2F(ISNADD(NSNAG-ISNAG)))
                   SNGDIA(IDEAD)=ODIA(IDEAD)
-                  CRNRTO(IDEAD)=ICR(IS2F(ISNADD(NSNGS-ISNAG)))
-                  CRNDIA(IDEAD)=CRWDTH(IS2F(ISNADD(NSNGS-ISNAG)))
-                  SNGCNWT(IDEAD,0:3)=
-     >                 CROWNW(IS2F(ISNADD(NSNGS-ISNAG)),0:3)
-                   OIDTRE(IDEAD)=IDTREE(IS2F(ISNADD(NSNGS-ISNAG)))
+                  CRNRTO(IDEAD)=ICR(IS2F(ISNADD(NSNAG-ISNAG)))
+                  CRNDIA(IDEAD)=CRWDTH(IS2F(ISNADD(NSNAG-ISNAG)))
 
-                  IF (IOBJTP(ISNADD(NSNGS-ISNAG)) .EQ. -2) THEN
+                  OIDTRE(IDEAD)=IDTREE(IS2F(ISNADD(NSNAG-ISNAG)))
+
+                  IF (IOBJTP(ISNADD(NSNAG-ISNAG)) .EQ. -2) THEN
                      CALL SVRANN(X)
                      FALLDIR(IDEAD) = IFIX(360. *X +.5)
                   ELSE
@@ -211,7 +209,7 @@ C                    THIS IS A WWPB MORTALITY, SET ISTATUS TO 90.
                      ISTATUS(IDEAD) = 90
                   ELSE
 C                    CALCULATE ISTATUS NORMALLY.
-                     IF (IOBJTP(ISNADD(NSNGS-ISNAG)) .EQ. -1) THEN
+                     IF (IOBJTP(ISNADD(NSNAG-ISNAG)) .EQ. -1) THEN
                         ISTATUS(IDEAD) = 2
                      ELSE
                         ISTATUS(IDEAD)=1
@@ -225,10 +223,10 @@ C              OF THE SNAG MUST BE DETERMINED, AS WELL AS THE
 C              ORIGINAL INFORMATION
 C
                IF (ICYC .EQ. 0) THEN
-                  IF (IMC(IS2F(ISNADD(NSNGS-ISNAG))) .EQ. 7) THEN
+                  IF (IMC(IS2F(ISNADD(NSNAG-ISNAG))) .EQ. 7) THEN
                      IYRCOD(IDEAD)=IYRCOD(IDEAD)-MAX(IFIX(FINTM*.7),1)
                      ISTATUS(IDEAD)=3
-                  ELSEIF (IMC(IS2F(ISNADD(NSNGS-ISNAG))) .EQ. 9) THEN
+                  ELSEIF (IMC(IS2F(ISNADD(NSNAG-ISNAG))) .EQ. 9) THEN
                      IYRCOD(IDEAD)=IYRCOD(IDEAD)-IFIX(FINTM+2)
                      ISTATUS(IDEAD)=4
                   ENDIF
@@ -293,8 +291,8 @@ C>>>              IF ( ISWTCH .EQ. 1 ) THEN
 C>>>                 IYOFTD=IYEAR
 C>>>              ENDIF
                ENDIF
-               IS2F(ISNADD(NSNGS-ISNAG))=IDEAD
-               IOBJTP(ISNADD(NSNGS-ISNAG))=2
+               IS2F(ISNADD(NSNAG-ISNAG))=IDEAD
+               IOBJTP(ISNADD(NSNAG-ISNAG))=2
                NDEAD=NDEAD+1
                ISNAG=ISNAG+1
             ENDIF
@@ -318,11 +316,11 @@ C        INDICES (ISNADD) TO THE REAL VECTOR ARE REVERSED IN PLACE TO GIVE AN
 C        ASCENDING REAL VECTOR. THIS IS MAKES THE SMALLEST POSSIBLE CHANGE
 C        TO THE CODE. - DR/ESSA
 C
-         CALL RDPSRT(NSNGS,ADDSCO,ISNADD,.FALSE.)
-         IF (NSNGS .GT. 1) THEN
-           K = NSNGS
+         CALL RDPSRT(NSNAG,ADDSCO,ISNADD,.FALSE.)
+         IF (NSNAG .GT. 1) THEN
+           K = NSNAG
            J = ISNADD(K)
-           DO I = 1, (NSNGS/2)
+           DO I = 1, (NSNAG/2)
              ISNADD(K) = ISNADD(I)
              ISNADD(I) = J
              K = K-1
@@ -333,47 +331,44 @@ C
          ISNAG=0
          IF(MXDEAD .GT. NDEAD) THEN
             DO IDEAD=1,MXDEAD
-               IF (ISTATUS(IDEAD) .EQ. 0 .AND. NSNGS.GT.ISNAG) THEN
-                  ISNSP(IDEAD)=ISP(IS2F(ISNADD(NSNGS-ISNAG)))
-                  IF (IOBJTP(ISNADD(NSNGS-ISNAG)) .EQ. -3) THEN
+               IF (ISTATUS(IDEAD) .EQ. 0 .AND. NSNAG.GT.ISNAG) THEN
+                  ISNSP(IDEAD)=ISP(IS2F(ISNADD(NSNAG-ISNAG)))
+                  IF (IOBJTP(ISNADD(NSNAG-ISNAG)) .EQ. -3) THEN
                      PRINT *, 'IOBJTP IS -3'
                      ISTATUS(IDEAD)=1
                      CALL SVRANN(X)
                      FALLDIR(IDEAD) = IFIX(360. *X +.5)
                      CRNRTO(IDEAD)=99.
-                     OLEN(IDEAD)=HT(IS2F(ISNADD(NSNGS-ISNAG)))*
-     >                    ICR(IS2F(ISNADD(NSNGS-ISNAG)))*.01
+                     OLEN(IDEAD)=HT(IS2F(ISNADD(NSNAG-ISNAG)))*
+     >                    ICR(IS2F(ISNADD(NSNAG-ISNAG)))*.01
                      SNGLEN(IDEAD)=OLEN(IDEAD)
-                     CHPOS=HT(IS2F(ISNADD(NSNGS-ISNAG)))-
+                     CHPOS=HT(IS2F(ISNADD(NSNAG-ISNAG)))-
      >                    OLEN(IDEAD)
 C                    0.0174532778 IS APPROXIMATELY PI/180.
-                     XSLOC(ISNADD(NSNGS-ISNAG))=
-     >                    XSLOC(ISNADD(NSNGS-ISNAG))
+                     XSLOC(ISNADD(NSNAG-ISNAG))=
+     >                    XSLOC(ISNADD(NSNAG-ISNAG))
      >                    +CHPOS*SIN(FALLDIR(IDEAD)*0.0174532778)
-                     YSLOC(ISNADD(NSNGS-ISNAG))=
-     >                    YSLOC(ISNADD(NSNGS-ISNAG))
+                     YSLOC(ISNADD(NSNAG-ISNAG))=
+     >                    YSLOC(ISNADD(NSNAG-ISNAG))
      >                    +CHPOS*COS(FALLDIR(IDEAD)*0.0174532778)
-                     ODIA(IDEAD)=DBH(IS2F(ISNADD(NSNGS-ISNAG)))*
-     >                    OLEN(IDEAD)/HT(IS2F(ISNADD(NSNGS-ISNAG)))
-                     SNGCNWT(IDEAD,0:3)=
-     >                 CROWNW(IS2F(ISNADD(NSNGS-ISNAG)),0:3)
+                     ODIA(IDEAD)=DBH(IS2F(ISNADD(NSNAG-ISNAG)))*
+     >                    OLEN(IDEAD)/HT(IS2F(ISNADD(NSNAG-ISNAG)))
                      SNGDIA(IDEAD)=ODIA(IDEAD)
-                     CRNDIA(IDEAD)=CRWDTH(IS2F(ISNADD(NSNGS-ISNAG)))
+                     CRNDIA(IDEAD)=CRWDTH(IS2F(ISNADD(NSNAG-ISNAG)))
 
-                     OIDTRE(IDEAD)=IDTREE(IS2F(ISNADD(NSNGS-ISNAG)))
+                     OIDTRE(IDEAD)=IDTREE(IS2F(ISNADD(NSNAG-ISNAG)))
 
                   ELSE
-                     OLEN(IDEAD)=HT(IS2F(ISNADD(NSNGS-ISNAG)))
+                     OLEN(IDEAD)=HT(IS2F(ISNADD(NSNAG-ISNAG)))
                      SNGLEN(IDEAD)=OLEN(IDEAD)
-                     ODIA(IDEAD)=DBH(IS2F(ISNADD(NSNGS-ISNAG)))
+                     ODIA(IDEAD)=DBH(IS2F(ISNADD(NSNAG-ISNAG)))
                      SNGDIA(IDEAD)=ODIA(IDEAD)
-                     CRNRTO(IDEAD)=ICR(IS2F(ISNADD(NSNGS-ISNAG)))
-                     CRNDIA(IDEAD)=CRWDTH(IS2F(ISNADD(NSNGS-ISNAG)))
-                     SNGCNWT(IDEAD,0:3)=
-     >                      CROWNW(IS2F(ISNADD(NSNGS-ISNAG)),0:3)
-                     OIDTRE(IDEAD)=IDTREE(IS2F(ISNADD(NSNGS-ISNAG)))
+                     CRNRTO(IDEAD)=ICR(IS2F(ISNADD(NSNAG-ISNAG)))
+                     CRNDIA(IDEAD)=CRWDTH(IS2F(ISNADD(NSNAG-ISNAG)))
 
-                     IF (IOBJTP(ISNADD(NSNGS-ISNAG)) .EQ. -2) THEN
+                     OIDTRE(IDEAD)=IDTREE(IS2F(ISNADD(NSNAG-ISNAG)))
+
+                     IF (IOBJTP(ISNADD(NSNAG-ISNAG)) .EQ. -2) THEN
                         CALL SVRANN(X)
                         FALLDIR(IDEAD) = IFIX(360. *X +.5)
                      ELSE
@@ -382,13 +377,13 @@ C                    0.0174532778 IS APPROXIMATELY PI/180.
                      IF (ISWTCH .EQ. 1) THEN
 C                       THIS IS A FIRE MORTALITY, SET ISTATUS TO 5.
                         ISTATUS(IDEAD) = 5
-                        TEMP = IOBJTP(ISNADD(NSNGS-ISNAG))
+                        TEMP = IOBJTP(ISNADD(NSNAG-ISNAG))
                      ELSEIF (ISWTCH .EQ. 3) THEN
 C                       THIS IS A WWPB MORTALITY, SET ISTATUS TO 90.
                         ISTATUS(IDEAD) = 90
                      ELSE
 C                       THIS IS NOT A FIRE MORTALITY, CALCULATE ISTATUS NORMALLY.
-                        IF (IOBJTP(ISNADD(NSNGS-ISNAG)) .EQ. -1) THEN
+                        IF (IOBJTP(ISNADD(NSNAG-ISNAG)) .EQ. -1) THEN
                            ISTATUS(IDEAD) = 2
                         ELSE
                            ISTATUS(IDEAD)=1
@@ -402,11 +397,11 @@ C              OF THE SNAG MUST BE DETERMINED, AS WELL AS THE
 C              ORIGINAL INFORMATION
 C
                   IF (ICYC .EQ. 0) THEN
-                     IF (IMC(IS2F(ISNADD(NSNGS-ISNAG))) .EQ. 7) THEN
+                     IF (IMC(IS2F(ISNADD(NSNAG-ISNAG))) .EQ. 7) THEN
                         IYRCOD(IDEAD)=
      >                       IYRCOD(IDEAD)-MAX(IFIX(FINTM*.7),1)
                         ISTATUS(IDEAD)=3
-                     ELSEIF (IMC(IS2F(ISNADD(NSNGS-ISNAG))) .EQ. 9) THEN
+                     ELSEIF (IMC(IS2F(ISNADD(NSNAG-ISNAG))) .EQ. 9) THEN
                         IYRCOD(IDEAD)=
      >                       IYRCOD(IDEAD)-IFIX(FINTM+2)
                         ISTATUS(IDEAD)=4
@@ -465,8 +460,8 @@ C>>>                 IF ( ISWTCH .EQ. 1 ) THEN
 C>>>                    IYOFTD=IYEAR
 C>>>                 ENDIF
                   ENDIF
-                  IS2F(ISNADD(NSNGS-ISNAG))=IDEAD
-                  IOBJTP(ISNADD(NSNGS-ISNAG))=2
+                  IS2F(ISNADD(NSNAG-ISNAG))=IDEAD
+                  IOBJTP(ISNADD(NSNAG-ISNAG))=2
                   NDEAD=NDEAD+1
                   ISNAG=ISNAG+1
                ENDIF
@@ -528,21 +523,21 @@ C
          ENDDO
 
          DO IDEAD=1,MXDEAD
-            IF (NSNGS.GT.ISNAG .AND. INDEX(IDEAD).NE.0) THEN
-               IF (ADDSCO(ISNADD(NSNGS-ISNAG)) .GT.
+            IF (NSNAG.GT.ISNAG .AND. INDEX(IDEAD).NE.0) THEN
+               IF (ADDSCO(ISNADD(NSNAG-ISNAG)) .GT.
      >              SNASCO(INDEX(IDEAD))) THEN
 
                   IF (DEBUG) WRITE (JOSTND,*) IX,NDEAD,
-     >                 'ISNADD(',NSNGS-ISNAG,')=',
-     >                 ISNADD(NSNGS-ISNAG),'INDEX(',IDEAD,
+     >                 'ISNADD(',NSNAG-ISNAG,')=',
+     >                 ISNADD(NSNAG-ISNAG),'INDEX(',IDEAD,
      >                 ')=', INDEX(IDEAD),
-     >                 'IS2F(',ISNADD(NSNGS-ISNAG),')=',
-     >                 IS2F(ISNADD(NSNGS-ISNAG)),
-     >                 'ADDSCO=',ADDSCO(ISNADD(NSNGS-ISNAG)),
+     >                 'IS2F(',ISNADD(NSNAG-ISNAG),')=',
+     >                 IS2F(ISNADD(NSNAG-ISNAG)),
+     >                 'ADDSCO=',ADDSCO(ISNADD(NSNAG-ISNAG)),
      >                 'SNASCO=',SNASCO(INDEX(IDEAD))
 
-                  ISNSP(INDEX(IDEAD))=ISP(IS2F(ISNADD(NSNGS-ISNAG)))
-                  IF (IOBJTP(ISNADD(NSNGS-ISNAG)) .EQ. -3) THEN
+                  ISNSP(INDEX(IDEAD))=ISP(IS2F(ISNADD(NSNAG-ISNAG)))
+                  IF (IOBJTP(ISNADD(NSNAG-ISNAG)) .EQ. -3) THEN
 
 C**                     PRINT *, 'IOBJTP IS -3'
 
@@ -554,49 +549,45 @@ C**                     PRINT *, 'IOBJTP IS -3'
                      CALL SVRANN(X)
                      FALLDIR(INDEX(IDEAD)) = IFIX(360. *X +.5)
                      CRNRTO(INDEX(IDEAD))=99.
-                     OLEN(INDEX(IDEAD))=HT(IS2F(ISNADD(NSNGS-ISNAG)))*
-     >                    ICR(IS2F(ISNADD(NSNGS-ISNAG)))*.01
+                     OLEN(INDEX(IDEAD))=HT(IS2F(ISNADD(NSNAG-ISNAG)))*
+     >                    ICR(IS2F(ISNADD(NSNAG-ISNAG)))*.01
                      SNGLEN(INDEX(IDEAD))=OLEN(INDEX(IDEAD))
-                     CHPOS=HT(IS2F(ISNADD(NSNGS-ISNAG)))-
+                     CHPOS=HT(IS2F(ISNADD(NSNAG-ISNAG)))-
      >                    OLEN(INDEX(IDEAD))
 
 C                    0.0174532778 IS APPROXIMATELY PI/180.
 
-                     XSLOC(ISNADD(NSNGS-ISNAG))=
-     >                    XSLOC(ISNADD(NSNGS-ISNAG))
+                     XSLOC(ISNADD(NSNAG-ISNAG))=
+     >                    XSLOC(ISNADD(NSNAG-ISNAG))
      >                    +CHPOS*SIN(FALLDIR(INDEX(IDEAD))*0.0174532778)
-                     YSLOC(ISNADD(NSNGS-ISNAG))=
-     >                    YSLOC(ISNADD(NSNGS-ISNAG))
+                     YSLOC(ISNADD(NSNAG-ISNAG))=
+     >                    YSLOC(ISNADD(NSNAG-ISNAG))
      >                    +CHPOS*COS(FALLDIR(INDEX(IDEAD))*0.0174532778)
                      ODIA(INDEX(IDEAD))=
-     >                    DBH(IS2F(ISNADD(NSNGS-ISNAG)))*
+     >                    DBH(IS2F(ISNADD(NSNAG-ISNAG)))*
      >                    OLEN(INDEX(IDEAD))
-     >                    /HT(IS2F(ISNADD(NSNGS-ISNAG)))
-                     SNGCNWT(INDEX(IDEAD),0:3)=
-     >                 CROWNW(IS2F(ISNADD(NSNGS-ISNAG)),0:3)
-                      SNGDIA(INDEX(IDEAD))=ODIA(INDEX(IDEAD))
+     >                    /HT(IS2F(ISNADD(NSNAG-ISNAG)))
+                     SNGDIA(INDEX(IDEAD))=ODIA(INDEX(IDEAD))
                      CRNDIA(INDEX(IDEAD))=
-     >                    CRWDTH(IS2F(ISNADD(NSNGS-ISNAG)))
+     >                    CRWDTH(IS2F(ISNADD(NSNAG-ISNAG)))
 
                      OIDTRE(INDEX(IDEAD))=
-     >                    IDTREE(IS2F(ISNADD(NSNGS-ISNAG)))
+     >                    IDTREE(IS2F(ISNADD(NSNAG-ISNAG)))
 
                   ELSE
-                     OLEN(INDEX(IDEAD))=HT(IS2F(ISNADD(NSNGS-ISNAG)))
+                     OLEN(INDEX(IDEAD))=HT(IS2F(ISNADD(NSNAG-ISNAG)))
                      SNGLEN(INDEX(IDEAD))=OLEN(INDEX(IDEAD))
-                     ODIA(INDEX(IDEAD))=DBH(IS2F(ISNADD(NSNGS-ISNAG)))
-                     SNGCNWT(INDEX(IDEAD),0:3)=
-     >                          CROWNW(IS2F(ISNADD(NSNGS-ISNAG)),0:3)
+                     ODIA(INDEX(IDEAD))=DBH(IS2F(ISNADD(NSNAG-ISNAG)))
                      SNGDIA(INDEX(IDEAD))=ODIA(INDEX(IDEAD))
-                     CRNRTO(INDEX(IDEAD))=ICR(IS2F(ISNADD(NSNGS-ISNAG)))
+                     CRNRTO(INDEX(IDEAD))=ICR(IS2F(ISNADD(NSNAG-ISNAG)))
 
                      CRNDIA(INDEX(IDEAD))=
-     >                    CRWDTH(IS2F(ISNADD(NSNGS-ISNAG)))
+     >                    CRWDTH(IS2F(ISNADD(NSNAG-ISNAG)))
 
                      OIDTRE(INDEX(IDEAD))=
-     >                    IDTREE(IS2F(ISNADD(NSNGS-ISNAG)))
+     >                    IDTREE(IS2F(ISNADD(NSNAG-ISNAG)))
 
-                     IF (IOBJTP(ISNADD(NSNGS-ISNAG)) .EQ. -2) THEN
+                     IF (IOBJTP(ISNADD(NSNAG-ISNAG)) .EQ. -2) THEN
                         CALL SVRANN(X)
                         FALLDIR(INDEX(IDEAD)) = IFIX(360. *X +.5)
                      ELSE
@@ -606,7 +597,7 @@ C                    0.0174532778 IS APPROXIMATELY PI/180.
                         NDEAD=NDEAD+1
                         IF (DEBUG) WRITE (JOSTND,*) 'ADDEDTO', NDEAD
                      ENDIF
-                     IF (IOBJTP(ISNADD(NSNGS-ISNAG)) .EQ. -1) THEN
+                     IF (IOBJTP(ISNADD(NSNAG-ISNAG)) .EQ. -1) THEN
                         ISTATUS(INDEX(IDEAD)) = 2
                      ELSE
                         ISTATUS(INDEX(IDEAD))=1
@@ -619,11 +610,9 @@ C                    0.0174532778 IS APPROXIMATELY PI/180.
                         IF (DEBUG) WRITE (JOSTND,*) 'DEADOBJECTS=',IIX
                      ENDIF
                   ENDIF
-                  IS2F(ISNADD(NSNGS-ISNAG))=INDEX(IDEAD)
-                  IOBJTP(ISNADD(NSNGS-ISNAG))=2
-                  IF (IBACK(INDEX(IDEAD)).GE.1 .AND.
-     >                IBACK(INDEX(IDEAD)).LE.MXSVOB)
-     >                  IOBJTP(IBACK(INDEX(IDEAD)))=0
+                  IS2F(ISNADD(NSNAG-ISNAG))=INDEX(IDEAD)
+                  IOBJTP(ISNADD(NSNAG-ISNAG))=2
+                  IOBJTP(IBACK(INDEX(IDEAD)))=0
                   ISNAG=ISNAG+1
                   IYRCOD(INDEX(IDEAD))=IYOFTD
 C
@@ -632,11 +621,11 @@ C              OF THE SNAG MUST BE DETERMINED, AS WELL AS THE
 C              ORIGINAL INFORMATION
 C
                   IF (ICYC .EQ. 0) THEN
-                     IF (IMC(IS2F(ISNADD(NSNGS-ISNAG))) .EQ. 7) THEN
+                     IF (IMC(IS2F(ISNADD(NSNAG-ISNAG))) .EQ. 7) THEN
                         IYRCOD(INDEX(IDEAD))=
      >                       IYRCOD(INDEX(IDEAD))-MAX(IFIX(FINTM*.7),1)
                         ISTATUS(INDEX(IDEAD))=3
-                     ELSEIF (IMC(IS2F(ISNADD(NSNGS-ISNAG))) .EQ. 9) THEN
+                     ELSEIF (IMC(IS2F(ISNADD(NSNAG-ISNAG))) .EQ. 9) THEN
                         IYRCOD(INDEX(IDEAD))=
      >                       IYRCOD(INDEX(IDEAD))-IFIX(FINTM+2)
                         ISTATUS(INDEX(IDEAD))=4
@@ -797,10 +786,10 @@ C
 
       IF (DEBUG) THEN
         WRITE (JOSTND,1040) ICYC, IYEAR,
-     &                      NSNGS, NDEAD, NSVOBJ
+     &                      NSNAG, NDEAD, NSVOBJ
  1040   FORMAT (' ','LEAVING SVSNAD, ICYC=',I2,
      &              ', IYEAR=',I4,':', / ,
-     &          ' ',T5,'NSNGS(add)=',I4,', NDEAD=',I4,', NSVOBJ=',I5,//,
+     &          ' ',T5,'NSNAG(add)=',I4,', NDEAD=',I4,', NSVOBJ=',I5,//,
      &          ' ',T5,'SNAG LIST AFTER ADDING CUT/MORTALITY:',//,
      &          ' ',T5,'  I   IDTREE  SPP ODIA OLEN IYRCOD STATUS '
      &                 'FALLDIR OPROB STDNG',/,

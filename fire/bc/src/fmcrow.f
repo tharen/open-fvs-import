@@ -1,10 +1,7 @@
       SUBROUTINE FMCROW
       IMPLICIT NONE
-C
-C  $Id$
-C
 C----------
-C  **FMCROW  FIRE-BC
+C  **FMCROW  FIRE-SEI DATE OF LAST REVISION:  12/12/11
 C----------
 C     CALLED FROM: FMSDIT, FMPRUN
 C     CALLS        RDPSRT
@@ -141,8 +138,6 @@ C       COPY TEMPORARY VALUES TO FFE ARRAY
 
         DO J = 0,5
           CROWNW(I,J) = XV(J)
-          IF (DEBUG) WRITE(JOSTND,*) 'I=',I,' size=',J,
-     &    ' CROWNW=',CROWNW(I,J)
         ENDDO
 
   999 CONTINUE

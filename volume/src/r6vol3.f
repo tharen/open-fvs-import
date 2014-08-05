@@ -1,5 +1,4 @@
-!== last modified  01-11-2013
-C 01/11/2013 added calculation for stump vol.
+!== last modified  03-29-2004
 c***********************************************************************
 c***********************************************************************
       SUBROUTINE R6VOL3(DBHOB,DBTBH,FCLASS,HTTOT,ZONE,VOL)
@@ -66,8 +65,7 @@ C       FIND VOLUME FOR TOP OF TREE
   130   HTUP = HTTOT - (16.3 * (I-2) + H17) - S
         LOGVOL = 0.00272708*(TOPD*TOPD)*HTUP
         VOL(1) = VOL(1) + LOGVOL
-C       calculate stump volume
-        VOL(14)=0.005454154*DBHIB**2          
+          
       ENDIF
 
       RETURN

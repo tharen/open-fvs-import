@@ -1,7 +1,7 @@
       SUBROUTINE BADIST(DEBUG)
       IMPLICIT NONE
 C----------
-C CR $Id$
+C   ** BADIST--CR   DATE OF LAST REVISION:  02/24/09
 C----------
 C
 C COMMONS

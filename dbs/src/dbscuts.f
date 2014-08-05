@@ -48,7 +48,7 @@ C
       INTEGER ISPC,I1,I2,I3,J
       INTEGER*4 IDCMP1,IDCMP2
       DATA IDCMP1,IDCMP2/10000000,20000000/
-      REAL CW,P,CCFT,DGI,DP,ESTHT
+      REAL CW,P,CCFT,DGI,DP,Ht2TDCF,Ht2TDBF
 C---------
 C     IF CUTSOUT IS NOT TURNED ON OR THE IWHO VARIABLE IS NOT 2
 C     THEN JUST RETURN
@@ -127,8 +127,6 @@ C---------
      -             'MDefect int null,'//
      -             'BDefect int null,'//
      -             'TruncHt int null,'//
-     -             'EstHt double null,'//
-     -             'ActPt int null,'//
      -             'Ht2TDCF real null,'//
      -             'Ht2TDBF real null)'
 
@@ -162,8 +160,6 @@ C---------
      -             'MDefect int null,'//
      -             'BDefect int null,'//
      -             'TruncHt int null,'//
-     -             'EstHt Number null,'//
-     -             'ActPt int null,'//
      -             'Ht2TDCF real null,'//
      -             'Ht2TDBF real null)'
         ELSE
@@ -196,8 +192,6 @@ C---------
      -             'MDefect int null,'//
      -             'BDefect int null,'//
      -             'TruncHt int null,'//
-     -             'EstHt real null,'//
-     -             'ActPt int null,'//
      -             'Ht2TDCF real null,'//
      -             'Ht2TDBF real null)'
         ENDIF
@@ -257,14 +251,6 @@ C----------
             ICDF=(DEFECT(I)-((DEFECT(I)/10000)*10000))/100
             IBDF= DEFECT(I)-((DEFECT(I)/100)*100)
             IPTBAL=NINT(PTBALT(I))
-C           DETERMINE ESTIMATED HEIGHT
-C           ESTIMATED HEIGHT IS NORMAL HEIGHT, UNLESS THE LATTER HASN'T
-C           BEEN SET, IN WHICH CASE IT IS EQUAL TO CURRENT HEIGHT
-            IF (NORMHT(I) .NE. 0) THEN
-              ESTHT = (REAL(NORMHT(I))+5)/100
-            ELSE
-              ESTHT = HT(I)
-            ENDIF
 C----------
 C           GET DG INPUT
 C----------
@@ -305,17 +291,20 @@ C----------
      -           TreeId,TreeIndex,Species,TreeVal,SSCD,PtIndex,TPA,
      -           MortPA,DBH,DG,
      -           HT,HTG,PctCr,CrWidth,MistCD,BAPctile,PtBAL,TCuFt,
-     -           MCuFt,BdFt,MDefect,BDefect,TruncHt,
-     -           EstHt,ActPt,Ht2TDCF,Ht2TDBF) VALUES(',
-     -           CUTSID,',',ICASE,',',CHAR(39),TRIM(NPLT),CHAR(39),
-     -           ',',JYR,',',IFINT,",'",ADJUSTL(TID),"',",I,",'",
-     -           CSPECIES,"',",IMC(I),',',ISPECL(I),',',ITRE(I),
+     -           MCuFt,BdFt,MDefect,BDefect,TruncHt,Ht2TDCF,
+     -           Ht2TDBF) VALUES(',CUTSID,',',ICASE,',',CHAR(39),
+     -           TRIM(NPLT),CHAR(39),',',JYR,',',IFINT,",'",A
+     -           DJUSTL(TID),"',",I,",'",CSPECIES,
+     -           "',",IMC(I),',',ISPECL(I),',',ITRE(I),
      -           ',',P,',',DP,',',DBH(I),',',DGI,',',HT(I),',',HTG(I),
      -           ',',ICR(I),',',CW,',',IDMR,',',PCT(I),',',IPTBAL,',',
      -           CFV(I),',',WK1(I),',',BFV(I),',',ICDF,',',IBDF,',',
-     -           ((ITRUNC(I)+5)/100),',',ESTHT,',',IPVEC(ITRE(I)),
-     -           ',',HT2TD(I,2),',',HT2TD(I,1),')'
+     -           ((ITRUNC(I)+5)/100),',',HT2TD(I,1),',',
+     -           HT2TD(I,2),')'
 
+
+C     -           ((ITRUNC(I)+5)/100),',',HT2TD(I,1),',',
+C     -           HT2TD(I,2),')'
 
             iRet = fvsSQLCloseCursor(StmtHndlOut)
 

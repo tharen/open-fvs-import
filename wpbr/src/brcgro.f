@@ -1,7 +1,6 @@
       SUBROUTINE BRCGRO(K,PROP,BRHT,BRHTG,BRDG,NLCAN,HNEW,DNEW)
-      IMPLICIT NONE
 C**********************************************************************
-C  **BRCGRO       DATE OF LAST REVISION:  06/05/2014
+C  **BRCGRO       DATE OF LAST REVISION:  11/07/2002
 C----------------------------------------------------------------------
 C  Purpose:
 C  BRCGRO grows cankers for one year and determines if any active
@@ -119,6 +118,7 @@ C     Added condition so that circumference of the stem at the canker
 C     must be greater than the bole canker growth rate with additional
 C     buffer of 25% before bole canker growth is applied.
 C**********************************************************************
+
 C.... Common include files.
 
       INCLUDE 'PRGPRM.F77'
@@ -132,14 +132,14 @@ C.... Local variable declarations.
       INTEGER JCSTAT,K,NCAN,NLCAN,EXCNCT,I4,I5
       REAL BRDG,BRHT,BRHTG,HNEW,HNEWCM,DNEW,DNEWCM,PROP,BRGDY,BRHYR,
      &   DGPROP,EXHT,GIRAMT,GIRD,GROBOL,HTBCR,HTGPRP,OUT,PRHT,PHTST,
-     &   UP,XRAN,BCL,RCL,PCTREM,POTST
+     &   UP,XRAN
       LOGICAL DEBUG
 
 C.... See if we need to do some debug.
 
       CALL DBCHK(DEBUG,'BRCGRO',6,ICYC)
       IF(DEBUG) WRITE(JOSTND,10) ICYC
-   10 FORMAT ('Entering subroutine BRCGRO: cycle = ',I2)
+   10 FORMAT (' Entering subroutine BRCGRO: cycle = ',I2)
       IF(DEBUG) WRITE(JOSTND,*) ' PARAMETERS=',
      &          K,PROP,BRHT,BRHTG,BRDG,NLCAN,HNEW,DNEW
 
@@ -524,7 +524,7 @@ C....             Set tree status to 7 indicate its death so it
 C....             will not be processed for following years, if any,
 C....             for the current cycle.
 
-                  IF(UP.LE.HTBCR) THEN
+   	          IF(UP.LE.HTBCR) THEN
                      WK2(K)=PROB(K)*0.99999
                      BRPB(K)=BRPB(K)+PROB(K)
                      TBRHMR(I4)= TBRHMR(I4)+PROB(K)
@@ -551,6 +551,6 @@ C.... Common return.
 
   500 CONTINUE
       IF(DEBUG) WRITE(JOSTND,501) ICYC
-  501 FORMAT ('Leaving subroutine BRCGRO: cycle = ', I2)
+  501 FORMAT (' Leaving subroutine BRCGRO: cycle = ', I2)
       RETURN
       END

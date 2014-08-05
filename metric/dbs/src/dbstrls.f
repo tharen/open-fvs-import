@@ -1,7 +1,6 @@
       SUBROUTINE DBSTRLS(IWHO,KODE,TEM)
-      IMPLICIT NONE
 C----------
-C  $Id$
+C  **DBSTRLS--DBS/M  DATE OF LAST REVISION:  08/11/08
 C----------
 C     PURPOSE: TO OUTPUT THE TREELIST DATA TO THE DATABASE
 C
@@ -13,6 +12,12 @@ C            KODE  - FOR LETTING CALLING ROUTINE KNOW IF THIS IS A
 C                     REDIRECT OF THE FLAT FILE REPORT OR IN
 C                     ADDITION TO
 C
+
+      use f90SQLConstants
+      use f90SQLStructures
+      use f90SQL
+      IMPLICIT NONE
+
 COMMONS
 C
       INCLUDE 'PRGPRM.F77'
@@ -63,7 +68,8 @@ C     ALWAYS CALL CASE TO MAKE SURE WE HAVE AN UP TO DATE CASE NUMBER
 
 C     ALLOCATE A STATEMENT HANDLE
 
-      iret = fvsSQLAllocHandle(SQL_HANDLE_STMT,ConnHndlOut,StmtHndlOut)
+      CALL f90SQLAllocHandle(SQL_HANDLE_STMT,ConnHndlOut, StmtHndlOut,
+     -                        iRet)
       IF (iRet.NE.SQL_SUCCESS .AND. iRet.NE. SQL_SUCCESS_WITH_INFO) THEN
         ITREELIST = 0
         PRINT *,'Error connecting to data source'
@@ -77,9 +83,8 @@ C     IF IT DOESN'T THEN WE NEED TO CREATE IT
 
       SQLStmtStr= 'SELECT * FROM '//TABLENAME
 
-      iret = fvsSQLExecDirect(StmtHndlOut,trim(SQLStmtStr),
-     -                int(len_trim(SQLStmtStr),SQLINTEGER_KIND))
-      
+      CALL f90SQLExecDirect(StmtHndlOut,trim(SQLStmtStr),iRet)
+
       IF(iRet.NE.SQL_SUCCESS.AND.
      -    iRet.NE.SQL_SUCCESS_WITH_INFO) THEN
         IF(TRIM(DBMSOUT).EQ."ACCESS") THEN
@@ -179,9 +184,11 @@ C     IF IT DOESN'T THEN WE NEED TO CREATE IT
      -             'EstHt real null,'//
      -             'ActPt int null)'
         ENDIF
-        iret = fvsSQLFreeStmt(StmtHndlOut)
-        iret = fvsSQLExecDirect(StmtHndlOut,trim(SQLStmtStr),
-     -                int(len_trim(SQLStmtStr),SQLINTEGER_KIND))
+        !PRINT*,SQLStmtStr
+        !Close Cursor
+        CALL f90SQLFreeStmt(StmtHndlOut,SQL_CLOSE, iRet)
+
+        CALL f90SQLExecDirect(StmtHndlOut,trim(SQLStmtStr),iRet)
         CALL DBSDIAGS(SQL_HANDLE_STMT,StmtHndlOut,
      -       'DBSTRLS:Creating Table: '//trim(SQLStmtStr))
         TREEOUTID = 0
@@ -299,10 +306,12 @@ C           MAKE SURE WE DO NOT EXCEED THE MAX TABLE SIZE IN EXCEL
      -           NINT(FLOAT(ITRUNC(I)+5)*.01*FTtoM),',',ESTHT*FTtoM,
      -           ',',IPVEC(ITRE(I)),')'
 
-            iRet = fvsSQLCloseCursor(StmtHndlOut)
+            !PRINT*, SQLStmtStr
 
-            iRet = fvsSQLExecDirect(StmtHndlOut,trim(SQLStmtStr),
-     -                int(len_trim(SQLStmtStr),SQLINTEGER_KIND))
+            !Close Cursor
+            CALL f90SQLFreeStmt(StmtHndlOut,SQL_CLOSE, iRet)
+
+            CALL f90SQLExecDirect(StmtHndlOut,trim(SQLStmtStr),iRet)
             CALL DBSDIAGS(SQL_HANDLE_STMT,StmtHndlOut,
      -                  'DBSTRLS:Inserting Row: '//trim(SQLStmtStr))
           ENDDO
@@ -383,11 +392,14 @@ C           MAKE SURE WE DO NOT EXCEED THE MAX TABLE SIZE IN EXCEL
      -           ',',BFV(I)*0.0,',',ICDF,',',IBDF,',',
      -           NINT(FLOAT(ITRUNC(I)+5)*.01*FTtoM),',',ESTHT*FTtoM,
      -           ',',IPVEC(ITRE(I)),')'
+     
 
-            iRet = fvsSQLCloseCursor(StmtHndlOut)
+            !PRINT*, SQLStmtStr
 
-            iRet = fvsSQLExecDirect(StmtHndlOut,trim(SQLStmtStr),
-     -                int(len_trim(SQLStmtStr),SQLINTEGER_KIND))
+            !Close Cursor
+            CALL f90SQLFreeStmt(StmtHndlOut,SQL_CLOSE, iRet)
+
+            CALL f90SQLExecDirect(StmtHndlOut,trim(SQLStmtStr),iRet)
             CALL DBSDIAGS(SQL_HANDLE_STMT,StmtHndlOut,
      -                  'DBSTRLS:Inserting Row: '//trim(SQLStmtStr))
 
@@ -395,6 +407,7 @@ C           MAKE SURE WE DO NOT EXCEED THE MAX TABLE SIZE IN EXCEL
  
   100 CONTINUE
 
-      iRet = fvsSQLFreeHandle(SQL_HANDLE_STMT, StmtHndlOut)
-      
+      !Release statement handle
+      CALL f90SQLFreeHandle(SQL_HANDLE_STMT, StmtHndlOut, iRet)
+
       END
