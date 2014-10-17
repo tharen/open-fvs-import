@@ -2,7 +2,7 @@
 
 =Running FVS from VB.Net using the API=
 
-_Don Robinson, [http://www.essa.com ESSA] Technologies, June 2013_
+_Don Robinson, [http://www.essa.com ESSA] Technologies, October 2014_
 
 This Wiki page documents the key concepts for writing VB.Net code, so that .Net developers can create applications that use FVS through the API (see [FVS_API]). The example repository code is still under development with 18 of 22 API calls ('Methods') built and tested. These methods provide good templates for the completion of the interface, and new participants and developers are welcome.
 
