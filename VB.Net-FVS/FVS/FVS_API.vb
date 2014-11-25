@@ -384,6 +384,78 @@ Public Class FVS_API
 
       Return
    End Sub
+   Public Sub EvmonAttr(ByRef AttrName As String,
+                       ByRef Action As String,
+                       ByVal Attr As Double,
+                       ByRef RtnCode As Integer)
+
+      ' see: http://code.google.com/p/open-fvs/wiki/FVS_API#FVS_Event_Monitor_Variables
+      ' string matches are case sensitive and exact
+
+      Dim AttrNameLen As Integer = AttrName.Length
+      Dim x As Double
+
+      Dim StrActionArray() As String = {"get", "set"}
+
+      Dim StrFound As Boolean = False
+      Dim StrTarget As String = Action
+      For Each Str As String In StrActionArray
+         If Str = StrTarget Then
+            StrFound = True
+            Exit For
+         End If
+      Next
+      If (StrFound = False) Then
+         Attr = Nothing
+         RtnCode = 1
+         Return
+      End If
+
+      ' After- and Before-thin canopy cover %; more to come...
+
+      Dim StrAttrArray() As String = {
+         "acancov", "bcancov"}
+
+      ' metric conversions when necessary.
+      ' NB: 1D = 1.0 double precision
+      Dim MetricAttrArray() As Double = {
+         1D, 1D}
+
+      Dim StrIndx As Integer = 0
+      StrFound = False
+      StrTarget = AttrName
+      For Each Str As String In StrAttrArray
+         If Str = StrTarget Then
+            StrFound = True
+            Exit For
+         End If
+         StrIndx += 1
+      Next
+      If (StrFound = False) Then
+         Attr = Nothing
+         RtnCode = 1
+         Return
+      End If
+
+      ' To convert input from metric to the imperial required by FVS, multiply
+      ' by the inverse (1/X) of the constants if MetricAttrArray().
+
+      If (Action = "set" And Me.MeasurementUnits = "metric") Then
+         x = 1D / MetricAttrArray(StrIndx)
+      End If
+
+      FVSEVMONATTR(AttrName, AttrNameLen, Action, Attr, RtnCode)
+
+      ' Return imperial or metric units; based on relevant units
+      ' NOTE THAT the VB indexes are zero-based: Attr(0) is the first tree in the treelist
+
+      If (Action = "get" And Me.MeasurementUnits = "metric") Then
+         x = MetricAttrArray(StrIndx)
+         Attr = Attr * x
+      End If
+
+      Return
+   End Sub
 #End Region
 
 End Class

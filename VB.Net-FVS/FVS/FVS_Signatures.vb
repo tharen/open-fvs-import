@@ -91,5 +91,9 @@ Public Module FVS_Signatures
                                                               ByRef StopPtYear As Integer)
    Public Declare Sub FVSSETSTOPPOINTCODES Lib "FVS_bcc.dll" (ByRef StopPtCode As Integer,
                                                               ByRef StopPtYear As Integer)
-
+   Public Declare Ansi Sub FVSEVMONATTR Lib "FVS_bcc.dll" (ByVal AttrName As String,
+                                                           ByRef AttrNameLen As Integer,
+                                                           ByVal Action As String,
+                                                           ByRef Attr As Double,
+                                                           ByRef RtnCode As Integer)
 End Module
