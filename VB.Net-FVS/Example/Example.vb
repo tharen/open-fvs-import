@@ -84,9 +84,11 @@ Public Class Example
             Dim Diam(nTrees - 1) As Double
             Dim TPH(nTrees - 1) As Double
             Dim Vol(nTrees - 1) As Double
+            Dim PctCovr As Double
             fvs.TreeAttr("dbh", "get", nTrees, Diam, RC)
             fvs.TreeAttr("tpa", "get", nTrees, TPH, RC)
             fvs.TreeAttr("tcuft", "get", nTrees, Vol, RC)
+            fvs.EvmonAttr("bcancov", "get", PctCovr, RC)
 
             Dim Cls0Yrs(MaxSpecies - 1) As Double
             Dim Cls5Yrs(MaxSpecies - 1) As Double
