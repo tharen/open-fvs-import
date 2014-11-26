@@ -2,9 +2,9 @@
 
 =Running FVS from VB.Net using the API=
 
-_Don Robinson, [http://www.essa.com ESSA] Technologies, October 2014_
+_Don Robinson, [http://www.essa.com ESSA] Technologies, November 2014_
 
-This Wiki page documents the key concepts for writing VB.Net code, so that .Net developers can create applications that use FVS through the API (see [FVS_API]). The example repository code is still under development with 18 of 22 API calls ('Methods') built and tested. These methods provide good templates for the completion of the interface, and new participants and developers are welcome.
+This Wiki page documents the key concepts for writing VB.Net code, so that .Net developers can create 32-bit applications that use FVS through the API (see [FVS_API]). The example repository code is still under development with 18 of 22 API calls ('Methods') built and tested. These methods provide good templates for the completion of the interface, and new participants and developers are welcome.
 
 Depending on the tool chain and variant name, there are small differences in the names of FVS DLLs and names of the API calls, respectively. These differences are very minor, and the sample code and instructions should make it clear how to adapt to any combination of tool chain and variant. The example which is provided is specific to the BC variant built with Visual Studio (see [BuildProcess_VisualStudio]), which is targeted for integration with the [http://www.essa.com/telsa TELSA] model.
 
@@ -76,7 +76,7 @@ Each API call is mirrored by a corresponding VB method, usually removing the pre
 || 19 || `AddTrees` || `FVSADDTREES` || *metric* available||
 || 20 || `AddActivity` || `FVSADDACTIVITY` || not yet implemented ||
 || 21 || `CutTrees` || `FVSCUTTREES` || not yet implemented ||
-|| 22 || `EvmonAttr` || `FVSEVMONATTR` || not yet implemented ||
+|| 22 || `EvmonAttr` || `FVSEVMONATTR` || *metric* started ||
 || 23 || `SVSObjData` || `FVSSVSOBJDATA` || not yet implemented ||
 
 ==Annotated Code Sample==
@@ -138,8 +138,11 @@ fvs.SetCmdLine("--keywordfile=MgmtBC.key --stoppoint=1,2020,test.stop", ReturnCo
 Do
   fvs.StandID(StandID, CNID, mID)
   fvs.GetKeywordFilename(KeywordFilename)
-  '" iterate through the stand(s) in the key file"
+
+  '" iterate through the stand(s) in the key file; 2 calls needed" 
   fvs.RunFVS(ReturnCode)
+  fvs.RunFVS(ReturnCode)
+
   '" inspect the error code"
   fvs.GetICCode(RC)
   '" fetch the 'Scen2' stand summary table for Cycle 2"
@@ -207,10 +210,11 @@ Loop Until ReturnCode <> 0
 }}}
 
 ==Next Steps for Extending FVS with VB.Net==
-There are 3 top-level tasks that remain:
+Here are some high-level tasks that remain:
 
   * create and test the remaining not-yet-implemented VB Methods; some of these will require a lot of work to implement in metric form, due to the large number of possible events.
   * investigate options to provide interfaces that are compiler independent, so that API calls work for both these forms: `FVSDIMSIZES` and `fvsdimsizes_`.
   * investigate options to create tools that work across all variants, without the annoyance of having to recode the name of the target DLL based on variant and tool chain.
+  * develop capability to use full 64-bit FVS builds with 64-bit VB.Net applications. Conversion of the example project to 64-bit capability can be done through update of .Net assemblies from Version 2 to Version 4, but there are heap-corruption problems associated with some API calls.
 
-In addition, there are possible improvements to the Methods that might make them more intuitive and useful. For example, loop-oriented Methods like `SpeciesCode` could be rewritten to fetch all species labels at once by moving the loop inside the Method. Improvements to argument checking might also be possible.
+In addition, there are possible improvements to the Methods that might make them more intuitive and useful. For example, loop-oriented Methods like `SpeciesCode` could be rewritten to fetch all species labels at once by moving the loop inside the Method. Improvements to argument checking is also possible.
