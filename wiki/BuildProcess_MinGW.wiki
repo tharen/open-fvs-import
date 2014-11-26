@@ -2,7 +2,7 @@
 
 =The Build Process in Windows using MinGW=
 
-_Don Robinson, [http://www.essa.com ESSA] Technologies, June 2014_
+_Don Robinson, [http://www.essa.com ESSA] Technologies, November 2014_
 
 This wiki documents the process of setting things up on a Windows PC so you can build FVS executables from the source files in the open-fvs repository. Builds of _32-bit_ versions have been tested on a clean WinXP SP3 VM; _64-bit_ builds have been tested on a clean Win7 SP1 VM. For more information on the build process, including information for builds on other platforms please refer to [BuildProcess_UnixAlike], [BuildProcess_VisualStudio], or the [FAQ].
 
