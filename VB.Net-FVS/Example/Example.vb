@@ -63,6 +63,7 @@ Public Class Example
 
          ' iterate through the stand(s) in the key file
          fvs.RunFVS(ReturnCode)
+         fvs.RunFVS(ReturnCode)
 
          ' inspect the error code
          fvs.GetICCode(RC)
@@ -85,6 +86,7 @@ Public Class Example
             Dim TPH(nTrees - 1) As Double
             Dim Vol(nTrees - 1) As Double
             Dim PctCovr As Double
+
             fvs.TreeAttr("dbh", "get", nTrees, Diam, RC)
             fvs.TreeAttr("tpa", "get", nTrees, TPH, RC)
             fvs.TreeAttr("tcuft", "get", nTrees, Vol, RC)
