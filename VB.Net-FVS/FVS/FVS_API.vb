@@ -386,8 +386,19 @@ Public Class FVS_API
    End Sub
    Public Sub EvmonAttr(ByRef AttrName As String,
                        ByRef Action As String,
-                       ByVal Attr As Double,
+                       ByRef Attr As Double,
                        ByRef RtnCode As Integer)
+
+      ' Public Declare Ansi Sub FVSEVMONATTR Lib "FVS_bcc.dll" (ByVal AttrName As String,
+      '                                                    ByRef AttrNameLen As Integer,
+      '                                                   ByVal Action As String,
+      '                                                  ByRef Attr As Double,
+      '                                                 ByRef RtnCode As Integer)
+      '   Public Sub TreeAttr(ByRef Name As String,
+      '                ByRef Action As String,
+      '                ByRef nTrees As Integer,
+      '                ByVal Attr() As Double,
+      '                ByRef RtnCode As Integer)
 
       ' see: http://code.google.com/p/open-fvs/wiki/FVS_API#FVS_Event_Monitor_Variables
       ' string matches are case sensitive and exact
@@ -442,18 +453,17 @@ Public Class FVS_API
 
       If (Action = "set" And Me.MeasurementUnits = "metric") Then
          x = 1D / MetricAttrArray(StrIndx)
+         Attr = Attr * x
       End If
 
       FVSEVMONATTR(AttrName, AttrNameLen, Action, Attr, RtnCode)
 
       ' Return imperial or metric units; based on relevant units
-      ' NOTE THAT the VB indexes are zero-based: Attr(0) is the first tree in the treelist
-
       If (Action = "get" And Me.MeasurementUnits = "metric") Then
          x = MetricAttrArray(StrIndx)
          Attr = Attr * x
       End If
-
+      RtnCode = 999
       Return
    End Sub
 #End Region
