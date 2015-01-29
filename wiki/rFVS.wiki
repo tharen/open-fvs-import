@@ -1,7 +1,5 @@
 #summary Running FVS from R
 
-Nick Crookston, January, May, and November 2012
-
 = Contents =
 
 <wiki:toc max_depth="2" />
