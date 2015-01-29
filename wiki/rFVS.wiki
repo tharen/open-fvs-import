@@ -240,6 +240,8 @@ A vector of strings whereby each string names an attribute to be returned.
 ||`tcuft`||Total cubic volume||
 ||`mcuft`||Merch cubic volume||
 ||`bdft`||Board foot volume||
+||`ptbal`||Point basal area in larger trees (sq ft/acre)||
+||`bapctile`||Percentile in the distribution of tree basal area||
 ||`defect`||Defect coded as 11223344 as described below||
 ||`mgmtcd  `||Tree value class or management code (1, 2, or 3)||
 ||`plotsize`||Size of plot tree was sampled from|| 
@@ -420,6 +422,20 @@ Argument: A matrix as returned by [rFVS#fvsGetSummary() fvsGetSummary()] or the 
 Return value:
 
 A matrix with additional columns and rows (if there were harvests in the run).
+
+== fvsUnitConversion(name) ==
+
+{{{
+fvsUnitConversion(name)
+}}}
+
+Argument:
+
+A case sensitive character string naming a conversion factor to be returned. See [FVS_API#Return_Unit_Conversion Return Unit Conversions] for a list of valid codes.
+
+Return value:
+
+A scalar numeric value; NA if the name is not valid. 
 
 = Run Examples =
 

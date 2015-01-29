@@ -234,6 +234,7 @@ Tree attributes that can be returned or set. The units of measure or the period 
 ||`tcuft`||Total cubic feet||
 ||`mcuft`||Merchantable cubic feet||
 ||`bdft`||Board feet||
+||`ptbalt`||Point basal area in larger trees (sq ft/acre)||
 ||`defect`||Defect coded as 11223344 as described below||
 ||`mgmtcd  `||Tree value class or management code (1, 2, or 3)||
 ||`plotsize`||Size of plot tree was sampled from|| 
@@ -472,10 +473,57 @@ Fetch the integer code returned when FVS exits. A value of 0 means that no serio
 ||Argument||Definition||
 ||`rtnCode`||value of FVS return code (integer)||
 
+== Return Unit Conversion ==
+
+{{{
+subroutine fvsUnitConversion(name,nch,rtnCode)
+}}}
+
+Fetch a unit conversion multiplier. 
+              
+||Argument||Definition||
+||`name`||character string defining conversion factor desired.||
+||`nch`||integer number defining the length of _name_.||
+||`rtnCode`||return codes, as follows: 0=OK, 1=_name_ not found.||
+
+The value of _name_ is case sensitive (must be coded exactly as show here) and can be one of the following:
+
+||_name_||Definition||
+||`CMtoIN`||cm to inches|| 
+||`CMtoFT`||cm to feet|| 
+||`MtoIN`||m to inches|| 
+||`MtoFT`||m to feet|| 
+||`KMtoMI`||km to miles|| 
+||`M2toFT2`||square m to square feet||        
+||`HAtoACR`||hectares to acres|| 
+||`M3toFT3`||cubic meters to cubic feet|| 
+||`KGtoLB`||kg to pounds (lbs)|| 
+||`TMtoTI`||Tonnes metric (1,000 kg) to Tons Imperial (2,000 lbs)|| 
+||`CtoF1`||Slope in the Celsius to Fahrenheit conversion|| 
+||`CtoF2`||Intercept in the Celsius to Fahrenheit conversion|| 
+||`INtoCM`||inches to cm|| 
+||`FTtoCM`||feet to cm|| 
+||`INtoM`||inches to m||         
+||`FTtoM`||feet to m|| 
+||`MItoKM `||miles to km|| 
+||`FT2toM2`||square feet to square m|| 
+||`ACRtoHA`||acres to hectares|| 
+||`FT3toM3`||cubic feet to cubic m|| 
+||`LBtoKG`||pounds (lbs) to kg||                                                    
+||`TItoTM`||Tons Imperial (2,000 lbs) to Tonnes metric (1,000 kg)|| 
+||`FtoC1`||Slope in the Fahrenheit to Celsius conversion|| 
+||`FtoC2`||Intercept in the Fahrenheit to Celsius conversion ||                                           
+||`BTUtoKJ`||BTU to kilojoules|| 
+||`M2pHAtoFT2pACR`||square m per hectare to square feet per acre|| 
+||`M3pHAtoFT3pACR`||cubic m per hectare|| 
+||`FT2pACRtoM2pHA`||square feet per acre to square m per hectare|| 
+||`FT3pACRtoM3pHA`||cubic feet per acre to cubic m per hectare || 
+
+
 == Summary of TODO ==
 
 Here is a list of TODO items:
 
-  # Finish the fvsCutTrees function.
+  # Finish the fvsCutTrees function (the implementation  in subroutine cuts needs to be done).
   # Set up the FVS function so that one can restart from the previous stand (assuming that the stand is stored in a stoppoint file. This would allow for making several projections from a stoppoint year into the future (upto a stoppoint year) for the same stand. This feature would be useful for treatment optimizations. There are two functions in the _API_ that are designed to support the functionality, but they have not yet been tested.
   # Add a --treeDataFile option to the command line.
