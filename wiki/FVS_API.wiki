@@ -79,7 +79,7 @@ Set (or Get) the parameters that control start/restart while FVS is run as a sha
 subroutine fvsGetRestartcode (restartcode)
 }}}
 
-Returns the current value of the stop/restart code. This is an integer the indicates point within the FVS sequence of calculations were the program will start when subroutine FVS is called next (also see [FVSCommandLine FVS Command Line]). Values are as follows:
+Returns the current value of the stop/restart code. This is an integer the indicates point within the FVS sequence of calculations where the program will start when subroutine FVS is called next (also see [FVSCommandLine FVS Command Line]). Note that stopping between the simulation of stands in a multi stand simulation done even when no stop request has been scheduled. Values are as follows:
 
 ||Stop Point Code||Definition||
 ||`1`||Stop was done just before the first call to the Event Monitor.||
@@ -88,6 +88,8 @@ Returns the current value of the stop/restart code. This is an integer the indic
 ||`4`||Stop was done just after the second call to the Event Monitor.||
 ||`5`||Stop was done after growth and mortality has been computed, but prior to applying them.||
 ||`6`||Stop was done just before the ESTAB routines are called.||
+||`100`||Stop was done after a stand has been simulated but prior to starting a subsequent stand.||
+
 
 
 == Return Code State ==
@@ -112,7 +114,7 @@ _rtnCode_ is returned with the current return code value in FVS.
 subroutine fvs(rtnCode)
 }}}
 
-Run FVS up to the next stop point, or to the end of the simulation. Start by reading the keyword file or by reading a restart file, depending on run options [see FVSCommandLine FVS Command Line].
+Run FVS up to the next stop point, or to the end of the simulation of a stand. FVS is started by reading the keyword file or by reading a restart file, depending on run options [see FVSCommandLine FVS Command Line]. Note that fvs() always automatically returns at the end of each stand in a multi stand simulation done even when no stop request has been scheduled. For a multi stand simulation, simply call fvs() as often as necessary until the return code is not zero.
 
 The _rtnCode_ is as described for [FVS_API#Return_Code_State Return Code State].
 
