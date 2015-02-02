@@ -308,26 +308,16 @@ Return value:
 
 A copy of `.FVSLOADEDLIBRARY` is invisibly returned.
 
-== fvsRun(stopPointCode=NA,stopPointYear=NA) ==
+== fvsGetRestartcode() ==
 {{{
-fvsRun(stopPointCode=NA,stopPointYear=NA)
+fvsGetRestartcode()
 }}}
 
-Arguments:
-||`stopPointCode`||The stop point code corresponding to the next place in the FVS simulation form where the program should return.||
-||` stopPointYear `||The stop point year corresponding to the year in simulated  time the FVS simulation should return.||
-
-See [FVS_API#Stop stop points] for a list of valid stop point codes.
-
-If one of the arguments is specified, the other must also be specified. If both are left as NA values, the defaults for FVS are used. Those defaults imply that no stopping be done.
-
-Note that using fvsRun() without arguments is functionally equivalent to using  fvsInteractRun() without arguments.
+Provides an R interface to [FVS_API#Stop_Points Fortran function fvsGetRestartcode].
 
 Return value:
 
 The FVS [FVS_API#Return_Code_State return code state] (integer).
-
-Also see: [rFVS#fvsInteractRun() fvsInteractRun()]
 
 == fvsSetCmdLine(cl = NULL) ==
 
