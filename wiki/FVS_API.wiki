@@ -79,7 +79,7 @@ Set (or Get) the parameters that control start/restart while FVS is run as a sha
 subroutine fvsGetRestartcode (restartcode)
 }}}
 
-Returns the current value of the stop/restart code. This is an integer the indicates point within the FVS sequence of calculations were the program will start when subroutine FVS is called next (also see [FVSCommandLine FVS Command Line]. Values are as follows:
+Returns the current value of the stop/restart code. This is an integer the indicates point within the FVS sequence of calculations were the program will start when subroutine FVS is called next (also see [FVSCommandLine FVS Command Line]). Values are as follows:
 
 ||Stop Point Code||Definition||
 ||`1`||Stop was done just before the first call to the Event Monitor.||
