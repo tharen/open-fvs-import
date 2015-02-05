@@ -47,6 +47,7 @@
 ../base/src/algevl.f
 ../base/src/algexp.f
 ../base/src/algkey.f
+../base/src/algptg.f
 ../base/src/algslp.f
 ../base/src/algspp.f
 ../base/src/apisubs.f
@@ -180,6 +181,7 @@
 ../base/src/prtexm.f
 ../base/src/prtrls.f
 ../base/src/ptbal.f
+../base/src/ptgdecd.f
 ../base/src/rann.f
 ../base/src/rcdset.f
 ../base/src/rdpsrt.f
@@ -309,6 +311,7 @@
 ../dbs/src/dbsatrtls.f
 ../dbs/src/dbsblkd.f
 ../dbs/src/dbscase.f
+../dbs/src/dbscknrows.f
 ../dbs/src/dbsclose.f
 ../dbs/src/dbscmpu.f
 ../dbs/src/DBSCOM.F77
@@ -332,7 +335,6 @@
 ../dbs/src/dbsfmpf.f
 ../dbs/src/dbsfmssnag.f
 ../dbs/src/dbsfuels.f
-../dbs/src/dbsgetid.f
 ../dbs/src/dbshelpers.f
 ../dbs/src/dbsin.f
 ../dbs/src/dbsinit.f
@@ -351,6 +353,7 @@
 ../dbs/src/dbstrls.f
 ../dbs/src/fvsSQL.c
 ../dbs/src/mkdbsTypeDefs.c
+../dbs/src/uuidgen.f
 ../econ/src/eccalc.f
 ../econ/src/echarv.f
 ../econ/src/ecin.f
@@ -531,7 +534,6 @@
 ../pg/src/ecnget.f
 ../pg/src/ecnput.f
 ../pg/src/fmppget.f
-../pg/src/fmpphv.f
 ../pg/src/fmppput.f
 ../pg/src/getstd.f
 ../pg/src/putgetsubs.f
@@ -543,6 +545,8 @@
 ../so/src/adjmai.f
 ../so/src/avht40.f
 ../so/src/r6crwd.f
+../volume/src/blmtap.f
+../volume/src/blmvol.f
 ../volume/src/brk_up.f
 ../volume/src/clkcoef_mod.f
 ../volume/src/debug_mod.f
