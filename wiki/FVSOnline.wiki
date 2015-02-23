@@ -1,0 +1,154 @@
+#summary FVSOnline Installation and Programmer Notes
+
+=FVSOnline Installation and Programmer Notes=
+
+*A work in progress!* Note that this documentation is being developed as the software evolves. Contact the author directly if you have questions or comments. 
+
+Nicholas Crookston (ncrookston.fs@gmail.com)
+
+Date of Last Revision: February 23, 2015
+
+= Contents =
+
+<wiki:toc max_depth="2" />
+
+==Introduction==
+
+FVSOnline is an interface to the Forest Vegetation Simulator
+(http://www.fs.fed.us/fmsc/fvs/). It was created as a replacement to the Suppose
+user interface to FVS (http://www.fs.fed.us/fmsc/fvs/software/suppose.php) using
+the Shiny web application framework (hereafter Shiny; http://shiny.rstudio.com/)
+which is implemented using the R programming language
+(http://www.r-project.org/) for the server code and html plus JavaScript
+(http://en.wikipedia.org/wiki/JavaScript) for the client code. FVSOnline also
+relies on rFVS (https://code.google.com/p/open-fvs/wiki/rFVS) to interact with
+FVS. FVSOnline is a Shiny web application.
+
+This document is covers very basic information about what is required to install
+and run FVSOnline. The content assumes that you are basically familiar with the
+R, the Shiny web application framework, FVS, rFVS, Suppose, and SQL (including
+ODBC). Necessary background can be gained by visiting the web documents cited
+above.
+
+Shiny can be run in two different contexts, herein (1) the local machine context
+and (2) the client-server context. In the local machine context, FVSOnline and
+FVS run entirely within the end user’s computer, which can be a Windows-based
+PC, a MAC, Linux or other Unix-like system. In the local context, all the
+software and data needed to run the entire system is loaded on the local
+computer. The user interacts with the system through the installed web browser
+but no Internet communication is used. In this context, a local R session is
+started, the Shiny package is loaded, and the FVSOnline application is run. The
+local R session starts a local server that interacts with the system browser.
+FVS itself is started using rFVS code running under of the local R session.
+
+In the client-server context, a different set up is used. First, server is
+provided on a server computer that is on the Internet. Specialized server
+software called the Shiny-server runs on the server system
+(http://www.rstudio.com/products/shiny/shiny-server/) and it starts R and all
+the subsequent software as needed. That includes FVS, rFVS, and all other
+components of the system except the client browser. The end users need no
+software except a JavaScript-enabled browser on their computers. Using this
+configuration, FVS can be used with a tablet PC or even a smartphone (but the
+screen size limit would be a hindrance).
+
+In either context, one person generally uses a session of FVSOnline at a time.
+In the client-server context, several simultaneous users are connected to
+separate sessions on the server, but each has there own working directory and
+copy of the FVSOnline scripts and FVS binary programs. All users share the
+system software listed below. A separate Shiny application called the FVS
+Project Builder is used to set up the individual user’s project workspace (see
+FVS_Project_Builder FVS Project Builder).
+
+There are very few differences in the FVSOnline software to support these two
+contexts. The will be covered on a case-by-case bases.
+
+==Required system software==
+
+Client/Server context requires the Shiny server as stated above. In both
+contexts, the additional software that is needed includes R and the R-packages
+listed below, a JavaScript enabled browser, and the following:
+
+  * *sqlite3:* used to interact with FVS-generated data both for input and output (http://www.sqlite.org/). In addition to sqlite3, an sqlite3 database browser is recommended http://sqlitebrowser.org/.
+
+  * *sqlite3 ODBC driver:* (http://www.ch-werner.de/sqliteodbc/) used to provide ODBC services between the FVS model and the sqlite3 databases. On unix-alike systems, unixODBC is required to support the driver, but it is also required to build base FVS on those systems.
+
+  * *Java:* generally Java comes installed on most systems. It is used in FVSOnline to convert Access database files to sqlite3 database files. The ability to convert these files is built into FVSOnline.
+
+  * *pandoc:* (http://johnmacfarlane.net/pandoc/) used to convert FVSOnline-generated markdown language to Microsoft Word docx files. The ability to build custom reports in FVSOnline relies on this technology.
+
+  * *FVS:* ([BuildProcess_UnixAlike]). FVS needs to be built and installed.
+
+==Required R packages (all available from CRAN http://cran.r-project.org/)==
+
+  * *shiny:* the Shiny web framework
+
+  * *parallel:* used to start a child R process that is used to make the FVS runs. This approach allows for future expansion to running multiple R processes and breaking up large FVS runs among several processors. It also protects the parent FVSOnline session from abnormal terminations of the FVS run.
+
+  * *ggplot2:* used to provide high-quality graphics.
+
+  * *RSQLite:* used to provide database input/output services for FVSOnline. All the data interactions are done via SQLite.
+
+==Files installed in user’s working directories==
+
+  * *autoOutKeys.R:* Defines character strings that contain FVS keywords necessary to cause specific sets of FVS outputs to be generated. For example, if a user desires a generic set of carbon reports be generated, several FVS keywords are inserted into the FVS run. There is a variable definition in this file that defines that set.
+
+  * *customRun_fvsRunAcadian.R:* Contains all the rFVS code necessary to run the Acadian modification to FVS. See runScripts.R, and the section [Custom_Run_Scripts Custom Run Scripts].
+
+  * *editDataServer.R:* The server code to run an input data editor (a planned enhancement).
+
+  * *editDataUI.R:* The ui code for the input data editor (see editDataServer.R).
+
+  * *fvsOutUtilities.R:* Defines functions related to processing the output database.
+
+  * *fvsRunUtilities.R:* Defines functions used to build the FVS run and managing the R data structures that contain the details of all runs for the users project.
+
+  * *localSettings.R:* Should only be present when the FVSOnline system is running in the local context. It defines variables that inform the software as to the location of FVS binary code and the list of variants supported on the local machine. It should not be present in a user’s project directory when the server context is being used.
+
+  * *mkInputElements.R:* Defines functions used to display keyword entry elements and build keywords from the user’s input. Relies on data compiled from the Suppose parameters file.
+
+  * *mkpkeys.R:* Defines functions used to parse the Suppose parameters file. The data housed in this file defines the FVS keywords and their fields among other information.
+
+  * *modalDialog.R:* Defines functions that the very few control modal dialogs used in FVSOnline.
+
+  * *runScripts.R:* Defines the names and labels for custom run scripts (see [Custom_Run_Scripts Custom Run Scripts]).
+
+  * *server.R:* The FVSOnline application server code.
+
+  * *sqlQueries.R:* Defines variables that contain the sqlite queries used to process the output database. For example, the creation of the stand and stock tables is done using sql statements defined in this file.
+
+  * *topHelp.R:* Defines the text of the help displayed if the help action button is pushed.
+
+  * *ui.R:* The FVSOnline user interface definition code.
+
+  * *plotType.html:* Part of the user interface definition (see ui.R).
+
+  * *access2csv.jar:* Used to convert Access databases to sqlite3 databases, distributed with this code by originally from https://github.com/AccelerationNet/access2csv.
+
+  * *suppose.prm:* A current version of the Suppose parameters file.
+
+  * *prms.RData:* A compiled translation of suppose.prm that is used directly by FVSOnline. If this file is out-of-date or missing, FVSOnline creates it. The best practice is to insure it is current.
+
+  * *FVS_Data.db.default:* This as an sqlite3 database that is a converted version of the Access database distributed by the USDA Forest Service, see: http://www.fs.fed.us/fmsc/fvs/software/complete.php
+
+  * *www/FVSlogo.png:* A small FVS logo used in the interface heading.
+
+  * *www/message-handler.js:* JavaScript code that is used to support the modal windows.
+
+  * *rFVS/*: All the files that make up rFVS, see: [rFVS].
+
+  * *FVSBin/*: The FVS shared libraries (.dll’s on Windows, .so’s on unix-alikes) (also see localSettings.R).
+
+==Custom Run Scripts==
+
+Not yet drafted
+
+=FVS Project Builder=
+
+Not yet drafted
+
+
+
+
+
+
+
