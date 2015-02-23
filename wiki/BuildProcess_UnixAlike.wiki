@@ -33,10 +33,10 @@ Please visit [DownloadingSourceCode] to find out about SVN clients and the FVS c
 
 ==Building the Unix Makefile with Cmake==
 
-Open a command line shell and navigate to the `trunk\bin` directory into which you checked out the open-fvs files. If you had placed the files into a directory called `MyFvsFiles` you would type the command as shown below.
+Open a command line shell and navigate to the `trunk/bin` directory into which you checked out the open-fvs files. If you had placed the files into a directory called `MyFvsFiles` you would type the command as shown below.
 
 {{{
-cd \MyFvsFiles\trunk\bin
+cd /MyFvsFiles/trunk/bin
 }}}
 
 Once you have navigated to the correct directory you are ready to use Cmake to create the Unix Makefile. Cmake should automatically detect the OS and build the Makefile for each FVS variant. (If this does not happen automatically, please post the problem so that it can be resolved.)
@@ -51,12 +51,12 @@ This will begin the creation of Unix makefiles for _all_ FVS variants.
 Each variant's Makefile will be placed in a sub-directory like this
 
 {{{
-\MyFvsFiles\trunk\bin\FVSiec_CmakeDir
+/MyFvsFiles/trunk/bin/FVSiec_CmakeDir
 }}}
 
 FVS variant subdirectories are named with the pattern `FVS***_CmakeDir`, where `***` is a 2- or 3-letter abbreviation for the variant (e.g., 2-letters `ie` for Inland Empire or `ls` for Lake States) optionally followed by a 1-letter abbreviation for an extension (e.g., `x` for the insect and disease extensions, or `c` for the climate extension).
 
-Cmake utilizes two kinds of files to create to create each variant makefile. First, it uses a master script file called *CMakeLists.txt* to control the creation of the makefile. (You are welcome to inspect this file, but editing it is not recommended for beginners.) This master script file utilizes a set of about 20 files in turn - one for each variant - with names like 'FVSiec_sourceList.txt'. These files need to exist in the `trunk\bin` directory in order to build the variants. 
+Cmake utilizes two kinds of files to create to create each variant makefile. First, it uses a master script file called *CMakeLists.txt* to control the creation of the makefile. (You are welcome to inspect this file, but editing it is not recommended for beginners.) This master script file utilizes a set of about 20 files in turn - one for each variant - with names like 'FVSiec_sourceList.txt'. These files need to exist in the `trunk/bin` directory in order to build the variants. 
 
 As Cmake creates each variant makefile you will see something like this:
 
@@ -92,7 +92,7 @@ When that is complete, you can proceed to build FVS from with the variant sub-di
 At the command-line, `cd` to the directory containing the variant you wish to work with. In the example that follows the Inland Empire + Climate variant (iec) is used, and the makefile will be located here:
 
 {{{
-\MyFvsFiles\trunk\bin\FVSiec_CmakeDir\Makefile
+/MyFvsFiles/trunk/bin/FVSiec_CmakeDir/Makefile
 }}}
 
 At the command-line, type this to begin building the executable:
