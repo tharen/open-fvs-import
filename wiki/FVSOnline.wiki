@@ -143,13 +143,13 @@ All required packages are available from CRAN (http://cran.r-project.org/).
 
 ==Custom Run Scripts==
 
-A custom run script is an R script that, at a minimum mimics the action of the function [rFVS#fvsRun], but may use many additional features of [rFVS] to change the growth or mortality of trees or to add new trees thereby changing stand composition. Code can also be created that creates additional reports, including output database tables. 
+A custom run script is an R script that, at a minimum mimics the action of the function [rFVS#fvsRun() fvsRun()], but may use many additional features of [rFVS] to change the growth or mortality of trees or to add new trees thereby changing stand composition. Code can also be created that creates additional reports, including output database tables. 
 
 Users may decide to include or not include the use of the custom script by selecting it from a list of those that are available in a given installation of FVSOnline.
 
 Two actions must be accomplished to make a custom run script available to FVSOnline users. First, an entry in `runScripts.R` must be added provides the script _name_ and provides a descriptive title that will be displayed in the interface. 
 
-The second action is that the script file (and other files that may be necessary) must be provided in the application directory. FVSOnline will read the file that contains the custom code and use it if it is selected. The script’s _file name_ must in the form: `customRun_<scriptName>.R`, where the `scriptName` is identical to the name given in the runScripts.R file.  If the custom run script is selected, FVSOnline will read the custom file and call the custom function in place of the default call to [rFVS#fvsRun()]. 
+The second action is that the script file (and other files that may be necessary) must be provided in the application directory. FVSOnline will read the file that contains the custom code and use it if it is selected. The script’s _file name_ must in the form: `customRun_<scriptName>.R`, where the `scriptName` is identical to the name given in the runScripts.R file.  If the custom run script is selected, FVSOnline will read the custom file and call the custom function in place of the default call to [rFVS#fvsRun() fvsRun()]. 
 
 System security of FVSOnline running in the true client/server context can be completely compromised if users were allowed to directly upload the custom scripts. System administrators should take care to insure that only well behaved scripts are installed.
 
