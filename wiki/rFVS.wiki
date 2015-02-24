@@ -327,7 +327,7 @@ fvsRun(stopPointCode=NA,stopPointYear=NA)
 
 Arguments:
 
-Note: If one of these arguments is left as NA (the default), then both are ignored. That is, you must code both or neather.
+Note: If one of these arguments is left as NA (the default), then both are ignored. That is, you must code both or neither.
 
 ||Name||Description||
 ||`stopPointCode`||The value of the next stop point, see [FVS_API#Stop_Points Stop Points] for a list of valid codes.||
@@ -337,7 +337,7 @@ Return value:
 
 A return code from FVS, see [FVS_API#Return_Code_State Return code state].
 
-If the return code is zero, then it is often very useful to use [rFVS#fvsGetRestartcode() fvsGetRestartcode()] to fetch the [FVS_API#Stop_Points restart code] that resulted in FVS returning (when fvsRun() is called again, it will continue processing where it left off. 
+If the return code is zero, then it is often very useful to use [rFVS#fvsGetRestartcode() fvsGetRestartcode()] to fetch the [FVS_API#Stop_Points restart code] that resulted in FVS returning. When fvsRun() is called again, it will continue processing where it left off. Repeating the call to fvsRun() until it is non-zero is how to create a simple simulation.
 
 == fvsSetCmdLine(cl = NULL) ==
 
