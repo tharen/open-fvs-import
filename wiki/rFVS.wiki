@@ -160,6 +160,17 @@ A named vector of values. The values will be NA if they were not defined.
 
 Also see: [rFVS#fvsSetEventMonitorVariables(vars) fvsSetEventMonitorVariables(vars)]
 
+== fvsGetRestartcode() ==
+{{{
+fvsGetRestartcode()
+}}}
+
+Provides an R interface to [FVS_API#Stop_Points Fortran function fvsGetRestartcode].
+
+Return value:
+
+The FVS [FVS_API#Stop_Points restart codes] (integer).
+
 == fvsGetSpeciesCodes() ==
 
 {{{
@@ -294,7 +305,7 @@ The objects in this returned list are also a named lists. Each contains the valu
 
 [rFVS#Example_2_R-FVS_Interaction_with_Graphics Example 2] provides a simple example of using this function.
 
-Also see: [rFVS#fvsRun() rvsRun()]
+Also see: [rFVS#fvsRun() fvsRun()]
 
 == fvsLoad(fvsProgram,bin="../../trunk/bin") ==
 
@@ -308,16 +319,25 @@ Return value:
 
 A copy of `.FVSLOADEDLIBRARY` is invisibly returned.
 
-== fvsGetRestartcode() ==
+== fvsRun() ==
+
 {{{
-fvsGetRestartcode()
+fvsRun(stopPointCode=NA,stopPointYear=NA)
 }}}
 
-Provides an R interface to [FVS_API#Stop_Points Fortran function fvsGetRestartcode].
+Arguments:
+
+Note: If one of these arguments is left as NA (the default), then both are ignored. That is, you must code both or neather.
+
+||Name||Description||
+||`stopPointCode`||The value of the next stop point, see [FVS_API#Stop_Points Stop Points] for a list of valid codes.||
+||`stopPointYear`||The simulation year the stop point is requested. Code -1 to signal the that the stop point should be immediate.||
 
 Return value:
 
-The FVS [FVS_API#Return_Code_State return code state] (integer).
+A return code from FVS, see [FVS_API#Return_Code_State Return code state].
+
+If the return code is zero, then it is often very useful to use [rFVS#fvsGetRestartcode()] to fetch the [FVS_API#Stop_Points restart code] that caused FVS to return. 
 
 == fvsSetCmdLine(cl = NULL) ==
 
