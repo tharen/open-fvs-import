@@ -337,7 +337,7 @@ Return value:
 
 A return code from FVS, see [FVS_API#Return_Code_State Return code state].
 
-If the return code is zero, then it is often very useful to use [rFVS#fvsGetRestartcode()] to fetch the [FVS_API#Stop_Points restart code] that caused FVS to return. 
+If the return code is zero, then it is often very useful to use [rFVS#fvsGetRestartcode() fvsGetRestartcode()] to fetch the [FVS_API#Stop_Points restart code] that resulted in FVS returning (when fvsRun() is called again, it will continue processing where it left off. 
 
 == fvsSetCmdLine(cl = NULL) ==
 
