@@ -56,16 +56,18 @@ separate sessions on the server, but each has their own working directory and
 copy of the FVSOnline scripts and FVS binary programs. All users share the
 system software listed below. A separate Shiny application called the FVS
 Project Builder is used to set up the individual user’s project workspace (see
-FVSOnline#FVS_Project_Builder FVS Project Builder).
+[FVSOnline#FVS_Project_Builder FVS Project Builder]).
 
 There are very few differences in the FVSOnline software to support these two
 contexts. The will be covered on a case-by-case bases.
 
-==Required system software==
+==Required System Software==
 
 Client/Server context requires the Shiny server as stated above. In both
 contexts, the additional software that is needed includes R and the R-packages
 listed below, a JavaScript enabled browser, and the following:
+
+  * *R:* Get it from http://cran.r-project.org/
 
   * *sqlite3:* used to interact with FVS-generated data both for input and output (http://www.sqlite.org/). In addition to sqlite3, an sqlite3 database browser is recommended, see http://sqlitebrowser.org/.
 
@@ -77,7 +79,9 @@ listed below, a JavaScript enabled browser, and the following:
 
   * *FVS:* ([BuildProcess_UnixAlike]). FVS needs to be built and installed.
 
-==Required R packages (all available from CRAN http://cran.r-project.org/)==
+==Required R Packages==
+
+All required packages are available from CRAN (http://cran.r-project.org/).
 
   * *shiny:* the Shiny web framework
 
@@ -87,7 +91,7 @@ listed below, a JavaScript enabled browser, and the following:
 
   * *RSQLite:* used to provide database input/output services for FVSOnline. All the data interactions are done via SQLite.
 
-==Files installed in user’s working directories==
+==Files Installed In User’s Working Directories==
 
   * *autoOutKeys.R:* Defines character strings that contain FVS keywords necessary to cause specific sets of FVS outputs to be generated. For example, if a user desires a generic set of carbon reports be generated, several FVS keywords are inserted into the FVS run. There is a variable definition in this file that defines that set.
 
@@ -139,14 +143,13 @@ listed below, a JavaScript enabled browser, and the following:
 
 ==Custom Run Scripts==
 
-A custom run script is an R-code script that, at a minimum mimics the action of the funciton [rFVS#fvsRun()], but may use many additional features of [rFVS] to change the growth or mortality of trees or to add new trees thereby changing stand composition. Code can also be created that creates additional reports, including output database tables. 
+A custom run script is an R script that, at a minimum mimics the action of the function [rFVS#fvsRun], but may use many additional features of [rFVS] to change the growth or mortality of trees or to add new trees thereby changing stand composition. Code can also be created that creates additional reports, including output database tables. 
 
 Users may decide to include or not include the use of the custom script by selecting it from a list of those that are available in a given installation of FVSOnline.
 
 Two actions must be accomplished to make a custom run script available to FVSOnline users. First, an entry in `runScripts.R` must be added provides the script _name_ and provides a descriptive title that will be displayed in the interface. 
 
-The second action is that the script file (and other files that may be necessary) must be provided in the application directory. FVSOnline will read the file that contains the custom code and use it if it is selected. The script’s _file name_ must in the form: `customRun_<scriptName>.R`, where the `scriptName` is identical to the name given in the runScripts.R file.  If the custom run script is selected, FVSOnline will read the custom file and call the custom function in place of the 
-default call to [rFVS#fvsRun()]. 
+The second action is that the script file (and other files that may be necessary) must be provided in the application directory. FVSOnline will read the file that contains the custom code and use it if it is selected. The script’s _file name_ must in the form: `customRun_<scriptName>.R`, where the `scriptName` is identical to the name given in the runScripts.R file.  If the custom run script is selected, FVSOnline will read the custom file and call the custom function in place of the default call to [rFVS#fvsRun()]. 
 
 System security of FVSOnline running in the true client/server context can be completely compromised if users were allowed to directly upload the custom scripts. System administrators should take care to insure that only well behaved scripts are installed.
 
@@ -156,7 +159,7 @@ FVS project builder is a Shiny application that creates FVSOnline project direct
 
 Users provide a project name and their Email addresses. The project builder software creates a project directory for them and loads the necessary files. An Email is sent to the user with a link to their own installation. In addition, the project builder tool allows for a user to simply supply an Email address and the software will send them an Email with all projects listed that were created with that Email address. 
 
-The files used in the project build application are as follows:
+The files used in the project build application are listed below. Note that the project builder application requires that a Email services are running on your server as project builder sends Email.
 
   * *prjListEmail.R:* Contains a function that compiles the list of all projects related to a given Email address.
 
@@ -172,16 +175,33 @@ The files used in the project build application are as follows:
 
 =Installation=
 
-Not yet drafted
-
 ==Local System Context==
 
-Not yet drafted
+  # Install R and the [FVSOnline#Required_R_Packages required R packages].
+  # Install FVS and rFVS, including the FVSOnline source, see [DownloadingSourceCode] and the wiki entries regarding build processes, [BuildProcess_MinGW] and [BuildProcess_UnixAlike]. 
+  # Make a working directory and copy the FVSOnline scripts into that directory. Those scripts are provided with the FVS software and stored in the rFVS directory tree.
+  # Edit the file `localSettings.R` so that is reflects your installation.
+  # Start R
+  # At the R prompt, enter 
+{{{
+require (shiny)
+runApp()
+}}}
 
 ==True Client/Server Context==
 
-Not yet drafted
+  # Install R and the [FVSOnline#Required_R_Packages required R packages].
+  # Install the shiny server software for your OS. See http://www.rstudio.com/products/shiny/shiny-server/ for more information.
+  # Install the other [FVSOnline#Required_System_Software required software].
+  # Install FVS and rFVS, including the FVSOnline source, see [DownloadingSourceCode] and the wiki entries regarding build processes, [BuildProcess_MinGW] and [BuildProcess_UnixAlike]. 
+  # Make a shiny application directory and copy the FVSOnline scripts into that directory. This directory should be registered with the shiny configuration files for your system. The Shiny installation instructions provide documentation for that file.
+  # Create a subdirectory called FVSBin and copy the FVS shared libraries into that subdirectory. 
+  # Create a subdirectory called rFVS and copy the rFVS/R contents into that subdirectory.  
+  # Open a browser and enter this url:  http://localhost:3838/<app dir defined above>
+
+If you desire to use the FVS project builder, set it up as a separate shiny application and edit the `settings.R` file to reflect your installation. 
 
 ==A Few Suggestions==
 
-Not yet drafted
+  # Set up a `cron` task that runs `svn update` on the open-fvs repository every night and updates the programs, including running the compilers and tests. This will update the FVSOnline software. Note that the FVSOnline software uses copies of the scripts and FVS libraries that are stored in user’s individual workspaces. Users control if and when new software will be copied in to their project directories. This approach is necessary in a modeling system because users need to be capable of freezing the software used in a specific project. 
+  # Another `cron` task is used to delete obsolete projects (those not accessed over a specified time). It would be simple to include the ability to archive these old projects prior to deletion. The main point is that resource management can and should be automated. Exact policies will depend on organizational desires. 
