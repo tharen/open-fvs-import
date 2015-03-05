@@ -408,7 +408,7 @@ C----------
       ENDIF
   710 CONTINUE
 C
-      LDELTR = (DBH(I) .LT. 0.0001) .OR.
+      LDELTR = (DBH(I) .LT. .0) .OR.
      >         (LINCL .AND. (DBH(I) .LT. SDLO .OR. DBH(I) .GE. SDHI))
 C----------
 C   CALL DAMCDS TO PROCESS DAMAGE CODES AND OTHER TREE ATTRIBUTES FOR
@@ -420,7 +420,7 @@ C     NOW, IF THE TREE IS 'FLAGED' TO BE DELETED, THEN BRANCH TO
 C     READ ANOTHER TREE RECORD.
 C----------
       IF (LDELTR) THEN
-         IF (DBH(I) .GE. 0.0001) ISCRN=ISCRN+1
+         IF (DBH(I) .GE. .0) ISCRN=ISCRN+1
          GO TO 30
       ENDIF
 C----------

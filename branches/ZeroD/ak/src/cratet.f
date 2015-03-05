@@ -378,8 +378,10 @@ C----------
         IF(JCR.LE.0)JCR=5
       ENDIF
 C
-      IF(D .LE. 0.1) THEN
-        H=1.01
+C      IF(D .LE. 0.1) THEN
+C        H=1.01
+      IF(D.LE.0.10)THEN
+        IF(HT(II).LE.0.)H=1.01
         GO TO 117
       ENDIF
 C----------
@@ -483,8 +485,10 @@ C----------
       IF(HT(II).GT.0. .AND. TKILL) GO TO 142
       IF(HT(II).GT.0.) GO TO 146
 C
-      IF(D .LE. 0.1)THEN
-        H=1.01
+C      IF(D .LE. 0.1)THEN
+C        H=1.01
+      IF(D.LE.0.1)THEN
+        IF(HT(II).LE.0.)H=1.01
         GO TO 144
       ENDIF
 C----------

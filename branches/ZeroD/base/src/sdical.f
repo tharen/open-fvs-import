@@ -173,7 +173,8 @@ C
       SDSQ = SDSQ + (DBH(I)**2.0)*TPACRE
       SPROB=SPROB+TPACRE
    50 CONTINUE
-      IF(SPROB .EQ. 0.)THEN
+C      IF(SPROB .EQ. 0.)THEN
+      IF((SPROB .EQ. 0.).OR.(SDSQ.EQ.0.))THEN
         SDIC = 0.
       ELSE
         A = (10.0**(-1.605))*(1.-1.605/2.)*((SDSQ/SPROB)**(1.605/2.))

@@ -276,9 +276,9 @@ C----------
       IF(D.GE.3.0) GO TO 23
       HK=H + HTG(K)
       IF(DEBUG)WRITE(JOSTND,*)'ISPC,H,HTG,HK,D= ',ISPC,H,HTG(K),HK,D
-      IF(HK .LE. 4.5) THEN
+      IF(HK .LT. 4.5) THEN
         DG(K)=0.0
-        DBH(K)=D+0.001*HK
+C        DBH(K)=D+0.001*HK
       ELSE
         IF(ISPC.EQ.10 .OR. ISPC.EQ.11) THEN
 C----------
