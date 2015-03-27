@@ -106,7 +106,7 @@ C-----------
      &   RDBHSQC(MAXSP),CRWNC(MAXSP),CRSQC(MAXSP),
      &   SBAC(MAXSP),BALC(MAXSP),SITEC(MAXSP),OBSERV(MAXSP)
       REAL XPPDDS,D1,D2,D3,D4,D5,D6,D7,D8,D9,D10,D11
-      REAL DDS,D,BAL,DP,CONSPP,BARK,DIAGRO,DIAGRI,BRATIO,DDSO
+      REAL DDS,D,BAL,CR,DP,CONSPP,BARK,DIAGRO,DIAGRI,BRATIO,DDSO
       INTEGER ISPC,I1,I2,I3,I,IK,J
       REAL RELDBH,RELDBHSQ,QMD
       INTEGER  IGE5IND(MAXTRE),IGE5DUM(MAXTRE)
@@ -190,6 +190,7 @@ C----------
       DO 10 I3=I1,I2
       I=IND1(I3)
       D=DIAM(I)
+      CR=ICR(I)
 C
       IF (D.LE.0.0) GOTO 10
       IF(D.LT.5.)PCTLS(I)=PCT(I)
@@ -219,15 +220,15 @@ C  BOUND CROWN RATIO FOR SOME SPECIES
 C----------      
       SELECT CASE (ISPC)
       CASE(7)                                ! WP
-        IF(ICR(I).GT.50)ICR(I)=50
+        IF(CR.GT.50)CR=50
       CASE(8:10)                             ! WN,BN,TL
-        IF(ICR(I).GT.75)ICR(I)=75
+        IF(CR.GT.75)CR=75
       CASE(28,41)                            ! EC,YP
-        IF(ICR(I).GT.60)ICR(I)=60
+        IF(CR.GT.60)CR=60
       CASE(44:46)                            ! AS,WA,GA
-        IF(ICR(I).GT.80)ICR(I)=80
+        IF(CR.GT.80)CR=80
       CASE(32,78:84)                         ! BC,SY,BY,RB,SU,WI,BL
-        IF(ICR(I).GT.85)ICR(I)=85
+        IF(CR.GT.85)CR=85
       END SELECT
 C----------
 C  RELATIVE DBH
@@ -240,12 +241,12 @@ C----------
 C  SET BA, CR, BAL
 C----------
       IF(BAGE5 .LE. 0.) BAGE5= 10.
-      IF(ICR(I) .LE. 0) ICR(I)= 10
+      IF(CR.LE. 0) CR= 10.
       BAL = (1.0 - (PCTLS(I)/100.)) *BAGE5
 C
       IF(DEBUG) WRITE(JOSTND,*) 'IN DGF-I= ',I,' D=',D,
      &' RELDBH= ',RELDBH,' SI= ',SITEAR(ISPC),
-     &'BAGE5=',BAGE5,'ICR=',ICR(I),' QMDGE5= ',QMDGE5,
+     &'BAGE5=',BAGE5,'CR=',CR,' QMDGE5= ',QMDGE5,
      &' BAL= ',BAL,' CONSPP= ',CONSPP
 C----------
 C  CALCULATION OF DDS FOR CENTRAL STATES VARIANT
@@ -257,8 +258,8 @@ C----------
      &   + DBH2C(ISPC) * D * D
      &   + RDBHC(ISPC) * RELDBH
      &   + RDBHSQC(ISPC) * RELDBHSQ  
-     &   + CRWNC(ISPC) * ICR(I)
-     &   + CRSQC(ISPC) * ICR(I)*ICR(I)
+     &   + CRWNC(ISPC) * CR
+     &   + CRSQC(ISPC) * CR*CR
      &   + SBAC(ISPC) * BAGE5
      &   + BALC(ISPC) * BAL
      &   + SITEC(ISPC) * SITEAR(ISPC)
@@ -271,8 +272,8 @@ C
         D4= DBH2C(ISPC) * D * D        
         D5= RDBHC(ISPC) * RELDBH       
         D6= RDBHSQC(ISPC) * RELDBHSQ   
-        D7= CRWNC(ISPC) * ICR(I)       
-        D8= CRSQC(ISPC) * ICR(I)*ICR(I)
+        D7= CRWNC(ISPC) * CR      
+        D8= CRSQC(ISPC) * CR*CR
         D9= SBAC(ISPC) * BAGE5            
         D10=BALC(ISPC) * BAL         
         D11=SITEC(ISPC) * SITEAR(ISPC)    
