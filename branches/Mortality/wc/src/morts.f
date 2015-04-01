@@ -71,7 +71,7 @@ C----------
       REAL RELHT,XSITE1,XSITE2,BAL,CR,WKIT2,RELDBH1(MAXTRE),G1(MAXTRE)
       REAL BAA,TA,SD2SQA,DQ10A,SDIA,CIOBDS1(MAXTRE),WKII(MAXTRE)
       REAL MVALUES(5),AVALUE, ALPHA(3),BETA(MAXSP)
-      REAL DBHA,HBH,PTBAL
+      REAL DBHA,HBH,PTBAL,RIP
       INTEGER NTODO,I,NP,IACTK,IDATE,ISPCC,IS,ISPC,I1,I2,I3,IP
       INTEGER IDMFLG,ITODO,KPOINT,KBIG,IGRP,IULIM,IG,IX,J
       CHARACTER VVER*7
@@ -332,35 +332,39 @@ C
         CASE(1)  
           RIP=BM0(ISPC)+BM1(ISPC)*D**.5+BM3(ISPC)*CR**.25+
      &        BM4(ISPC)*(XSITE1+4.5)+BM5(ISPC)*BAL
-          RIP=(1.0/(1.0+EXP(-(RIP))))*CRADJ  
-          RIP=EXP(ALOG(RIP+1.0)/5.)-1.0
+          RIP=(1.0/(1.0+EXP(-(RIP))))                         !5 yr RIP
+          RIP=(1.0-RIP)**(0.2)                                !annual survival
+          RIP=1.0-RIP*CRADJ                                   !annual RIP
         CASE(2)
-          RIP=BM0(ISPC)+BM1(ISPC)*D+BM4(ISPC)*(XSITE1+4.5)+
+          RIP1=BM0(ISPC)+BM1(ISPC)*D+BM4(ISPC)*(XSITE1+4.5)+
      &        BM5(ISPC)*(BAL/D)
-          RIP=(1.0/(1.0+EXP(-(RIP))))*CRADJ 
-          RIP=EXP(ALOG(RIP+1.0)/5.)-1.0
+          RIP=(1.0/(1.0+EXP(-(RIP))))                         !5 yr RIP
+          RIP=(1.0-RIP)**(0.2)                                !annual survival
+          RIP=1.0-RIP*CRADJ                                   !annual RIP
         CASE(3)
-          RIP=BM0(ISPC)+BM1(ISPC)*D+BM2(ISPC)*D**2+BM3(ISPC)*CR+
+          RIP1=BM0(ISPC)+BM1(ISPC)*D+BM2(ISPC)*D**2+BM3(ISPC)*CR+
      &        BM4(ISPC)*(XSITE2+4.5)+BM5(ISPC)*BAL
-          RIP=(1.0/(1.0+EXP(-(RIP))))*CRADJ   
-          RIP=EXP(ALOG(RIP+1.0)/5.)-1.0
+          RIP=(1.0/(1.0+EXP(-(RIP))))                         !5 yr RIP
+          RIP=(1.0-RIP)**(0.2)                                !annual survival
+          RIP=1.0-RIP*CRADJ                                   !annual RIP
         CASE(4)
-          RIP=BM0(ISPC)+BM1(ISPC)*D+BM2(ISPC)*D**2+BM3(ISPC)*CR+
+          RIP1=BM0(ISPC)+BM1(ISPC)*D+BM2(ISPC)*D**2+BM3(ISPC)*CR+
      &        BM4(ISPC)*(XSITE1+4.5)+BM5(ISPC)*BAL
-          RIP=(1.0/(1.0+EXP(-(RIP))))*CRADJ   
-          RIP=EXP(ALOG(RIP+1.0)/5.)-1.0
+          RIP=(1.0/(1.0+EXP(-(RIP))))                         !5 yr RIP
+          RIP=(1.0-RIP)**(0.2)                                !annual survival
+          RIP=1.0-RIP*CRADJ                                   !annual RIP
         CASE(5)
           RELHT = 0.0
           IF(AVH .GT. 0.0) RELHT=HT(I)/AVH
           IF(RELHT .GT. 1.5)RELHT=1.5
           RIP=-6.6707 + 0.5105*ALOG(5+BA) - 1.3183*RELHT
           RIP=(1.0/(1.0+EXP(RIP)))
-          RIP=1.0-RIP
+          RIP=1.0-RIP                                          !annual RIP
       END SELECT
 C----------
 C SMALL-TREE MORTALITY MODEL DEVELOPED BY GOULD AND HARRINGTON
 C----------  
-      IF (D .LE. 3.0) THEN
+      IF (D .LT. 3.0) THEN
         RELHT = 0.0
         IF(AVH .GT. 0.0) RELHT=HT(I)/AVH
         IF(RELHT .GT. 1.5)RELHT=1.5
@@ -368,7 +372,6 @@ C----------
         IF (HBH .GE. 4.5) HBH = 4.5
         DBHA = D+BETA(ISPC)*HBH  
         PTBAL=PTBALT(I)
-C        PTBAL = (1.0 - (PCT(I)/100.)) * BA
         ACLASS = MCLASS(ISPC)
         AVALUE = MVALUES(ACLASS)
         RIP = PTBAL*AVALUE/SQRT(DBHA+1)
