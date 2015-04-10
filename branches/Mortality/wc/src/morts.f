@@ -71,7 +71,7 @@ C----------
       REAL RELHT,XSITE1,XSITE2,BAL,CR,WKIT2,RELDBH1(MAXTRE),G1(MAXTRE)
       REAL BAA,TA,SD2SQA,DQ10A,SDIA,CIOBDS1(MAXTRE),WKII(MAXTRE)
       REAL MVALUES(5),AVALUE, ALPHA(3),BETA(MAXSP)
-      REAL DBHA,HBH,PTBAL,RIP
+      REAL DBHA,HBH,PTBAL
       INTEGER NTODO,I,NP,IACTK,IDATE,ISPCC,IS,ISPC,I1,I2,I3,IP
       INTEGER IDMFLG,ITODO,KPOINT,KBIG,IGRP,IULIM,IG,IX,J
       CHARACTER VVER*7
@@ -336,19 +336,19 @@ C
           RIP=(1.0-RIP)**(0.2)                                !annual survival
           RIP=1.0-RIP*CRADJ                                   !annual RIP
         CASE(2)
-          RIP1=BM0(ISPC)+BM1(ISPC)*D+BM4(ISPC)*(XSITE1+4.5)+
+          RIP=BM0(ISPC)+BM1(ISPC)*D+BM4(ISPC)*(XSITE1+4.5)+
      &        BM5(ISPC)*(BAL/D)
           RIP=(1.0/(1.0+EXP(-(RIP))))                         !5 yr RIP
           RIP=(1.0-RIP)**(0.2)                                !annual survival
           RIP=1.0-RIP*CRADJ                                   !annual RIP
         CASE(3)
-          RIP1=BM0(ISPC)+BM1(ISPC)*D+BM2(ISPC)*D**2+BM3(ISPC)*CR+
+          RIP=BM0(ISPC)+BM1(ISPC)*D+BM2(ISPC)*D**2+BM3(ISPC)*CR+
      &        BM4(ISPC)*(XSITE2+4.5)+BM5(ISPC)*BAL
           RIP=(1.0/(1.0+EXP(-(RIP))))                         !5 yr RIP
           RIP=(1.0-RIP)**(0.2)                                !annual survival
           RIP=1.0-RIP*CRADJ                                   !annual RIP
         CASE(4)
-          RIP1=BM0(ISPC)+BM1(ISPC)*D+BM2(ISPC)*D**2+BM3(ISPC)*CR+
+          RIP=BM0(ISPC)+BM1(ISPC)*D+BM2(ISPC)*D**2+BM3(ISPC)*CR+
      &        BM4(ISPC)*(XSITE1+4.5)+BM5(ISPC)*BAL
           RIP=(1.0/(1.0+EXP(-(RIP))))                         !5 yr RIP
           RIP=(1.0-RIP)**(0.2)                                !annual survival
@@ -384,8 +384,9 @@ C----------
      &  DBHA,PTBAL,ACLASS,AVALUE,ALPHA(1),ALPHA(2),ALPHA(3)
       ENDIF
 C----------
-      IF(DEBUG)WRITE(JOSTND,*)'IN MORTS EQNS MORTMAP,I,RIP,D,CR,XSITE1,
-     &XSITE2,BAL,CRDJ=',MORTMAP(ISPC),I,RIP,D,CR,XSITE1,XSITE2,BAL,CRADJ
+      IF(DEBUG)WRITE(JOSTND,*)'IN MORTS EQNS MORTMAP,I,ISPC,RIP,D,CR,
+     &XSITE1,XSITE2,BAL,CRDJ=',MORTMAP(ISPC),I,ISPC,RIP,D,CR,XSITE1,
+     &XSITE2,BAL,CRADJ
 C----------
 C  APPLY MORTALITY MULTIPLIERS WITHIN USER-PROVIDED DBH LIMITS
 C  AND STORE TREES PER ACRE DYING IN THE ARRAY WK2.
