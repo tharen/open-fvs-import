@@ -201,6 +201,15 @@ Species attributes that can be returned or set. The units of measure or the peri
 ||`spccf `||CCF for each species, recomputed in FVS so setting will likely have no effect||
 ||`spsdi`||SDI maximums for each species||
 ||`spsiteindx`||Species site indices||
+||`bfmind`||Min diameter related to BFVOLUME keyword||
+||`bftopd`||Top diameter related to BFVOLUME keyword||
+||`bfstmp`||Stump height related to BFVOLUME keyword||
+||`frmcls`||Form class related to BFVOLUME keyword||
+||`bfmeth`||Volume calculation code related to BFVOLUME keyword (internal FVS variable methb)||
+||`mcmind`||Min diameter related to VOLUME keyword (internal FVS variable dbhmin)||
+||`mctopd`||Top diameter related to VOLUME keyword (internal FVS variable topd)||
+||`mcstmp`||Stump height related to VOLUME keyword (internal FVS variable stmp)||
+||`mcmeth`||Volume calculation code related to VOLUME keyword (internal FVS variable methc)||
 
 
 == FVS Tree Attributes ==
