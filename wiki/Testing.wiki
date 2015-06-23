@@ -1,7 +1,7 @@
 #summary Testing Open-FVS: A Work That is Forever In Progress
 
 _Nick Crookston, USFS;  
-Don Robinson, [http://www.essa.com ESSA] Technologies, May 2014_
+Don Robinson, [http://www.essa.com ESSA] Technologies, June 2015_
 
 = Introduction =
 
@@ -72,5 +72,5 @@ A step in the development process is to add to the test library. There are a few
 
 = Operating System-Dependent Tests =
 
-  * Tests of which incorporate input or output using an Access data base (in `tests/ODBC` and in some variants) rely on having MS Office installed, and on having 32- or 64-bit versions of FVS which correspond with 32- or 64-bit version of MS Office. It should be possible to test 32-bit versions of FVS/Office installed on a 64-bit OS, but not the reverse.
+  * Tests which incorporate input or output using an Access data base (in `tests/ODBC` and in some variants) rely on having MS Office installed, and on having 32- or 64-bit versions of FVS which correspond with 32- or 64-bit version of MS Office. It should be possible to test 32-bit versions of FVS/Office installed on a 64-bit OS, but not the reverse.
   * Tests of the SQLite3 data base (in `tests/ODBC`and in some variants) rely on having SQLite3 ODBC drivers installed on your system. Installation files for a variety of Operating Systems can be found at [http://www.ch-werner.de/sqliteodbc SQLite ODBC Driver].
