@@ -38,7 +38,7 @@ C
 
 C     SIGNAL THAT THE CLIMATE MODEL IS NOW ACTIVE.
 
-   10 CONTINUE
+   10 CONTINUE                                                                        
 C
 C
       CALL KEYRDR (IREAD,JOSTND,DEBUG,KEYWRD,LNOTBK,
@@ -112,13 +112,22 @@ C                        OPTION NUMBER 2 -- CLIMDATA
      >       TRIM(NPLT),TRIM(CHTMP)
   210 FORMAT (/A8,T12,'READING ATTRS SCORES FOR CLIMATE=',A,
      >        ' AT STAND=',A,' FROM FILE=',A)
-      OPEN (NEWUNIT=IUTMP,FILE=TRIM(CHTMP),STATUS='OLD',ERR=298)
+      IF (CHTMP.EQ."*") THEN 
+        IUTMP=IREAD
+      ELSE
+        OPEN (NEWUNIT=IUTMP,FILE=TRIM(CHTMP),STATUS='OLD',ERR=298)
+      ENDIF
       I2=0
       READ (IUTMP,'(A)',END=296) CHTMP
       I2=I2+1
+      IF (CHTMP.EQ."*") GOTO 296
       READ (CHTMP,*,END=211) CSTDID,CCLIM,CYR,ATTR_LABELS  ! toss the first three
   211 CONTINUE
-      IF (CSTDID .NE. "StandID") WRITE (JOSTND,212) TRIM(CSTDID)
+      CHTMP(1:5) = CSTDID(1:5)
+      DO I=1,5
+        CALL UPCASE(CHTMP(I:I))
+      ENDDO
+      IF (CHTMP(1:5) .NE. "STAND") WRITE (JOSTND,212) TRIM(CSTDID)
   212 FORMAT (T12,'ATTRS FILE CREATION TAG=',A)
       DO I=1,MXCLATTRS
         IF (ICHAR(ATTR_LABELS(I)(1:1)).EQ. 0 .OR.
@@ -128,6 +137,7 @@ C                        OPTION NUMBER 2 -- CLIMDATA
   215 CONTINUE
       READ (IUTMP,'(A)',END=290) CHTMP
       I2=I2+1
+      IF (CHTMP.EQ."*") GOTO 290
       READ (CHTMP,*) CSTDID,CCLIM
       IF (TRIM(CSTDID).NE.TRIM(NPLT)) GOTO 215
       IF (TRIM(CCLIM) .NE.TRIM(CLIMATE_NAME)) GOTO 215
@@ -149,7 +159,11 @@ C                        OPTION NUMBER 2 -- CLIMDATA
             NATTRS=0
             NYEARS=0
             INDXSPECIES=0
-            CLOSE (UNIT=IUTMP)
+            IF (IUTMP.EQ.IREAD) THEN
+              IRECNT = IRECNT+I2
+            ELSE
+              CLOSE (UNIT=IUTMP)
+            ENDIF
             CALL RCDSET (2,.TRUE.)
             GOTO 10
           ENDIF
@@ -159,7 +173,7 @@ C                        OPTION NUMBER 2 -- CLIMDATA
         ENDIF
       ENDIF
       ATTRS(I1,1:NATTRS)=TMPATTRS(1:NATTRS)
-      GOTO 215
+      GOTO 215          
   290 CONTINUE
       IF(LKECHO)WRITE (JOSTND,291) I2,NATTRS,NYEARS
   291 FORMAT (T12,'RECORDS READ=',I4,'; NUMBER OF ATTRIBUTES=',
@@ -169,11 +183,19 @@ C                        OPTION NUMBER 2 -- CLIMDATA
         NATTRS=0
         NYEARS=0
         INDXSPECIES=0
-        CLOSE (UNIT=IUTMP)
+        IF (IUTMP.EQ.IREAD) THEN
+          IRECNT = IRECNT+I2
+        ELSE
+          CLOSE (UNIT=IUTMP)
+        ENDIF
         CALL RCDSET (2,.TRUE.)
         GOTO 10
       ENDIF
-      CLOSE (UNIT=IUTMP)
+      IF (IUTMP.EQ.IREAD) THEN
+        IRECNT = IRECNT+I2
+      ELSE
+        CLOSE (UNIT=IUTMP)
+      ENDIF
       DO I1=1,NATTRS
         IF ('dd5'  .EQ.TRIM(ATTR_LABELS(I1))) IXDD5  =I1
         IF ('mat'  .EQ.TRIM(ATTR_LABELS(I1))) IXMAT  =I1
@@ -289,7 +311,7 @@ C     TURN ON CLIMATE ESTAB AND TURN OFF BASE ESTAB.
       NATTRS=0
       NYEARS=0
       INDXSPECIES=0
-      CLOSE (UNIT=IUTMP)
+      IF (IUTMP.NE.IREAD) CLOSE (UNIT=IUTMP)
       CALL RCDSET (2,.TRUE.)
       GOTO 10
   298 CONTINUE
