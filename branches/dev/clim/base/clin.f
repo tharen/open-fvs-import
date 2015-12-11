@@ -120,7 +120,7 @@ C                        OPTION NUMBER 2 -- CLIMDATA
       I2=0
       READ (IUTMP,'(A)',END=296) CHTMP
       I2=I2+1
-      IF (CHTMP.EQ."*") GOTO 296
+      IF (CHTMP.EQ."-999") GOTO 296
       READ (CHTMP,*,END=211) CSTDID,CCLIM,CYR,ATTR_LABELS  ! toss the first three
   211 CONTINUE
       CHTMP(1:5) = CSTDID(1:5)
@@ -137,7 +137,7 @@ C                        OPTION NUMBER 2 -- CLIMDATA
   215 CONTINUE
       READ (IUTMP,'(A)',END=290) CHTMP
       I2=I2+1
-      IF (CHTMP.EQ."*") GOTO 290
+      IF (CHTMP.EQ."-999") GOTO 290
       READ (CHTMP,*) CSTDID,CCLIM
       IF (TRIM(CSTDID).NE.TRIM(NPLT)) GOTO 215
       IF (TRIM(CCLIM) .NE.TRIM(CLIMATE_NAME)) GOTO 215
@@ -155,12 +155,19 @@ C                        OPTION NUMBER 2 -- CLIMDATA
         ENDDO
         IF (I1.EQ.0) THEN
           IF (NYEARS.EQ.MXCLYEARS) THEN
-            WRITE (JOSTND,'(T12,"TOO MANY YEARS IN CLIMATE DATA.")')
+            WRITE (JOSTND,'(T12,"TOO MANY YEARS IN CLIMATE DATA. ",'//
+     >                    ' "RECORDS READ = ", I4)') I2
             NATTRS=0
             NYEARS=0
             INDXSPECIES=0
             IF (IUTMP.EQ.IREAD) THEN
               IRECNT = IRECNT+I2
+C             READ TO THE END OF DATA MARK (-999)
+              DO
+                READ (IUTMP,'(A)',END=80) CHTMP
+                IRECNT = IRECNT+1
+                IF (CHTMP(1:4).EQ.'-999') EXIT
+              ENDDO
             ELSE
               CLOSE (UNIT=IUTMP)
             ENDIF
@@ -311,9 +318,13 @@ C     TURN ON CLIMATE ESTAB AND TURN OFF BASE ESTAB.
       NATTRS=0
       NYEARS=0
       INDXSPECIES=0
-      IF (IUTMP.NE.IREAD) CLOSE (UNIT=IUTMP)
-      CALL RCDSET (2,.TRUE.)
-      GOTO 10
+      IF (IUTMP.NE.IREAD) THEN
+        CLOSE (UNIT=IUTMP)
+        CALL RCDSET (2,.TRUE.)
+        GOTO 10
+      ELSE
+        GOTO 80
+      ENDIF
   298 CONTINUE
       WRITE (JOSTND,299)
   299 FORMAT (T12,'FILE OPEN ERROR, FILE NOT READ.')
