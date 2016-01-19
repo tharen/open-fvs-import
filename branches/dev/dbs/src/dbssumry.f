@@ -39,6 +39,7 @@ C             18: FOREST COVER TYPE CODE
 C	            19: SIZE CLASS
 C             20: STOCKING CLASS
 C
+C     ICASE - CASE NUMBER FROM THE FVSRUN TABLE
 COMMONS
 C
       INCLUDE 'DBSCOM.F77'
@@ -47,7 +48,7 @@ COMMONS
 C
       INTEGER IYEAR,IAGE,IPRDLEN,IACC,IMORT,ITPA,IBA,ISDI,ICCF,
      -        ITOPHT,ITCUFT,IMCUFT,IBDFT,IRTPA,IRTCUFT,IRMCUFT,IRBDFT,
-     -        IATBA,IATSDI,IATCCF,IATTOPHT,IFORTP,ISZCL,ISTCL,IRCODE
+     -        IATBA,IATSDI,IATCCF,IATTOPHT,ID,IFORTP,ISZCL,ISTCL
       INTEGER(SQLSMALLINT_KIND)::ColNumber
       DOUBLE PRECISION FQMDB,FATQMDB,YMAIB
       REAL FQMD,FATQMD,YMAI
@@ -103,12 +104,13 @@ C---------
             TABLENAME = 'FVS_Summary'
         ENDIF
       ENDIF
-      CALL DBSCKNROWS(IRCODE,TABLENAME,1,TRIM(DBMSOUT).EQ.'EXCEL')
-      IF(IRCODE.EQ.2) THEN
-        ISUMARY = 0
-        RETURN
-      ENDIF
-      IF(IRCODE.EQ.1) THEN
+      SQLStmtStr= 'SELECT * FROM ' // TABLENAME
+
+      iRet = fvsSQLExecDirect(StmtHndlOut,trim(SQLStmtStr),
+     -                int(len_trim(SQLStmtStr),SQLINTEGER_KIND))
+C
+      IF(.NOT.(iRet.EQ.SQL_SUCCESS .OR.
+     -    iRet.EQ.SQL_SUCCESS_WITH_INFO)) THEN
 C
 C  EASTERN VARIANT VOLUME NOMENCLATURE
 C
@@ -118,8 +120,9 @@ C
 C
           IF(TRIM(DBMSOUT).EQ."ACCESS") THEN
             SQLStmtStr='CREATE TABLE FVS_Summary_East('//
-     -                 'CaseID text,'//
-     -                 'StandID text,'//
+     -                 'Id int primary key,'//
+     -                 'CaseID int not null,'//
+     -                 'StandID text not null,'//
      -                 'Year int null,'//
      -                 'Age int null,'//
      -                 'Tpa double null,'//
@@ -149,7 +152,8 @@ C
      -                 'StkCls int null)'
           ELSEIF(TRIM(DBMSOUT).EQ."EXCEL") THEN
             SQLStmtStr="CREATE TABLE FVS_Summary_East("//
-     -                 'CaseID text,'//
+     -                 'Id int,'//
+     -                 'CaseID int,'//
      -                 'StandID Text,'//
      -                 'Year int,'//
      -                 'Age int,'//
@@ -181,8 +185,9 @@ C
 C
           ELSE
             SQLStmtStr='CREATE TABLE FVS_Summary_East('//
-     -                 'CaseID char(36),'//
-     -                 'StandID Char(26),'//
+     -                 'Id int primary key,'//
+     -                 'CaseID int not null,'//
+     -                 'StandID Char(26) null,'//
      -                 'Year int null,'//
      -                 'Age int null,'//
      -                 'Tpa real null,'//
@@ -217,8 +222,9 @@ C  WESTERN VARIANT VOLUME NOMENCLATURE
 C----------
           IF(TRIM(DBMSOUT).EQ."ACCESS") THEN
             SQLStmtStr='CREATE TABLE FVS_Summary('//
-     -                 'CaseID text,'//
-     -                 'StandID text,'//
+     -                 'Id int primary key,'//
+     -                 'CaseID int not null,'//
+     -                 'StandID text not null,'//
      -                 'Year int null,'//
      -                 'Age int null,'//
      -                 'Tpa double null,'//
@@ -248,7 +254,8 @@ C----------
      -                 'StkCls int null)'
           ELSEIF(TRIM(DBMSOUT).EQ."EXCEL") THEN
             SQLStmtStr="CREATE TABLE FVS_Summary("//
-     -                 'CaseID text,'//
+     -                 'Id int,'//
+     -                 'CaseID int,'//
      -                 'StandID Text,'//
      -                 'Year int,'//
      -                 'Age int,'//
@@ -279,8 +286,9 @@ C----------
      -                 'StkCls int)'
           ELSE
             SQLStmtStr='CREATE TABLE FVS_Summary('//
-     -                 'CaseID char(36),'//
-     -                 'StandID Char(26),'//
+     -                 'Id int primary key,'//
+     -                 'CaseID int not null,'//
+     -                 'StandID Char(26) null,'//
      -                 'Year int null,'//
      -                 'Age int null,'//
      -                 'Tpa real null,'//
@@ -315,7 +323,22 @@ C----------
      -            int(len_trim(SQLStmtStr),SQLINTEGER_KIND))
         CALL DBSDIAGS(SQL_HANDLE_STMT,StmtHndlOut,
      -                 'DBSSumry:Creating Table')
+        SUMRYID = 0
       ENDIF
+
+C---------
+C     CREATE ENTRY FROM DATA FOR SUMMARYSTAT TABLE
+C---------
+      IF(SUMRYID.EQ.-1) THEN
+        CALL DBSGETID(TABLENAME,'Id',ID)
+        SUMRYID = ID
+      ENDIF
+      SUMRYID = SUMRYID + 1
+C----------
+C     MAKE SURE WE DO NOT EXCEED THE MAX TABLE SIZE IN EXCEL
+C----------
+      IF(SUMRYID.GE.65535.AND.TRIM(DBMSOUT).EQ.'EXCEL') GOTO 100
+
 C
 C     ASSIGN REAL VALUES TO DOUBLE PRECISION VARS
 C
@@ -327,21 +350,19 @@ C
      1    (VVER(:2) .EQ. 'NE') .OR. (VVER(:2) .EQ. 'OZ') .OR.
      2    (VVER(:2) .EQ. 'SE') .OR. (VVER(:2) .EQ. 'SN')) THEN
 C
-        WRITE(SQLStmtStr,*)'INSERT INTO ',
-     -          TABLENAME,' (CaseID,StandID,',
-     -          'Year,Age,Tpa,BA,SDI,CCF,TopHt,QMD,MCuFt,SCuFt,SBdFt,',
-     -          'RTpa,RMCuFt,RSCuFt,RSBdFt,ATBA,ATSDI,ATCCF,ATTopHt,',
-     -          'ATQMD,PrdLen,Acc,Mort,MAI,ForTyp,SizeCls,StkCls)',
-     -          'VALUES(''',CASEID,''',''',TRIM(NPLT),''',?,?,?,',
-     -          '?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)'
+        WRITE(SQLStmtStr,*)'INSERT INTO ',TABLENAME,'(Id,CaseID,StandID,
+     -              Year,Age,Tpa,BA,SDI,CCF,TopHt,QMD,MCuFt,SCuFt,SBdFt,
+     -              RTpa,RMCuFt,RSCuFt,RSBdFt,ATBA,ATSDI,ATCCF,ATTopHt,
+     -              ATQMD,PrdLen,Acc,Mort,MAI,ForTyp,SizeCls,StkCls)
+     -              VALUES(?,?,',CHAR(39),TRIM(NPLT),CHAR(39),',?,?,?,
+     -              ?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)'
       ELSE
-        WRITE(SQLStmtStr,*)'INSERT INTO ',
-     -           TABLENAME,' (CaseID,StandID,',
-     -           'Year,Age,Tpa,BA,SDI,CCF,TopHt,QMD,TCuFt,MCuFt,BdFt,',
-     -           'RTpa,RTCuFt,RMCuFt,RBdFt,ATBA,ATSDI,ATCCF,ATTopHt,',
-     -           'ATQMD,PrdLen,Acc,Mort,MAI,ForTyp,SizeCls,StkCls)',
-     -           'VALUES(''',CASEID,''',''',TRIM(NPLT),''',?,?,?,',
-     -           '?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)'
+        WRITE(SQLStmtStr,*)'INSERT INTO ',TABLENAME,'(Id,CaseID,StandID,
+     -              Year,Age,Tpa,BA,SDI,CCF,TopHt,QMD,TCuFt,MCuFt,BdFt,
+     -              RTpa,RTCuFt,RMCuFt,RBdFt,ATBA,ATSDI,ATCCF,ATTopHt,
+     -              ATQMD,PrdLen,Acc,Mort,MAI,ForTyp,SizeCls,StkCls)
+     -              VALUES(?,?,',CHAR(39),TRIM(NPLT),CHAR(39),',?,?,?,
+     -              ?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)'
       ENDIF
 C
 C     CLOSE CURSOR
@@ -356,6 +377,18 @@ C
 C     BIND SQL STATEMENT PARAMETERS TO FORTRAN VARIABLES
 C
       ColNumber=1
+      iRet = fvsSQLBindParameter(StmtHndlOut,ColNumber,SQL_PARAM_INPUT,
+     -           SQL_F_INTEGER, SQL_INTEGER,INT(15,SQLUINTEGER_KIND),
+     -           INT(0,SQLSMALLINT_KIND),SUMRYID,int(4,SQLLEN_KIND),
+     -           SQL_NULL_PTR)
+
+      ColNumber=ColNumber+1
+      iRet = fvsSQLBindParameter(StmtHndlOut,ColNumber,SQL_PARAM_INPUT,
+     -           SQL_F_INTEGER, SQL_INTEGER,INT(15,SQLUINTEGER_KIND),
+     -           INT(0,SQLSMALLINT_KIND),ICASE,int(4,SQLLEN_KIND),
+     -           SQL_NULL_PTR)
+
+      ColNumber=ColNumber+1
       iRet = fvsSQLBindParameter(StmtHndlOut,ColNumber,SQL_PARAM_INPUT,
      -           SQL_F_INTEGER, SQL_INTEGER,INT(15,SQLUINTEGER_KIND),
      -           INT(0,SQLSMALLINT_KIND),IYEAR,int(4,SQLLEN_KIND),
@@ -517,11 +550,12 @@ C
      -           INT(0,SQLSMALLINT_KIND),ISTCL,int(4,SQLLEN_KIND),
      -           SQL_NULL_PTR)
 
+  100 CONTINUE
       iRet = fvsSQLCloseCursor(StmtHndlOut)
       iRet = fvsSQLExecute(StmtHndlOut)
-      IF (iRet.NE.SQL_SUCCESS) ISUMARY = 0
       CALL DBSDIAGS(SQL_HANDLE_STMT,StmtHndlOut,
      -              'DBSSumry:Inserting Row')
+
   200 CONTINUE
       !Release statement handle
       iRet = fvsSQLFreeHandle(SQL_HANDLE_STMT, StmtHndlOut)

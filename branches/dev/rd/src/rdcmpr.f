@@ -1,7 +1,6 @@
       SUBROUTINE RDCMPR (NCLAS,PROB,IND,IND1)
-      IMPLICIT NONE
 C----------
-C  **RDCMPR      LAST REVISION:  08/27/14
+C  **RDCMPR      LAST REVISION:  07/22/02
 C----------
 C
 C  THIS SUBROUTINE IS USED TO COMPRESS THE TREE RECORDS ARRAYS FOR
@@ -23,12 +22,9 @@ C    22-JUL-02 Lance R. David (FHTET)
 C      Previous revision date noted was March 7, 1995.
 C      Removed unused array PROBO. It was also unused in the old
 C      annosus model.
-C   08/27/14 Lance R. David (FMSC)
-C     Added implicit none and declared variables.
-C
-C----------------------------------------------------------------------
-C
+
 COMMONS
+C
 C
       INCLUDE 'PRGPRM.F77'
       INCLUDE 'RDPARM.F77'
@@ -38,16 +34,11 @@ C
       INCLUDE 'RDARRY.F77'  
       INCLUDE 'RDADD.F77'
 C
-COMMONS
-C
+      INTEGER   IND, IND1
+      DIMENSION PROB(MAXTRE), IND(MAXTRE), IND1(MAXTRE)
+      LOGICAL   LGO, LTEE
 
-      INTEGER  I, I1, I2, ICL, IDI, IENDYR, IND(MAXTRE), IND1(MAXTRE),
-     &         IP, IREC, J, JJ, K, NCLAS
-      REAL     PROB(MAXTRE), TPAREA, ROOT1, ROOT3,
-     &         TXP, TXP1, TXP2, TXP3, TXP4, TXP5, TXP7, TXP10,
-     &         TXP14(2), TXP15(3), XP
-      LOGICAL  LGO, LTEE
-
+      REAL TXP15(3), TXP7, TXP14(2)
       TXP7 = 0.0      
 
 C     IENDYR IS THE LAST YEAR OF PROBI, PROPI THAT WILL HAVE INFO

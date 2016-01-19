@@ -1,7 +1,6 @@
       SUBROUTINE BRCREM
-      IMPLICIT NONE
 C**********************************************************************
-C  **BRCREM       DATE OF LAST REVISION:  06/05/2014
+C  **BRCREM       DATE OF LAST REVISION:  06/21/2013
 C----------------------------------------------------------------------
 C  Purpose:
 C  BRCREM removes cankers that have been classified as inactive
@@ -42,9 +41,7 @@ C.... Common include files.
 
 C.... Local variable declarations.
 
-      INTEGER I1, I2, I3, ICNDX(10), ITSTAT, IVAC, J, K, M, NLCAN, 
-     &        ICANT
-      REAL HITE, PRHT, PRHTST, VALUE
+      INTEGER I1, I2, I3, ICNDX(10)
       LOGICAL DEBUG,PRUNED
 
 C.... Is debug requested?

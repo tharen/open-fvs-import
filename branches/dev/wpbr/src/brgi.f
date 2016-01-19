@@ -1,7 +1,6 @@
       SUBROUTINE BRGI(IIAG,HHT,GIBR,TBSUM)
-      IMPLICIT NONE
 C**********************************************************************
-C  **BRGI         DATE OF LAST REVISION:  06/05/2014
+C  **BRGI         DATE OF LAST REVISION:  06/21/2013
 C----------------------------------------------------------------------
 C  Purpose:
 C  BRGI calculates the growth index and sum target for individual white

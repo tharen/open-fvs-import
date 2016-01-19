@@ -1,7 +1,6 @@
-      REAL FUNCTION RDSLP(X,XX,YY,N)
-      IMPLICIT NONE
+      FUNCTION RDSLP(X,XX,YY,N)
 C----------
-C  **RDSLP       LAST REVISION:  09/03/14
+C  **RDSLP       LAST REVISION:  08/06/01
 C----------
 C
 C  Given two arrays XX and YY, each of dimension N, representing
@@ -30,10 +29,7 @@ C       Reduced RETURN statements to 1 at the end of routine.
 C       Modified Debug code.
 C    06-AUG-01 Lance R. David (FHTET)
 C       Changed dimensions on XX and YY arrays from 5 to *.
-C   09/03/14 Lance R. David (FMSC)
-C     Added implicit none and declared variables.
-C
-C----------------------------------------------------------------------
+C....................................................................
 C
 C.... PARAMETER INCLUDE FILES
 C
@@ -46,8 +42,7 @@ C
 C.... Local variables
 C
       LOGICAL DEBUG
-      INTEGER I, N
-      REAL    X, XX(*), YY(*)
+      DIMENSION XX(*), YY(*)
 C
 C.... Check for DEBUG
 C

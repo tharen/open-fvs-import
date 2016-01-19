@@ -89,7 +89,8 @@ C         REPLACE KEYWORD WITH VALUE
               KODE = 1
             CASE('FVSCASE')
               CALL DBSCASE(1)
-              NEWSTR = TRIM(NEWSTR)//' '//CASEID
+              WRITE(CMPUSTR,'(I8)')ICASE
+              NEWSTR = TRIM(NEWSTR)//' '//trim(adjustl(CMPUSTR))
             CASE DEFAULT
               IF(LSCHED) THEN
 C               CHECK AGAINST COMPUTES AND OTHER EVENT MONITOR VARS

@@ -1,7 +1,6 @@
       SUBROUTINE BRESTB(TIME,ITYP,ISSP)
-      IMPLICIT NONE
 C**********************************************************************
-C  **BRESTB       DATE OF LAST REVISION:  06/05/2014
+C  **BRESTB       DATE OF LAST REVISION:  06/21/2013
 C----------------------------------------------------------------------
 C  Purpose:
 C  BRESTB sets the Blister Rust variables for new trees that are
@@ -42,8 +41,8 @@ C.... Common include files.
 C.... Local variable declarations.
 
       LOGICAL DEBUG
-      INTEGER IIAGO, ITYP, ISSP
-      REAL    BRDBH, BRHT, CRLEN, GIBR, TBSUM, TIME
+      INTEGER ITYP,ISSP
+      REAL CRLEN,TIME
 
 C.... Is debug requested?
 

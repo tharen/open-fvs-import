@@ -1,7 +1,6 @@
       SUBROUTINE BRROUT
-      IMPLICIT NONE
 C**********************************************************************
-C  **BRROUT       DATE OF LAST REVISION:  06/05/2014
+C  **BRROUT       DATE OF LAST REVISION:  06/21/2013
 C----------------------------------------------------------------------
 C  Purpose:
 C  BRROUT writes a Blister Rust Model Stand Summary Statistics
@@ -43,7 +42,7 @@ C.... Common include files.
 
       CHARACTER*3 BRVER
 C.... Local variable declarations.
-      INTEGER I3, I4, J, K, ISTLNB
+
       LOGICAL BRGO
 
 C.... See if Blister Rust Model is active.  If not, then return.

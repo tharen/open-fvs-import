@@ -1,7 +1,7 @@
       BLOCK DATA MPBLKD
       IMPLICIT NONE
 C----------
-C  **MPBLKD--BM   DATE OF LAST REVISION:  08/22/14
+C  **MPBLKD--BM   DATE OF LAST REVISION:  07/02/10
 C----------
 C
 C     MOUNTAIN PINE BEETLE --
@@ -15,9 +15,6 @@ C     ASSIGNMENTS ARE BASED ON THOSE MADE IN THE SORNEC AND
 C     CENTRAL ROCKIES VARIANTS.
 C   07/02/10 Lance R. David (FMSC)
 C     Added IMPLICIT NONE.
-C   08/22/14 Lance R. David (FMSC)
-C     Function name was used as variable name.
-C     changed variable INT to INCRS
 C----------------------------------------------------------------------
 C
 COMMONS
@@ -31,7 +28,7 @@ C
       DATA  JOMPB  / 7 /
 
       DATA IPLTNO/ 1 /,IMPROB/ 1 /,NATR/ 2 /, KEYMPB/ 2,3,6*0,1 /,
-     >     INCRS/ 10 /
+     >      INT/ 10 /
 
 C----------
 C vv---- MPB surface area calculation surrogate specie (surfce.f)

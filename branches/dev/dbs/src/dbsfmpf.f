@@ -35,13 +35,15 @@ C             21: FUEL MODEL
 C             22: FUEL WEIGHT
 C             23: KODE FOR WHETHER OR NOT THE REPORT ALSO DUMPS TO FILE
 C
+C     ICASE - CASE NUMBER FROM THE FVSRUN TABLE
+C
 COMMONS
 C
       INCLUDE 'DBSCOM.F77'
 C
 COMMONS
 
-      INTEGER IYEAR,CNPYHT,SMORTBA,MMORTBA,SMORTVOL,MMORTVOL,KODE,IRCODE
+      INTEGER IYEAR,CNPYHT,SMORTBA,MMORTBA,SMORTVOL,MMORTVOL,ID,KODE
       INTEGER FUELMOD,SFUELMOD
       INTEGER(SQLSMALLINT_KIND)::ColNumber
       REAL SFLMTO,MFLMTO,TORCHI,CROWNI,CNPYDNST,SPSMOKE,MPSMOKE
@@ -96,17 +98,19 @@ C---------
           TABLENAME = 'FVS_PotFire'
         ENDIF
       ENDIF
-      CALL DBSCKNROWS(IRCODE,TABLENAME,1,TRIM(DBMSOUT).EQ.'EXCEL')
-      IF(IRCODE.EQ.2) THEN
-        IPOTFIRE = 0
-        RETURN
-      ENDIF
-      IF(IRCODE.EQ.1) THEN
+      SQLStmtStr= 'SELECT * FROM ' // TABLENAME
+
+      iRet = fvsSQLExecDirect(StmtHndlOut,trim(SQLStmtStr),
+     -            int(len_trim(SQLStmtStr),SQLINTEGER_KIND))
+
+      IF(.NOT.(iRet.EQ.SQL_SUCCESS .OR.
+     -    iRet.EQ.SQL_SUCCESS_WITH_INFO)) THEN
         IF ((VVER(:2) .EQ. 'SN') .OR. (VVER(:2) .EQ. 'CS')) THEN
 C
           IF(TRIM(DBMSOUT).EQ."ACCESS") THEN
           SQLStmtStr='CREATE TABLE FVS_PotFire_East('//
-     -              'CaseID Text not null,'//
+     -              'Id int primary key,'//
+     -              'CaseID int not null,'//
      -              'StandID Text null,'//
      -              'Year int null,'//
      -              'Flame_Len_Sev double null,'//
@@ -137,7 +141,8 @@ C
      -              'Fuel_Wt4_Mod double null)'
           ELSEIF(TRIM(DBMSOUT).EQ."EXCEL") THEN
           SQLStmtStr='CREATE TABLE FVS_PotFire_East('//
-     -              'CaseID Text,'//
+     -              'Id int,'//
+     -              'CaseID int,'//
      -              'StandID Text,'//
      -              'Year int,'//
      -              'Flame_Len_Sev number,'//
@@ -168,7 +173,8 @@ C
      -              'Fuel_Wt4_Mod number)'
           ELSE
           SQLStmtStr='CREATE TABLE FVS_PotFire_East('//
-     -              'CaseID char(36) not null,'//
+     -              'Id int primary key,'//
+     -              'CaseID int not null,'//
      -              'StandID char(26) null,'//
      -              'Year int null,'//
      -              'Flame_Len_Sev real null,'//
@@ -201,7 +207,8 @@ C
         ELSE !NOT SN VARIANT
           IF(TRIM(DBMSOUT).EQ."ACCESS") THEN
           SQLStmtStr='CREATE TABLE FVS_PotFire('//
-     -              'CaseID Text not null,'//
+     -              'Id int primary key,'//
+     -              'CaseID int not null,'//
      -              'StandID Text null,'//
      -              'Year int null,'//
      -              'Surf_Flame_Sev double null,'//
@@ -232,7 +239,8 @@ C
      -              'Fuel_Wt4 double null)'
           ELSEIF(TRIM(DBMSOUT).EQ."EXCEL") THEN
           SQLStmtStr='CREATE TABLE FVS_PotFire('//
-     -              'CaseID Text,'//
+     -              'Id int,'//
+     -              'CaseID int,'//
      -              'StandID Text,'//
      -              'Year int,'//
      -              'Surf_Flame_Sev number,'//
@@ -263,7 +271,8 @@ C
      -              'Fuel_Wt4 number)'
           ELSE
           SQLStmtStr='CREATE TABLE FVS_PotFire('//
-     -              'CaseID char(36) not null,'//
+     -              'Id int primary key,'//
+     -              'CaseID int not null,'//
      -              'StandID char(26) null,'//
      -              'Year int null,'//
      -              'Surf_Flame_Sev real null,'//
@@ -301,7 +310,21 @@ C
      -            int(len_trim(SQLStmtStr),SQLINTEGER_KIND))
           CALL DBSDIAGS(SQL_HANDLE_STMT,StmtHndlOut,
      -           'DBSFMPF:Creating Table: '//trim(SQLStmtStr))
+        FMPFID = 0
       ENDIF
+
+C---------
+C     CREATE ENTRY FROM DATA FOR SUMMARYSTAT TABLE
+C---------
+      IF(FMPFID.EQ.-1) THEN
+        CALL DBSGETID(TABLENAME,'Id',ID)
+        FMPFID = ID
+      ENDIF
+      FMPFID = FMPFID + 1
+C----------
+C     MAKE SURE WE DO NOT EXCEED THE MAX TABLE SIZE IN EXCEL
+C----------
+      IF(FMPFID.GE.65535.AND.TRIM(DBMSOUT).EQ.'EXCEL') GOTO 100
 
       BSFLMTO=0D0
       BMFLMTO=0D0
@@ -336,7 +359,7 @@ C
        BSFUELWT(2)=INT((SFUELWT(2)*100.)+0.5)
        BSFUELWT(3)=INT((SFUELWT(3)*100.)+0.5)
        BSFUELWT(4)=INT((SFUELWT(4)*100.)+0.5)
-       WRITE(SQLStmtStr,*)'INSERT INTO ',TABLENAME,'(CaseID,',
+       WRITE(SQLStmtStr,*)'INSERT INTO ',TABLENAME,'(Id,CaseID,',
      -     'StandID,Year,Flame_Len_Sev,Flame_Len_Mod,',
      -     'Canopy_Ht,Canopy_Density,Mortality_BA_Sev,',
      -     'Mortality_BA_Mod,Mortality_VOL_Sev,Mortality_VOL_Mod,',
@@ -345,11 +368,11 @@ C
      -     'Fuel_Wt3_mod,Fuel_Wt4_mod,Fuel_Mod1_Sev,',
      -     'Fuel_Mod2_Sev,Fuel_Mod3_Sev,Fuel_Mod4_Sev,',
      -     'Fuel_Wt1_Sev,Fuel_Wt2_Sev,Fuel_Wt3_Sev,',
-     -     'Fuel_Wt4_Sev) VALUES (''',CASEID,''',''',TRIM(NPLT),
-     -     ''',?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,? ',
+     -     'Fuel_Wt4_Sev)VALUES(?,?,',CHAR(39),TRIM(NPLT),CHAR(39),
+     -     ',?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,? ',
      -     ',?,?,?,?)'
       ELSE
-       WRITE(SQLStmtStr,*)'INSERT INTO ',TABLENAME,'(CaseID,',
+       WRITE(SQLStmtStr,*)'INSERT INTO ',TABLENAME,'(Id,CaseID,',
      -     'StandID,Year,Surf_Flame_Sev,Surf_Flame_Mod,',
      -     'Tot_Flame_Sev,Tot_Flame_Mod,Fire_Type_Sev,Fire_Type_Mod,',
      -     'PTorch_Sev,PTorch_Mod,Torch_Index,Crown_Index,',
@@ -357,15 +380,28 @@ C
      -     'Mortality_BA_Mod,Mortality_VOL_Sev,Mortality_VOL_Mod,',
      -     'Pot_Smoke_Sev,Pot_Smoke_Mod,Fuel_Mod1,Fuel_Mod2,',
      -     'Fuel_Mod3,Fuel_Mod4,Fuel_Wt1,Fuel_Wt2,',
-     -     'Fuel_Wt3,Fuel_Wt4) VALUES (''',CASEID,''',''',TRIM(NPLT),
-     -     ''',?,?,?,?,?,''',TRIM(SFTYPE),''',''',TRIM(MFTYPE),
-     -     ''',?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)'
+     -     'Fuel_Wt3,Fuel_Wt4) ',
+     -     'VALUES(?,?,',CHAR(39),TRIM(NPLT),CHAR(39),',?,?,?,?,?,',
+     -       CHAR(39),TRIM(SFTYPE),CHAR(39),',',CHAR(39),TRIM(MFTYPE),
+     -       CHAR(39),',?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)'
       ENDIF
       iRet = fvsSQLCloseCursor(StmtHndlOut)
       iRet = fvsSQLPrepare(StmtHndlOut, trim(SQLStmtStr),
      -                int(len_trim(SQLStmtStr),SQLINTEGER_KIND))
 
       ColNumber=1
+      iRet = fvsSQLBindParameter(StmtHndlOut,ColNumber,SQL_PARAM_INPUT,
+     -          SQL_F_INTEGER, SQL_INTEGER,INT(15,SQLUINTEGER_KIND),
+     -          INT(0,SQLSMALLINT_KIND),FMPFID,int(4,SQLLEN_KIND),
+     -           SQL_NULL_PTR)
+
+      ColNumber=ColNumber+1
+      iRet = fvsSQLBindParameter(StmtHndlOut,ColNumber,SQL_PARAM_INPUT,
+     -          SQL_F_INTEGER, SQL_INTEGER,INT(15,SQLUINTEGER_KIND),
+     -          INT(0,SQLSMALLINT_KIND),ICASE,int(4,SQLLEN_KIND),
+     -           SQL_NULL_PTR)
+
+      ColNumber=ColNumber+1
       iRet = fvsSQLBindParameter(StmtHndlOut,ColNumber,SQL_PARAM_INPUT,
      -          SQL_F_INTEGER, SQL_INTEGER,INT(15,SQLUINTEGER_KIND),
      -          INT(0,SQLSMALLINT_KIND),IYEAR,int(4,SQLLEN_KIND),
@@ -573,6 +609,11 @@ C
      -           SQL_NULL_PTR)
 
       ENDIF
+
+
+  100 CONTINUE
+
+cc      iRet = fvsSQLCloseCursor(StmtHndlOut)
 
       iRet = fvsSQLExecute(StmtHndlOut)
       CALL DBSDIAGS(SQL_HANDLE_STMT,StmtHndlOut,

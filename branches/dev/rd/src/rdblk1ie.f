@@ -1,7 +1,6 @@
       BLOCK DATA RDBLK1
-      IMPLICIT NONE
 C----------
-C  **RDBLK1-IE     LAST REVISION:  08/26/14
+C  **RDBLK1-IE  LAST REVISION:  04/30/09
 C----------
 C
 C  Purpose :
@@ -9,8 +8,6 @@ C     This block data file initializes constants in the Root Disease
 C     extension to FVS variant Inland Empire 23 species.
 C
 C  This file created by Lance David 08/07/2003
-C
-C  Previous revision date 04/30/09
 C
 COMMONS
 C

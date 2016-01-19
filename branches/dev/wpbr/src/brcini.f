@@ -1,7 +1,6 @@
       SUBROUTINE BRCINI(IBRNO,HITE)
-      IMPLICIT NONE
 C**********************************************************************
-C  **BRCINI       DATE OF LAST REVISION:  06/05/2014
+C  **BRCINI       DATE OF LAST REVISION:  06/21/2013
 C----------------------------------------------------------------------
 C  Purpose:
 C  BRCINI uses the canker counts read from the canker data list
@@ -33,8 +32,7 @@ C.... Common include files.
       INCLUDE 'BRCOM.F77'
 
 C.... Local variable declarations.
-      INTEGER IBRNO, ITEMPC, J, NUMCNK
-      REAL    HITE, HITEBC, PBOLE, TOUT, TUP, XRAN, YRAN, ZRAN, CRLEN
+
       LOGICAL DEBUG
 
 C.... See if we need to do some debug.

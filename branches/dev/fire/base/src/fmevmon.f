@@ -38,18 +38,18 @@ C.... Variable declarations.
 
 
       INTEGER ITYP,IPART,ISTAND,IT
-      INTEGER KSP,ISZ,IDC,ITM,ISPC,ISPS
+      INTEGER KSP,ISZ,IDC,ITM,ISPC,ISPS,ITRNC
       REAL    SNGSTM,SNGCRN,SNBBA
       REAL    TOTBA,TOTSBA,SNBAIH,SNBAIS,SNVIH,SNVIS
       REAL    LIVSTM,LIVSRM,LIVSLV,LIVCRN,LIVFOL,TOTFOL,TOTSTD,LIVCRM
       REAL    SNGSRM,LIVSRMTEM
       REAL    TOTSTND,TOTSNG,TOTLIV,TOTFUL,TOTDEAD,LVCRNRMFOL
-      INTEGER IFIRST
+      INTEGER ICYCRM,IFIRST
       LOGICAL LINCL,DEBUG,LMERCH
       REAL    SNGVOL1,SNGSALVOL
       REAL    CRREM(MAXTRE),DSNG1(MAXTRE),SSNG1(MAXTRE)
       INTEGER IJ
-C
+
 C********************************************************************
 C
 C     EVENT MONITOR POTFLEN FUNCTION.
@@ -172,20 +172,17 @@ C
 C********************************************************************
 
       ENTRY FMEVSNG(RVAL, IX, JX, KX, XLDBH, XHDBH, XLHT, XHHT, IRC)
-      IF (IFMYR1.EQ.-1) THEN
-         IRC=1
-      ELSE
       IRC= 0
       XH = 0.
       XS = 0.
       RVAL = 0.
       IF (NSNAG.LT.1) RETURN
-        
+
       DO 500 I = 1, NSNAG
-        
+
         ISPS = SPS(I)
         D = DBHS(I)
-        
+
         LINCL = .FALSE.
         IF(JX.EQ.0 .OR. JX.EQ.ISPS)THEN
           LINCL = .TRUE.
@@ -200,12 +197,12 @@ C********************************************************************
    90     CONTINUE
         ENDIF
    91   CONTINUE
-        
+
         IF (LINCL .AND.
      >    (D.GE.XLDBH .AND. D.LT.XHDBH)) THEN
-        
+
 C  PASS OVER THE INITIALLY-HARD SNAGS
-        
+
           HS = HTIH(I)
           TPA = DENIH(I)
           IF (TPA .GT. 0. .AND. HS.GE.XLHT .AND. HS.LT.XHHT) THEN
@@ -221,16 +218,16 @@ C  PASS OVER THE INITIALLY-HARD SNAGS
             X = TPA * X1
             GOTO 120
   120       CONTINUE
-        
+
             IF (HARD(I)) THEN
               XH = XH + X
             ELSE
               XS = XS + X
             ENDIF
           ENDIF
-        
+
 C     PASS OVER THE INITIALLY-SOFT SNAGS
-        
+
           HS = HTIS(I)
           TPA = DENIS(I)
           IF (TPA .GT. 0. .AND. HS.GE.XLHT .AND. HS.LT.XHHT) THEN
@@ -246,22 +243,21 @@ C     PASS OVER THE INITIALLY-SOFT SNAGS
             X = TPA * X1
             GOTO 220
   220       CONTINUE
-        
+
             XS = XS + X
           ENDIF
         ENDIF
-        
+
   500 CONTINUE
-        
+
 C TAKE HARD-COMPONENT, SOFT-COMPONENT, OR BOTH
-        
+
       IF (KX .EQ. 1) THEN
         RVAL = XH
       ELSEIF (KX .EQ. 2) THEN
         RVAL = XS
       ELSE
         RVAL = XH + XS
-      ENDIF
       ENDIF
 
       RETURN
@@ -378,7 +374,7 @@ C
 C     CHECK TO SEE IF THE FIRE MODEL IS ACTIVE
 C
       IF (.NOT. LFMON) RETURN
-      ITRNL=ITRN
+      ITRNC=ITRN
       DO J=1,MAXTRE
       PREMST(J)=0.
       PREMCR(J)=0.
@@ -396,7 +392,7 @@ C
       LREMT=.TRUE.
       ICYCRM= ICYC
 C
-      DO I=1,ITRNL
+      DO I=1,ITRN
       PREMST(I)=AMAX1(0.,WK3(I)-SSNG1(I)-DSNG1(I))
 C
 C  LIVE REMOVED CROWN MATERIAL IS STORED IN PREMCR ARRAY
@@ -415,9 +411,9 @@ C
       IF(PREMCR(I).LT.0.00001)PREMCR(I)=0.
       IF(PREMST(I).LT.0.00001)PREMST(I)=0.
 C
-C      IF(DEBUG)WRITE(JOSTND,*)' ENTERING FMTREM,CYCLE=  ICYC,ITRNL,',
+C      IF(DEBUG)WRITE(JOSTND,*)' ENTERING FMTREM,CYCLE=  ICYC,ITRN,',
 C     &'I,ISPC,DBH,DSNG1,SSNG1,CRREM,FMPROB(I),PREMST(I),',
-C     &'PREMCR(I)= ',ICYC,ITRNL,I,ISP(I),DBH(I),DSNG1(I),
+C     &'PREMCR(I)= ',ICYC,ITRN,I,ISP(I),DBH(I),DSNG1(I),
 C     &SSNG1(I),CRREM(I),FMPROB(I),PREMST(I),PREMCR(I)
 C
       ENDDO
@@ -434,13 +430,11 @@ C
       ELSE
         IRC=0
         RVAL = 0.0
-
 C
 C  IF THIS IS NOT A THINING CYCLE, SET LREMT TO FALSE SO REMOVALS ARE
 C  NOT ACCOUNTED FOR UNTIL NEXT THINING, AND ZERO OUT PREMSTAND
 C  PREMCR ARRAYS.
 C
-
         IF((ICYCRM.NE.ICYC).OR.(.NOT.LREMT))THEN
           DO I=1,MAXTRE
           PREMST(I)=0.
@@ -458,7 +452,6 @@ C
 C----------
 C  INITALIZE VARIABLES
 C----------
-
         SNGSTM=0.      !WEIGHT OF SELECTED SNAG STEMS (TONS)
         SNGCRN=0.      !WEIGHT OF SELECTED SNAG CROWN MATERIAL (TONS)
         SNGSRM=0.      !WEIGHT OF REMOVED SNAG STEMS
@@ -652,9 +645,10 @@ C
 C  
 C  LIVE REMOVALS
 C
-        IF((ICYCRM.EQ.ICYC).AND.(ISTAND.GE.0).AND.(ITYP.GE.0)) THEN
-          DO I = 1,ITRNL
+        IF((ISTAND.GE.0).AND.(ITYP.GE.0))THEN
 C
+          DO I = 1,ITRNC
+C     
           ISPC = ISPCC(I)
           D = DBHC(I)
           H = HTC(I)
@@ -687,6 +681,7 @@ C  CONSTRAIN TO HEIGHT RANGE
 C
               IF((H.GE.XLHT).AND.(H.LT.XHHT))THEN
                 LMERCH = .FALSE.
+           
                 CALL FMSVL2(ISPC,D,H,XM1,VT,LMERCH,.FALSE.,JOSTND)
            
                 IF (DEBUG) WRITE(JOSTND,60) I,FMPROB(I),PROB(I),

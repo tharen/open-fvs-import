@@ -1,7 +1,6 @@
-      SUBROUTINE FMPOCR(IYR,ICALL)
+      SUBROUTINE FMPOCR(IYR)
       IMPLICIT NONE
 C----------
-C  $Id$
 C  $Id$
 C----------
 C     CALLED FROM: FMBURN
@@ -38,11 +37,15 @@ C     VARIABLE DECLARATIONS.
 
       CHARACTER VVER*7
       LOGICAL DEBUG, LBHPP
-      INTEGER J,I,I1,I2,J1,J2,MXJ,IYR,K,ICALL
-      REAL    CRBOT, CRFILL(400), ABOT, ABOTMX
-      REAL    ADCRWN,A,ADJ
+      INTEGER J,I,I1,I2,J1,J2,MXJ,IYR,K
+      INTEGER JDO,NTODO,NPRM,IACTK,JYR
+      REAL    CRBOT, CRFILL(200), ABOT, ABOTMX
+      REAL    ADCRWN,A
+      REAL PRMS(2)
       REAL MSDI, MRD, WTRADJ, WEIBB, WEIBC, TSCL, SECINT
-      REAL ADCRN(400), SECBND, WPROP(400), LCR, DCM, CRBIO
+      REAL ADCRN(200), SECBND, WPROP(200), LCR, DCM, CRBIO
+      INTEGER MYACT(1)
+      DATA MYACT/2547/
 
 C
 C     CHECK FOR DEBUG.
@@ -51,7 +54,7 @@ C
       IF (DEBUG) WRITE(JOSTND,7) ICYC,ITRN
     7 FORMAT(' ENTERING FMPOCR CYCLE = ',I2,' ITRN=',I5)
 
-      DO J = 1,400
+      DO J = 1,200
         CRFILL(J) = 0.0
       ENDDO
 
@@ -108,24 +111,12 @@ C----------
      >        ' FMICR=',I3,' CRBOT=',F7.2,' I1,I2=',2I5,
      >        ' CROWNW(0&1)=',2F7.2)
             
-            IF (I1 .GT. 400) I1 = 400
-            IF (I2 .GT. 400) I2 = 400
+            IF (I1 .GT. 200) I1 = 200
+            IF (I2 .GT. 200) I2 = 200
             
-C----------
-C ADD THE TREES CANOPY FUELS MATERIAL TO CRFILL.  ADJUST THE TOP AND BOTTOM
-C INTERVALS SINCE THE CROWN MIGHT NOT FULLY COVER THAT 1-FT INTERVAL.  SAR 3/2015
-C----------
             IF (I1.LE.I2 .AND. ADCRWN .GT. 0.0) THEN
               DO J = I1,I2
-                IF (J .EQ. I1) THEN
-                   ADJ = MAX(0.,MIN(1.,I1 - CRBOT))
-                   CRFILL(J) = CRFILL(J) + ADCRWN*ADJ                
-                ELSEIF (J .EQ. I2) THEN
-                   ADJ = MAX(0.,MIN(1.,I2 - HT(I)))
-                   CRFILL(J) = CRFILL(J) + ADCRWN*(1-ADJ)                 
-                ELSE
-                  CRFILL(J) = CRFILL(J) + ADCRWN              
-                ENDIF
+                CRFILL(J) = CRFILL(J) + ADCRWN
               ENDDO
             ENDIF
             
@@ -143,10 +134,9 @@ C
 C          
             I1 = INT(CRBOT) + 1
             I2 = INT(HT(I)) + 1
-            IF ((I2 - HT(I)) .GE. 1) I2 = I2 - 1
 C
-            IF (I1 .GT. 400) I1 = 400
-            IF (I2 .GT. 400) I2 = 400
+            IF (I1 .GT. 200) I1 = 200
+            IF (I2 .GT. 200) I2 = 200
 C            WRITE(20,*) 'I1 ,', I1
 C            WRITE(20,*) 'I2 ,', I2
 C
@@ -182,7 +172,7 @@ C SET VARIABLES
 C----------
               TSCL = I2-I1
               SECINT =  10.0 / (TSCL + 1) 
-              DO J = 1,400
+              DO J = 1,200
                 WPROP(J) = 0.0
                 ADCRN(J) = 0.0
               ENDDO
@@ -232,18 +222,32 @@ C
 C     SUM UP THE TOTAL CANOPY FUEL LOAD
 C
       TCLOAD = 0.0  ! THIS SUM WILL BE IN LBS/ACRE
-      DO I = 1,400
+      DO I = 1,200
         TCLOAD = TCLOAD + CRFILL(I)
       ENDDO
       TCLOAD = TCLOAD / 43560.0   ! CONVERT LBS/ACRE TO LBS/SQFT
       IF (DEBUG) WRITE (JOSTND,*) 'TCLOAD = ', TCLOAD
           
 C     PASS CANOPY PROFILE INFORMATION TO DATABASE TABLE, IF REQUESTED.
-C     ONLY PRINT IT FOR POST-ACTIVITY VALUES.
 
+      JDO = 0
+      CALL OPFIND(1,MYACT,NTODO)
+      DO 12 JDO = 1,NTODO
+         CALL OPGET(JDO,2,JYR,IACTK,NPRM,PRMS)
+         IF (JYR .NE. IYR) GOTO 12
+         ICFPB = JYR
+         ICFPE = JYR + PRMS(1)
+         ICFPST = PRMS(2)
+         IF (ICFPST.EQ.0) ICFPST=1
+         CALL OPDONE(JDO,JYR)
+         GOTO 13
+   12 CONTINUE
+   13 CONTINUE
+C
       IF (IYR .LT. ICFPB .OR. IYR .GT. ICFPE) GOTO 14
+      IF (MOD((IYR-ICFPB),ICFPST) .NE. 0) GOTO 14
    
-      IF (ICALL .EQ. 2) CALL DBSFMCANPR(IYR, CRFILL, NPLT)
+      CALL DBSFMCANPR(IYR, CRFILL, NPLT)
    14 CONTINUE
    
 C     CALCULATE THE 13-FT RUNNING AVERAGE. THE MAX VALUE OF THE MEAN
@@ -261,7 +265,7 @@ C     START THE RUNNING AVERAGE AT THAT POINT. ALSO FIND THE POINT WHERE
 C     THE CROWN "ENDS".  THIS IS A COMPLIMENT TO THE STARTING RULE.
 
       J1 = 0
-      DO J = 1,400
+      DO J = 1,200
         IF (CRFILL(J) .GT. 5.0) THEN
           J1 = J
           EXIT
@@ -276,7 +280,7 @@ C
 C     FIND THE EFFECTIVE TOP OF THE CANOPY.
 C
       J2 = 201
-      DO J = 400,1,-1
+      DO J = 200,1,-1
         IF (CRFILL(J) .GT. 5.0) THEN
           J2 = J
           EXIT

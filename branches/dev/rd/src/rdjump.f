@@ -1,7 +1,6 @@
       SUBROUTINE RDJUMP
-      IMPLICIT NONE
 C----------
-C  **RDJUMP      LAST REVISION:  08/29/14
+C  **RDJUMP      LAST REVISION:  06/10/96
 C----------
 C
 C  Purpose :
@@ -25,10 +24,6 @@ C  Revision History
 C    06/10/96 - Matthew K. Thompson
 C               Changed the summing of trees in tree records.
 C               Changed from an INTEGER summation to a REAL summation.
-C   08/29/14 Lance R. David (FMSC)
-C     Added implicit none and declared variables.
-C
-C----------------------------------------------------------------------
 C
 C.... Parameter include files
 
@@ -46,8 +41,7 @@ C.... Common include files
 
 C.... Local variable declarations
 
-      INTEGER  I, I1, I2, IDI, J, KSP
-      REAL     SPCEN, TOTCEN, TRENUM, XTRENU, XJPINC
+      REAL XTRENU, XJPINC, TRENUM
 
 
       IF (PAREA(IRRSP) .EQ. 0.0) RETURN

@@ -1,7 +1,6 @@
       SUBROUTINE RDINSD
-      IMPLICIT NONE
 C----------
-C  **RDINSD      LAST REVISION:  08/28/14
+C  **RDINSD      LAST REVISION:  08/03/12
 C----------
 C
 C  Purpose :
@@ -45,10 +44,8 @@ C                Added Debug code.
 C    03-AUG-2012 Lance David (FMSC)
 C                Array dimension of RRNINF and POLP changed from 500 to
 C                parameter IRRTRE.
-C   08/28/14 Lance R. David (FMSC)
-C     Added implicit none and declared variables.
+C....................................................................
 C
-C----------------------------------------------------------------------
 
 C.... Parameter include files.
 
@@ -66,14 +63,11 @@ C.... Common include files.
 
 C.... Local variable declarations.
 
-      LOGICAL  DEBUG
-      INTEGER  I, I1, I2, IDI, IN, IP, IRINCS, IT, ITROLP,
-     &         J, K, KSP, NSIMS, NUMOLP
-
-      REAL     AVGINF, DENNEW, DISOLP, DIST, OAMOVE(3), OVERLP,
-     &         PNIOLP, PNSP,POLP(IRRTRE), PREVKL, PROPN, R, 
-     &         RDRANN, RRNINF(IRRTRE), SMBI, SMIU, TEMP, XTRY,
-     &         YTRY
+      LOGICAL DEBUG
+      DIMENSION OAMOVE(3)
+      
+      REAL    RRNINF(IRRTRE)
+      REAL    POLP(IRRTRE)
 
 C.... See if we need to do some debug.
 

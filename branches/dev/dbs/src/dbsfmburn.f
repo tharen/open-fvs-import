@@ -25,13 +25,15 @@ C             13: FUEL MODEL
 C             14: WEIGHT GIVEN EACH FUEL MODEL
 C             15: KODE FOR WHETHER THE REPORT ALSO DUMPS TO FILE
 C
+C     ICASE - CASE NUMBER FROM THE FVSRUN TABLE
+C
 COMMONS
 C
       INCLUDE 'DBSCOM.F77'
 C
 COMMONS
 
-      INTEGER IYEAR,IRCODE,KODE,FM,SLOPE
+      INTEGER IYEAR,ID,KODE,FM,SLOPE
       INTEGER(SQLSMALLINT_KIND)::ColNumber
       REAL ONEHR, TENHR, HUNDHR, THOUSHR, DUFF, LIVEW, LIVEH, MFWIND,
      -     FLAME, SCORCH, WT
@@ -73,15 +75,18 @@ C---------
       ELSE
         TABLENAME = 'FVS_BurnReport'
       ENDIF
-      CALL DBSCKNROWS(IRCODE,TABLENAME,1,TRIM(DBMSOUT).EQ.'EXCEL')
-      IF(IRCODE.EQ.2) THEN
-        IBURN = 0
-        RETURN
-      ENDIF
-      IF(IRCODE.EQ.1) THEN
+      SQLStmtStr= 'SELECT * FROM ' // TABLENAME
+
+      !PRINT*, SQLStmtStr
+      iRet = fvsSQLExecDirect(StmtHndlOut,trim(SQLStmtStr),
+     -            int(len_trim(SQLStmtStr),SQLINTEGER_KIND))
+
+      IF(.NOT.(iRet.EQ.SQL_SUCCESS .OR.
+     -    iRet.EQ.SQL_SUCCESS_WITH_INFO)) THEN
         IF(TRIM(DBMSOUT).EQ."ACCESS") THEN
           SQLStmtStr='CREATE TABLE FVS_BurnReport('//
-     -              'CaseID Text not null,'//
+     -              'Id int primary key,'//
+     -              'CaseID int not null,'//
      -              'StandID Text null,'//
      -              'Year Int null,'//
      -              'One_Hr_Moisture double null,'//
@@ -107,7 +112,8 @@ C---------
 
         ELSEIF(TRIM(DBMSOUT).EQ."EXCEL") THEN
           SQLStmtStr='CREATE TABLE FVS_BurnReport('//
-     -              'CaseID Text,'//
+     -              'ID Int,'//
+     -              'CaseID int,'//
      -              'StandID Text,'//
      -              'Year Int,'//
      -              'One_Hr_Moisture Number,'//
@@ -133,7 +139,8 @@ C---------
 
         ELSE
           SQLStmtStr='CREATE TABLE FVS_BurnReport('//
-     -              'CaseID char(36) not null,'//
+     -              'Id int primary key,'//
+     -              'CaseID int not null,'//
      -              'StandID char(26) not null,'//
      -              'Year Int null,'//
      -              'One_Hr_Moisture real null,'//
@@ -164,7 +171,22 @@ C---------
      -            int(len_trim(SQLStmtStr),SQLINTEGER_KIND))
           CALL DBSDIAGS(SQL_HANDLE_STMT,StmtHndlOut,
      -           'DBSFMBURN:Creating Table: '//trim(SQLStmtStr))
+        BURNID = 0
       ENDIF
+
+C---------
+C     CREATE ENTRY FROM DATA FOR BURN CONDITIONS TABLE
+C---------
+      IF(BURNID.EQ.-1) THEN
+        CALL DBSGETID(TABLENAME,'Id',ID)
+        BURNID = ID
+      ENDIF
+      BURNID = BURNID + 1
+C
+C     MAKE SURE WE DO NOT EXCEED THE MAX TABLE SIZE IN EXCEL
+C
+      IF(BURNID.GE.65535.AND.TRIM(DBMSOUT).EQ.'EXCEL') GOTO 100
+
 C
 C     ASSIGN REAL VALUES TO DOUBLE PRECISION VARS
 C
@@ -184,15 +206,15 @@ C
       WTB(3) = INT((WT(3)*100.)+0.5)
       WTB(4) = INT((WT(4)*100.)+0.5)
 
-      WRITE(SQLStmtStr,*)'INSERT INTO ',TABLENAME,' (CaseID,',
-     -  'StandID,Year,One_Hr_Moisture,Ten_Hr_Moisture,',
-     -  'Hundred_Hr_Moisture,Thousand_Hr_Moisture,Duff_Moisture,',
-     -  'Live_Woody_Moisture,Live_Herb_Moisture,Midflame_Wind,Slope,',
-     -  'Flame_length,Scorch_height,Fire_Type,FuelModl1,',
-     -  'Weight1,FuelModl2,Weight2,FuelModl3,Weight3,',
-     -  'FuelModl4,Weight4) VALUES(''',CASEID,''',''',
-     -  TRIM(NPLT),''',?,?,?,?,?,?,?,?,?,?,?,?,''',
-     -  TRIM(FTYPE),''',?,?,?,?,?,?,?,?)'
+      WRITE(SQLStmtStr,*)'INSERT INTO ',TABLENAME,' (Id,CaseID,
+     -  StandID,Year,One_Hr_Moisture,Ten_Hr_Moisture,
+     -  Hundred_Hr_Moisture,Thousand_Hr_Moisture,Duff_Moisture,
+     -  Live_Woody_Moisture,Live_Herb_Moisture,Midflame_Wind,Slope,
+     -  Flame_length,Scorch_height,
+     -  Fire_Type,FuelModl1,Weight1,FuelModl2,Weight2,FuelModl3,Weight3,
+     -  FuelModl4,Weight4) VALUES(?,?,',CHAR(39),TRIM(NPLT),CHAR(39),',
+     -  ?,?,?,?,?,?,?,?,?,?,?,?,',CHAR(39),FTYPE,CHAR(39),',?,?,?
+     -  ,?,?,?,?,?)'
 
       iRet = fvsSQLCloseCursor(StmtHndlOut)
       iRet = fvsSQLPrepare(StmtHndlOut, trim(SQLStmtStr),
@@ -202,6 +224,20 @@ C     BIND SQL STATEMENT PARAMETERS TO FORTRAN VARIABLES
 C
 
       ColNumber=1
+      iRet = fvsSQLBindParameter(StmtHndlOut, ColNumber,
+     -          SQL_PARAM_INPUT,
+     -           SQL_F_INTEGER, SQL_INTEGER,INT(15,SQLUINTEGER_KIND),
+     -           INT(0,SQLSMALLINT_KIND),BURNID,int(4,SQLLEN_KIND),
+     -           SQL_NULL_PTR)
+
+      ColNumber=ColNumber+1
+      iRet = fvsSQLBindParameter(StmtHndlOut, ColNumber,
+     -           SQL_PARAM_INPUT,
+     -           SQL_F_INTEGER, SQL_INTEGER,INT(15,SQLUINTEGER_KIND),
+     -           INT(0,SQLSMALLINT_KIND),ICASE,int(4,SQLLEN_KIND),
+     -           SQL_NULL_PTR)
+
+      ColNumber=ColNumber+1
       iRet = fvsSQLBindParameter(StmtHndlOut, ColNumber,
      -           SQL_PARAM_INPUT,
      -           SQL_F_INTEGER, SQL_INTEGER,INT(15,SQLUINTEGER_KIND),

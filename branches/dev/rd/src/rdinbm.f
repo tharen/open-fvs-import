@@ -1,6 +1,6 @@
       SUBROUTINE RDIN(PASKEY,ARRAY,LNOTBK,LKECHO)
 C----------
-C  **RDIN--BM                     LAST REVISION:  03/24/15
+C  **RDIN--BM                     LAST REVISION:  06/05/09
 C----------
 C
 C  Purpose :
@@ -100,13 +100,7 @@ C  17-JUL-2007 Lance R. David (FHTET)
 C     Removed condition testing IREC1 to determine if tree records had already
 C     been processed and terminating to run if they had. The restructuring of
 C     damage code processing eliminates this requirement.
-C  08/28/14 Lance R. David (FMSC)
-C     Added implicit none and declared variables.
-C  03/24/15 Lance R. David
-C     For implementation of General Report Writer facility and addition 
-C     of output to database option, BBOUT and RRDOUT keywords modified.
-C
-C----------------------------------------------------------------------
+C..........................................................................
 C
 C.... Parameter include files.
 
@@ -135,11 +129,9 @@ C.... Local variable declarations.
       CHARACTER*4  C4TMP
       CHARACTER*80 RECORD
 
-      INTEGER  I, IC, IDI, IDSPLT, IDT, IHB, IHST(MAXSP), IPOINT, IRG,
-     &         IRMAX, IRMIN, IRRPSH, ISIZE, ISL, ISPC, J, JAGE, KEY,
-     &         K, KODE, KSP, M, MYACT(9), NEXT, NUMBER
+      INTEGER MYACT(9)
 
-      REAL     ANS, ARRAY(7), DEN, DIAM, PRMS(10), RDPRP, RTD, TT 
+      DIMENSION    ARRAY(7), PRMS(10), IHST(MAXSP)
 
 C.... Data Statements.
 C
@@ -1389,7 +1381,7 @@ C
 C.... OUTPUT FOR RRDOUT KEYWORD
 
       IF(LKECHO)WRITE(JOSTND,1201) KEYWRD
- 1201 FORMAT (/A8,'   DETAILED ROOT DISEASE OUTPUT WILL BE WRITTEN')
+ 1201 FORMAT (/A8,'   DETAILED ROOT DISEASE OUTPUT WILL BE PRINTED')
       GOTO 90
 
   13  CONTINUE
@@ -2567,27 +2559,14 @@ C
 C     OUTPUT DETAILING BARK BEETLE MORTALITY BY SIZE CLASS
 C     (IN REGULAR TABLE FORMAT, WITH HEADINGS)
 
-C  12/11/14 implementatin of general report facilty eliminates the need
-C  for unit number specification (field 1) and opening of the file
-C  which occurs elsewhere. Report will be written to main out file and
-C  will be optionally written to output DB, but I have not done the DB
-C  part yet. -LD
-
-CX      IBBOUT = 27
-CX      IF (ARRAY(1) .GT. 0.0) IBBOUT = INT(ARRAY(1))
+      IBBOUT = 27
+      IF (ARRAY(1) .GT. 0.0) IBBOUT = INT(ARRAY(1))
 
 C.... OUTPUT FOR BBOUT KEYWORD
 
-CX      IF(LKECHO)WRITE(JOSTND,3501) KEYWRD, IBBOUT
-CX 3501 FORMAT (/A8,'   DETAILED BARK BEETLE MORTALITY OUTPUT ON ',
-CX     &               'LOGICAL UNIT ',I4)
-
-C     Set IBBOUT as trigger to call output routine.
-
-      IBBOUT = 999
-      IF(LKECHO)WRITE(JOSTND,3501) KEYWRD
- 3501 FORMAT (/A8,'   DETAILED BARK BEETLE MORTALITY OUTPUT WILL ',
-     &        'BE WRITTEN')
+      IF(LKECHO)WRITE(JOSTND,3501) KEYWRD, IBBOUT
+ 3501 FORMAT (/A8,'   DETAILED BARK BEETLE MORTALITY OUTPUT ON ',
+     &               'LOGICAL UNIT ',I4)
 
       GOTO 90
 

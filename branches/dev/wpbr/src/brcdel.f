@@ -1,7 +1,6 @@
       SUBROUTINE BRCDEL(IVACT,INDXBR,J)
-      IMPLICIT NONE
 C**********************************************************************
-C  **BRCDEL       DATE OF LAST REVISION:  06/05/2014
+C  **BRCDEL       DATE OF LAST REVISION:  06/21/2013
 C----------------------------------------------------------------------
 C  Purpose:
 C  This routine deletes cankers by moving them from the bottom of the
@@ -34,7 +33,7 @@ C.... Common include files.
 C.... Local variable declarations.
 
       LOGICAL DEBUG
-      INTEGER INDXBR(*), J, IR, IREC, IV, IVAC, IVACT
+      INTEGER INDXBR(*)
 
 C.... See if we need to do some debug.
 

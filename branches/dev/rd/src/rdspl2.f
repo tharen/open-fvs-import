@@ -1,7 +1,6 @@
       SUBROUTINE RDSPL2(RCEN,IDI,DIAM,RTD)
-      IMPLICIT NONE
 C----------
-C  **RDSPL2      LAST REVISION:  09/03/14
+C  **RDSPL2      LAST REVISION:  01/01/91
 C----------
 C
 C  CREATES NEW DISEASE CENTERS FOR SPORE INFECTED
@@ -20,25 +19,16 @@ C     IDI    -
 C     DIAM   -
 C     RTD    -
 C
-C  Revision History :
-C   01/01/91 - Last revision date.
-C   09/03/14 Lance R. David (FMSC)
-C     Added implicit none and declared variables.
-C
-C----------------------------------------------------------------------
-C
 COMMONS
+C
 C
       INCLUDE 'PRGPRM.F77'
       INCLUDE 'RDPARM.F77'
       INCLUDE 'CONTRL.F77'
       INCLUDE 'RDCOM.F77'
       INCLUDE 'RDADD.F77'
-
-      INTEGER IDI, II, JJ, NCEN, NTRY
-      REAL    DIAM, DIS, R, R1, R2, R3, RCEN, RDRANN, REMCEN,
-     &        RMX, RTD, XC, XDIF, YC, YDIF
-      
+C
+C
       IF (DIAM .LT. SPDBH(IDI)) GOTO 300
 
       DIMEN = SQRT(SAREA) * 208.7

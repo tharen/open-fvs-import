@@ -10,7 +10,7 @@
 #     "l64" on generic Linux x86_64.
 
 ifdef OS
- WIN = -DWINDOWS
+ DEFOS = -DWINDOWS
  OSARCH = w32
  ODBC = odbc32
  SLIBSUFX = .dll
@@ -18,11 +18,9 @@ ifdef OS
  PIC =      # never use PIC on this OSARCH type
 #not 32 bit windows, assume 64 bit Linux or mac osx.
 else
-#setting WIN as done below is to enable correct processing of fofem (fire) c code.
- WIN = -Dunix  
+ DEFOS = -Dunix
  SLIBSUFX = .so
  PRGSUFX = 
- ODBC = odbc 
  ifdef OSTYPE
   ifeq ($(OSTYPE),linux)
     OSARCH = l64
@@ -41,15 +39,15 @@ else
  ifndef OSARCH
    OSARCH = osx
    PIC =      # never use PIC on this OSARCH type
-   ODBC = iodbc 
  endif
+ ODBC = odbc 
 endif
 
 #.PHONY: printvars
 #printvars: 
 #	@echo OS: $(OS)
 #	@echo OSTYPE: $(OSTYPE)
-#	@echo WIN: $(WIN)
+#	@echo DEFOS: $(DEFOS)
 #	@echo ODBC: $(ODBC)
 #	@echo SLIBSUFX: $(SLIBSUFX)
 #	@echo OSARCH: $(OSARCH)
@@ -57,14 +55,14 @@ endif
 # FC is the fortran compiler
 # FFLAGS are pasted to fortran
 # CC is the c compiler
-# CFLAGS are pased to C, of these CMPgcc is used by the fofem routines and WIN is used
+# CFLAGS are pased to C, of these CMPgcc is used by the fofem routines and DEFOS is used
 # by fvsSQL.c
 # LD is the linker
 
 export FC = gfortran 
-export FFLAGS = $(PIC) -g -Wall -ffpe-trap=invalid,zero -fbacktrace
+export FFLAGS = $(PIC) -g -Wall -ffpe-trap=invalid,zero
 export CC = gcc
-export CFLAGS = $(PIC) -DANSI -DCMP${CC} $(WIN)
+export CFLAGS = $(PIC) -DANSI -DCMP${CC} $(DEFOS)
 export LD = gfortran
 ifndef sourceFileList
 # TODO: See comment below regarding generl rules. We can change to this rule for all
@@ -133,12 +131,6 @@ FVSncc$(SLIBSUFX) FVSncc$(PRGSUFX)  : $(addsuffix _sourceList.txt,FVSncc) $(shel
 FVSne$(SLIBSUFX) FVSne$(PRGSUFX) : $(addsuffix _sourceList.txt,FVSne) $(shell cat $(addsuffix _sourceList.txt,FVSne))
 	$(MAKE) --file=makefile FVSne.setup
 
-FVSoc$(SLIBSUFX) FVSoc$(PRGSUFX) : $(addsuffix _sourceList.txt,FVSoc) $(shell cat $(addsuffix _sourceList.txt,FVSoc))
-	$(MAKE) --file=makefile FVSoc.setup
-
-FVSop$(SLIBSUFX) FVSop$(PRGSUFX) : $(addsuffix _sourceList.txt,FVSop) $(shell cat $(addsuffix _sourceList.txt,FVSop))
-	$(MAKE) --file=makefile FVSop.setup
-
 FVSpnc$(SLIBSUFX) FVSpnc$(PRGSUFX)  : $(addsuffix _sourceList.txt,FVSpnc) $(shell cat $(addsuffix _sourceList.txt,FVSpnc))
 	$(MAKE) --file=makefile FVSpnc.setup
 
@@ -195,7 +187,7 @@ endif
 ifeq (${OSARCH},w32) 
 %.prg : $(object) 
 	$(CC) fvsSQL.o -shared -l $(ODBC) $(WIN) -o   ../libfvsSQL.dll 
-	$(LD) -shared -Wl,--export-all-symbols -o $(basename ../$@)$(SLIBSUFX) ../libfvsSQL.dll  $(filter-out fvsSQL.o main.o,$(object))
+	$(LD) -shared -o $(basename ../$@)$(SLIBSUFX) ../libfvsSQL.dll  $(filter-out fvsSQL.o main.o,$(object))
 	$(LD)         -o $(basename ../$@)$(PRGSUFX)  ../libfvsSQL.dll  $(filter-out fvsSQL.o       ,$(object))
 else
 %.prg : $(object) 

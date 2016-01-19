@@ -64,7 +64,7 @@ C----------
         CASE('LS')
           DKTIME = 0.65 * DECAYX(KSP) * D
           DKTIME = DKTIME * XMOD
-        CASE('PN', 'WC', 'BM', 'EC', 'AK', 'OP')
+        CASE('PN', 'WC', 'BM', 'EC', 'AK')
           CALL FMR6SDCY(KSP, D, JYRSOFT, JADJ, JSML)
           DKTIME = JYRSOFT * DECAYX(KSP)
         CASE('SO')

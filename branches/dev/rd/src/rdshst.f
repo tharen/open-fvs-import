@@ -1,7 +1,6 @@
       SUBROUTINE RDSHST
-      IMPLICIT NONE
 C----------
-C  **RDSHST      LAST REVISION:  09/03/14
+C  **RDSHST      LAST REVISION:  08/14/12
 C----------
 C
 C  SUBROUTINE FOR UPDATING THE STUMP HISTORY ARRAYS
@@ -12,28 +11,26 @@ C
 C  CALLS     :
 C     NONE
 C
-C  Revision History :
-C   08/14/12 - Last revision date.
-C   09/03/14 Lance R. David (FMSC)
-C     Added implicit none and declared variables.
-C
-C----------------------------------------------------------------------
-C
 COMMONS
+C
 C
       INCLUDE 'PRGPRM.F77'
-
+C
+C
       INCLUDE 'RDPARM.F77'
-
+C
+C
       INCLUDE 'RDCOM.F77'
-
+C
+C
       INCLUDE 'ARRAYS.F77'
-
+C
+C
       INCLUDE 'CONTRL.F77'
+C
 C
 COMMONS
 C
-      INTEGER I, J, K, KK
 
       DO 501 I = 1,IRRTRE
          DO 502 J = 1,4

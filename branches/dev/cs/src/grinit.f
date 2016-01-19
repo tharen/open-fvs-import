@@ -58,7 +58,6 @@ COMMONS
 C----------
       CHARACTER*26 DBLK
       CHARACTER*4 NONE
-      CHARACTER*2 ANINDEX
       DATA DBLK/'                          '/
       DATA NONE/'NONE'/
       INTEGER I,J,K
@@ -112,7 +111,6 @@ C----------
       SIZCAP(I,3) = 0.
       SIZCAP(I,4) = 999.
       JSPIN(I)=3
-      LEAVESP(I)=.FALSE.
    5  CONTINUE
       LFLAGV = .FALSE.
       LBAMAX = .FALSE.
@@ -285,21 +283,24 @@ C----------
       BCYMAI(I) = 0.
    60 CONTINUE
 C----------
-C     INITIALIZE SPECIES AND POINT GROUPS VARIABLES.
+C     INITIALIZE SPECIES GROUPS VARIABLES.
 C----------
-      NPTGRP = 0
       NSPGRP = 0
-      DO 70 I=1,30
+      DO 70 I=1,10
       DO 65 J=1,52
       ISPGRP(I,J)=0
-      IPTGRP(I,J)=0
    65 CONTINUE
    70 CONTINUE
-      DO I=1,30
-      WRITE(ANINDEX,'(I2)') I
-      NAMGRP(I) ='GROUP'//TRIM(ADJUSTL(ANINDEX))
-      PTGNAME(I) ='PTGROUP'//TRIM(ADJUSTL(ANINDEX))
-      ENDDO
+      NAMGRP(1) ='GROUP1    '
+      NAMGRP(2) ='GROUP2    '
+      NAMGRP(3) ='GROUP3    '
+      NAMGRP(4) ='GROUP4    '
+      NAMGRP(5) ='GROUP5    '
+      NAMGRP(6) ='GROUP6    '
+      NAMGRP(7) ='GROUP7    '
+      NAMGRP(8) ='GROUP8    '
+      NAMGRP(9) ='GROUP9    '
+      NAMGRP(10)='GROUP10   '
 C----------
 C     INITIALIZE SITE TREE ARRAY AND COUNT
 C----------

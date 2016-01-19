@@ -1,7 +1,6 @@
       SUBROUTINE RDOAGM
-      IMPLICIT NONE
 C----------
-C  **RDOAGM      LAST REVISION: 08/29/14
+C  **RDOAGM      LAST REVISION: 08/07/97 
 C----------
 C
 C  Purpose :
@@ -44,10 +43,6 @@ C     08/07/97 - Matthew K. Thompson
 C                Removed section of code that modified PROBI due to      
 C                windthrow.  Decided that windthrow mortality needed
 C                to be removed from PROBI in the subroutine RDOWIN.
-C   08/29/14 Lance R. David (FMSC)
-C     Added implicit none and declared variables.
-C
-C----------------------------------------------------------------------
 C
 
 C.... Parameter include files.
@@ -63,8 +58,6 @@ C.... Common include files.
       INCLUDE 'RDADD.F77' 
       INCLUDE 'RDARRY.F77'
 
-      INTEGER  I, J
-      REAL     DIFF
 
       IF (ICYC .EQ. 1) CALL RDOWI
 

@@ -1,7 +1,6 @@
       SUBROUTINE RDEND
-      IMPLICIT NONE
 C----------
-C  **RDEND       LAST REVISION:  08/28/14 
+C  **RDEND       LAST REVISION:  06/10/96 
 C----------
 C
 C  Purpose :
@@ -30,8 +29,6 @@ C           parameter include file RDPARM.
 C  06/15/2006 - Lance R. David
 C           WK2 was being set to 99.9% when it potentially could have been
 C           set to 100% by another model.
-C   08/28/14 Lance R. David (FMSC)
-C     Added implicit none and declared variables.
 C----------
 
 C.... Parameter include files.
@@ -50,9 +47,8 @@ C.... Common include files.
 C.... Local variable declarations
 
       LOGICAL DEBUG
-      INTEGER DRR, DBB, DWND, DNAT, I, IDI, IP, ISL, J, JJ
-      REAL    BACKGD, DIE, DIENAT, DIFF, NATIU, PBB, PMORT, TDIEN,
-     &        TDIEOU, TDIUN, TEST, TPAREA, UNAPP, WMESS
+      INTEGER DRR, DBB, DWND, DNAT
+      REAL    NATIU
 
       DATA DRR      /1/
       DATA DBB      /2/

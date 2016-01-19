@@ -1,7 +1,6 @@
       SUBROUTINE RDSPOR
-      IMPLICIT NONE
 C----------
-C  **RDSPOR      LAST REVISION:   09/03/14         
+C  **RDSPOR      LAST REVISION:   04/03/97         
 C----------
 C
 C  Purpose :
@@ -30,10 +29,7 @@ C     04/03/97 - Matt Thompson (FHTET)
 C                Modified the code to better handle moving spore
 C                infected stumps to the stump lists and the 
 C                new centers lists.
-C   09/03/14 Lance R. David (FMSC)
-C     Added implicit none and declared variables.
 C
-C----------------------------------------------------------------------
 
 C.... Parameter include files.
 
@@ -46,10 +42,8 @@ C.... Common include files.
       INCLUDE 'RDCOM.F77'
       INCLUDE 'RDADD.F77'
 
-      LOGICAL DEBUG
-      INTEGER I, IDI, ISPINT, IST, J, JJ
-      REAL    DEN, DIAM, RCEN, RTD, SPCEN, STNEW, TOTCEN, TST
-
+      LOGICAL DEBUG 
+      
       CALL DBCHK(DEBUG,'RDSPOR',6,ICYC)
       
       IST = AMAX0(1,ISTEP)

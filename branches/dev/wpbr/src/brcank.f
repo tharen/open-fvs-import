@@ -1,7 +1,6 @@
       SUBROUTINE BRCANK
-      IMPLICIT NONE
 C**********************************************************************
-C  **BRCANK       DATE OF LAST REVISION:  06/05/2014
+C  **BRCANK       DATE OF LAST REVISION:  06/21/2013
 C----------------------------------------------------------------------
 C  Purpose:
 C   BRCANK reads the canker data provided in the keyword list or
@@ -35,7 +34,7 @@ C.... Local variable declarations.
 
       CHARACTER*80 CREC
       LOGICAL DEBUG
-      INTEGER IBRID,ISTK,JJ,NN
+      INTEGER IBRID,ISTK,JJ
       REAL    CAGE,CNKCNT,COUT,CUP,GGIRD
 
 C.... See if we need to do some debug.
@@ -136,7 +135,7 @@ C....    list.  This canker count record is required to be the last one
 C....    listed for the tree - that way we can make sure the count is
 C....    at least at large as the number of lethal cankers read in.
 
-         IF(CNKCNT.GT.0) ITCAN(JJ)=NINT(CNKCNT)
+         IF(CNKCNT.GT.0) ITCAN(JJ)=CNKCNT
          IF(ITCAN(JJ).LT.ILCAN(JJ)) ITCAN(JJ)=ILCAN(JJ)
          IF(DEBUG) WRITE(JOSTND,*) ' ID=',IBRTID(JJ),' AGE=',BRAGE(JJ),
      &     ' STOCK=',ISTOTY(JJ),' ITCAN=',ITCAN(JJ),' ILCAN=',ILCAN(JJ)

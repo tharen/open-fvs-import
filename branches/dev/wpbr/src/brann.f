@@ -1,7 +1,6 @@
       SUBROUTINE BRANN(SEL)
-      IMPLICIT NONE
 C**********************************************************************
-C  **BRANN        DATE OF LAST REVISION:  06/05/2014
+C  **BRANN        DATE OF LAST REVISION:  05/08/2006
 C----------------------------------------------------------------------
 C  Purpose:
 C
@@ -45,7 +44,6 @@ C.... Common include files.
 
 C.... Local variable declarations.
 
-      REAL SEED, SEL
       LOGICAL LSET
 
       BRS1=DMOD(16807D0*BRS0,2147483647D0)

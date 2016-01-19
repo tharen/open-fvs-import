@@ -1,7 +1,6 @@
       SUBROUTINE BRSTAR(HT,STAR)
-      IMPLICIT NONE
 C**********************************************************************
-C  **BRSTAR       DATE OF LAST REVISION:  06/05/2014
+C  **BRSTAR       DATE OF LAST REVISION:  05/01/1994
 C----------------------------------------------------------------------
 C  Purpose:
 C  Calculates the value of the sum of target area for a tree.
@@ -19,9 +18,6 @@ C  dd-MMM-YYYY programmer_name
 C     description of change or update.
 C
 C**********************************************************************
-C.... Local variable declarations.
-
-      REAL HT, STAR, CFA
 
 C.... Calculate total needles on crown in thousands at given age (sum
 C.... target area).

@@ -1,7 +1,6 @@
       SUBROUTINE RDRATE (NSIM)
-      IMPLICIT NONE
 C----------
-C  **RDRATE      LAST REVISION:  09/02/14
+C  **RDRATE      LAST REVISION:  08/06/01
 C----------
 C
 C  THIS SUBROUTINE CALCULATES SPREAD RATE TO APPLY TO EACH CENTER
@@ -31,10 +30,8 @@ C       Initialization of entire arrays RRA and IPNT instead of just the number
 C       of elements represented equal to the current number of centers. That
 C       method left calculations using uninitialized elements when the number of
 C       disease centers exceeded the number of Monte Carlo simulations.
-C   09/02/14 Lance R. David (FMSC)
-C     Added implicit none and declared variables.
-C
-C----------------------------------------------------------------------
+C....................................................................
+
 C
 C.... PARAMETER INCLUDE FILES
 C
@@ -50,12 +47,12 @@ C
       INCLUDE 'ARRAYS.F77'
       INCLUDE 'RDADD.F77'
 C
-      LOGICAL DEBUG, LZERO
+      LOGICAL DEBUG
 
-      INTEGER GCENTS, I, IPNT(100), J, K, NSIM, NUM
-
-      REAL    DIV, REM, RRA(100), TEMP, TRR                         
-
+      REAL    RRA(100)                          
+      INTEGER GCENTS
+      INTEGER IPNT(100)   
+      LOGICAL LZERO
 C
 C     SEE IF WE NEED TO DO SOME DEBUG.
 C

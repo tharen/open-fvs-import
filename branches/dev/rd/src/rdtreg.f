@@ -1,7 +1,6 @@
       SUBROUTINE RDTREG
-      IMPLICIT NONE
 C----------
-C  **RDTREG      LAST REVISION:  09/04/14
+C  **RDTREG      LAST REVISION:  07/29/02
 C----------
 C
 C  Purpose :
@@ -41,9 +40,6 @@ C              Added initialization of array DIFF.
 C    29-JUL-02 Lance R. David (FHTET)
 C              Modified and added debug statements. Changed two return
 C              statements to "GOTO 300" so routine has single point of exit.
-C   09/04/14 Lance R. David (FMSC)
-C     Added implicit none and declared variables.
-C
 C-----------------------------------------------------------------------------
 C.... Parameter include files.
 
@@ -63,8 +59,9 @@ C.... Common include files.
 C.... Local variable declarations.
 
       LOGICAL DEBUG
-      INTEGER I, IACTK, IDI, ITR, J, KDT, MYACT(1), NPS, NTODO
-      REAL    ANS, DIFF(ITOTRR), PRMS(2), TPAREA
+      REAL    PRMS(2)
+      REAL    DIFF(ITOTRR)
+      DIMENSION MYACT(1)
 
       DATA MYACT / 2430 /
 

@@ -263,13 +263,6 @@ int FVSSQLDESCRIBECOL(
        ColumnSizePtr,
        DecimalDigitsPtr,
        NullablePtr);
-/****************  DEBUG 
-  printf("\nStatementHandle= %d\n",StatementHandle);
-  printf(" ColumnNumber= %d\n",*ColumnNumber);
-  printf(" ColumnName= %s\n",ColumnName);
-  printf(" NameLengthPtr= %d\n",*NameLengthPtr);
-  printf(" BufferLength= %d\n",*BufferLength);
- **************/
   return rtn;
 }
 
@@ -338,7 +331,7 @@ int FVSSQLDRIVERCONNECT(
   printf("\nSQLDriverConnect, InConnectionString= %s\n",InConnectionString);
   printf(" StringLength1= %d\n",*StringLength1);
   printf(" BufferLength= %d DriverCompletion = %d\n",*BufferLength,*DriverCompletion);
- **********************/
+/**********************/
   /* blank out OutConnection String */
   int i;
   for (i=0; i<*BufferLength; i++) *(OutConnectionString+i)=' ';
@@ -357,7 +350,7 @@ int FVSSQLDRIVERCONNECT(
   printf("\nSQLDriverConnect, OutConnectionString2= %s\n",OutConnectionString);
   printf(" StringLength2Ptr= %d\n",*StringLength2Ptr);
   printf(" rtn SQLDriverConnect= %d\n",rtn);
- **********************/
+/**********************/
 
   return rtn;
 }
@@ -826,15 +819,13 @@ SQLRETURN SQLSetEnvAttr(
      SQLINTEGER   Attribute,
      SQLPOINTER   ValuePtr,
      SQLINTEGER   StringLength);
-
-Note that the specification listed above and found at 
+*/
+/*
+Note 3 arguments only; 4th argument (*StringLength) not required in FVS implementation.
+Note that contrary to the Microsoft pattern
 http://msdn.microsoft.com/en-us/library/ms709285%28v=vs.85%29.aspx
-is not consistent with the calling arguments we use below. In our
-implimentation, SQLSetEnvAttr is only called once to set the ODBC version
-and we have had problems getting all this to work in general. So, we 
-now use only 3 arguments and leave the 4th (*StringLength) as a zero. 
-
-DLRobinson and NLCrookston May 2014.
+we pass ValuePtr in as a SQLINTEGER and not a SQLPOINTER.
+ValuePtr is then cast as a SQLPOINTER in the ODBC call.
 */
 
 #ifdef _WINDLL

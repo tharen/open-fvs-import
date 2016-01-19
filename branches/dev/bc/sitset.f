@@ -51,7 +51,8 @@ C     SOME ODD SITE SERIES CASES "01-ys, 01a, 01b" NEED SPECIAL ATTENTION
      
       SELECT CASE (BEC%Zone)
 
-	  CASE ("IDF")                      ! IDF: dk differ in V2 - becset.for
+      CASE ("IDF")                      ! IDF: dk differ in V2 - becset.for
+          BAMAX = 43. ! min of IDF
 	    SELECT CASE (BEC%SubZone)
 	      CASE ("dk1")
 	        SELECT CASE (iSeries)    
@@ -90,7 +91,8 @@ C     SOME ODD SITE SERIES CASES "01-ys, 01a, 01b" NEED SPECIAL ATTENTION
 	        BAMAX = 48.
           END SELECT 
           
-	  CASE ("ICH")                   ! ICH
+        CASE ("ICH")                   ! ICH
+          BAMAX = 42. ! min of ICH
 	    SELECT CASE (BEC%SubZone)
 	      CASE ("mk1")
 	        SELECT CASE (iSeries)
@@ -128,8 +130,9 @@ C     SOME ODD SITE SERIES CASES "01-ys, 01a, 01b" NEED SPECIAL ATTENTION
 	        BAMAX = 50.
           END SELECT
           
-	  CASE ("ESSF")                         ! ESSF
-		  SELECT CASE (BEC%SubZone)
+        CASE ("ESSF")                         ! ESSF
+          BAMAX = 61. ! min of ESSF           
+		 SELECT CASE (BEC%SubZone)
 	    CASE ("dk")
 	      SELECT CASE (iSeries)
 	        CASE (1)
@@ -145,8 +148,9 @@ C     SOME ODD SITE SERIES CASES "01-ys, 01a, 01b" NEED SPECIAL ATTENTION
 	      BAMAX =  62.
           END SELECT 
           
-	  CASE ("MS")                          ! MS
-		  SELECT CASE (BEC%SubZone)
+        CASE ("MS")                          ! MS
+          BAMAX = 46.  ! min of MS
+		 SELECT CASE (BEC%SubZone)
 	    CASE ("dk")
 	      SELECT CASE (iSeries)
 	        CASE (1)
@@ -171,8 +175,9 @@ C     SOME ODD SITE SERIES CASES "01-ys, 01a, 01b" NEED SPECIAL ATTENTION
 	      END SELECT
           END SELECT 
 
-	  CASE ("PP")                             ! PP
-		  SELECT CASE (BEC%SubZone)
+        CASE ("PP")                             ! PP
+          BAMAX = 32.  ! min of PP
+		 SELECT CASE (BEC%SubZone)
 	    CASE ("dh2")
 	      SELECT CASE (iSeries)
 	        CASE (1,3:7)
@@ -188,8 +193,8 @@ C     SOME ODD SITE SERIES CASES "01-ys, 01a, 01b" NEED SPECIAL ATTENTION
           END SELECT
 
 	  CASE ("SBS")               ! SBS
-          BAMAX = 55.
-		  SELECT CASE (BEC%SubZone)
+          BAMAX = 55. ! min of SBS
+		 SELECT CASE (BEC%SubZone)
 	    CASE ("dw1","dw2")
             BAMAX = 55.
 	    CASE ("mh")
@@ -197,15 +202,15 @@ C     SOME ODD SITE SERIES CASES "01-ys, 01a, 01b" NEED SPECIAL ATTENTION
           END SELECT 
 
 	  CASE ("SBPS")              ! SBPS
-          BAMAX = 50.
-		  SELECT CASE (BEC%SubZone)
+          BAMAX = 50.  ! min of SBPS
+		 SELECT CASE (BEC%SubZone)
 	    CASE ("dc")
             BAMAX = 50.
 	    CASE ("mk")
 	      BAMAX = 55.
           END SELECT
         END SELECT 
-      
+
       IF (BAMAX .LE. 0.) THEN
         BAMAX = 10.
         CALL RCDSET(2,.TRUE.)

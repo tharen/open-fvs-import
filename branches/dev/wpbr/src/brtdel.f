@@ -1,7 +1,6 @@
       SUBROUTINE BRTDEL(IVAC,IREC)
-      IMPLICIT NONE
 C**********************************************************************
-C  **BRTDEL       DATE OF LAST REVISION:  06/05/2014
+C  **BRTDEL       DATE OF LAST REVISION:  06/21/2013
 C----------------------------------------------------------------------
 C  Purpose:
 C  This Blister Rust model subroutine is called from the FVS routine
@@ -23,8 +22,8 @@ C.... Common include files.
 
 C.... Local variable declarations.
 
-      INTEGER IVAC, IREC, J
-      LOGICAL LGO, DEBUG
+      INTEGER IVAC,IREC
+      LOGICAL LGO,DEBUG
 
 C.... See if we need to do some debug.
 

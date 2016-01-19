@@ -34,7 +34,6 @@ C
 C          YW  02/28/2012  Changed to calc HT for prod 1 when ht1prd = 0
 C          YW  08/21/2012  Added error flag check and reset vol array.
 C YW 01/18/2013 Added vol calculation for stump (VOL(14)) and tip VOL(15)
-C          YW 04/15/2015 Added to make prod 14 to be same as prod 01 for volume calculation.
 C-------------------------------------------------------------------------
 C  This subroutine is designed for use with the VOLLIB routines in 
 C  the National Volume Estimator Library.  It returns arrays filled 
@@ -118,9 +117,6 @@ C-----Check input values and prepare variables
          endif
          upsHt1 = 0
       endif
-C  added on 04/15/2015 for prod 14 to be same as prod 01
-      if (prod .eq. '14') prod = '01'
-            
       call r9Prep(volEq,dbhOb,topDib,topHt,ht1Prd,ht2Prd,htTot,
      &            spp,geog,COEFFS,forst,maxLen,
      &            minLen,merchL,mTopP,mTopS,stump,trim,minBfD,
@@ -302,10 +298,7 @@ C-----Get board foot volumes
 !***********************************************************************
          
 !...  get cubic log volumes'
-!      CALL R9LGCFT(TLOGS, LOGLEN, LOGDIA, LOGVOL, TLOGVOL, tcfVol)
-!test I think it should use cfvol (5/21/2015)      
-      CALL R9LGCFT(TLOGS, LOGLEN, LOGDIA, LOGVOL, TLOGVOL, cfVol)
-
+      CALL R9LGCFT(TLOGS, LOGLEN, LOGDIA, LOGVOL, TLOGVOL, tcfVol)
       IF (DEBUG%MODEL) THEN
          WRITE  (LUDBG, 580)'TCFVOL  = ', TCFVOL
   580    FORMAT (A, F6.1)

@@ -1,7 +1,6 @@
       SUBROUTINE RDBB3
-      IMPLICIT NONE
 C----------
-C  **RDBB3       LAST REVISION:  08/26/14
+C  **RDBB3       LAST REVISION:  12/10/07
 C----------
 C
 C  Purpose :
@@ -40,8 +39,6 @@ C       (previous date of last revision was March 1, 1995)
 C    10-DEC-07 Lance R. David (FHTET)
 C       Update to argument list in call to OPCOPY, added variable
 C       DONE for debug/tracking (from Don Robinson).
-C   08/26/14 Lance R. David (FMSC)
-C     Added implicit none and declared variables.
 C....................................................................
 
 C.... Parameter include files.
@@ -59,13 +56,11 @@ C.... Common include files.
  
 C.... Local variable declarations.
 
-      INTEGER  I, J, IK , I1, I2, ISPI, ONLY1X, NOCOPY, RRTYPE, RACE,
-     &         DONE, IACTK
-      INTEGER  IP, KDT, KODE, MYACT(1), NCOPYS, NPS, NTODO
+      INTEGER   I,J,IK,I1,I2, ISPI, ONLY1X, NOCOPY, RRTYPE, RACE,
+     &          DONE, IACTK
+      REAL      DBHLIM, THRESH, MORT, RROTEX, SUM
 
-      REAL     DBHLIM, THRESH, MORT, RROTEX, STEMS
-
-      REAL     PRMS(6)
+      DIMENSION MYACT(1), PRMS(6)
       
       IF (ITRN .LE. 0) RETURN
       NOCOPY = 0
@@ -107,7 +102,7 @@ C....    roots infected with annosus.  Determine whether the density of
 C....    these stems exceeds the user's threshold for an active beetle
 C....    outbreak.       
 
-         STEMS = 0.0
+         SUM = 0.0
          DO 6 J = I1,I2
             I = IND1(J)
             IF (DBH(I) .LT. DBHLIM) GOTO 6
@@ -115,12 +110,12 @@ C....    outbreak.
             DO 5 IK = 1,ISTEP                       
                DO 4 IP = 1,2
                   IF (PROPI(I,IK,IP) .LT. RROTEX) GOTO 4
-                  STEMS = STEMS + PROBI(I,IK,IP)
+                  SUM = SUM + PROBI(I,IK,IP)
     4          CONTINUE   
     5       CONTINUE
     6    CONTINUE
 
-         IF ((STEMS / PAREA(RRTYPE)) .LT. THRESH) GOTO 888
+         IF ((SUM / PAREA(RRTYPE)) .LT. THRESH) GOTO 888
 
 C....    If the beetle is active, call OPDONE to signal the outbreak,
 C....    increment NUMBB and store the specified mortality rates for

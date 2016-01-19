@@ -1,7 +1,6 @@
       SUBROUTINE RDOWI
-      IMPLICIT NONE
 C----------
-C  **RDOWI       LAST REVISION:  08/29/14
+C  **RDOWI       LAST REVISION:  /06/12/96 
 C----------
 C
 C  Purpose :
@@ -28,10 +27,6 @@ C  Revision History :
 C     06/12/96 - Matthew K. Thompson
 C                Removed the entry point RDOWIN and put it into its
 C                own subroutine.
-C   08/29/14 Lance R. David (FMSC)
-C     Added implicit none and declared variables.
-C
-C----------------------------------------------------------------------
 C
 
 C.... Parameter include files.
@@ -43,18 +38,18 @@ C.... Common include files.
 
       INCLUDE 'RDCOM.F77'
 
-      INTEGER  ISPI
-      REAL     SUMX
+      INTEGER ISPI
+      REAL SUM
 
 C.... Normalize relative susceptability to windthrow     
 
-      SUMX = 0.0
+      SUM = 0.0
       DO 10 ISPI = 1,MAXSP
-         SUMX = SUMX + ROWIBP(IRTSPC(ISPI),1)
+         SUM = SUM + ROWIBP(IRTSPC(ISPI),1)
    10 CONTINUE
 
       DO 20 ISPI = 1,MAXSP
-         ROWIBP(IRTSPC(ISPI),2) = ROWIBP(IRTSPC(ISPI),1) / SUMX
+         ROWIBP(IRTSPC(ISPI),2) = ROWIBP(IRTSPC(ISPI),1) / SUM
    20 CONTINUE
 
       RETURN

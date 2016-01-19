@@ -1,7 +1,6 @@
       SUBROUTINE RDPRIN (IRRTR)
-      IMPLICIT NONE
 C----------
-C  **RDPRIN      LAST REVISION:  08/29/14
+C  **RDPRIN                       LAST REVISION:  06/17/02
 C----------
 C
 C  THIS SUBROUTINE CALCULATES THE NUMBER OF TREES PER ACRE THAT EACH
@@ -33,11 +32,7 @@ C     common PLOT.F77 was added.
 C     This error was discovered by Don Robinson of ESSA.
 C   17-JUN-2002  Lance R. David (FHTET)
 C     Added debug.
-C   08/29/14 Lance R. David (FMSC)
-C     Added implicit none and declared variables.
-C
-C----------------------------------------------------------------------
-C
+C------------------
 COMMONS
 C
 C
@@ -50,9 +45,7 @@ C
       INCLUDE 'RDARRY.F77'
       INCLUDE 'RDADD.F77'
 
-      LOGICAL  DEBUG
-      INTEGER  IDI, IRRTR, ISL, KSP
-      REAL     ANS, HHT, PROBB, RTD
+      LOGICAL DEBUG
 
 C
 C     SEE IF WE NEED TO DO SOME DEBUG.

@@ -107,7 +107,7 @@ C
     6 IF (.NOT. LOK) GOTO 3
 
       LOK = .FALSE.
-      DO I = 1,11
+      DO I = 1,19
 	  J1 = INDEX(FULL,SZ(I))
 	  IF (J1 .GT. 0) THEN
 	    LOK = .TRUE.

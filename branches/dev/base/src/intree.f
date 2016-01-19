@@ -46,10 +46,23 @@ C
       CHARACTER*(*) RECORD
       CHARACTER*8 ANOSPC(1000)
       INTEGER ICNTR1,ICNTR2,I3
-      INTEGER IOSTAT,IOSTATUS
       DIMENSION IPVARS(5),IDAMCD(6)
-      COMMON / INTREECOM / CSPI
       DATA IDCMP1/10000000/
+C---------
+C     SET INITIAL VALUES FOR SPECIES TRANSLATION.
+C---------
+      INOSPC=0
+      DO ICNTR1 = 1,1000
+      ANOSPC(ICNTR1)='        '
+      ENDDO
+C---------
+C     INITIALIZE DAMAGE/SEVERITY ARRAY.
+C---------
+      DO II = 1,MAXTRE
+        DO I = 1,6
+          DAMSEV(I,II) = 0
+        END DO
+      END DO
 C-----------
 C  SEE IF WE NEED TO DO SOME DEBUG.
 C-----------
@@ -62,13 +75,6 @@ C
      &        ' TREE DATA FORMAT:',/30X,A80/30X,A80,/,
      &        ' MORDAT: ',L2,'; IRDPLV=',I3)
     8 CONTINUE      
-C---------
-C     SET INITIAL VALUES FOR SPECIES TRANSLATION.
-C---------
-      INOSPC=0
-      DO ICNTR1 = 1,1000
-      ANOSPC(ICNTR1)='        '
-      ENDDO
 C
 C     SET FLAG TO SEE IF A FILE IS CONNECTED TO ISTDAT. WE WILL TRY TO OPEN
 C     ONE IF NECESSARY.
@@ -89,14 +95,6 @@ C----------
          IMAX=MAXTP1
          LSTKNT = 1
          NSTKNT = 0
-C---------
-C     INITIALIZE DAMAGE/SEVERITY ARRAY.
-C---------
-        DO II = 1,MAXTRE
-          DO I = 1,6
-            DAMSEV(I,II) = 0
-          END DO
-        END DO
       ENDIF
       IPTKNT = 0
       IF (LSTKNT.GT.1) IPTKNT=LSTKNT-1
@@ -170,8 +168,7 @@ C----------
           INQUIRE(UNIT=ISTDAT,exist=LCONN)
           IF (.NOT.LCONN) GOTO 900
         ENDIF
-        READ(ISTDAT,'(A)',IOSTAT=IOSTATUS)RECORD
-        IF(IOSTATUS.NE.0)GOTO 900
+        READ (ISTDAT,'(A)',END=900) RECORD
         IF (RECORD(1:1).EQ.'*') GOTO 31
         IF (INDEX(RECORD,'-999').GT. 0) GOTO 900
         READ (RECORD,TREFMT) ITREI,IDTREE(I),PROB(I),ITH,CSPI,

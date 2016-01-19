@@ -1,7 +1,6 @@
       SUBROUTINE RDBBDO
-      IMPLICIT NONE
 C----------
-C  **RDBBDO       LAST REVISION:  08/26/14
+C  **RDBBDO       LAST REVISION:  07/12/02
 C---------- 
 C
 C  Purpose :
@@ -51,8 +50,6 @@ C      Moved the declaration of DSO, DSII, and DSIU to the
 C      parameter include file RDPARM.
 C    12-JUL-2002 Lance R. David
 C      Added debug code.
-C   08/26/14 Lance R. David (FMSC)
-C     Added implicit none and declared variables.
 C----------------------   
 
 C.... Parameter include files.
@@ -70,8 +67,8 @@ C.... Common include files.
 
 C.... Local variable declarations.
 
-      INTEGER DSF, RRTYPE, I, IK, BB, ISPI, IP, ISL
-      REAL    MAXKL, MAXFKL, NUMDED, NUMDEF, TOTDED
+      INTEGER DSF, RRTYPE, I,IK,BB, ISPI
+      REAL    MAXKL, MAXFKL, NUMDED, NUMDEF
       LOGICAL DEBUG
       
 C.... Data statements.

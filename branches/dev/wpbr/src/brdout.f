@@ -1,7 +1,6 @@
       SUBROUTINE BRDOUT
-      IMPLICIT NONE
 C**********************************************************************
-C  **BRDOUT       DATE OF LAST REVISION:  06/05/2014
+C  **BRDOUT       DATE OF LAST REVISION:  06/21/2013
 C----------------------------------------------------------------------
 C  Purpose:
 C  Writes a Blister Rust Model All-Host DBH Class Statistics table at the
@@ -38,7 +37,6 @@ C.... Common include files.
       CHARACTER*3 BRVER
 C.... Local variable declarations.
 
-      INTEGER I3, I4, J, K, ISTLNB
       LOGICAL BRGO
 
 C.... See if Blister Rust Model is active. If not or no trees then return.

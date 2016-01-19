@@ -1,7 +1,6 @@
       SUBROUTINE BRSETP
-      IMPLICIT NONE
 C**********************************************************************
-C  **BRSETP       DATE OF LAST REVISION:  06/05/2014
+C  **BRSETP       DATE OF LAST REVISION:  06/21/2013
 C----------------------------------------------------------------------
 C  Purpose:
 C  BRSETP initializes the Blister Rust Model tree-specific variables
@@ -40,8 +39,7 @@ C.... Common include files
 
 C.... Local variable declarations
 
-      INTEGER I1, I2, I3, I4, J, K
-      REAL    BRDBH, BRHT
+      INTEGER I1, I2, I3, I4
       LOGICAL DEBUG,BRGO
 
 C.... See if we need to do some debug

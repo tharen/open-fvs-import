@@ -1,7 +1,6 @@
       SUBROUTINE BRIN(PASKEY,ARRAY,LNOTBK,LKECHO)
-      IMPLICIT NONE
 C**********************************************************************
-C  **BRIN         DATE OF LAST REVISION:  06/05/2014
+C  **BRIN         DATE OF LAST REVISION:  06/21/2013
 C----------------------------------------------------------------------
 C  Purpose:
 C     This subroutine reads the White Pine Blister Rust keywords.
@@ -78,9 +77,8 @@ C.... Common include files.
 C.... Local variable declarations.
 
       LOGICAL DEBUG,LOPEN,LREDF,LNOTBK(7),LALLSP,LALLST,LKECHO
-      INTEGER I, I3, I4, I5, IACT, ICLS, IDT, IKEY, ISIZE, ITSP,
-     &        J, KSP, KODE, LENTH, NP, NMBER
-      REAL    ARRAY(7),PRMS(10),EXCESS,BOTMP,BRTMP,REDFAC
+      INTEGER IACT, ISIZE, NP, IDT, KSP
+      REAL    ARRAY(7),PRMS(10),EXCESS,BOTMP,BRTMP
       CHARACTER*4  C4TMP
       CHARACTER*8  TABLE(20),KEYWRD,PASKEY
       CHARACTER*10 KARD(7)
@@ -135,7 +133,7 @@ C.... Return codes 0 = no error, 1 = column 1 blank, 2 = EOF
 
 C.... Find the keyword.
 
-      CALL FNDKEY(NMBER,KEYWRD,TABLE,ISIZE,KODE,DEBUG,JOSTND)
+      CALL FNDKEY(NUMBER,KEYWRD,TABLE,ISIZE,KODE,DEBUG,JOSTND)
 
 C.... Return codes 0 = no error, 1 = keyword not found.
 
@@ -147,7 +145,7 @@ C.... Return codes 0 = no error, 1 = keyword not found.
 C.... Process the keyword.
 
       GO TO (100,200,300,400,500,600,700,800,900,1000,
-     &   1100,1200,1300,1400,1500,1600,1700,1800),NMBER
+     &   1100,1200,1300,1400,1500,1600,1700,1800),NUMBER
 
  100  CONTINUE
 
@@ -1336,8 +1334,8 @@ C.... Output for BROUT keyword.
 
 C.... Special entry to retrieve keywords
 
-      ENTRY BRKEY(IKEY,PASKEY)
-      PASKEY=TABLE(IKEY)
+      ENTRY BRKEY(KEY,PASKEY)
+      PASKEY=TABLE(KEY)
       GO TO 9020
 
 C.... Found EOF prematurely.

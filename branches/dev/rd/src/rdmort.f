@@ -1,7 +1,6 @@
       SUBROUTINE RDMORT
-      IMPLICIT NONE
 C----------
-C  **RDMORT      LAST REVISION:  08/29/14
+C  **RDMORT      LAST REVISION:  MARCH 7, 1995
 C----------
 C
 C  THIS SUBROUTINE CALCULATES THE INFECTION OF THE ROOT SYSTEMS OF
@@ -21,10 +20,7 @@ C  Revision History:
 C    17-JUN-2002  Lance R. David
 C      Previous revision date note was "MARCH 7, 1995".
 C      Added debug code.
-C   08/29/14 Lance R. David (FMSC)
-C     Added implicit none and declared variables.
-C
-C----------------------------------------------------------------------
+C---------------------------------------------
 C
 COMMONS
 C
@@ -41,10 +37,8 @@ C
       INCLUDE 'RDARRY.F77'
       INCLUDE 'ARRAYS.F77'
       INCLUDE 'RDADD.F77'
-
-      LOGICAL  DEBUG
-      INTEGER  I, I1, I2, IDI, IP, ISL, IT, J, KSP
-      REAL     HABSP, TAREA, RDSLP
+C
+      LOGICAL DEBUG
 
 C
 C     SEE IF WE NEED TO DO SOME DEBUG.
@@ -95,18 +89,11 @@ C     prevent array out of bounds error
 C
       IF (IDI .LE. 0) GO TO 500
 C
-         IF (DEBUG) WRITE (JOSTND,*)
-     &      'IN RDMORT: KSP, IRTSPC, IDI, IRHAB, HABFAC: ',
-     &      KSP, IRTSPC(KSP), IDI, IRHAB, HABFAC(IRTSPC(KSP),IDI,IRHAB)
-
          HABSP = HABFAC(IRTSPC(KSP),IDI,IRHAB)
 C
 C        MODIFY THE TIME TO DEATH MULTIPLIER (HABSP) BASED ON THE
 C        PROPORTION OF CENTERS THAT ARE SPORE INITIATED (SPPROP).
 C
-         IF (DEBUG) WRITE (JOSTND,*)
-     &      'IN RDMORT: SPPROP, SPYTK: ', SPPROP(IDI),SPYTK(IDI)
-
          HABSP = HABSP * ((SPPROP(IDI) * SPYTK(IDI)) + 
      &                        (1 - SPPROP(IDI)))
          IF (ISCT(KSP,1) .EQ. 0) GOTO 500
@@ -122,33 +109,15 @@ C
              
                IF (PROBI(I,IT,IP) .LE. 0) GOTO 300
 
-               IF (DEBUG) WRITE (JOSTND,*)
-     &            'IN RDMORT: I, DBH, XXINF, YYINF, NNINF: ',
-     &            I, DBH(I), XXINF, YYINF, NNINF
-
                YTKILL = RDSLP(DBH(I),XXINF,YYINF,NNINF)
-
-               IF (DEBUG) WRITE (JOSTND,*)
-     &            'IN RDMORT: IDI, YTKILL, XMINKL HABSP RRPSWT: ',
-     &            IDI, YTKILL, XMINKL(IDI), HABSP, RRPSWT(IRTSPC(KSP))
-
                IF (YTKILL .LE. XMINKL(IDI)) GOTO 250
-
 
                YTKILL = (YTKILL - XMINKL(IDI)) *
      &                  HABSP *
      &                  RRPSWT(IRTSPC(KSP)) + XMINKL(IDI)
+
   250          CONTINUE
-
-               IF (DEBUG) WRITE (JOSTND,*)
-     &            'IN RDMORT: IDI, YTKILL, PROPI, PKILLS: ',
-     &            IDI, YTKILL,PROPI(I,IT,IP),PKILLS(IRTSPC(KSP),IDI)
-
                CURAGE = PROPI(I,IT,IP) * YTKILL/PKILLS(IRTSPC(KSP),IDI)
-
-               IF (DEBUG) WRITE (JOSTND,*)
-     &            'IN RDMORT: CURAGE: ',CURAGE
-
                PROPI(I,IT,IP) = (CURAGE + FINT) *
      &                       PKILLS(IRTSPC(KSP),IDI) / YTKILL
                IF (DEBUG) WRITE (JOSTND,*)

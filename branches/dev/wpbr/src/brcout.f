@@ -1,7 +1,6 @@
       SUBROUTINE BRCOUT
-      IMPLICIT NONE
 C**********************************************************************
-C  **BRCOUT       DATE OF LAST REVISION:  06/05/2014
+C  **BRCOUT       DATE OF LAST REVISION:  06/21/2013
 C----------------------------------------------------------------------
 C  Purpose:
 C  BRCOUT write a detailed summary of cankers to output file.
@@ -59,7 +58,7 @@ C....    CTDEAD - char. represenataion of canker status tree kill
 C....    CHSTAT - current tree status in character form
 
       LOGICAL LPRALL
-      INTEGER I1, I2, I3, ISTLNB, J, JCSTAT, K, NCAN, NLCAN
+      INTEGER I1, I2, I3
       REAL    HTBCR,CANUP,CANOUT,GIRD
       CHARACTER*8 CINACT,CNONLE,CPRUNE,CEXCIS,CNONSA,CTPKIL,CTDEAD,
      &   CHSTAT

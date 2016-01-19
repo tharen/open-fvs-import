@@ -1,7 +1,6 @@
       SUBROUTINE RDSTP (ISL,IISP,DEN,DIAM,RTD)
-      IMPLICIT NONE
 C----------
-C  **RDSTP       LAST REVISION:  09/03/14
+C  **RDSTP       LAST REVISION:  06/28/02
 C----------
 C
 C  ADD INSIDE INFECTED STUMPS TO STUMP ARRAYS. ONLY ADD THE INFECTED PORTION
@@ -30,10 +29,7 @@ C     28-JUN-2002 Lance R. David (FHTET)
 C        Previous revision date noted was March 2, 1995.
 C        Changed (TST + 1E-6) to just TST in equations below because it
 C        is not possible for TST to be zero at this point.
-C   09/03/14 Lance R. David (FMSC)
-C     Added implicit none and declared variables.
-C
-C----------------------------------------------------------------------
+C----------
 C
 C.... PARAMETER INCLUDE FILES
 C
@@ -49,8 +45,8 @@ C
 C.... Local variables
 C
       LOGICAL DEBUG
-      INTEGER IDI, IISP, IS, ISL, IST
-      REAL    DEN, DIAM, RTD, TST, ROTD
+      INTEGER ISL, IISP, IS, IST
+      REAL DEN, DIAM, RTD, TST, ROTD
 C
 C.... Check for DEBUG.
 C

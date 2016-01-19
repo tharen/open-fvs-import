@@ -1,7 +1,7 @@
       BLOCK DATA MPBLKD
       IMPLICIT NONE
 C----------
-C  **MPBLKD--CI   DATE OF LAST REVISION:  08/22/14
+C  **MPBLKD--CI   DATE OF LAST REVISION:  10/04/11
 C----------
 C
 C     MOUNTAIN PINE BEETLE --
@@ -13,9 +13,6 @@ C     CREATED THIS CENTRAL IDAHO VARIANT VERSION TO ACCOMODATE THE
 C     19 SPECIES NOW REPRESENTED. SURROGATE SPECIES ASSIGNMENTS FOR
 C     SURFACE AREA CALCULATIONS WERE MADE BASED ON PREVIOUS ASSIGNMENTS
 C     IN NEARBY VARIANTS (ORIGINAL CI, TT, UT, SO, IE) VARIANTS.
-C   08/22/14 Lance R. David (FMSC)
-C     Function name was used as variable name.
-C     changed variable INT to INCRS
 C----------------------------------------------------------------------
 C
 COMMONS
@@ -27,7 +24,7 @@ COMMONS
       DATA  JOMPB  / 7 /
 
       DATA IPLTNO/ 1 /,IMPROB/ 1 /,NATR/ 2 /, KEYMPB/ 2,3,6*0,1 /,
-     >     INCRS/ 10 /
+     >      INT/ 10 /
 
 C     SPECIES LIST FOR CENTRAL IDAHO VARIANT. ***** 19 species *****
 C     

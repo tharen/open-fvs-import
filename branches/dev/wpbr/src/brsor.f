@@ -1,7 +1,6 @@
       SUBROUTINE BRSOR
-      IMPLICIT NONE
 C**********************************************************************
-C  **BRSOR        DATE OF LAST REVISION:  06/05/2014
+C  **BRSOR        DATE OF LAST REVISION:  06/21/2013
 C----------------------------------------------------------------------
 C  Purpose:
 C   This subroutine is called to sort and match tree IDs to insure
@@ -28,8 +27,7 @@ C.... Common include files.
 
 C.... Local variable declarations.
 
-      INTEGER IDTR, IID, STK, IC1, IC2, IERR, IPOS, J, K, L, N
-      REAL    AGE, DO1, DU1, GI1
+      INTEGER*4 IDTR,IID,STK
       LOGICAL DEBUG
 
 C.... Exit if Blister Rust not active

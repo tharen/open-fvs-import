@@ -1,7 +1,6 @@
       SUBROUTINE BRSTYP
-      IMPLICIT NONE
 C**********************************************************************
-C  **BRSTYP       DATE OF LAST REVISION:  06/05/2014
+C  **BRSTYP       DATE OF LAST REVISION:  06/21/2013
 C----------------------------------------------------------------------
 C  Purpose:
 C  BRSTYP assigns stock types to individual tree records based on
@@ -55,9 +54,8 @@ C.... Common include files.
 C.... Local variable declarations.
 
       LOGICAL DEBUG
-      INTEGER STOCK, I1, I2, I3, I4, J, K, L, M
-      REAL SSUM, TXP, TXP1, TXP2, TXP3, TXP4, TXPS1, TXPS2, TXPS3,
-     &     TXPS4, X
+      INTEGER STOCK, I1, I2, I3, I4
+      REAL SSUM, TXP1, TXP2, TXP3, TXP4, TXPS1, TXPS2, TXPS3, TXPS4
 
 C.... Is debug requested?
 

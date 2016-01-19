@@ -1,13 +1,7 @@
       SUBROUTINE RDROUT
-      IMPLICIT NONE
 C----------
-C  **RDROUT      LAST REVISION:  09/02/14
+C  **RDROUT      LAST REVISION:  11/06/89
 C----------
-C  ****** NOTICE ********* NOTICE ******* NOTICE ****** NOTICE *******
-C  ***                                                             ***
-C  *** 3/24/2015 Implementation of General Report Writer facility  ***
-C  *** has made this subroutined obsolete. It is no longer needed. ***
-C  *******************************************************************
 C
 C  WRITES FINAL ROOT DISEASE SUMMARY OUTPUT.  ALSO WRITES DETAILED REPORT IF
 C  THE RRDOUT KEYWORD IS USED.
@@ -18,22 +12,20 @@ C
 C  CALLS     :
 C     NONE
 C
-C  Revision History :
-C   11/06/89 - Last revision date.
-C   09/02/14 Lance R. David (FMSC)
-C     Added implicit none and declared variables.
-C
-C----------------------------------------------------------------------
-C
 COMMONS
 C
+C
       INCLUDE 'PRGPRM.F77'
-
+C
+C
       INCLUDE 'RDPARM.F77'
-
+C
+C
       INCLUDE 'CONTRL.F77'
-
+C
+C
       INCLUDE 'RDCOM.F77'
+C
 C
 COMMONS
 C

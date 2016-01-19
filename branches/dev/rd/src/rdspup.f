@@ -1,7 +1,6 @@
       SUBROUTINE RDSPUP (I,ISL,IISP,TP,DIAM,RTD)
-      IMPLICIT NONE
 C----------
-C  **RDSPUP      LAST REVISION:  09/03/14
+C  **RDSPUP      LAST REVISION:  08/08/01
 C----------
 C
 C  Purpose :
@@ -37,11 +36,7 @@ C               with references to MYACT array. Expanded MYACT array to
 C               include activity code 2431.
 C     08-AUG-01 Lance R. David (FHTET)
 C               Declaration and initialization of variable NTODO.
-C   09/03/14 Lance R. David (FMSC)
-C     Added implicit none and declared variables.
-C
-C----------------------------------------------------------------------
-C
+C--------------------------------------------------------------------------
 C.... Parameter include files.
 
       INCLUDE 'PRGPRM.F77'
@@ -56,11 +51,9 @@ C.... Common include files.
 
 C.... Local variable declarations.
 
+      INTEGER NTODO
       LOGICAL DEBUG
-      INTEGER I, IACTK, ICASE, IDI, IISP, IJ, IS, ISL, JRRTYP, KDT,
-     &        MYACT(2), NPS, NTODO
-      REAL    ADJBOR, DENOUT, DENUIN, DIAM,
-     &        OUTTOT, PRMS(5), RTD, TP, UINTOT
+      DIMENSION MYACT(2), PRMS(5)
 
 C.... Data statements.
 

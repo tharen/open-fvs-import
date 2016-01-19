@@ -35,13 +35,13 @@ C
 C
 COMMONS
 
-      INTEGER IYEAR, KODE,VARDIM,IRCODE
+      INTEGER IYEAR, KODE,VARDIM
       CHARACTER(len=26) NPLT
       REAL      VAR
       DIMENSION VAR(VARDIM)
 
       DOUBLE PRECISION  VARD(VARDIM)
-      INTEGER           I
+      INTEGER           ID,I
       INTEGER(SQLSMALLINT_KIND)::ColNumber
       CHARACTER*2000    SQLStmtStr
       CHARACTER(len=20) TABLENAME
@@ -73,15 +73,17 @@ C     CHECK TO SEE IF THE DOWN WOOD COVER TABLE EXISTS IN DATBASE
       ELSE
         TABLENAME = 'FVS_Down_Wood_Cov'
       ENDIF
-      CALL DBSCKNROWS(IRCODE,TABLENAME,1,TRIM(DBMSOUT).EQ.'EXCEL')
-      IF(IRCODE.EQ.2) THEN
-        IDWDCOV = 0
-        RETURN
-      ENDIF
-      IF(IRCODE.EQ.1) THEN
+      SQLStmtStr= 'SELECT * FROM ' // TABLENAME
+
+      iRet = fvsSQLExecDirect(StmtHndlOut,trim(SQLStmtStr),
+     -            int(len_trim(SQLStmtStr),SQLINTEGER_KIND))
+
+      IF(.NOT.(iRet.EQ.SQL_SUCCESS .OR.
+     -    iRet.EQ.SQL_SUCCESS_WITH_INFO)) THEN
         IF(TRIM(DBMSOUT).EQ."ACCESS") THEN
           SQLStmtStr='CREATE TABLE FVS_Down_Wood_Cov('//
-     -              'CaseID Text not null,'//
+     -              'Id int primary key,'//
+     -              'CaseID int not null,'//
      -              'StandID Text null,'//
      -              'Year Int null,'//
      -              'DWD_Cover_3to6_Hard double null,'//
@@ -101,7 +103,8 @@ C     CHECK TO SEE IF THE DOWN WOOD COVER TABLE EXISTS IN DATBASE
 
         ELSEIF(TRIM(DBMSOUT).EQ."EXCEL") THEN
           SQLStmtStr='CREATE TABLE FVS_Down_Wood_Cov('//
-     -              'CaseID Text,'//
+     -              'ID Int,'//
+     -              'CaseID Int,'//
      -              'StandID Text,'//
      -              'Year Int ,'//
      -              'DWD_Cover_3to6_Hard Number,'//
@@ -120,7 +123,8 @@ C     CHECK TO SEE IF THE DOWN WOOD COVER TABLE EXISTS IN DATBASE
      -              'DWD_Cover_Total_Soft Number)'
         ELSE
           SQLStmtStr='CREATE TABLE FVS_Down_Wood_Cov('//
-     -              'CaseID char(36) not null,'//
+     -              'Id int primary key,'//
+     -              'CaseID int not null,'//
      -              'StandID char(26) not null,'//
      -              'Year Int null,'//
      -              'DWD_Cover_3to6_Hard real null,'//
@@ -145,7 +149,20 @@ C     CHECK TO SEE IF THE DOWN WOOD COVER TABLE EXISTS IN DATBASE
      -            int(len_trim(SQLStmtStr),SQLINTEGER_KIND))
         CALL DBSDIAGS(SQL_HANDLE_STMT,StmtHndlOut,
      >    'DBSFMDWCOV:Creating Table: '//trim(SQLStmtStr))
+        DWDCID = 0
       ENDIF
+
+C     CREATE ENTRY FROM DATA FOR CARBON REPORT TABLE
+
+      IF(DWDCID.EQ.-1) THEN
+        CALL DBSGETID(TABLENAME,'Id',ID)
+        DWDCID = ID
+      ENDIF
+      DWDCID = DWDCID + 1
+
+C     MAKE SURE WE DO NOT EXCEED THE MAX TABLE SIZE IN EXCEL
+
+      IF(DWDCID.GE.65535.AND.TRIM(DBMSOUT).EQ.'EXCEL') GOTO 100
 
 C     COPY INPUT VECTOR TO DOUBLE-PRECISION
 
@@ -153,16 +170,17 @@ C     COPY INPUT VECTOR TO DOUBLE-PRECISION
         VARD(I) = VAR(I)
       ENDDO
 
-      WRITE(SQLStmtStr,*)'INSERT INTO ',TRIM(TABLENAME),
-     >  ' (CaseID,StandID,Year,DWD_Cover_3to6_Hard,',
-     >  'DWD_Cover_6to12_Hard,DWD_Cover_12to20_Hard,',
-     >  'DWD_Cover_20to35_Hard,DWD_Cover_35to50_Hard,',
-     >  'DWD_Cover_ge_50_Hard,DWD_Cover_Total_Hard,',
-     >  'DWD_Cover_3to6_Soft,',
-     >  'DWD_Cover_6to12_Soft,DWD_Cover_12to20_Soft,',
-     >  'DWD_Cover_20to35_Soft,DWD_Cover_35to50_Soft,',
-     >  'DWD_Cover_ge_50_Soft,DWD_Cover_Total_Soft) VALUES (''',
-     >  CASEID,''',''',TRIM(NPLT),''',?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)'
+      WRITE(SQLStmtStr,*)'INSERT INTO ',TRIM(TABLENAME),' (Id,CaseID,
+     >  StandID,Year,DWD_Cover_3to6_Hard,
+     >  DWD_Cover_6to12_Hard,DWD_Cover_12to20_Hard,
+     >  DWD_Cover_20to35_Hard,DWD_Cover_35to50_Hard,
+     >  DWD_Cover_ge_50_Hard,DWD_Cover_Total_Hard,
+     >  DWD_Cover_3to6_Soft,
+     >  DWD_Cover_6to12_Soft,DWD_Cover_12to20_Soft,
+     >  DWD_Cover_20to35_Soft,DWD_Cover_35to50_Soft,
+     >  DWD_Cover_ge_50_Soft,DWD_Cover_Total_Soft)
+     >  VALUES(?,?,',CHAR(39),TRIM(NPLT),CHAR(39),',?,?,?,
+     >  ?,?,?,?,?,?,?,?,?,?,?,?)'
 
 C     CLOSE CURSOR
 
@@ -178,6 +196,18 @@ C     BIND SQL STATEMENT PARAMETERS TO FORTRAN VARIABLES
       ColNumber=1
       iRet = fvsSQLBindParameter(StmtHndlOut,ColNumber,SQL_PARAM_INPUT,
      -           SQL_F_INTEGER, SQL_INTEGER,INT(15,SQLUINTEGER_KIND),
+     -           INT(0,SQLSMALLINT_KIND),DWDCID,int(4,SQLLEN_KIND),
+     -           SQL_NULL_PTR)
+
+      ColNumber=ColNumber+1
+      iRet = fvsSQLBindParameter(StmtHndlOut,ColNumber,SQL_PARAM_INPUT,
+     -           SQL_F_INTEGER, SQL_INTEGER,INT(15,SQLUINTEGER_KIND),
+     -           INT(0,SQLSMALLINT_KIND),ICASE,int(4,SQLLEN_KIND),
+     -           SQL_NULL_PTR)
+
+      ColNumber=ColNumber+1
+      iRet = fvsSQLBindParameter(StmtHndlOut,ColNumber,SQL_PARAM_INPUT,
+     -           SQL_F_INTEGER, SQL_INTEGER,INT(15,SQLUINTEGER_KIND),
      -           INT(0,SQLSMALLINT_KIND),IYEAR,int(4,SQLLEN_KIND),
      -           SQL_NULL_PTR)
 
@@ -189,6 +219,8 @@ C     BIND SQL STATEMENT PARAMETERS TO FORTRAN VARIABLES
      -    INT(5,SQLSMALLINT_KIND),VARD(I),int(4,SQLLEN_KIND),
      -           SQL_NULL_PTR)
       ENDDO
+
+  100 CONTINUE
 
       !Close Cursor
       iRet = fvsSQLCloseCursor(StmtHndlOut)
