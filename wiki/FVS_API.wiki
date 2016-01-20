@@ -118,6 +118,24 @@ Run FVS up to the next stop point, or to the end of the simulation of a stand. F
 
 The _rtnCode_ is as described for [FVS_API#Return_Code_State Return Code State].
 
+== FVS Restart Last Stand ==
+
+{{{
+subroutine fvsRestartLastStand(restrtcd)
+}}}
+
+When running with a restart file, it is possible to simulate a stand forward in
+time, with a new stop point specified without instructing the model to store
+data in a new stop point file. When that new stop point is reached, it is
+sometimes useful to abandon the forward simulation -- perhaps because the
+results indicate that a different management action should be used. A call to
+fvsRestartLastStand will cause the program to reload the stand (not the last
+stand in the simulation, but the most recent stand being simulated) from the
+restart file and return. A subsequent (manditory) call to fvs will cause the
+simulation to continue.
+
+The _restrtcd_ is as described for [FVS_API#Return_Code_State Return Code State].
+
 == FVS Dimensions ==
 
 {{{
