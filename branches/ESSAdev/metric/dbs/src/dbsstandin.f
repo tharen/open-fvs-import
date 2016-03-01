@@ -8,21 +8,50 @@ C     AUTH: D. GAMMEL -- SEM -- AUGUST 2002
 C     OVERHAUL: NL CROOKTON -- RMRS MOSCOW -- SEPTEMBER 2004
 C---
 COMMONS
-
+C
+C
       INCLUDE  'PRGPRM.F77'
+C
+C
       INCLUDE  'ARRAYS.F77'
+C
+C
       INCLUDE  'COEFFS.F77'
+C
+C
       INCLUDE  'CONTRL.F77'
+C
+C
       INCLUDE  'PLOT.F77'
+C
+C
       INCLUDE  'OUTCOM.F77'
+C
+C
       INCLUDE  'HTCAL.F77'
+C
+C
       INCLUDE  'ECON.F77'
+C
+C
       INCLUDE  'KEYCOM.F77'
+C
+C
       INCLUDE  'MULTCM.F77'
+C
+C
       INCLUDE  'VOLSTD.F77'
+C
+C
       INCLUDE  'SCREEN.F77'
+C
+C
       INCLUDE  'VARCOM.F77'
+C
+C
       INCLUDE  'DBSCOM.F77'
+C
+C
       INCLUDE  'METRIC.F77'
 COMMONS
       CHARACTER*100 ColName
@@ -36,19 +65,21 @@ COMMONS
       CHARACTER*7 VVER
       CHARACTER*9 CSITECODE
       CHARACTER*40 PHOTOREF(32), REF
-      REAL      ARRAY2
-      REAL      XXG, FOTODATA(2),X(1)
+      REAL ARRAY2,X(1)
+      REAL XXG,FOTODATA(2)
       REAL   (KIND=4) RSTANDDATA(63)
-      INTEGER(KIND=4) ISTANDDATA(63)
       REAL DUM1,XTMP
+      INTEGER(KIND=4) ISTANDDATA(63)
       EQUIVALENCE (RSTANDDATA,ISTANDDATA)
       INTEGER J,I,KODE, FKOD,NUMPVREF,IXTMP,IXF
-      INTEGER(SQLSMALLINT_KIND)::ColNumber,NameLen,ColumnCount,DType,
+      INTEGER(SQLUSMALLINT_KIND)::ColNumber
+      INTEGER(SQLSMALLINT_KIND)::NameLen,ColumnCount,DType,
      -       NDecs, Nullable
-      INTEGER(SQLUINTEGER_KIND) NColSz
+      INTEGER(SQLULEN_KIND) NColSz
       LOGICAL LSITEISNUM,LHABISNUM,LSTDISNUM,LFMLK,LFMYES,LKECHO,LFMD
       LOGICAL LFOTO, LFOTO2, LECOISNUM, LFMYES2
-      INTEGER(SQLINTEGER_KIND)::IY_LI,Lat_LI,Long_LI,Location_LI,
+      INTEGER(SQLLEN_KIND)::tmpNotUsed
+      INTEGER(SQLLEN_KIND)::IY_LI,Lat_LI,Long_LI,Location_LI,
      -        Habitat_LI,Age_LI,Aspect_LI,Slope_LI,MaxSDI_LI,
      -        Elev_LI,Basal_LI,PlotArea_LI,BPDBH_LI,NumPlots_LI,
      -        NonStock_LI,SamWt_LI,Stock_LI,DGT_LI,DGM_LI,HTT_LI,HTM_LI,
@@ -161,7 +192,7 @@ COMMONS
 C     MAKE SURE WE HAVE AN OPEN CONNECTION
 
       IF(ConnHndlIn.EQ.-1) CALL DBSOPEN(DSNIN,EnvHndlIn,
-     -                                 ConnHndlIn,DBMSIN,KODE)
+     -                          ConnHndlIn,DBMSIN,0,.FALSE.,KODE)
 
 C     ALLOCATE A STATEMENT HANDLE
 
@@ -176,8 +207,7 @@ C       EXECUTE QUERY
 
         iRet=fvsSQLExecDirect(StmtHndlIn,trim(SQLSTR),
      -            int(len_trim(SQLSTR),SQLINTEGER_KIND))
-
-        CALL DBSDIAGS(SQL_HANDLE_STMT,StmtHndlIn,
+        IF (iRet.NE.0) CALL DBSDIAGS(SQL_HANDLE_STMT,StmtHndlIn,
      -             'STANDIN:Query: '//trim(SQLSTR))
       ENDIF
 
@@ -186,6 +216,7 @@ C     GET NUMBER OF COLUMNS RETURNED
       iRet = fvsSQLNumResultCols(StmtHndlIn,ColumnCount)
 
 C     INITIALIZE DATA ARRAY THAT BINDS TO COLUMNS
+
       DO ColNumber = 1,ColumnCount
 
         iRet = fvsSQLDescribeCol (StmtHndlIn, ColNumber, ColName,
@@ -501,6 +532,7 @@ C
            I=INDEX(TMP_DBCN,CHAR(0))
            IF (I.GT.0) TMP_DBCN(I:)=' '
            DBCN = ADJUSTL(TMP_DBCN)
+           DBCN = ADJUSTL(TMP_DBCN(:DBCN_LI))   
            IF(LKECHO)WRITE(JOSTND,'(T13,''STAND_CN: '',A)') TRIM(DBCN)
         ENDIF
       ELSE
@@ -509,7 +541,7 @@ C
       IF(NPLT.EQ.' ')THEN
         IF(Stand_LI.NE.SQL_NULL_DATA) THEN
            IF(LSTDISNUM) THEN
-              WRITE (CSTAND,*) ISTANDDATA(28)
+              WRITE (CSTAND,'(I26)') ISTANDDATA(28)
            ELSE
               I=INDEX(CSTAND,CHAR(0))
               IF (I.GT.0) CSTAND(I:)=' '
@@ -593,7 +625,7 @@ C
 
       IF(Habitat_LI.NE.SQL_NULL_DATA) THEN
          IF (LHABISNUM) THEN   ! HABITAT CODE IS NUMBER.
-            WRITE (CHAB,*) ISTANDDATA(5)
+            WRITE (CHAB,'(I20)') ISTANDDATA(5)
             GOTO 45
          ELSE
             I=INDEX(CHAB,CHAR(0))
@@ -634,7 +666,7 @@ C
       IF(Ecoregion_LI.NE.SQL_NULL_DATA) THEN
         IF (VVER(:2).EQ.'SN') THEN
           IF (LECOISNUM) THEN   ! ECOREGION CODE IS NUMBER.
-            WRITE (CECOREG,*) ISTANDDATA(54)
+            WRITE (CECOREG,'(I10)') ISTANDDATA(54)
             GOTO 46
           ELSE
             I=INDEX(CECOREG,CHAR(0))
@@ -744,7 +776,7 @@ C
          IF(LKECHO)WRITE(JOSTND,'(T13,''DG_TRANS: '',T35,I6)') IDG
       ENDIF
       IF(DGM_LI.NE.SQL_NULL_DATA) THEN
-         IFINT = ISTANDDATA(18)
+         IF(ISTANDDATA(18).GT.0.)IFINT = ISTANDDATA(18)
          FINT = FLOAT(IFINT)
          IF(LKECHO)WRITE(JOSTND,'(T13,''DG_MEASURE: '',T35,I6)') IFINT
       ENDIF
@@ -753,7 +785,7 @@ C
          IF(LKECHO)WRITE(JOSTND,'(T13,''HTG_TRANS: '',T35,I6)') IHTG
       ENDIF
       IF(HTM_LI.NE.SQL_NULL_DATA) THEN
-         IFINTH = ISTANDDATA(20)
+         IF(ISTANDDATA(20).GT.0.)IFINTH = ISTANDDATA(20)
          FINTH = FLOAT(IFINTH)
          IF(LKECHO)WRITE(JOSTND,'(T13,''HTG_MEASURE: '',T35,I6)') IFINTH
       ENDIF
@@ -768,7 +800,7 @@ C     SITE SPECIES CODE PROCESSING
 
       IF(SiteSp_LI.NE.SQL_NULL_DATA) THEN
          IF (LSITEISNUM) THEN   ! SITE SPECIES CODE IS NUMBER.
-            WRITE (CSITECODE,*) ISTANDDATA(34)
+            WRITE (CSITECODE,'(I8)') ISTANDDATA(34)
          ENDIF
 
          I=INDEX(CSITECODE,CHAR(0))
@@ -811,6 +843,7 @@ C     SITE INDEX PROCESSING
             IF(LKECHO)WRITE(JOSTND,
      >             '(T13,''SITE_INDEX (DUNNING CODE): '',T35,F6.1)')
      >             RSTANDDATA(35)
+         IF(ISTANDDATA(20).GT.0.)IFINTH = ISTANDDATA(20)
          ELSE
             IF (ISISP.EQ.0) THEN
                DO I=1,MAXSP
@@ -850,8 +883,8 @@ C     SITE INDEX PROCESSING
      >   IPHREG
       ENDIF
       IF(ForType_LI.NE.SQL_NULL_DATA) THEN
-         IFORTP = ISTANDDATA(27)
-         IF(IFORTP .GT. 999) THEN
+        IFORTP = ISTANDDATA(27)
+        IF(IFORTP .GT. 999) THEN
 C----------
 C  THE LAST 3 CHARACTERS INDICATE THE FOREST TYPE AND THE FIRST
 C  CHARACTER INDICATES THAT THE USER SET THE FOREST TYPE TO BE
@@ -1069,21 +1102,22 @@ C     FUEL PHOTO REFERENCE
 
 C     FUEL PHOTO CODE
 
-      FKOD   = -1
+      FKOD=-1
       LFOTO2 = .FALSE.
       IF(FotoCode_LI.NE.SQL_NULL_DATA) THEN
          LFOTO2 = .TRUE.
          I=INDEX(CFotocode,CHAR(0))
-         IF (I.EQ.1) GOTO 60
          IF (I.GT.0) CFotoCode(I:)=' '
-         CFotoCode = ADJUSTL(CFotoCode)
-         READ (CFotoCode,*,ERR=60)  ISTANDDATA(53)
-   60    CONTINUE
-         CALL FMPHOTOCODE(ISTANDDATA(52),CFotoCode(1:13),FKOD,1)
-         IF(LKECHO)WRITE (JOSTND,70) ADJUSTR(CFotoCode),FKOD
-   70    FORMAT (T13,'PHOTO_CODE:',T27,A:
-     >             ' CONVERTED TO CODE: ',I4)
-         IF (FKOD .EQ. -1) LFOTO2 = .FALSE.
+         IF (CFotoCode .NE. ' ') THEN
+           CFotoCode = ADJUSTL(CFotoCode)
+           READ (CFotoCode,*,ERR=58)  ISTANDDATA(53)
+   58      CONTINUE           
+           CALL FMPHOTOCODE(ISTANDDATA(52),CFotoCode(1:13),FKOD,1)
+           IF(LKECHO)WRITE (JOSTND,60) ADJUSTR(CFotoCode),FKOD
+   60      FORMAT (T12,'PHOTO_CODE:',T26,A:
+     >               ' CONVERTED TO CODE: ',I4)
+           IF (FKOD .EQ. -1) LFOTO2 = .FALSE.
+         ENDIF
       ENDIF
 
       FOTODATA(1) = ISTANDDATA(52)

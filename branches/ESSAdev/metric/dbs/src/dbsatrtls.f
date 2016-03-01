@@ -1,11 +1,9 @@
       SUBROUTINE DBSATRTLS(IWHO,KODE,TEM)
-      IMPLICIT NONE      
+C
 C----------
 C  $Id$
 C----------
 C     PURPOSE: TO OUTPUT THE ATRTLIST DATA TO THE DATABASE
-C
-C     AUTH: D. GAMMEL -- SEM -- JULY 2002
 C
 C     INPUT: IWHO  - THE WHO CALLED ME VALUE WHICH MUST BE 3
 C                     INORDER FOR US TO CONTINUE
@@ -13,28 +11,48 @@ C            KODE  - FOR LETTING CALLING ROUTINE KNOW IF THIS IS A
 C                     REDIRECT OF THE FLAT FILE REPORT OR IN
 C                     ADDITION TO
 C
+      IMPLICIT NONE
+C
 COMMONS
-
+C
+C
       INCLUDE 'PRGPRM.F77'
+C
+C
       INCLUDE 'ARRAYS.F77'
+C
+C
       INCLUDE 'CONTRL.F77'
+C
+C
       INCLUDE 'PLOT.F77'
+C
+C
       INCLUDE 'ESTREE.F77'
+C
+C
       INCLUDE 'VARCOM.F77'
+C
+C
       INCLUDE 'WORKCM.F77'
+C
+C
       INCLUDE 'DBSCOM.F77'
+C
+C
       INCLUDE 'METRIC.F77'
-
+C
+C
 COMMONS
-
+C
       CHARACTER*8 TID,CSPECIES
       CHARACTER*2000 SQLStmtStr
       CHARACTER*20 TABLENAME,DTYPE
-      INTEGER IWHO,I,JYR,IP,ITPLAB,ID,IDMR,ICDF,IBDF,IPTBAL,KODE
+      INTEGER IWHO,I,JYR,IP,ITPLAB,IRCODE,IDMR,ICDF,IBDF,IPTBAL,KODE
       INTEGER ISPC,I1,I2,I3
       INTEGER*4 IDCMP1,IDCMP2
       DATA IDCMP1,IDCMP2/10000000,20000000/
-      REAL CW,P,DGI,DP,TEM,ESTHT
+      REAL CW,P,CCFT,DGI,DP,TEM,ESTHT
 
 C---------
 C     IF TREEOUT IS NOT TURNED ON OR THE IWHO VARIABLE IS NOT 1
@@ -75,24 +93,22 @@ C     ALLOCATE A STATEMENT HANDLE
 
 
 C     CHECK TO SEE IF THE TREELIST TABLE EXISTS IN DATBASE
-C     IF IT DOESN'T THEN WE NEED TO CREATE IT
+C     IF IT DOESNT THEN WE NEED TO CREATE IT
 
-      SQLStmtStr= 'SELECT * FROM '//TABLENAME
-
-      iRet = fvsSQLExecDirect(StmtHndlOut,trim(SQLStmtStr),
-     -            int(len_trim(SQLStmtStr),SQLINTEGER_KIND))
-      
-      IF(iRet.NE.SQL_SUCCESS.AND.
-     -    iRet.NE.SQL_SUCCESS_WITH_INFO) THEN
+      CALL DBSCKNROWS(IRCODE,TABLENAME,MAXTRE,TRIM(DBMSOUT).EQ.'EXCEL')
+      IF(IRCODE.EQ.2) THEN
+        IATRTLIST = 0
+        RETURN
+      ENDIF
+      IF(IRCODE.EQ.1) THEN
         IF(TRIM(DBMSOUT).EQ."ACCESS") THEN
           SQLStmtStr='CREATE TABLE FVS_ATRTList('//
-     -             'Id int primary key,'//
-     -             'CaseID int not null,'//
+     -             'CaseID Text not null,'//
      -             'StandID Text null,'//
      -             'Year int null,'//
      -             'PrdLen int null,'//
      -             'TreeId Text null,'//
-     -             'TreeIndex int null,'//       
+     -             'TreeIndex int null,'//
      -             'Species Text null,'//
      -             'TreeVal int null,'//
      -             'SSCD int null,'//
@@ -115,16 +131,18 @@ C     IF IT DOESN'T THEN WE NEED TO CREATE IT
      -             'BDefect int null,'//
      -             'TruncHt int null,'//
      -             'EstHt double null,'//
-     -             'ActPt int null)'
+     -             'ActPt int null,'//
+     -             'Ht2TDCF real null,'//
+     -             'Ht2TDBF real null)'
+
         ELSEIF(TRIM(DBMSOUT).EQ."EXCEL") THEN
           SQLStmtStr='CREATE TABLE FVS_ATRTList('//
-     -             'Id INT null,'//
-     -             'CaseID INT null,'//
+     -             'CaseID Text null,'//
      -             'StandID Text null,'//
      -             'Year INT null,'//
      -             'PrdLen int null,'//
      -             'TreeId Text null,'//
-     -             'TreeIndex int null,'//  
+     -             'TreeIndex int null,'//
      -             'Species Text null,'//
      -             'TreeVal int null,'//
      -             'SSCD int null,'//
@@ -147,11 +165,12 @@ C     IF IT DOESN'T THEN WE NEED TO CREATE IT
      -             'BDefect int null,'//
      -             'TruncHt int null,'//
      -             'EstHt Number null,'//
-     -             'ActPt int null)'
+     -             'ActPt int null,'//
+     -             'Ht2TDCF real null,'//
+     -             'Ht2TDBF real null)'
         ELSE
           SQLStmtStr='CREATE TABLE FVS_ATRTList('//
-     -             'Id int primary key,'//
-     -             'CaseID int null,'//
+     -             'CaseID char(36) not null,'//
      -             'StandID char(26) null,'//
      -             'Year int null,'//
      -             'PrdLen int null,'//
@@ -179,14 +198,16 @@ C     IF IT DOESN'T THEN WE NEED TO CREATE IT
      -             'BDefect int null,'//
      -             'TruncHt int null,'//
      -             'EstHt real null,'//
-     -             'ActPt int null)'
+     -             'ActPt int null,'//
+     -             'Ht2TDCF real null,'//
+     -             'Ht2TDBF real null)'
         ENDIF
+
         iRet = fvsSQLCloseCursor(StmtHndlOut)
         iRet = fvsSQLExecDirect(StmtHndlOut,trim(SQLStmtStr),
-     -                int(len_trim(SQLStmtStr),SQLINTEGER_KIND))
+     -            int(len_trim(SQLStmtStr),SQLINTEGER_KIND))
         CALL DBSDIAGS(SQL_HANDLE_STMT,StmtHndlOut,
      -       'DBSATRTLS:Creating Table: '//trim(SQLStmtStr))
-        IATRTLID = 0
       ENDIF
 
 C     SET THE TREELIST TYPE FLAG (LET IP BE THE RECORD OUTPUT COUNT).
@@ -237,7 +258,7 @@ C           DECODE DEFECT AND ROUND OFF POINT BAL.
             IPTBAL=NINT(PTBALT(I))
 
 C           DETERMINE ESTIMATED HEIGHT
-C           ESTIMATED HEIGHT IS NORMAL HEIGHT, UNLESS THE LATTER HASN'T
+C           ESTIMATED HEIGHT IS NORMAL HEIGHT, UNLESS THE LATTER HAS NOT
 C           BEEN SET, IN WHICH CASE IT IS EQUAL TO CURRENT HEIGHT
 
             IF (NORMHT(I) .NE. 0) THEN
@@ -267,42 +288,32 @@ C
             IF(ISPOUT31.EQ.1)CSPECIES=ADJUSTL(TRIM(JSP(ISP(I))))
             IF(ISPOUT31.EQ.2)CSPECIES=ADJUSTL(TRIM(FIAJSP(ISP(I))))
             IF(ISPOUT31.EQ.3)CSPECIES=ADJUSTL(TRIM(PLNJSP(ISP(I))))
-            
-C           CREATE ENTRY FROM DATA FOR ATRTLIST TABLE
 
-            IF(IATRTLID.EQ.-1) THEN
-              CALL DBSGETID(TABLENAME,'Id',ID)
-              IATRTLID = ID
-            ENDIF
-            IATRTLID = IATRTLID + 1
-
-C           MAKE SURE WE DO NOT EXCEED THE MAX TABLE SIZE IN EXCEL
-
-            IF(IATRTLID.GE.65535.AND.TRIM(DBMSOUT).EQ.'EXCEL') GOTO 100
-
-            WRITE(SQLStmtStr,*)'INSERT INTO ',TABLENAME,'(
-     -           Id,CaseID,StandID,Year,PrdLen,
-     -           TreeId,TreeIndex,Species,TreeVal,SSCD,PtIndex,TPH,
-     -           MortPH,DBH,DG,
-     -           Ht,HtG,PctCr,CrWidth,MistCD,BAPctile,PtBAL,TCuM,
-     -           MCuM,NCuM,MDefect,BDefect,TruncHt,EstHt,ActPt) 
-     -           VALUES(',
-     -           IATRTLID,',',ICASE,',',CHAR(39),TRIM(NPLT),CHAR(39),
-     -           ',',JYR,',',IFINT,",'",ADJUSTL(TID),"',",I,",'",
-     -           CSPECIES,"',",IMC(I),',',ISPECL(I),
-     -           ',',ITRE(I),
+            WRITE(SQLStmtStr,*)'INSERT INTO ',TABLENAME,
+     -         '(CaseID,StandID,Year,PrdLen,',
+     -         'TreeId,TreeIndex,Species,TreeVal,SSCD,PtIndex,TPH,',
+     -         'MortPH,DBH,DG,',
+     -         'HT,HTG,PctCr,CrWidth,MistCD,BAPctile,PtBAL,TCuM,',
+     -         'MCuM,NCuM,MDefect,BDefect,TruncHt,',
+     -         'EstHt,ActPt,Ht2TDCF,Ht2TDBF) VALUES(''',
+     -         CASEID,''',''',TRIM(NPLT),''',',
+     -        JYR,',',IFINT,',''',ADJUSTL(TID),''',',I,',''',
+     -        trim(CSPECIES),''',',IMC(I),',',ISPECL(I),',',ITRE(I),
      -           ',',P/ACRtoHA,',',DP/ACRtoHA,',',DBH(I)*INtoCM,
      -           ',',DGI*INtoCM,',',HT(I)*FTtoM,',',HTG(I)*FTtoM,
      -           ',',ICR(I),',',CW*FTtoM,',',IDMR,',',PCT(I),',',IPTBAL,
      -           ',',CFV(I)*FT3toM3,',',WK1(I)*FT3toM3,
      -           ',',BFV(I)*FT3toM3,',',ICDF,',',IBDF,',',
      -           NINT(FLOAT(ITRUNC(I)+5)*.01*FTtoM),',',ESTHT*FTtoM,
-     -           ',',IPVEC(ITRE(I)),')'
+     -           ',',IPVEC(ITRE(I)),',',HT2TD(I,2),',',HT2TD(I,1),')'
+            !PRINT*, SQLStmtStr
 
             !Close Cursor
             iRet = fvsSQLCloseCursor(StmtHndlOut)
+
             iRet = fvsSQLExecDirect(StmtHndlOut,trim(SQLStmtStr),
      -            int(len_trim(SQLStmtStr),SQLINTEGER_KIND))
+            IF (iRet.NE.SQL_SUCCESS) IATRTLIST=0
             CALL DBSDIAGS(SQL_HANDLE_STMT,StmtHndlOut,
      -                  'DBSATRTLS:Inserting Row: '//trim(SQLStmtStr))
   50        CONTINUE

@@ -9,24 +9,58 @@ C  PROGNOSIS RUN.  CALLED FROM **MAIN**.
 C
 COMMONS
 C
-
+C
       INCLUDE  'PRGPRM.F77'
+C
+C
       INCLUDE  'ARRAYS.F77'
+C
+C
       INCLUDE  'COEFFS.F77'
+C
+C
       INCLUDE  'CONTRL.F77'
+C
+C
       INCLUDE  'PLOT.F77'
+C
+C
       INCLUDE  'OUTCOM.F77'
+C
+C
       INCLUDE  'HTCAL.F77'
+C
+C
       INCLUDE  'ECON.F77'
+C
+C
       INCLUDE  'KEYCOM.F77'
+C
+C
       INCLUDE  'MULTCM.F77'
+C
+C
       INCLUDE  'VOLSTD.F77'
+C
+C
       INCLUDE  'SCREEN.F77'
+C
+C
       INCLUDE  'SNCOM.F77'
+C
+C
       INCLUDE  'VARCOM.F77'
+C
+C
       INCLUDE  'CWDCOM.F77'
+C
+C
       INCLUDE  'CALCOM.F77'
+C
+C
       INCLUDE  'WORKCM.F77'
+C
+C
       INCLUDE  'METRIC.F77'
 C
 COMMONS
@@ -34,21 +68,25 @@ C
       INTEGER IDUM1,IDUM2,IDUM3,IHAB,NEWYR,ISPEC,IFOREST,INTDIST,IFORST
       INTEGER IREGN,IRDUM,INUM,IDFLG,IDTYPE,IXF,IXTMP,ITB,ITC,JJTAB
       INTEGER IFSP,ISTLNB
-      REAL    CAPHT,CAPFLG,CAPPRP,CAPDBH,DUM1,XTMP,X,TB,XXG
-      REAL TC,SDHI,SDLO,ARRAY(7),PRMS(10)
-      INTEGER ITOPD8,IACT,IRC,IDBCYC,NP,K,I1,IGSP,IG,IULIM,IGRP
+      REAL CAPHT,CAPFLG,CAPPRP,CAPDBH,DUM1,XTMP,X,TB,XXG
+      REAL TC,SDHI,SDLO,ARRAY(7),PRMS(10),XBAF
+      INTEGER ITOPD8,ITOPD9,IACT,IRC,IDBCYC,NP,K,I1,IGSP,IG,IULIM,IGRP
+      INTEGER ISETQFA
       INTEGER ISPC,ILEN,IS,IDT,JRECNT,ISDSP,IGNDEF,IPSI,KODE,IPRMPT
       INTEGER NUMBER,IPTKNT,I,IISP,J,I2
       INTEGER ERRFLAG,IRTNCD
+      INTEGER POINTNO,IFLAG
       LOGICAL LTRERD,LFIRST,LNOTBK(7),LNOTRE,LACTV
       LOGICAL DEBUG,LOPEVN,LKECHO
       LOGICAL RRGO,RRT
       CHARACTER*250 RECORD
       CHARACTER*10 KARD(7),PVRDUM
       CHARACTER*2 FORST,FORDUM,DIST,PROD
+      CHARACTER*4 IEND,CFOUR
       CHARACTER*8 KEYWRD,IAGERF,IPLTRF,TPCOM
       CHARACTER VVER*7,VOLEQ*10
-      CHARACTER CALCSDI*7      
+      CHARACTER CALCSDI*7
+      CHARACTER*11 CTARGET
       DATA IEND/'END '/
 C
 C  KEYWRD= THE KEYWORD OF INTEREST
@@ -84,7 +122,7 @@ C
       SDLO = 0.0
       SDHI = 999.0*CMtoIN
       ISDSP= 0
-	IGNDEF = 0
+      IGNDEF = 0
 C----------
 C  READ KEYWORDS
 C----------
@@ -96,6 +134,7 @@ C----------
 C
       CALL KEYRDR (IREAD,JOSTND,DEBUG,KEYWRD,LNOTBK,
      >             ARRAY,IRECNT,KODE,KARD,LFLAG,LKECHO)
+
 C----------
 C  RETURN KODES 0=NO ERROR,1=COLUMN 1 BLANK OR ANOTHER ERROR,2=EOF
 C               LESS THAN ZERO...USE OF PARMS STATEMENT IS PRESENT.
@@ -163,7 +202,7 @@ C----------
       CALL SVINIT
       CALL BGCINT
       CALL ECINIT
-      CALL DBSINIT 
+      CALL DBSINIT
       CALL CLINIT
 C----------
 C     CALL TO ROOT DISEASE MODEL SUBROUTINE TO CHANGE DEFAULT
@@ -181,28 +220,30 @@ C----------
 C  SPECIAL END-OF-FILE TARGET
 C----------
    80 CONTINUE
-      CALL ERRGRO (.FALSE.,2)
+      CALL ERRGRO(.FALSE.,2)
       CALL fvsGetRtnCode(IRTNCD)
       IF (IRTNCD.NE.0) RETURN
+
    90 CONTINUE
 C----------
 C  PROCESS OPTIONS
 C----------
-      GO TO(100, 1200, 1300, 1400, 1500, 1600, 1700, 1800, 1900, 2000,
-     >     2100, 2200, 2300, 2400, 2500, 2600, 2700, 2800, 2900, 3000,
-     >     3100, 3200, 3300, 3400, 3500, 3600, 3700, 3800, 3900, 4000,
-     >     4010, 4020, 4030, 4040, 4050, 4060, 4070, 4080, 4100, 4200,
-     >     4300, 4400, 4500, 4600, 4700, 4800, 4900, 5000, 5100, 5200,
-     >     5300, 5400, 5500, 5600, 5700, 5800, 5900, 6000, 6100, 6200,
-     >     6300, 6400, 6500, 6600, 6700, 6800, 6900, 7000, 7100, 7200,
-     >     7300, 7400, 7500, 7600, 7700, 7800, 7900, 8000, 8100, 8200,
-     >     8300, 8400, 8500, 8600, 8700, 8800, 8900, 9000, 9100, 9200,
-     >     9300, 9400, 9500, 9600, 9700, 9800, 9900, 9950, 9975, 9985,
-     >     9995,10000,10100,10200,10300,10400,10500,10600,10900,11000,
-     >    11100,11200,11300,11400,11500,11600,11700,11800,11900,12000,
-     >    12100,12200,12300,12400,12500,12600,12700,12800,12900,13000,
-     >    13100,13200,13300,13400,13500,13600,13700,13800,13900,14000)
-     >    , NUMBER
+      GO TO(  100, 1200, 1300, 1400, 1500, 1600, 1700, 1800, 1900, 2000,
+     >       2100, 2200, 2300, 2400, 2500, 2600, 2700, 2800, 2900, 3000,
+     >       3100, 3200, 3300, 3400, 3500, 3600, 3700, 3800, 3900, 4000,
+     >       4010, 4020, 4030, 4040, 4050, 4060, 4070, 4080, 4100, 4200,
+     >       4300, 4400, 4500, 4600, 4700, 4800, 4900, 5000, 5100, 5200,
+     >       5300, 5400, 5500, 5600, 5700, 5800, 5900, 6000, 6100, 6200,
+     >       6300, 6400, 6500, 6600, 6700, 6800, 6900, 7000, 7100, 7200,
+     >       7300, 7400, 7500, 7600, 7700, 7800, 7900, 8000, 8100, 8200,
+     >       8300, 8400, 8500, 8600, 8700, 8800, 8900, 9000, 9100, 9200,
+     >       9300, 9400, 9500, 9600, 9700, 9800, 9900, 9950, 9975, 9985,
+     >       9995,10000,10100,10200,10300,10400,10500,10600,10900,11000,
+     >      11100,11200,11300,11400,11500,11600,11700,11800,11900,12000,
+     >      12100,12200,12300,12400,12500,12600,12700,12800,12900,13000,
+     >      13100,13200,13300,13400,13500,13600,13700,13800,13900,14000,
+     >      14100,14200,14300,14400)
+     >   , NUMBER
 C
 C  ==========  OPTION NUMBER 1: PROCESS  ============================PROCESS
 C
@@ -279,9 +320,9 @@ C----------
       IF ( IPTINV .EQ. -9999 ) IPTINV = IPTKNT
       IF ( NONSTK .EQ. -9999 ) NONSTK = NSTKNT
       IF (IPTINV.LE.0) IPTINV=1
-      IF (IPTINV.GT.MAXPLT) IPTINV=IPTKNT
+      IF (IPTINV.GT.MAXPLT) IPTINV = IPTKNT
       IF ((IPTINV.NE.IPTKNT.OR.NONSTK.NE.NSTKNT).AND. .NOT.LNOTRE)
-     >  CALL ERRGRO (.TRUE.,9)
+     >     CALL ERRGRO (.TRUE.,9)
 C
       PI = FLOAT ( IPTINV )
       IF (SAMWT .LT. 0.) SAMWT=FLOAT(IPTINV)
@@ -293,8 +334,8 @@ C  STOCKABLE AREA SHOULD BE REMOVED FROM THE STAND AREA ESTIMATE PRIOR
 C  TO INPUT.  IF GROSPC IS LT 0, COMPUTE IT HERE...ELSE ITS READ IN.
 C----------
       IF (GROSPC.LT.0.0) THEN
-        GROSPC=(PI-FLOAT(NONSTK))/PI
-        IF (GROSPC.GT.1.0) GROSPC = 1.0
+         GROSPC=(PI-FLOAT(NONSTK))/PI
+         IF (GROSPC.GT.1.0) GROSPC = 1.0
          IF((PI-FLOAT(NONSTK)).LE.0.)THEN
             GROSPC=1.
             CALL ERRGRO (.TRUE.,35)
@@ -412,7 +453,7 @@ C----------
  213       FORMAT(T13,'SITE SPECIES NOT SPECIFIED.  CODE=',I5)
         ENDIF
         IF(VVER(:2).EQ.'NI' .OR. VVER(:2).EQ.'CI'
-     &     .OR. VVER(:2).EQ.'KT' .OR. VVER(:2).EQ.'IB') THEN
+     &     .OR. VVER(:2).EQ.'KT' .OR. VVER(:2).EQ.'BC') THEN
           WRITE(JOSTND,214)
  214      FORMAT(T13,'NOTE: SITE INDEX IS NOT USED IN THIS VARIANT.',
      &    '  VALUES ARE PRINTED FOR INFORMATIONAL PURPOSES.' )
@@ -435,8 +476,8 @@ C----------
      &      SITETR(I,2) * INtoCM,
      &      SITETR(I,3) * FTtoM,
      &      SITETR(I,4),
-     &      IAGERF,IPLTRF   
- 2142     FORMAT(T12,I3,' ('A2,')',2F10.1,F10.0,3X,A8,2X,A8)   
+     &      IAGERF,IPLTRF
+ 2142     FORMAT(T12,I3,' ('A2,')',2F10.1,F10.0,3X,A8,2X,A8)
  2143     CONTINUE
         ENDIF
       ENDIF
@@ -449,6 +490,12 @@ C----------
      &  ' INPUT DATA):')
         WRITE(JOSTND,216) (I,IPVEC(I),I=1,IPTINV)
  216    FORMAT ((1X,8(I3,'=',I8,:,'; '),I3,'=',I8))
+C
+C  WRITE THE ORGANON SETTINGS TABLE FOR FVS-ORGANON VARIANTS
+C
+      IF((VVER(:2).EQ.'OC') .OR. (VVER(:2).EQ.'OP')) THEN
+        CALL ORGTAB(JOSTND,IMODTY)
+      ENDIF
 C
 C     PRINT THE DEFAULT STAND LABEL SET
 C
@@ -488,7 +535,7 @@ C
  1210 CONTINUE
       IY(I) = I2
       I=I-1
-      WRITE(JOSTND,1215) KEYWRD,I,I2
+      IF(LKECHO)WRITE(JOSTND,1215) KEYWRD,I,I2
  1215 FORMAT(/1X,A8,3X,'CYCLE=',I3,'; PERIOD LENGTH=',I3)
       GO TO 10
  1220 CONTINUE
@@ -551,9 +598,9 @@ C
       IF (LNOTBK(3)) SDLO=ARRAY(3)*CMtoIN
       IF (LNOTBK(4)) SDHI=ARRAY(4)*CMtoIN
 C
-C     SPECIES CODE PROCESSING.
+C       SPECIES CODE PROCESSING.
 C
-      IS = 0
+      IS=0
       IF (LNOTBK(5))THEN
         CALL SPDECD (5,IS,NSP(1,1),JOSTND,IRECNT,KEYWRD,
      &             ARRAY,KARD)
@@ -566,13 +613,13 @@ C
       IF(IS.NE.0) THEN
         ILEN=3
         IF(IS.LT.0)ILEN=ISPGRP(-IS,52)
-        IF(LKECHO .AND. LNOTBK(5))
-     >    WRITE(JOSTND,1411) 'SPECIES= ',KARD(5)(1:ILEN),IS,'IS'
+        IF(LKECHO .AND. LNOTBK(5))WRITE(JOSTND,1411) 'SPECIES= ',
+     >   KARD(5)(1:ILEN),IS,'IS'
  1411   FORMAT (T13,A,A,' (CODE= ',I3,') ',A,
      >           ' TARGETED FOR SCREENING.')
       ELSE
-         IF(LKECHO .AND. LNOTBK(5))
-     >    WRITE(JOSTND,1411) 'ALL',' SPECIES',IS,'ARE'
+         IF(LKECHO .AND. LNOTBK(5))WRITE(JOSTND,1411) 'ALL',' SPECIES',
+     >   IS,'ARE'
       ENDIF
       IF((LNOTBK(3) .OR. LNOTBK(4)).AND.LKECHO)
      >  WRITE(JOSTND,1405) SDLO*INtoCM,SDHI*INtoCM
@@ -622,7 +669,7 @@ C
       IF(LKECHO)WRITE(JOSTND,1810) KEYWRD
  1810 FORMAT (/1X,A8,'   WESTERN SPRUCE BUDWORM OPTIONS:')
 C
-C  IF BUDLITE MODEL IS BEING RUN, THE FOLLOWING CALL IS USED
+C     IF BUDLITE MODEL IS BEING RUN, THE FOLLOWING CALL IS USED
 C
       CALL BWEIN(LKECHO)
       GO TO 10
@@ -668,9 +715,6 @@ C----------
 C     IF (ISPC=0) ALL SPECIES WILL BE CHANGED IN FOLLOWING CODE:
 C----------
       ELSEIF(ISPC .EQ. 0)THEN
-C
-C     CHANGE FOR ALL SPECIES.
-C
         DO 1907 I=1,MAXSP
         LSPCWE(I)=.TRUE.
         CWTDBH(I)=TC
@@ -751,7 +795,7 @@ C
         XBAF = BAF*FT2pACRtoM2pHA
       ENDIF
       IF(LKECHO)WRITE(JOSTND,2010) KEYWRD,XBAF,FPA/ACRtoHA,BRK*INtoCM,
-     >                    MAX(0,IPTINV),MAX(0,NONSTK),MAX(0.,SAMWT),XXG
+     >     MAX(0,IPTINV),MAX(0,NONSTK),MAX(0.,SAMWT),XXG
  2010 FORMAT (/1X,A,T13,'BASAL AREA FACTOR= ',F6.1,
      >        '; INVERSE OF FIXED PLOT AREA= ',F6.1,
      >        '; BREAK DBH= ',F6.1/T13,'NUMBER OF PLOTS= ',I5,
@@ -810,17 +854,21 @@ C
       KODFOR=IFIX(ARRAY(1))
       CALL FORKOD
       ARRAY(6) = ARRAY(6) * MtoFT / 100.
-      IF ( LNOTBK(7) )WRITE(CPVREF,'(I10)')IFIX(ARRAY(7))
+      IF ( LNOTBK(7) )THEN
+        WRITE(CPVREF,'(I10)')IFIX(ARRAY(7))
+      ELSE
+        CPVREF='          '
+      ENDIF
       IF(VVER(:2).EQ.'SE') THEN
         KODTYP=0
         ICL5=0
       ELSE
-        IF(LNOTBK(2))THEN
+        if(lnotbk(2))then
           KODTYP=IFIX(ARRAY(2))
           ICL5=KODTYP
-          CALL HABTYP(KARD(2),ARRAY(2))
+          CALL HABTYP (KARD(2),ARRAY(2))
           IF (ICL5.LE.0) ICL5=KODTYP
-        ENDIF
+        endif
       ENDIF
       IF ( LNOTBK(3) ) IAGE = IFIX( ARRAY(3) )
       IF ( LNOTBK(4) ) ASPECT = ARRAY(4)
@@ -830,7 +878,7 @@ C
      &   VVER(:2).EQ.'BP' .OR. VVER(:2).EQ.'SF' .OR.
      &   VVER(:2).EQ.'LP' .OR. VVER(:2).EQ.'UT' .OR.
      &   VVER(:2).EQ.'TT' .OR. VVER(:2).EQ.'WS') THEN
-         IF(LKECHO)WRITE (JOSTND,2411) KEYWRD,KODFOR,KARD(2),KODTYP,
+        IF(LKECHO)WRITE (JOSTND,2411) KEYWRD,KODFOR,KARD(2),KODTYP,
      >     IAGE,ASPECT,SLOPE,ELEV*100.*FTtoM,ADJUSTL(CPVREF)
  2411   FORMAT (/1X,A8,'   FOREST-LOCATION CODE=',I6,
      >     '; HABITAT TYPE=',A10,' (CODE ',I3,')',
@@ -848,7 +896,7 @@ C
      > T13,'ELEVATION (M)=',F7.1,'; REFERENCE CODE= ',A4)
 C
       ELSEIF (VVER(:2) .EQ. 'SN') THEN
-        WRITE (JOSTND,2413) KEYWRD,KODFOR,PCOM,
+      IF(LKECHO)WRITE(JOSTND,2413) KEYWRD,KODFOR,PCOM,
      >     IAGE,ASPECT,SLOPE,ELEV*100.*FTtoM,ADJUSTL(CPVREF)
  2413   FORMAT (/1X,A8,'   FOREST-LOCATION CODE=',I8,
      >  '; ECOLOGICAL UNIT=',A10,
@@ -926,9 +974,9 @@ C
  2710 FORMAT (/1X,A8,'   DATE/CYCLE=',I5,'; DATA SET REFERENCE ',
      >        'NUMBER =',F4.0,'; HEADING SUPPRESSION CODE =',F3.0/
      >        T13,'(0=WITH HEADING, OTHER VALUES=SUPPRESS HEADING).')
-      IF((NP.GE.3.AND. ARRAY(4).EQ.1.).AND.LKECHO)WRITE(JOSTND,2720)
+      IF((NP.GE.3).AND.(ARRAY(4).EQ.1.).AND.LKECHO)WRITE(JOSTND,2720)
  2720 FORMAT (T13,'CYCLE ZERO TREELIST SUPPRESSED.')
-      IF((NP.GE.3.AND. ARRAY(4).EQ.2.).AND.LKECHO)WRITE(JOSTND,2721)
+      IF((NP.GE.3).AND.(ARRAY(4).EQ.2.).AND.LKECHO)WRITE(JOSTND,2721)
  2721 FORMAT (T13,'CYCLE ONE TREELIST SUPPRESSED.')
       IF((ARRAY(5).GT.0).AND.LKECHO)WRITE(JOSTND,2740)
  2740 FORMAT(T13,'TREELIST WILL REPORT DEAD TREE STATISTICS.')
@@ -3260,9 +3308,9 @@ C
  9410 FORMAT (/1X,A8,'   DATE/CYCLE=',I5,'; DATA SET REFERENCE ',
      >        'NUMBER =',F4.0,'; HEADING SUPPRESSION CODE =',F3.0/
      >        T13,'(0=WITH HEADING, OTHER VALUES=SUPPRESS HEADING).')
-      IF((NP.EQ.3 .AND. ARRAY(4).EQ.2).AND.LKECHO)WRITE(JOSTND,9411)
+      IF((NP.EQ.3).AND.(ARRAY(4).EQ.2).AND.LKECHO)WRITE(JOSTND,9411)
  9411 FORMAT(T13,'CYCLE ONE CUTLIST SUPRESSED')
-      IF((NP.EQ.5 .AND. ARRAY(6).GT.0).AND.LKECHO)WRITE(JOSTND,9412)
+      IF((NP.EQ.5).AND.(ARRAY(6).GT.0).AND.LKECHO)WRITE(JOSTND,9412)
  9412 FORMAT(T13,'CUTLIST WILL BE IN OLD FORMAT')
       GOTO 10
 C
@@ -3724,27 +3772,14 @@ C
 10400 CONTINUE
 C----------
 C  VALUES ARE STORED AND THEN DIGESTED IN SITSET
-C
-C  FOR SE VARIANT, DECODE PHYSIOGRAPHIC REGION. VALUE GETS STORED
-C  IN VARIABLE IPHREG, WITH ALPHA REPRESENTATION IN VARIABLE PCOM.
-C----------
-      IF(VVER(:2).EQ.'SE') THEN
-        IF(LNOTBK(1)) IMODTY=IFIX(ARRAY(1))
-        IF(LNOTBK(3)) IFORSE=IFIX(ARRAY(3))
-        IF(LKECHO)WRITE(JOSTND,10410) KEYWRD,IMODTY,KARD(2),IFORSE
-10410   FORMAT(/1X,A8,'   MODEL TYPE =',I5,'; PHYSIOGRAPHIC REGION =',
-     &          A10,'; FOREST TYPE =',I5)
-        IF(LKECHO)WRITE(JOSTND,10420)
-10420   FORMAT(1X,T13,'(SEE MODTYPE KEYWORD DISCUSSION FOLLOWING',
-     &  ' --- PROCESS --- KEYWORD.)')
-        CALL HABTYP (KARD(2),ARRAY(2))
-C----------
 C  FOR CENTRAL ROCKIES VARIANT, ONLY DEAL WITH MODEL TYPE
-C  OTHER PARAMETER HAVE NO EFFECT.
+C  OTHER PARAMETERS HAVE NO EFFECT.
 C----------
-      ELSEIF (VVER(:2).EQ.'SM' .OR. VVER(:2).EQ.'SP' .OR.
+C
+      IF (VVER(:2).EQ.'SM' .OR. VVER(:2).EQ.'SP' .OR.
      &        VVER(:2).EQ.'BP' .OR. VVER(:2).EQ.'SF' .OR.
-     &        VVER(:2).EQ.'LP') THEN
+     &        VVER(:2).EQ.'LP' .OR.
+     &        VVER(:2).EQ.'OC' .OR. VVER(:2).EQ.'OP') THEN
         IF(LNOTBK(1)) IMODTY=IFIX(ARRAY(1))
         IF(LKECHO)WRITE(JOSTND,10430) KEYWRD,IMODTY
 10430   FORMAT(/1X,A8,'   MODEL TYPE =',I5)
@@ -4524,7 +4559,7 @@ C
          IF (IRTNCD.NE.0) RETURN
       ENDIF
       GOTO 10
-C      
+C
 12210 CONTINUE
       PRMS(1)=0.
       IF (LNOTBK(2)) PRMS(1)=ARRAY(2)
@@ -4535,7 +4570,7 @@ C
       PRMS(2)=0.0
       IF(LNOTBK(3)) PRMS(2)=ARRAY(3)
       IF(PRMS(2).LT.0.0)PRMS(2)=0.0
-C      
+C
       PRMS(3)=999.0
       IF(LNOTBK(4)) PRMS(3)=ARRAY(4)
 
@@ -4544,7 +4579,7 @@ C
          CALL ERRGRO (.TRUE.,4)
          GOTO 10
       ENDIF
-C      
+C
       PRMS(4)=EFF
       IF(LNOTBK(5)) PRMS(4)=ARRAY(5)
 C
@@ -4745,7 +4780,7 @@ C
 C     FIRST CHECK TO SEE THAT THE MAXIMUM NUMBER OF SPECIES GROUPS HAS NOT
 C     ALREADY BEEN DEFINED.  IF SO, IGNORE THIS REQUEST.
 C
-      IF(NSPGRP .GE. 10)THEN
+      IF(NSPGRP .GE. 30)THEN
         IF(LKECHO)WRITE(JOSTND,12502) IRECNT,KEYWRD,KARD(1)
 12502   FORMAT (/,' CARD NUM =',I5,'; KEYWORD FIELD = ',A8,
      &  '   GROUP NAME: ',A10)
@@ -4859,7 +4894,7 @@ C
 12700 CONTINUE
       IF (LNOTBK(1)) SDLO=ARRAY(1)*CMtoIN
       IF (LNOTBK(2)) SDHI=ARRAY(2)*CMtoIN
-     C
+C
 C     SPECIES CODE PROCESSING.
 C
       CALL SPDECD (3,IS,NSP(1,1),JOSTND,IRECNT,KEYWRD,
@@ -4890,6 +4925,8 @@ C
 C  ==========  OPTION NUMBER 128: SETPTTHIN ========================SETPTTHIN
 C
 12800 CONTINUE
+      IF(LKECHO)WRITE(JOSTND,12801) 
+12801 FORMAT (T12,'THIS KEYWORD HAS NOT BEEN METRIFIED YET. CAUTION!')
       ICFLAG=248
       IDT=1
       IF (LNOTBK(1)) IDT=IFIX(ARRAY(1))
@@ -4914,21 +4951,27 @@ C   PROCESS REMAINING PARAMETER FIELDS
 C
       PRMS(1)=FLOAT(ITHNPN)
       IF(LNOTBK(2)) PRMS(1)=ARRAY(2)
+      POINTNO=PRMS(1)
+C
+C  CHECK FOR POINT GROUP
+C
+      CALL PTGDECD(POINTNO,KARD(2),IFLAG)
+      IF(IFLAG.GE.1)THEN
+        ITHNPN=POINTNO
+        PRMS(1)=FLOAT(ITHNPN)
+        ILEN=IPTGRP(ITHNPN,52)
+        IF(LKECHO)WRITE(JOSTND,12812) 'POINT= ',KARD(2)(1:ILEN),ITHNPN
+12812 FORMAT (T12,A,A,I3' TARGETED FOR THIS CUT.')
+      ENDIF
+C
       PRMS(2)=FLOAT(ITHNPA)
       IF(LNOTBK(3).AND.ARRAY(3).GT.0.) PRMS(2)=ARRAY(3)
-
-      IF(PRMS(1) .EQ. -1.) THEN
+C
+      IF(PRMS(2).LE.0. .OR. PRMS(2).GT.6)THEN
         CALL KEYDMP (JOSTND,IRECNT,KEYWRD,ARRAY,KARD)
         CALL ERRGRO (.TRUE.,4)
-        IF(LKECHO)WRITE(JOSTND,12811)
-12811   FORMAT(T13,'POINT NUMBER IS MISSING.')
-        GO TO 10
-      ENDIF
-      IF(PRMS(2).LE.0. .OR. PRMS(2).GT.5)THEN
-        CALL KEYDMP (JOSTND,IRECNT,KEYWRD,ARRAY,KARD)
-        CALL ERRGRO (.TRUE.,4)
-        IF(LKECHO)WRITE(JOSTND,12814)
-12814   FORMAT(T13,'POINT THINNING RESIDUAL ATTRIBUTE IS MISSING ',
+        IF(LKECHO)WRITE(JOSTND,12816)
+12816   FORMAT(T12,'POINT THINNING RESIDUAL ATTRIBUTE IS MISSING ',
      &  'OR INVALID.')
         GO TO 10
       ENDIF
@@ -4950,16 +4993,21 @@ C
 12826   FORMAT(/1X,A8,'   DATE/CYCLE=',I5,
      &  '; POINT NUMBER=',F5.0,'; POINT THINNING RESIDUAL ATTRIBUTE=',
      &  F5.0,' (STAND DENSITY INDEX).')
-      ELSEIF(PRMS(2).EQ.4)THEN
+      ELSEIF(PRMS(2).EQ.4.)THEN
         IF(LKECHO)WRITE(JOSTND,12827)KEYWRD,IDT,PRMS(1),PRMS(2)
 12827   FORMAT(/1X,A8,'   DATE/CYCLE=',I5,
      &  '; POINT NUMBER=',F5.0,'; POINT THINNING RESIDUAL ATTRIBUTE=',
      &  F5.0,' (PERCENT CANOPY COVER).')
-      ELSE
+      ELSEIF(PRMS(2).EQ.5.)THEN
         IF(LKECHO)WRITE(JOSTND,12828)KEYWRD,IDT,PRMS(1),PRMS(2)
-12828   FORMAT(/1X,A8,'   DATE/CYCLE=',I5,
+12828   FORMAT(/A8,'   DATE/CYCLE=',I5,
      &  '; POINT NUMBER=',F5.0,'; POINT THINNING RESIDUAL ATTRIBUTE=',
-     &  F5.0,' (RELATIVE DENSITY).')
+     &  F5.0,' (CURTIS RELATIVE DENSITY).')
+      ELSE
+        IF(LKECHO)WRITE(JOSTND,12829)KEYWRD,IDT,PRMS(1),PRMS(2)
+12829   FORMAT(/A8,'   DATE/CYCLE=',I5,
+     &  '; POINT NUMBER=',F5.0,'; POINT THINNING RESIDUAL ATTRIBUTE=',
+     &  F5.0,' (SILVA RELATIVE DENSITY).')
       ENDIF
       GO TO 10
 C
@@ -5019,7 +5067,7 @@ C
       PRMS(6)=0.
       IF(LNOTBK(7)) PRMS(6)=ARRAY(7)
       IF(PRMS(6).EQ.0. .AND. PRMS(2).GT.0.)PRMS(2)=0.
-	PRMS(4) = PRMS(4) * CMtoIN
+      PRMS(4) = PRMS(4) * CMtoIN
       PRMS(5) = PRMS(5) * CMtoIN
       CALL OPNEW (KODE,IDT,ICFLAG,6,PRMS)
       IF (KODE.GT.0) GOTO 10
@@ -5061,7 +5109,7 @@ C
      >                'DIAMETER CLASS,')
       ENDIF
       IF(LKECHO)WRITE(JOSTND,12926)
-12926 FORMAT(1X,T13,'ON THE POINT SPECIFIED WITH THE SETPTTHIN ',
+12926 FORMAT(1X,T13,'ON THE POINT SPECIFIED WITH THE SETPTHIN ',
      >                'KEYWORD PRIOR TO THIS THINNING REQUEST.')
       GOTO 10
 C
@@ -5069,20 +5117,22 @@ C  ==========  OPTION NUMBER 130: VOLEQNUM ========================VOLEQNUM
 C
 13000 CONTINUE
 C
-C  IF WE DONT HAVE A KODFOR VALUE YET SET REGION BASED ON VRAIANT 'VAR'
+C  IF WE DONT HAVE A KODFOR VALUE YET SET REGION BASED ON VARIANT 'VAR'
 C
       IF(KODFOR.LE.0)THEN
         SELECT CASE(VVER(:2))
-        CASE('EM','KT','NI','IE','IB')
+        CASE('EM','KT','NI','IE','BC')
           IRDUM=1
         CASE( 'CR')
           IRDUM=2
         CASE('CI','TT','UT')
-          IRDUM=3
-        CASE('CA','NC','SO','WS')
           IRDUM=4
+        CASE('CA','NC','SO','WS')
+          IRDUM=5
         CASE('BM','PN','WC','EC')
           IRDUM=6
+        CASE('OC','OP')
+          IRDUM=7
         CASE('SN')
           IRDUM=8
         CASE('CS','LS','NE','ON')
@@ -5094,55 +5144,65 @@ C
 C
 C   FOREST CODE PROCESSING
 C
-      IF((VVER(:2).EQ.'SN').OR.(VVER(:2).EQ.'SE'))THEN
-        IREGN = KODFOR/10000
-        IFORST=KODFOR/100-IREGN*100
-        WRITE(FORST,'(I2)')IFORST
-        IF(IFORST.LT.10)FORST(1:1)='0'
-        INTDIST = KODFOR - (KODFOR/100)*100
-        WRITE(DIST,'(I2)')INTDIST
-        IF(INTDIST.LT.10)DIST(1:1)='0'
-      ELSE
-        IREGN = KODFOR/100
-        IFOREST = KODFOR-900
-        WRITE(FORST,'(I2)')IFOREST
-        IF(IFOREST.LT.10)FORST(1:1)='0'
-      ENDIF
+        IF((VVER(:2).EQ.'SN').AND.
+     &     (KODFOR.GE.1000))THEN
+          IREGN = KODFOR/10000
+          IRDUM=IREGN
+          IFORST=KODFOR/100-IREGN*100
+          WRITE(FORST,'(I2)')IFORST
+          IF(IFORST.LT.10)FORST(1:1)='0'
+          INTDIST = KODFOR - (KODFOR/100)*100
+          WRITE(DIST,'(I2)')INTDIST
+          IF(INTDIST.LT.10)DIST(1:1)='0'
+        ELSE
+          IREGN = KODFOR/100
+          IRDUM=IREGN
+          IFOREST = KODFOR-900
+          WRITE(FORST,'(I2)')IFOREST
+          IF(IFOREST.LT.10)FORST(1:1)='0'
+        ENDIF
 C
 C  USE SPECIAL FORESTS FOR BIA AND PRIVATE VOLUME EQS.
 C  PN-QUINAULT IR (FC=800 USES OLYMIC 609)
 C  NC SIMPSOM TIMBER (FC=800 USES R5 SAY 510)
 C  SO INDUSTRY LANDS (FC=701 USES R5 SAY 505)
+C  SO WARM SPRINGS (FC=799 USES R6 FC=601)
 C
-      IF(VVER(:2).EQ.'PN')THEN
-        IF(IREGN.EQ.8)THEN
-          IRDUM=6
-          FORDUM='09'
+        IF(VVER(:2).EQ.'PN' .OR. VVER(:2).EQ.'OP')THEN
+          IF(IREGN.EQ.8)THEN
+            IRDUM=6
+            FORDUM='09'
+          ELSE
+            IRDUM=IREGN
+            FORDUM=FORST
+          ENDIF
+        ELSEIF(VVER(:2).EQ.'NC')THEN
+          IF(IREGN.EQ.8)THEN
+            IRDUM=5
+            FORDUM='10'
+          ELSE
+            IRDUM=IREGN
+            FORDUM=FORST
+          ENDIF
+        ELSEIF(VVER(:2).EQ.'SO')THEN
+          IF(IREGN.EQ.7)THEN
+            SELECT CASE (KODFOR)
+            CASE (701)
+              IRDUM=5
+              FORDUM='05'
+            CASE (799)
+              IRDUM=6
+              FORDUM='01'
+            END SELECT
+          ELSE
+            IRDUM=IREGN
+            FORDUM=FORST
+          ENDIF
         ELSE
           IRDUM=IREGN
           FORDUM=FORST
         ENDIF
-      ELSEIF(VVER(:2).EQ.'NC')THEN
-        IF(IREGN.EQ.8)THEN
-          IRDUM=5
-          FORDUM='10'
-        ELSE
-          IRDUM=IREGN
-          FORDUM=FORST
-        ENDIF
-      ELSEIF(VVER(:2).EQ.'SO')THEN
-        IF(IREGN.EQ.7)THEN
-          IRDUM=5
-          FORDUM='05'
-        ELSE
-          IRDUM=IREGN
-          FORDUM=FORST
-        ENDIF
-      ELSE
-        IRDUM=IREGN
-        FORDUM=FORST
-      ENDIF
-	ENDIF
+       ENDIF  !NO KODFOR VALUE
 C
 C   SPECIES CODE PROCESSING.
 C
@@ -5186,10 +5246,21 @@ C
               ENDIF
             CASE(5)
               IF((VVER(:2).EQ.'CA').OR.(VVER(:2).EQ.'NC').OR.
-     &           (VVER(:2).EQ.'SO'))THEN
+     &           (VVER(:2).EQ.'SO').OR.(VVER(:2).EQ.'OC'))THEN
                 IRDUM=6
                 CALL VOLEQDEF(VVER(:2),IRDUM,FORDUM,DIST,ISPEC,PROD,
      &                VEQNNC(IGSP),ERRFLAG)
+              ENDIF
+            CASE(7)
+              IF((VVER(:2).EQ.'OC'))THEN
+                IRDUM=6
+                CALL VOLEQDEF(VVER(:2),IRDUM,FORDUM,DIST,ISPEC,PROD,
+     &                VEQNNC(IGSP),ERRFLAG)
+                IF(ISPEC.NE.8888)THEN
+                  IRDUM=5
+                  CALL VOLEQDEF(VVER(:2),IRDUM,FORDUM,DIST,ISPEC,PROD,
+     &                VEQNNC(IGSP),ERRFLAG)
+                ENDIF
               ENDIF
             END SELECT
           ENDIF
@@ -5224,23 +5295,34 @@ C
           IF((KODFOR.LE.0).AND.(ISPEC.NE.8888))THEN
             SELECT CASE(IRDUM)
             CASE(1)
-              IF((VVER(:2).EQ.'NI').OR.(VVER(:2).EQ.'IE'))THEN
+              IF((VVER(:2).EQ.'NI').OR.(VVER(:2).EQ.'BC'))THEN
                 IRDUM=6
                 CALL VOLEQDEF(VVER(:2),IRDUM,FORDUM,DIST,ISPEC,PROD,
-     &                VEQNNC(IGSP),ERRFLAG)
+     &                VEQNNB(IGSP),ERRFLAG)
               ENDIF
             CASE(2)
               IF(VVER(:2).EQ.'CR')THEN
                 IRDUM=3
                 CALL VOLEQDEF(VVER(:2),IRDUM,FORDUM,DIST,ISPEC,PROD,
-     &                VEQNNC(IGSP),ERRFLAG)
+     &                VEQNNB(IGSP),ERRFLAG)
               ENDIF
             CASE(5)
               IF((VVER(:2).EQ.'CA').OR.(VVER(:2).EQ.'NC').OR.
-     &           (VVER(:2).EQ.'SO'))THEN
+     &           (VVER(:2).EQ.'SO').OR.(VVER(:2).EQ.'OC'))THEN
                 IRDUM=6
                 CALL VOLEQDEF(VVER(:2),IRDUM,FORDUM,DIST,ISPEC,PROD,
-     &                VEQNNC(IGSP),ERRFLAG)
+     &                VEQNNB(IGSP),ERRFLAG)
+              ENDIF
+            CASE(7)
+              IF((VVER(:2).EQ.'OC'))THEN
+                IRDUM=6
+                CALL VOLEQDEF(VVER(:2),IRDUM,FORDUM,DIST,ISPEC,PROD,
+     &                VEQNNB(IGSP),ERRFLAG)
+                IF(ISPEC.NE.8888)THEN
+                  IRDUM=5
+                  CALL VOLEQDEF(VVER(:2),IRDUM,FORDUM,DIST,ISPEC,PROD,
+     &                VEQNNB(IGSP),ERRFLAG)
+                ENDIF
               ENDIF
             END SELECT
           ENDIF
@@ -5294,20 +5376,31 @@ C
               IF((VVER(:2).EQ.'NI').OR.(VVER(:2).EQ.'IE'))THEN
                 IRDUM=6
                 CALL VOLEQDEF(VVER(:2),IRDUM,FORDUM,DIST,ISPEC,PROD,
-     &                VEQNNC(IGSP),ERRFLAG)
+     &                VEQNNC(1),ERRFLAG)
               ENDIF
             CASE(2)
               IF(VVER(:2).EQ.'CR')THEN
                 IRDUM=3
                 CALL VOLEQDEF(VVER(:2),IRDUM,FORDUM,DIST,ISPEC,PROD,
-     &                VEQNNC(IGSP),ERRFLAG)
+     &                VEQNNC(1),ERRFLAG)
               ENDIF
             CASE(5)
               IF((VVER(:2).EQ.'CA').OR.(VVER(:2).EQ.'NC').OR.
-     &           (VVER(:2).EQ.'SO'))THEN
+     &           (VVER(:2).EQ.'SO').OR.(VVER(:2).EQ.'OC'))THEN
                 IRDUM=6
                 CALL VOLEQDEF(VVER(:2),IRDUM,FORDUM,DIST,ISPEC,PROD,
-     &                VEQNNC(IGSP),ERRFLAG)
+     &                VEQNNC(1),ERRFLAG)
+              ENDIF
+            CASE(7)
+              IF((VVER(:2).EQ.'OC'))THEN
+                IRDUM=6
+                CALL VOLEQDEF(VVER(:2),IRDUM,FORDUM,DIST,ISPEC,PROD,
+     &                VEQNNC(1),ERRFLAG)
+                IF(ISPEC.NE.8888)THEN
+                  IRDUM=5
+                  CALL VOLEQDEF(VVER(:2),IRDUM,FORDUM,DIST,ISPEC,PROD,
+     &                VEQNNC(1),ERRFLAG)
+                ENDIF
               ENDIF
             END SELECT
           ENDIF
@@ -5341,20 +5434,31 @@ C
               IF((VVER(:2).EQ.'NI').OR.(VVER(:2).EQ.'IE'))THEN
                 IRDUM=6
                 CALL VOLEQDEF(VVER(:2),IRDUM,FORDUM,DIST,ISPEC,PROD,
-     &                VEQNNC(IGSP),ERRFLAG)
+     &                VEQNNB(1),ERRFLAG)
               ENDIF
             CASE(2)
               IF(VVER(:2).EQ.'CR')THEN
                 IRDUM=3
                 CALL VOLEQDEF(VVER(:2),IRDUM,FORDUM,DIST,ISPEC,PROD,
-     &                VEQNNC(IGSP),ERRFLAG)
+     &                VEQNNB(1),ERRFLAG)
               ENDIF
             CASE(5)
               IF((VVER(:2).EQ.'CA').OR.(VVER(:2).EQ.'NC').OR.
-     &           (VVER(:2).EQ.'SO'))THEN
+     &           (VVER(:2).EQ.'SO').OR.(VVER(:2).EQ.'OC'))THEN
                 IRDUM=6
                 CALL VOLEQDEF(VVER(:2),IRDUM,FORDUM,DIST,ISPEC,PROD,
-     &                VEQNNC(IGSP),ERRFLAG)
+     &                VEQNNB(1),ERRFLAG)
+              ENDIF
+            CASE(7)
+              IF((VVER(:2).EQ.'OC'))THEN
+                IRDUM=6
+                CALL VOLEQDEF(VVER(:2),IRDUM,FORDUM,DIST,ISPEC,PROD,
+     &                VEQNNB(1),ERRFLAG)
+                IF(ISPEC.NE.8888)THEN
+                  IRDUM=5
+                  CALL VOLEQDEF(VVER(:2),IRDUM,FORDUM,DIST,ISPEC,PROD,
+     &                VEQNNB(1),ERRFLAG)
+                ENDIF
               ENDIF
             END SELECT
           ENDIF
@@ -5386,7 +5490,7 @@ C       IF(LKECHO)WRITE(JOSTND,13021)KEYWRD
 C----------
 C  SINGLE SPECIES PROCESSING
 C----------
-      ELSE 
+      ELSE
 C----------
 C  CHECK FOR VALID EQUATION NUMBER CUBIC FT
 C----------
@@ -5402,23 +5506,34 @@ C
           IF((KODFOR.LE.0).AND.(ISPEC.NE.8888))THEN
             SELECT CASE(IRDUM)
             CASE(1)
-              IF((VVER(:2).EQ.'NI').OR.(VVER(:2).EQ.'IE'))THEN
+              IF((VVER(:2).EQ.'NI').OR.(VVER(:2).EQ.'BC'))THEN
                 IRDUM=6
                 CALL VOLEQDEF(VVER(:2),IRDUM,FORDUM,DIST,ISPEC,PROD,
-     &                VEQNNC(IGSP),ERRFLAG)
+     &                VEQNNC(IS),ERRFLAG)
               ENDIF
             CASE(2)
               IF(VVER(:2).EQ.'CR')THEN
                 IRDUM=3
                 CALL VOLEQDEF(VVER(:2),IRDUM,FORDUM,DIST,ISPEC,PROD,
-     &                VEQNNC(IGSP),ERRFLAG)
+     &                VEQNNC(IS),ERRFLAG)
               ENDIF
             CASE(5)
               IF((VVER(:2).EQ.'CA').OR.(VVER(:2).EQ.'NC').OR.
-     &           (VVER(:2).EQ.'SO'))THEN
+     &           (VVER(:2).EQ.'SO').OR.(VVER(:2).EQ.'OC'))THEN
                 IRDUM=6
                 CALL VOLEQDEF(VVER(:2),IRDUM,FORDUM,DIST,ISPEC,PROD,
-     &                VEQNNC(IGSP),ERRFLAG)
+     &                VEQNNC(IS),ERRFLAG)
+              ENDIF
+            CASE(7)
+              IF((VVER(:2).EQ.'OC'))THEN
+                IRDUM=6
+                CALL VOLEQDEF(VVER(:2),IRDUM,FORDUM,DIST,ISPEC,PROD,
+     &                VEQNNC(IS),ERRFLAG)
+                IF(ISPEC.NE.8888)THEN
+                  IRDUM=5
+                  CALL VOLEQDEF(VVER(:2),IRDUM,FORDUM,DIST,ISPEC,PROD,
+     &                VEQNNC(IS),ERRFLAG)
+                ENDIF
               ENDIF
             END SELECT
           ENDIF
@@ -5449,20 +5564,31 @@ C
               IF((VVER(:2).EQ.'NI').OR.(VVER(:2).EQ.'IE'))THEN
                 IRDUM=6
                 CALL VOLEQDEF(VVER(:2),IRDUM,FORDUM,DIST,ISPEC,PROD,
-     &                VEQNNC(IGSP),ERRFLAG)
+     &                VEQNNB(IS),ERRFLAG)
               ENDIF
             CASE(2)
               IF(VVER(:2).EQ.'CR')THEN
                 IRDUM=3
                 CALL VOLEQDEF(VVER(:2),IRDUM,FORDUM,DIST,ISPEC,PROD,
-     &                VEQNNC(IGSP),ERRFLAG)
+     &                VEQNNB(IS),ERRFLAG)
               ENDIF
             CASE(5)
               IF((VVER(:2).EQ.'CA').OR.(VVER(:2).EQ.'NC').OR.
-     &           (VVER(:2).EQ.'SO'))THEN
+     &           (VVER(:2).EQ.'SO').OR.(VVER(:2).EQ.'OC'))THEN
                 IRDUM=6
                 CALL VOLEQDEF(VVER(:2),IRDUM,FORDUM,DIST,ISPEC,PROD,
-     &                VEQNNC(IGSP),ERRFLAG)
+     &                VEQNNB(IS),ERRFLAG)
+              ENDIF
+            CASE(7)
+              IF((VVER(:2).EQ.'OC'))THEN
+                IRDUM=6
+                CALL VOLEQDEF(VVER(:2),IRDUM,FORDUM,DIST,ISPEC,PROD,
+     &                VEQNNB(IS),ERRFLAG)
+                IF(ISPEC.NE.8888)THEN
+                  IRDUM=5
+                  CALL VOLEQDEF(VVER(:2),IRDUM,FORDUM,DIST,ISPEC,PROD,
+     &                VEQNNB(IS),ERRFLAG)
+                ENDIF
               ENDIF
             END SELECT
           ENDIF
@@ -5476,13 +5602,7 @@ C
      &      WRITE(JOSTND,13030)KEYWRD,KARD(1)(1:3),IS
           ENDIF
         ENDIF
-C13005       FORMAT(/1X,A8,'   INVALID CUBIC FT VOLUME EQUATION ',
-C     &      'NUMBER: THE DEFAULT EQUATION NUMBER WILL BE USED ',
-C     &      'FOR SPECIES=',A,' (CODE=',I3,');')
-C13007       FORMAT(/1X,A8,'   INVALID BOARD FT VOLUME EQUATION ',
-C     &      'NUMBER: THE DEFAULT EQUATION NUMBER WILL BE USED ',
-C     &      'FOR SPECIES=',A,' (CODE=',I3,');')
-13030     FORMAT(/1X,A8,'   NATIONAL CRUISE SYSTEM VOLUME EQUATION ',
+13030     FORMAT(/A8,'   NATIONAL CRUISE SYSTEM VOLUME EQUATION ',
      &    'NUMBERS CHANGED FOR SPECIES=',A,' (CODE=',I3,');')
       ENDIF
       IF(LNOTBK(2).AND.LNOTBK(3))THEN
@@ -5692,7 +5812,7 @@ C
          CALL ERRGRO (.TRUE.,4)
          GOTO 13714
         ENDIF
-      ENDIF        
+      ENDIF
       IF(LNOTBK(2)) THEN
         IF(ARRAY(2).LE. -1.605 .AND. ARRAY(2).GT. -10.0)THEN
           SLPMSB=ARRAY(2)
@@ -5771,7 +5891,7 @@ C
       IF (LNOTBK(1)) IDT=IFIX(ARRAY(1))
 C
 C     IF THE KEYWORD RECORD HAS THE 'PARMS' OPTION, CALL OPNEWC
-C     TO PROCESS IT. 
+C     TO PROCESS IT.
 C     NOTE: A NUMERIC VALUE MUST BE PASSED OR THERE WILL BE AN ERROR
 C     COMPILING THE EXPRESSION IN GRINCR. SO IN PASSING A PLANT ASSOCIATION
 C     CODE, USERS SHOULD ENTER THE NUMERIC SEQUENCE NUMBER OF THE PA CODE.
@@ -5882,26 +6002,285 @@ C
 C  ==========  OPTION NUMBER 1400 SDICALC ===========================SDICALC
 C
 14000 CONTINUE
-      SELECT CASE(VVER(:2))
-        CASE('AK','AN','BM','CA','CS','BP','LP','LS','SF','SM','SP',
-     &       'EC','EM','NC','NE','SN','SO','TT','UT','WS','ON')
         DBHSTAGE=0.
         IF(LNOTBK(1))DBHSTAGE=ARRAY(1)*CMtoIN
-        DBHZEIDE=1.
+        DBHZEIDE=0.
         IF(LNOTBK(2))DBHZEIDE=ARRAY(2)*CMtoIN
         IF(ARRAY(3).GE.1)LZEIDE=.TRUE.
-        CALCSDI="STAGE'S"
-        IF(LZEIDE)CALCSDI="ZEIDE'S"
+        CALCSDI="REINEKE"
+        IF(LZEIDE)CALCSDI="ZEIDE"
         IF(LKECHO)WRITE(JOSTND,14010) KEYWRD,CALCSDI,DBHSTAGE,DBHZEIDE
-14010   FORMAT (/1X,A8,'   ',A7,' SUMMATION METHOD WILL BE ',
-     &              'USED TO CALCULATE SDI-BASED MORTALITY.'/
-     &  9X,'   THE MINIMUM DIAMETER USED IN STAGE SDI CALCULATIONS = ',
+14010   FORMAT (/A8,'   THE ',A7,' METHOD WILL BE ',
+     &              'USED TO CALCULATE SDI.'/
+     &  9X,'   THE MINIMUM DIAMETER USED IN REINEKE SDI CALCULATIONS = ',
      &  F6.2,' CM'/
      &  9X,'   THE MINIMUM DIAMETER USED IN ZEIDE SDI CALCULATIONS = ',
      &  F6.2,' CM')
         GO TO 10
-      END SELECT
       CALL ERRGRO (.TRUE.,16)
       GO TO 10
 C
+C  ==========  OPTION NUMBER 141: THINQFA  ===========================THINQFA
+C
+14100 CONTINUE
+      IF(LKECHO)WRITE(JOSTND,14101) 
+14101 FORMAT (T12,'THIS KEYWORD HAS NOT BEEN METRIFIED YET. CAUTION!')
+      ICFLAG=237
+      IDT=1
+      IF (LNOTBK(1)) IDT=IFIX(ARRAY(1))
+C
+C     IF THE KEYWORD RECORD HAS THE 'PARMS' OPTION, CALL OPNEWC
+C     TO PROCESS IT.
+C
+      IF (IPRMPT.GT.0) THEN
+         IF (IPRMPT.NE.2) THEN
+            CALL KEYDMP (JOSTND,IRECNT,KEYWRD,ARRAY,KARD)
+            CALL ERRGRO (.TRUE.,25)
+         ELSE
+            CALL OPNEWC (KODE,JOSTND,IREAD,IDT,ICFLAG,KEYWRD,KARD,
+     >                   IPRMPT,IRECNT,ICYC)
+            CALL fvsGetRtnCode(IRTNCD)
+            IF (IRTNCD.NE.0) RETURN
+         ENDIF
+         GOTO 10
+      ENDIF
+      CALL SPDECD (4,IS,NSP(1,1),JOSTND,IRECNT,KEYWRD,
+     &             ARRAY,KARD)
+      IF (IS.EQ.-999) GOTO 10
+      PRMS(3)=IS
+C
+C  DEFAULT PARAMETERS
+C
+      PRMS(1)=0.      ! LOWER DBH
+      PRMS(2)=24.     ! UPPER DBH
+      PRMS(4)=1.4     ! Q FACTOR
+      PRMS(5)=2.      ! DIA. CLASS WIDTH
+      PRMS(6)=0.      ! BA, SDI, OR TPA TARGET VALUE
+C
+      IF (LNOTBK(2))PRMS(1)=ARRAY(2)       ! LOWER DBH
+      IF (LNOTBK(3))PRMS(2)=ARRAY(3)       ! UPPER DBH
+      IF (LNOTBK(5))PRMS(4)=ARRAY(5)  ! Q FACTOR        
+      IF (LNOTBK(6))PRMS(5)=ARRAY(6)  ! DIA. CLASS WIDTH
+      IF (LNOTBK(7))PRMS(6)=ARRAY(7)  ! TARGET TPA, BA, or SDI 
+C
+C  THE SWITCH TO SET THE UNITS FOR THE TARGET ARE ON A SECOND RECORD
+C  OF THE THINQFA KEYWORD 
+C  <= 0 - TPA TARGET
+C  <= 1 - BA TARGET
+C  >  1 - SDI TARGET
+C
+      ISETQFA=0
+      READ(IREAD,'(I1)')ISETQFA
+      IRECNT=IRECNT+1
+C
+      IF(ISETQFA.LE.0)THEN                  ! BA TARGET
+        CTARGET='TARGET BA='
+        PRMS(7)=0
+      ELSEIF(ISETQFA.LE.1)THEN              ! TPA TARGET
+        CTARGET='TARGET TPA='
+        PRMS(7)=1
+      ELSEIF(ISETQFA.GT.1)THEN              ! SDI TARGET
+        CTARGET='TARGET SDI='
+        PRMS(7)=2
+      ENDIF
+C
+      CALL OPNEW(KODE,IDT,ICFLAG,7,PRMS(1))
+      IF (KODE.GT.0) GOTO 10
+      IF(LKECHO)WRITE(JOSTND,41110)KEYWRD,IDT,PRMS(1),PRMS(2)
+41110 FORMAT(/A8,'   DATE/CYCLE=',I5,'; MINIMUM ',F8.1,
+     >        '; MAXIMUM ',F8.1)
+      IF (IS.NE.0) THEN
+         ILEN=3
+         IF(IS.LT.0)ILEN=ISPGRP(-IS,52)
+         IF(LKECHO)WRITE(JOSTND,41114) ' SPECIES= ',KARD(4)(1:ILEN),
+     >                                IS,'IS'
+41114    FORMAT (T11,A,A,' (CODE= ',I3,') ',A,
+     >           ' TARGETED FOR THIS CUT.')
+      ELSE
+         IF(LKECHO)WRITE(JOSTND,41114) ' ALL',' SPECIES',IS,'ARE'
+      ENDIF
+      IF(LKECHO)WRITE(JOSTND,41117)PRMS(4),PRMS(5),CTARGET,PRMS(6)
+41117 FORMAT(T12,'Q FACTOR= ',F8.3,/
+     >       T12,'DIA. CLASS WIDTH= ',F6.1,/
+     >       T12,A,F6.1)
+C
+      GOTO 10
+C
+C  ==========  OPTION NUMBER 142: PTGROUP ===========================PTGROUP
+C
+14200 CONTINUE
+C
+C     FIRST CHECK TO SEE THAT THE MAXIMUM NUMBER OF POINT GROUPS HAS NOT
+C     ALREADY BEEN DEFINED.  IF SO, IGNORE THIS REQUEST.
+C
+      IF(NPTGRP .GE. 30)THEN
+        IF(LKECHO)WRITE(JOSTND,14210) IRECNT,KEYWRD,KARD(1)
+14210   FORMAT (/,'CARD NUM =',I5,'; KEYWORD FIELD = ',A8,
+     &  '   GROUP NAME: ',A10)
+        CALL ERRGRO(.TRUE.,37)
+14220   CONTINUE
+        IRECNT=IRECNT+1
+        READ(IREAD,'(A)',END=80) RECORD
+        I=LEN_TRIM(RECORD)
+        IF(LKECHO)WRITE(JOSTND,'(" SKIPPED RECORD=",A)') RECORD(:I)
+        IF (RECORD(I:I).EQ.'&') GOTO 14220
+        GO TO 10
+      ENDIF
+C
+C     PROCESS THE POINT GROUP REQUEST. DELETE LEADING BLANKS
+C     FROM THE POINT GROUP NAME AND STORE THE LENGTH OF THE
+C     NAME
+C
+      NPTGRP=NPTGRP+1
+      IF(LNOTBK(1))THEN            ! if there is a name, then use it
+        PTGNAME(NPTGRP)=ADJUSTL(KARD(1))
+        ILEN=LEN_TRIM(PTGNAME(NPTGRP))
+        DO J=1,ILEN
+          CALL UPCASE(PTGNAME(NPTGRP)(J:J))
+        ENDDO
+      ELSE                         ! otherwise build one
+        WRITE(PTGNAME(NPTGRP),'("PTGROUP",I2.2,2X)') NPTGRP
+        ILEN=9
+      ENDIF
+      IPTGRP(NPTGRP,52)=ILEN       ! save the group name length
+      INUM=0                       ! initialize the number of codes in the group
+      KARD=' '                     ! blank out and zero out kard and arrays
+      ARRAY=0
+14504 CONTINUE
+      IRECNT=IRECNT+1
+      READ(IREAD,'(A)',END=80) RECORD
+      ILEN=LEN_TRIM(RECORD)
+      J=0                          ! j points to the first char for the new token...
+                                   ! when j is zero, no new token is being built.
+      DO I=1,ILEN                  ! loop over the chars in the record
+        IF (RECORD(I:I).EQ.' ') THEN ! hit a blank
+          IF (J.EQ.0) CYCLE          ! if no token being built, go on to next char
+        ENDIF
+        IF (RECORD(I:I).EQ.'&') GOTO 14504  ! read another record
+        IF (J.EQ.0) J=I
+C        CALL UPCASE(RECORD(I:I))
+        IF (RECORD(I:I).EQ.' '.OR.I.EQ.ILEN) THEN ! end of token (a blank or end of record)
+          INUM=INUM+1              ! so, we have a token.
+C
+C  DON'T SAVE OVER 50, COULD DO AN ERROR MSG, BUT DIDN'T
+C
+          IF (INUM.GT.50) INUM=50
+          IF (I.EQ.ILEN) THEN      ! store the token in kard(1)
+            KARD(1)=RECORD(J:I)
+          ELSE
+            KARD(1)=RECORD(J:I-1)
+          ENDIF
+          J=0
+          ARRAY(1)=0.
+          READ(KARD(1),'(F10.0)',ERR=14505) ARRAY(1)  ! make a number, if we can.
+14505     CONTINUE
+          IF (ARRAY(1).EQ.0) THEN  ! zero is illegal
+            INUM=INUM-1
+            CYCLE
+          ENDIF
+          IF (INUM.GT.1) THEN     ! check for duplicates, save unique codes
+            DO J=2,INUM
+              IF (IPTGRP(NPTGRP,J).EQ.ARRAY(1)) THEN
+                ARRAY(1)=-999           ! if it is a dup, then set flag
+                EXIT
+              ENDIF
+            ENDDO
+            J=0
+            IF (ARRAY(1).EQ.-999) THEN  ! skip dups
+              INUM=INUM-1
+              CYCLE
+            ENDIF
+          ENDIF
+          IPTGRP(NPTGRP,INUM+1)=ARRAY(1)
+        ENDIF
+      ENDDO
+      IPTGRP(NPTGRP,1)=INUM
+C
+      IF(LKECHO)WRITE(JOSTND,14535) KEYWRD,-NPTGRP,PTGNAME(NPTGRP),INUM,
+     &(IPTGRP(NPTGRP,J),J=2,INUM+1)
+14535 FORMAT(/A8,'   GROUP NUMBER:',I4,'  GROUP NAME: ',A10,
+     &'  NUMBER OF POINTS IN THIS GROUP:',I3,'  POINTS:'/5(T12,10I10/))
+      GO TO 10
+C
+C  ==========  OPTION NUMBER 143: ORGANON  ===========================ORGANON
+C
+14300 CONTINUE
+C----------
+C  CALL THE SUBROUTINE THAT READS ORGANON CONTROL PARAMETERS FROM THE
+C  KEYWORD FILE
+C----------
+      IF((VVER(:2).EQ.'OC').OR.(VVER(:2).EQ.'OP'))THEN
+        IF(LKECHO)WRITE(JOSTND,14310) KEYWRD
+14310   FORMAT (/,A8,'   START OF ORGANON KEYWORDS:')
+        CALL ORIN (DEBUG,LKECHO,LNOTRE)
+      ELSE
+        IF(LKECHO)WRITE(JOSTND,14315) KEYWRD
+14315   FORMAT (/,A8,'   ORGANON KEYWORDS NOT RECOGNIZED IN THIS',
+     &  ' VARIANT')
+      ENDIF
+      GOTO 10
+C
+C  ==========  OPTION NUMBER 49: SPLEAVE ============================SPLEAVE
+C
+14400 CONTINUE
+      IDT=1
+      IF(LNOTBK(1)) IDT=IFIX(ARRAY(1))
+C
+C     IF THE KEYWORD RECORD HAS THE 'PARMS' OPTION, CALL OPNEWC
+C     TO PROCESS IT.
+C
+      IF (IPRMPT.GT.0) THEN
+         IF (IPRMPT.NE.2) THEN
+            CALL KEYDMP (JOSTND,IRECNT,KEYWRD,ARRAY,KARD)
+            CALL ERRGRO (.TRUE.,25)
+         ELSE
+            CALL OPNEWC (KODE,JOSTND,IREAD,IDT,206,KEYWRD,KARD,
+     >                      IPRMPT,IRECNT,ICYC)
+            CALL fvsGetRtnCode(IRTNCD)
+            IF (IRTNCD.NE.0) RETURN
+         ENDIF
+         GOTO 10
+      ENDIF
+C
+C     IF THE SELECTION VALUE IS NOT PRESENT;
+C     THEN:  WRITE ERROR MSG AND SKIP PROCESSING KEYWORD CARD.
+C
+      IF (.NOT.LNOTBK(2)) THEN
+        CALL KEYDMP (JOSTND,IRECNT,KEYWRD,ARRAY,KARD)
+        CALL ERRGRO (.TRUE.,4)
+        GOTO 10
+      ENDIF
+C
+C     SPECIES CODE PROCESSING.
+C
+      CALL SPDECD (2,IS,NSP(1,1),JOSTND,IRECNT,KEYWRD,
+     &             ARRAY,KARD)
+      IF (IS.EQ.-999) GOTO 10
+      PRMS(1)=IS
+C
+C  DEFAULT IS LEAVE THE SPECIES PRMS(2)=1.
+C
+      PRMS(2)=1.
+      IF (LNOTBK(3))PRMS(2)=ARRAY(3)
+C
+C     SCHEDULE THE ACTIVITY
+C
+      CALL OPNEW(KODE,IDT,206,2,PRMS)
+      IF (KODE .GT. 0) GOTO 10
+      ILEN=3
+      IF(IS.LT.0)ILEN=ISPGRP(-IS,52)
+      IF(PRMS(2).GT.0)THEN
+        IF(LKECHO)WRITE(JOSTND,14410) KEYWRD,IDT,KARD(2)(1:ILEN),IS
+      ELSE
+        IF(LKECHO)WRITE(JOSTND,14420) KEYWRD,IDT,KARD(2)(1:ILEN),IS
+      ENDIF
+14410 FORMAT (/A8,'   DATE/CYCLE=',I5,'; SPECIES= ',A,' (CODE=',
+     >           I3,'); WILL NOT BE INCLUDED IN THE FOLLOWING',
+     >           ' THINNING ACTIVITIES')
+14420 FORMAT (/A8,'   DATE/CYCLE=',I5,'; SPECIES= ',A,' (CODE=',
+     >           I3,'); WILL BE INCLUDED IN THE FOLLOWING',
+     >           ' THINNING ACTIVITIES')
+      GOTO 10
+C
+
       END
