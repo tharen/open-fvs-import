@@ -4657,6 +4657,7 @@ C
 C  ==========  OPTION NUMBER 128: SETPTHIN ========================SETPTHIN
 C
 12800 CONTINUE
+
       ICFLAG=248
       IDT=1
       IF (LNOTBK(1)) IDT=IFIX(ARRAY(1))
