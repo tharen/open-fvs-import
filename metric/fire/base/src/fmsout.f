@@ -33,10 +33,8 @@ C.... PARAMETER STATEMENTS.
 C.... PARAMETER INCLUDE FILES.
 
       INCLUDE 'PRGPRM.F77'
-Cppe      INCLUDE 'PPEPRM.F77'
-Cppe      INCLUDE 'PPCNTL.F77'
       INCLUDE 'FMPARM.F77'
-	INCLUDE 'METRIC.F77'
+      INCLUDE 'METRIC.F77'
 
 C.... COMMON INCLUDE FILES.
 
@@ -212,8 +210,8 @@ C
       IF (DBSKODE.EQ.0) GOTO 500
 
 C     MAKE SURE JSNOUT IS OPEN
-      CALL openIfClosed (JSNOUT,"sng",lok)
-      if (.not.lok) goto 500
+      CALL openIfClosed (JSNOUT,"sng",LOK)
+      IF (.NOT.LOK) RETURN
 
 C     Print the snag output headings.
 
@@ -224,7 +222,8 @@ C     Print the snag output headings.
          WRITE(JSNOUT,211)
          WRITE(JSNOUT,220)
          WRITE(JSNOUT,222)
-  200    FORMAT(' ESTIMATED SNAG CHARACTERISTICS, STAND ID=',A)
+  200    FORMAT(' ESTIMATED SNAG CHARACTERISTICS '
+     &          '(BASED ON STOCKABLE AREA), STAND ID=',A)
   210    FORMAT(13X,'DEATH CURR',
      &         ' HEIGHT CURR VOLUME (M3)       ',
      &         '    DENSITY (SNAGS/HA)   ')

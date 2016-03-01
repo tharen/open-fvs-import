@@ -59,7 +59,7 @@ C
       IF (DEBUG) WRITE(JOSTND,40) IFLALB,IFLALE,IDFLAL,
      >       JROUT,NSNAG
  40   FORMAT(' FMDOUT: IFLALB=',I5,' IFLALE=',I5,
-     >       ' IDFLAL=',I5,' JROUT=',I3,' NSNAG=',I5)  
+     >       ' IDFLAL=',I5,' JROUT=',I3,' NSNAG=',I5)
 
 C     FIRST CHECK TO SEE IF WE NEED TO DO THIS FOR FUELS REPORTING
 C     IF THIS YEAR IS WITHIN THE REPORTING PERIOD, SET THE
@@ -316,7 +316,7 @@ C     FROM BROWN (1974), GTR-INT-16, HANDBOOK FOR INVENTORYING DOWNED WOODY MATE
          DO J = 1, 9
             DO K = 1, 2
                DO L = 1, 4
-                  CWDVOL(I,J,K,L) = CWD(I,J,K,L)*2000/CWDDEN(K,L)                
+                  CWDVOL(I,J,K,L) = CWD(I,J,K,L)*2000/CWDDEN(K,L)
                ENDDO
             ENDDO
          ENDDO
@@ -363,7 +363,7 @@ C                         total stuff up
                     CASE (4)
                       CWDCOV(I,J,K,L) = 0.0166*CWDVOL(I,J,K,L)**0.8715
                     CASE (5)
-                      CWDCOV(I,J,K,L) = 0.0092*CWDVOL(I,J,K,L)**0.8795                 
+                      CWDCOV(I,J,K,L) = 0.0092*CWDVOL(I,J,K,L)**0.8795
                     CASE (6)
                       CWDCOV(I,J,K,L) = 0.0063*CWDVOL(I,J,K,L)**0.8728
                     CASE (7)
@@ -418,7 +418,8 @@ C     IT, THEN DO SO.
   699    FORMAT(2(/1X,I5))
   700    FORMAT(1X,I5,1X,122('-'))
   701    FORMAT(1X,I5,1X,42X,'******  FIRE MODEL VERSION 1.0 ******')
-  702    FORMAT(1X,I5,1X,52X,'ALL FUELS REPORT')
+702    FORMAT(1X,I5,1X,52X,'ALL FUELS REPORT '
+     &                       '(BASED ON STOCKABLE AREA)')
    44    FORMAT(1X,I5,' STAND ID: ',A26,4X,'MGMT ID: ',A4)
   703    FORMAT(1X,I5,1X,52X,'ESTIMATED FUEL LOADINGS')
   704    FORMAT(1X,I5,22X,'SURFACE FUEL (TONNES/HA) ',
@@ -472,12 +473,12 @@ C
       V1(8) = CWDVOL(3,10,2,5)*CONV2
       V1(9) = (CWDVOL(3,1,1,5)+CWDVOL(3,2,1,5)+CWDVOL(3,3,1,5))*CONV2
       V1(10) = CWDVOL(3,4,1,5)*CONV2
-      V1(11) = CWDVOL(3,5,1,5)*CONV2   
+      V1(11) = CWDVOL(3,5,1,5)*CONV2
       V1(12) = CWDVOL(3,6,1,5)*CONV2
-      V1(13) = CWDVOL(3,7,1,5)*CONV2                                         
+      V1(13) = CWDVOL(3,7,1,5)*CONV2
       V1(14) = CWDVOL(3,8,1,5)*CONV2
       V1(15) = CWDVOL(3,9,1,5)*CONV2
-      V1(16) = CWDVOL(3,10,1,5)*CONV2  
+      V1(16) = CWDVOL(3,10,1,5)*CONV2
 
       CALL DBSFMDWVOL(IYR,NPLT,V1,16,DBSKODE)
       IF(DBSKODE.EQ.0) GOTO 850
@@ -501,7 +502,8 @@ C     IT, THEN DO SO.
   799    FORMAT(2(/1X,I5))
   800    FORMAT(1X,I5,1X,122('-'))
   801    FORMAT(1X,I5,1X,42X,'******  FIRE MODEL VERSION 1.0 ******')
-  802    FORMAT(1X,I5,1X,46X,'DOWN DEAD WOOD VOLUME REPORT')
+  802    FORMAT(1X,I5,1X,46X,'DOWN DEAD WOOD VOLUME REPORT '
+     &                       '(BASED ON STOCKABLE AREA)')
 C   44    FORMAT(1X,I5,' STAND ID: ',A26,4X,'MGMT ID: ',A4)
   803    FORMAT(1X,I5,1X,30X,'ESTIMATED DOWN WOOD VOLUME (M3/HA)',
      &                       ' BY SIZE CLASS (CM)')
@@ -564,7 +566,8 @@ C     IT, THEN DO SO.
   899    FORMAT(2(/1X,I5))
   900    FORMAT(1X,I5,1X,122('-'))
   901    FORMAT(1X,I5,1X,42X,'******  FIRE MODEL VERSION 1.0 ******')
-  902    FORMAT(1X,I5,1X,46X,'DOWN DEAD WOOD COVER REPORT')
+  902    FORMAT(1X,I5,1X,46X,'DOWN DEAD WOOD COVER REPORT '
+     &                       '(BASED ON STOCKABLE AREA)')
 C   44    FORMAT(1X,I5,' STAND ID: ',A26,4X,'MGMT ID: ',A4)
   903    FORMAT(1X,I5,1X,30X,'ESTIMATED DOWN WOOD PERCENT COVER (%)',
      &                       ' BY SIZE CLASS (CM)')
