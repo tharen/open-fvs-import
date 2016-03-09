@@ -47,11 +47,17 @@ C
       INTEGER CANBURN, INB
       REAL ACTWFC, ACTFFC, FFC, WFC, SURFUEL
 
-      !DEC$ ATTRIBUTES DLLIMPORT :: CFIM_DRIVER
+C     32- and 64-bit VS2010/Intel + Linker create slightly different decorations
+C     This could be a compiler or linker error, but this IF/ELSE is currently needed
+C     to create a consistent name decoration for creating the output DLL
 
-      !DEC$ ATTRIBUTES ALIAS : '_CFIM_DRIVER' :: CFIM_DRIVER
+      !DEC$ IF DEFINED(_X86_)
+      !DEC$ ATTRIBUTES DLLIMPORT, ALIAS : '_CFIM_DRIVER' :: CFIM_DRIVER
+      !DEC$ ELSE
+      !DEC$ ATTRIBUTES DLLIMPORT, ALIAS : 'CFIM_DRIVER' :: CFIM_DRIVER
+      !DEC$ ENDIF
       
-      integer CFIM_DRIVER   
+      integer CFIM_DRIVER
 
 C     check for debug
 
