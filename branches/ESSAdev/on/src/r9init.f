@@ -5,6 +5,9 @@ C***********************************************************************
      >                   PROD,ERRFLAG)
 C***********************************************************************
 C CALCULATES THE MERCH HTS BASED ON TOTAL TREE HEIGHT BY FORST AND SPECIES
+C---------
+C  ON $Id$
+C---------
       CHARACTER*10 VOLEQ
       CHARACTER*2 PROD
       INTEGER SI,BA,VFLAG,ERRFLAG,IFORST
