@@ -2,7 +2,7 @@
      >                  LEN,MGMID,NPLT,SAMWT,ITITLE,IPTINV)
       IMPLICIT NONE
 C----------
-C  **SUMOUT--BASE/M        DATE OF LAST REVISION:  07/23/08
+C  $Id$
 C----------
 C
 C     WRITES SUMMARY OUTPUT.
@@ -97,7 +97,7 @@ C       WRITE HEADER FOR CS, LS, NE, OZ, SE, SN
           WRITE (JOSTND,12)
    12     FORMAT(//31X,'SUMMARY STATISTICS (PER HA OR STAND BASED ON ',
      &           'TOTAL STAND AREA)',
-     &    /1X,127(1H-),
+     &    /1X,145(1H-),
      &    /22X,'START OF SIMULATION PERIOD',20X,'REMOVALS',14X,
      &    'AFTER TREATMENT',9X,'GROWTH THIS PERIOD',
      &    /10X,50(1H-),1X,23(1H-),1X,26(1H-),2X,20(1H-),2X,
@@ -132,7 +132,7 @@ C     &    5('----- '),'---- ----- ---- ---- -----  ',
 C     &    '------  ----- -----  ----- ------')
    14 FORMAT(//31X,'SUMMARY STATISTICS (PER HA OR STAND BASED ON TOTAL',
      & ' STAND AREA)',/,1X,
-     &  134(1H-),/22X,'START OF SIMULATION PERIOD',21X,'REMOVALS',11X,
+     &  152(1H-),/22X,'START OF SIMULATION PERIOD',21X,'REMOVALS',11X,
      &  'AFTER TREATMENT',6X,'GROWTH THIS PERIOD',/10X,50(1H-),1X,
      &  23(1H-),1X,23(1H-),1X,18(1H-),3X,'MAI  ------',/10X,
      &  'NO OF',15X,'   TOP',
@@ -183,11 +183,8 @@ C
         X10 = IOSUM(5,I)*FT3pACRtoM3pHA
 	  IF (X10 .GE. 9999.0) X10 = -1.0  ! f6.1
 
-C        X11 = IOSUM(6,I)*FT3pACRtoM3pHA
-C	  IF (X10 .GE. 9999.0) X10 = -1.0  ! f6.1
-C  LEAVE MERCH BF IN IMPERIAL UNITS
-         X11 = IOSUM(6,I)/ACRtoHA
-	  IF (X11 .GE. 9999.0) X11 = -1.0  ! f6.1
+        X11 = IOSUM(6,I)*FT3pACRtoM3pHA
+	  IF (X11 .GE. 9999.0) X10 = -1.0  ! f6.1        
 
         X14 = IOSUM(11,I)*FT2pACRtoM2pHA
         IF (X14 .GE. 999.0)  X14 = -1.0  ! f5.1
@@ -195,7 +192,7 @@ C  LEAVE MERCH BF IN IMPERIAL UNITS
         X15 = ISDIAT(I)/ACRtoHA
 	  IF (X15 .GE. 9999.0) X15 = -1.0  ! f6.0
 	 
-	 X015=IOSUM(10,I)/ACRtoHA          ! F6.1
+	  X015=IOSUM(10,I)/ACRtoHA          ! F6.1
         IF (X015 .GE. 9999.0) X015= -1.0  ! f6.1
 
         X16 = IOSUM(12,I)*1.0
@@ -212,7 +209,7 @@ C  LEAVE MERCH BF IN IMPERIAL UNITS
 
         IF(LPRT)
      &  WRITE(JOSTND,20) IOSUM(1,I),IOSUM(2,I),
-     &              NINT(X3),
+     &                   NINT(X3),
      &                   X4,
      &                   X5,
      &                   X6,
@@ -224,8 +221,7 @@ C  LEAVE MERCH BF IN IMPERIAL UNITS
      &                   NINT(IOSUM(7,I)/ACRtoHA),
      &                   IOSUM(8,I)*FT3pACRtoM3pHA,
      &                   IOSUM(9,I)*FT3pACRtoM3pHA,
-C     &                   IOSUM(10,I)*FT3pACRtoM3pHA,
-     &                   X015,                       ! LEAVE BF IN IMPERIAL UNITS PER HA
+     &                   IOSUM(10,I)*FT3pACRtoM3pHA,
      &                   X14,
      &                   X15,
      &                   X16,
@@ -250,8 +246,7 @@ C     &                   IOSUM(10,I)*FT3pACRtoM3pHA,
      &                   NINT(IOSUM(7,I)/ACRtoHA),
      &                   IOSUM(8,I)*FT3pACRtoM3pHA,
      &                   IOSUM(9,I)*FT3pACRtoM3pHA,
-C     &                   IOSUM(10,I)*FT3pACRtoM3pHA,
-     &                   X015,            ! LEAVE BF IN IMPERIAL UNITS PER HA
+     &                   IOSUM(10,I)*FT3pACRtoM3pHA,
      &                   X14,
      &                   X15,
      &                   X16,
@@ -277,8 +272,7 @@ C     &                   IOSUM(10,I)*FT3pACRtoM3pHA,
      &                   NINT(IOSUM(7,I)/ACRtoHA),
      &                   IOSUM(8,I)*FT3pACRtoM3pHA,
      &                   IOSUM(9,I)*FT3pACRtoM3pHA,
-C     &                   IOSUM(10,I)/ACRtoHA,
-     &                   X015,                     ! LEAVE BF IN IMPERIAL UNITS PER HA
+     &                   IOSUM(10,I)/ACRtoHA,
      &                   X14,
      &                   X15,
      &                   X16,
@@ -303,8 +297,7 @@ C     &                   IOSUM(10,I)/ACRtoHA,
      &                   NINT(IOSUM(7,I)/ACRtoHA),
      &                   IOSUM(8,I)*FT3pACRtoM3pHA,
      &                   IOSUM(9,I)*FT3pACRtoM3pHA,
-C     &                   IOSUM(10,I)*FT3pACRtoM3pHA,
-     &                   X015,                       ! LEAVE BF IN IMPERIAL UNITS PER HA
+     &                   IOSUM(10,I)*FT3pACRtoM3pHA,
      &                   X14,
      &                   X15,
      &                   X16,
@@ -346,8 +339,8 @@ C
      &                   BCYMAI(I)*FT3pACRtoM3pHA,
      &                   IOSUM(18,I),IOSUM(19,I),IOSUM(20,I))
    20 FORMAT(1X,2I4,I6 ,F5.1,F6.0,F5.0,F5.1,F6.1,3F6.1,
-     &       I6,F6.1,F6.1,  F6.0, F4.1, F6.0, F5.0,F5.1
-     &       F6.1,I6, F5.1,F6.1,F8.1,1X,I3,1X,2I1)
+     &       I6,F6.1,F6.1,  F6.1, F5.1, F6.0, F5.0,F5.1
+     &       F6.1,I8,1x,F6.1,F6.1,1x,F6.1,1X,I3,1X,2I1)
  9014 FORMAT(2I4,F6.0,F5.1,2F6.0,F5.0,F5.1,2F6.1,F6.1,I5,F6.1,F5.1,F6.1,
      &       F5.1,F6.0,F5.0,F5.1,F6.1,I8,F7.1,F6.1,F7.1,1X,I3,1X,2I1)
 C
