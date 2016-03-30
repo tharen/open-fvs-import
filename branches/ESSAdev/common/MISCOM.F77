@@ -7,7 +7,7 @@ C
 *     Common block variables related to the dwarf mistletoe routines.
 *-----------------------------------------------------------------------
 C------
-C $Id
+C $Id$
 C------
 *
 *  Common block variables:
