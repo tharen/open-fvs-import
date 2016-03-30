@@ -20,7 +20,7 @@ endif()
 ## example 1: Single-variant GLOB: file(GLOB tobuild FVSiec_sourceList.txt)
 ## example 2: All-variant GLOB: file(GLOB tobuild FVS*_sourceList.txt)
 
-file(GLOB tobuild FVSon_sourceList.txt)
+file(GLOB tobuild FVSop_sourceList.txt)
 
 list(SORT tobuild)
 message(STATUS "tobuild = ${tobuild}")
@@ -107,7 +107,6 @@ set (OUTPUT_NAME ${prgName})
 set (includeDirs)
 set (CsourceSQL)
 set (CsourceFFE)
-##set (CsourceCFIM)
 set (FsourceFVS)
 set (FsourceMAIN)
 
@@ -152,7 +151,7 @@ list (APPEND includeDirs ${CMAKE_CURRENT_BINARY_DIR})
 
 include_directories(BEFORE ${includeDirs})
 
-#message(STATUS "includeDirs= ${includeDirs}")
+message(STATUS "includeDirs= ${includeDirs}")
 #message(STATUS "CsourceSQL= ${CsourceSQL}")
 #message(STATUS "CsourceFFE= ${CsourceFFE}")
 #message(STATUS "FsourceFVS= ${FsourceFVS}")
@@ -162,7 +161,6 @@ message(STATUS "FVSvariant = FVS${varName}")
 
 add_library(FVSsql SHARED ${CsourceSQL})
 add_library(FVSfofem SHARED ${CsourceFFE})
-##add_library(FVScfim SHARED ${CsourceCFIM})
 add_library(FVS_${varName} SHARED ${FsourceFVS})
 add_executable (${prgName} ${FsourceMAIN})
 
