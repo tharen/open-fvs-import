@@ -187,6 +187,7 @@
 ../common/COEFFS.F77
 ../common/CONTRL.F77
 ../common/CWDCOM.F77
+../common/DBSCOM.F77
 ../common/DBSTK.F77
 ../common/ECNCOM.F77
 ../common/ECON.F77
@@ -230,7 +231,6 @@
 ../dbs/src/dbsclose.f
 ../dbs/src/dbsclsum.f
 ../dbs/src/dbscmpu.f
-../dbs/src/DBSCOM.F77
 ../dbs/src/dbsdiags.f
 ../dbs/src/dbsdriv.f
 ../dbs/src/dbsecharv.f
