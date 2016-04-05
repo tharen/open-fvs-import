@@ -1,7 +1,7 @@
       SUBROUTINE ESTAB (KDT)
 	IMPLICIT NONE 
 C----------
-C STRP/M $ID$
+C $Id$
 C----------
 COMMONS
       INCLUDE 'PRGPRM.F77'
