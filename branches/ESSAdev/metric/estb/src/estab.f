@@ -1,7 +1,7 @@
       SUBROUTINE ESTAB (KDT)
       IMPLICIT NONE
 C----------
-C ESTB/M $ID$
+C $Id$
 C----------
 COMMONS
 C
