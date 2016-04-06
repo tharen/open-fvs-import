@@ -2,7 +2,6 @@
       IMPLICIT NONE
 C----------
 C  $Id$
-C  $Id$
 C----------
 C     PROCESSES THE FUELMODL KEYWORD AND THE FUELTRET KEYWORD.
 C
