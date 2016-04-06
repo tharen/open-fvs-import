@@ -2,7 +2,6 @@
       IMPLICIT NONE
 C----------
 C  $Id$
-C  $Id$
 C----------
 C     CALLED FROM: FMMAIN
 C     CALLS   FMSSEE
