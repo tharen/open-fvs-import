@@ -1,8 +1,9 @@
       SUBROUTINE FMSOUT (IYR)
       IMPLICIT NONE
 C----------
-C  **FMSOUT--FIRE/M   DATE OF LAST REVISION:  04/08/14
-*     SINGLE-STAND VERSION
+C $Id$
+C----------
+
 *     CALLED FROM: FMMAIN
 *     CALLS:   FMSVOL
 ***********************************************************************
