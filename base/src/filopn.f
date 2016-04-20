@@ -15,6 +15,7 @@ C
       INCLUDE 'ECON.F77'
       INCLUDE 'SVDATA.F77'
       INCLUDE 'FVSSTDCM.F77'
+      INCLUDE 'GLBLCNTL.F77'
 
 COMMONS
 C
@@ -141,6 +142,10 @@ C
          IF (IRTNCD.NE.0) RETURN
          RETURN
       ENDIF
+C
+C     copy keyword filename to GLBCNTL block so it can be used by SNG etc.
+C
+      keywordfile = KWDFIL
 C----------
 C     DBS EXTENSION NEEDS THIS FILENAME WITH EXTENSION FOR CASES TABLE
 C----------
