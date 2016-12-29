@@ -30,7 +30,17 @@ COMMONS
      >     0.026,  !10 = red alder
      >     0.044,  !11 = black cottonwood
      >     0.044,  !12 = other hardwoods
-     >     0.047/  !13 = other softwoods
+     >     0.047,  !13 = other softwoods
+     >     0.047,  !14 = TAMARACK (TA)               
+     >     0.047,  !15 = LUTZ’S SPRUCE (LS)(NEW CODE)
+     >     0.047,  !16 = BLACK SPRUCE (BE)           
+     >     0.047,  !17 = ALDER SPECIES (AD)          
+     >     0.047,  !18 = RED ALDER (RA)              
+     >     0.047,  !19 = PAPER BIRCH (PB)            
+     >     0.047,  !20 = BALSAM POPLAR (BA)          
+     >     0.047,  !21 = QUAKING ASPEN (AS)          
+     >     0.047,  !22 = WILLOW SPECIES (WI)         
+     >     0.047/  !23 = SCOULER’S WILLOW (SU)       
 
       FMBRKT = DBH*B1(ISP)
 

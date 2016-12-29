@@ -81,7 +81,17 @@ C                  herbs, shrubs
      >             0.20, 0.20, !10 = red alder    
      >             0.25, 0.25, !11 = black cottonwood - use QA Ottmar and others 2000b   
      >             0.25, 0.25, !12 = other hardwoods - use QA Ottmar and others 2000b             
-     >             0.15, 0.10/ !13 = other softwoods (use PSF)
+     >             0.15, 0.10, !13 = other softwoods (use PSF)
+     >             0.15, 0.10, !14 = TAMARACK (TA)               
+     >             0.15, 0.10, !15 = LUTZ’S SPRUCE (LS)(NEW CODE)
+     >             0.15, 0.10, !16 = BLACK SPRUCE (BE)           
+     >             0.15, 0.10, !17 = ALDER SPECIES (AD)          
+     >             0.15, 0.10, !18 = RED ALDER (RA)              
+     >             0.15, 0.10, !19 = PAPER BIRCH (PB)            
+     >             0.15, 0.10, !20 = BALSAM POPLAR (BA)          
+     >             0.15, 0.10, !21 = QUAKING ASPEN (AS)          
+     >             0.15, 0.10, !22 = WILLOW SPECIES (WI)         
+     >             0.15, 0.10/ !23 = SCOULER’S WILLOW (SU)       
 
 
 C     INITIAL LIVE FUEL LOADING FOR 'INTIALIZING STANDS WITH 10% COVER
@@ -100,7 +110,17 @@ C                  herbs, shrubs
      >             0.40, 2.00, !10 = red alder
      >             0.18, 1.32, !11 = black cottonwood - use QA Ottmar and others 2000b     
      >             0.18, 1.32, !12 = other hardwoods - use QA Ottmar and others 2000b      
-     >             0.30, 2.00/ !13 = other softwoods (use PSF)
+     >             0.30, 2.00, !13 = other softwoods (use PSF)
+     >             0.30, 2.00, !14 = TAMARACK (TA)               
+     >             0.30, 2.00, !15 = LUTZ’S SPRUCE (LS)(NEW CODE)
+     >             0.30, 2.00, !16 = BLACK SPRUCE (BE)           
+     >             0.30, 2.00, !17 = ALDER SPECIES (AD)          
+     >             0.30, 2.00, !18 = RED ALDER (RA)              
+     >             0.30, 2.00, !19 = PAPER BIRCH (PB)            
+     >             0.30, 2.00, !20 = BALSAM POPLAR (BA)          
+     >             0.30, 2.00, !21 = QUAKING ASPEN (AS)          
+     >             0.30, 2.00, !22 = WILLOW SPECIES (WI)         
+     >             0.30, 2.00/ !23 = SCOULER’S WILLOW (SU)       
 
 C     INITIAL FUEL LOADING BASED ON FIA FOREST TYPE CODE
 C     THIS CAN BE MODIFIED BY THE *FUELINIT** KEYWORD)
