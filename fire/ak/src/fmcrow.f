@@ -71,7 +71,8 @@ C    12 = other hardwoods        eastern cottonwood         17
 C    13 = other softwoods        grand fir         4 
 C --------------------------------------------------------------
 
-      DATA ISPMAP /18,7,4,24,6,7,11,18,1,23,17,17,4/
+      DATA ISPMAP /18,7,4,24,6,7,11,18,1,23,17,17,4,
+     &              4,4,4,4,4,4,4,4,4,4/
 
 C     CHECK FOR DEBUG
 

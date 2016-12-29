@@ -52,7 +52,9 @@ C   9=AF, 10=RA, 11=CW, 12=OH, 13=OS
 C----------
       DATA VARADJ/ 0.500, 0.100, 0.300, 0.300, 0.100,
      &             0.300, 0.700, 0.300, 0.100, 0.500,
-     &             0.900, 0.500, 0.700/
+     &             0.900, 0.500, 0.700, 0.700, 0.700,
+     &             0.700, 0.700, 0.700, 0.700, 0.700,
+     &             0.700, 0.700, 0.700/
 C----------
 C ADJUST = FINAL SCALAR ADJUSTMENT NEEDED TO SCALE MORTALITY VALUES
 C          TO ACHIEVE THE DESIRED MORTALITY LEVEL

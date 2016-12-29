@@ -322,6 +322,25 @@ C         black cottonwood / other hardwoods
             ENDDO
             DKRCLS(I)  = 4
             LSW(I)     = .FALSE.
+C         pacific silver fir / other softwoods
+C  SET VALUES FOR SPECIES 14-23 UNTIL
+C  THE SPECIES HAVE BEEN PARAMETERIZED
+          CASE DEFAULT
+
+            V2T(I)     = 24.9
+            LEAFLF(I)  = 7
+            ALLDWN(I)  = 30
+            DECAYX(I)  = 1
+            FALLX(I)   = 1
+            DO J= 1,4
+              HTX(I,J) = 1
+            ENDDO
+            DKRCLS(I)  = 3
+            LSW(I)     = .TRUE.
+
+
+
+
 
         END SELECT
 
