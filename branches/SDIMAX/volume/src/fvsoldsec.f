@@ -1,0 +1,19 @@
+      SUBROUTINE FVSOLDSEC(ISPC,VN,D,H)
+      IMPLICIT NONE
+C----------
+C VOLUME $Id: fvsoldsec.f 1744 2016-03-28 21:01:34Z rhavis $
+C----------
+      INTEGER ISPC
+      REAL H,D,VN
+C ENTRY SECGRO COMPUTES VOLUMES FOR SECOND GROWTH TREES
+C (D GE 4 AND H GE 18) UP TO (D LE 9 AND H LT 40)
+C----------
+      VN=-5.577 + 1.9067 * ALOG(D) + 0.9416 * ALOG(H)
+      IF (VN .LE. 0.0) GO TO 120
+      VN = EXP(VN)
+      GO TO 130
+  120 CONTINUE
+      VN=0.0
+  130 CONTINUE
+      RETURN
+      END
