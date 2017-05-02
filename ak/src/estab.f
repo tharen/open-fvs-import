@@ -1,7 +1,7 @@
       SUBROUTINE ESTAB (KDT)
       IMPLICIT NONE
 C----------
-C AK $Id$
+C AK $Id: estab.f 1260 2014-06-18 19:59:18Z rhavis@msn.com $
 C----------
 COMMONS
 C

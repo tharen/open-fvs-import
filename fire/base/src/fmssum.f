@@ -1,7 +1,7 @@
       SUBROUTINE FMSSUM (IYR)
       IMPLICIT NONE
 C----------
-C  $Id$
+C  $Id: fmssum.f 1577 2015-08-25 20:51:41Z lancedavid $
 C----------
 C
 C  Purpose:

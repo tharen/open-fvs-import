@@ -1,7 +1,7 @@
       SUBROUTINE CHGET
       IMPLICIT NONE
 C----------
-C  $Id$
+C  $Id: chget.f 1577 2015-08-25 20:51:41Z lancedavid $
 C----------
 C
 C     READ THE ALL-DATA CHARACTER DATA FROM THE DA FILE.

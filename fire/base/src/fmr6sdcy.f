@@ -1,7 +1,7 @@
       SUBROUTINE FMR6SDCY (KSP, DBH, X, Y, SML)
       IMPLICIT NONE
 C----------
-C  $Id$
+C  $Id: fmr6sdcy.f 1535 2015-06-12 15:28:10Z rhavis@msn.com $
 C----------
 C     CALLED FROM: FMSNAG
 C

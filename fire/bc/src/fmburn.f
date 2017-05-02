@@ -1,7 +1,7 @@
       SUBROUTINE FMBURN (IYR, FMD, LNMOUT)
       IMPLICIT NONE
 C
-C  $Id$
+C  $Id: fmburn.f 1318 2014-09-09 16:08:42Z sarebain@fs.fed.us $
 C
 C----------
 C  **FMBURN  FIRE-BC

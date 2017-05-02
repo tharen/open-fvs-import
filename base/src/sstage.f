@@ -1,7 +1,7 @@
       SUBROUTINE SSTAGE(INBA,INICYCLE,LSUPRT)
       IMPLICIT NONE
 C----------
-C  $Id$
+C  $Id: sstage.f 1948 2017-04-19 15:04:25Z mshettles521 $
 C----------
 C
 C   THIS SUBROUTINE CALCULATES THE STAND STRUCTURAL STAGE CLASSES, AS
@@ -151,11 +151,12 @@ C-----------
 
       IF(NTODO.GE.2)THEN
         GLOCCC=1
-        CALL OPFIND(1,MYACTS(2),NTODO)
-        CALL OPGET(1,1,IDATE,IACTK,NP,PRM)
+        CALL OPFIND(2,MYACTS(2),NTODO)
+        CALL OPGET(2,1,IDATE,IACTK,NP,PRM)
         IF(ICYCLE.EQ.1)THEN
           CCCOEF=PRM(1)
-     			GOTO 4
+          TMPCCC=PRM(1)
+          GOTO 4
         ELSEIF(ICYCLE.GT.1)THEN
           TMPCCC=PRM(1)
           GOTO 4

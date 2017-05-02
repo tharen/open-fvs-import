@@ -2,7 +2,7 @@
      1                  LBWEGO,LCVATV,LBGCGO)
       IMPLICIT NONE
 C----------
-C  $Id$
+C  $Id: gradd.f 767 2013-04-10 22:29:22Z rhavis@msn.com $
 C----------
 C
 C     UPDATES TREE DESCRIPTIONS, COMPUTES END-OF-CYCLE SHRUB AND

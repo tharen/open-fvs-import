@@ -1,7 +1,7 @@
       FUNCTION ISTLNB (STRING)
       IMPLICIT NONE
 C----------
-C  $Id$
+C  $Id: istlnb.f 767 2013-04-10 22:29:22Z rhavis@msn.com $
 C----------
 C
 C     FIND THE LOCATION OF THE LAST NON-BLANK CHAR IN A STRING.

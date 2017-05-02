@@ -1,4 +1,4 @@
-## $Id$
+## $Id: CMakeLists.txt 1531 2015-06-08 22:34:53Z rhavis@msn.com $
 
 ## Towards using cmake! NCrookston July 24 2012
 

@@ -1,7 +1,7 @@
       SUBROUTINE GRINIT
       IMPLICIT NONE
 C----------
-C EC $Id$
+C EC $Id: grinit.f 1930 2017-04-03 19:53:50Z mshettles521 $
 C----------
 C
 C  INITIALIZE PROGNOSIS MODEL VARIABLES
@@ -177,7 +177,7 @@ C----------
    5  CONTINUE
       LFLAGV = .FALSE.
       LBAMAX = .FALSE.
-      LZEIDE = .FALSE.
+      LZEIDE = .TRUE.
       DBHMIN(7) = 6.0
       BFMIND(7) = 6.0
       CFMIN = 0.

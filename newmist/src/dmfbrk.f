@@ -1,7 +1,7 @@
       SUBROUTINE DMFBRK
       IMPLICIT NONE
 C----------
-C  $Id$
+C  $Id: dmfbrk.f 594 2013-03-08 21:36:18Z drobinsonessa@gmail.com $
 C----------
 C  **DMFBRK -- NISI  Date of last revision April 7 1994
 C----------------------------------------------------------------------

@@ -1,6 +1,6 @@
       function success(returnCode)
 
-C $Id$
+C $Id: dbshelpers.f 295 2012-05-31 18:52:14Z ncrookston.fs@gmail.com $
 
       INCLUDE 'DBSTYPEDEFS.F77'
             integer(SQLRETURN_KIND), intent(in) :: returnCode

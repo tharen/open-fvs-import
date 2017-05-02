@@ -1,7 +1,7 @@
       SUBROUTINE EXMIST
       IMPLICIT NONE
 C----------
-C  $Id$
+C  $Id: exmist.f 1577 2015-08-25 20:51:41Z lancedavid $
 C----------
 C  Purpose:
 C     Dummy external references for dwarf mistletoe model routines. A

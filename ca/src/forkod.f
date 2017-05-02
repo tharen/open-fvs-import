@@ -1,7 +1,7 @@
       SUBROUTINE FORKOD
       IMPLICIT NONE
 C----------
-C CA $Id$
+C CA $Id: forkod.f 1487 2015-04-20 14:37:21Z rhavis@msn.com $
 C----------
 C
 C     TRANSLATES FOREST CODE INTO A SUBSCRIPT, IFOR, AND IF

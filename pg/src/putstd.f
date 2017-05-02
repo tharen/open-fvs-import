@@ -1,7 +1,7 @@
       SUBROUTINE PUTSTD 
       IMPLICIT NONE
 C----------
-C  $Id$
+C  $Id: putstd.f 1930 2017-04-03 19:53:50Z mshettles521 $
 C----------
 C
 C     STASH A STAND TO THE MASS STORAGE

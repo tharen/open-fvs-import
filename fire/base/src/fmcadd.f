@@ -1,7 +1,7 @@
       SUBROUTINE FMCADD
       IMPLICIT NONE
 C----------
-C  $Id$
+C  $Id: fmcadd.f 1310 2014-07-29 22:27:54Z sarebain@fs.fed.us $
 C----------
 C     CALLED FROM: FMMAIN
 C     CALLS        

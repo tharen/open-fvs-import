@@ -180,7 +180,7 @@ C----------
     5 CONTINUE
       LFLAGV = .FALSE.
       LBAMAX = .FALSE.
-      LZEIDE = .FALSE.
+      LZEIDE = .TRUE.
       CFMIN = 0.
       TCFMIN = 0.
       BFMIN = 0.

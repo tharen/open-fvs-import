@@ -1,7 +1,7 @@
       SUBROUTINE EVAGE (IDTE)
       IMPLICIT NONE
 C----------
-C  $Id$
+C  $Id: evage.f 767 2013-04-10 22:29:22Z rhavis@msn.com $
 C----------
 C
 C     CALLED FROM EVMON, AGES THE EVENTS WHICH HAVE ALREADY OCCURED

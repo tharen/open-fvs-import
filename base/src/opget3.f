@@ -2,7 +2,7 @@
      >                   PRMS,KODE)
       IMPLICIT NONE
 C----------
-C  $Id$
+C  $Id: opget3.f 767 2013-04-10 22:29:22Z rhavis@msn.com $
 C----------
 C
 C     OPTION PROCESSING ROUTINE - NL CROOKSTON - JUNE 1981 - MOSCOW

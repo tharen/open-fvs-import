@@ -1,7 +1,7 @@
       PROGRAM MAIN
       IMPLICIT NONE
 C----------
-C  $Id$
+C  $Id: main.f 829 2013-05-08 20:55:27Z rhavis@msn.com $
 C----------
       INTEGER rtnCode,lenCL,i
 C

@@ -1,7 +1,7 @@
       SUBROUTINE EVTACT
       IMPLICIT NONE
 C----------
-C  $Id$
+C  $Id: evtact.f 1046 2013-09-16 20:00:33Z rhavis@msn.com $
 C----------
 C
 C     ESTABLISHES THE LINKAGE BETWEEN AN EVENT, REFERENCED BY THE MOST

@@ -1,7 +1,7 @@
       SUBROUTINE FMPPPUT (WK3, IPNT, ILIMIT)
       IMPLICIT NONE
 C----------
-C  $Id$
+C  $Id: fmppput.f 1531 2015-06-08 22:34:53Z rhavis@msn.com $
 C----------
 C  Purpose:
 C     Put (write) the Fire Model data for a given stand to DA file.

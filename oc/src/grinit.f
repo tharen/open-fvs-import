@@ -119,7 +119,7 @@ C----------
    5  CONTINUE
       LFLAGV = .FALSE.
       LBAMAX = .FALSE.
-      LZEIDE = .FALSE.
+      LZEIDE = .TRUE.
       DBHMIN(11) = 6.0
       BFMIND(11) = 6.0
       CFMIN = 0.

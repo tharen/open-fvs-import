@@ -1,7 +1,7 @@
       SUBROUTINE FVSHANNBARE(VN,VM,VMAX,ISPC,D,H,CTKFLG)
       IMPLICIT NONE
 C----------
-C VOLUME $Id$
+C VOLUME $Id: fvshannbare.f 1744 2016-03-28 21:01:34Z rhavis $
 C----------
 C  This routine calculates volumes for the CR variant using
 C  the Hann and Bare method METHC = 8, R2 forestes use coefficients

@@ -43,7 +43,7 @@ C
       REAL RSISP,A,B,C,D,XTMP
       CHARACTER FORST*2,DIST*2,PROD*2,VAR*2,VOLEQ*10,BFTOP*1
       LOGICAL DEBUG
-      REAL SIMAX(MAXSP), SIMIN(MAXSP)
+      REAL SIMAX(MAXSP), SIMIN(MAXSP), SDICON(90)
       INTEGER ISNSIS(43),ISNGRP(43),MAPSI(MAXSP), MGSISP(9)
       REAL MGRSI(9), MGSI, MGSPIX, MGSION
 C----------
@@ -114,6 +114,17 @@ C
      &  90,  105,  115,  115,  115,  125,   65,   65,   95,   65,
      &  95,   75,  115,  115,  115,  125,   85,  115,   65,   95,
      & 110,   80,   90,   90,   90,   90,   90,   55,   55,   55/
+C----------
+C  LOAD SDI MAXIMUM VALUES ---
+C----------
+      DATA SDICON /655.,354.,412.,499.,490.,385.,490.,332.,398.,
+     & 398.,310.,529.,480.,499.,692.,623.,518.,371.,344.,421.,590.,
+     & 371.,371.,400.,350.,375.,276.,492.,420.,422.,257.,147.,364.,
+     & 414.,408.,423.,414.,338.,492.,430.,155.,283.,283.,430.,478.,
+     & 492.,415.,492.,492.,492.,422.,277.,726.,430.,704.,304.,164.,
+     & 492.,499.,648.,520.,384.,361.,315.,342.,405.,326.,387.,384.,
+     & 326.,417.,336.,365.,417.,414.,342.,311.,370.,410.,343.,447.,
+     & 492.,526.,282.,263.,282.,227.,354.,492.,421./
 C-----------
 C  SEE IF WE NEED TO DO SOME DEBUG.
 C-----------
@@ -352,6 +363,16 @@ C----------
         IF(IFORST.LT.10)FORST(1:1)='0'
       ENDIF
 C
+      DO 30 I=1,MAXSP
+      IF(SDIDEF(I) .LE. 0.) THEN
+        IF(BAMAX .GT. 0.)THEN
+          SDIDEF(I)=BAMAX/(0.5454154*(PMSDIU/100.))
+        ELSE
+        	SDIDEF(I) = SDICON(I)
+        ENDIF
+      ENDIF
+   30 CONTINUE
+   
       DO ISPC=1,MAXSP
       IF(IREGN.EQ.8)THEN
         IF(DBHMIN(ISPC).LE.0.)THEN                 !SET **DBHMIN** DEFAULT

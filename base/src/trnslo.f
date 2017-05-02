@@ -1,7 +1,7 @@
       SUBROUTINE TRNSLO
       IMPLICIT NONE
 C----------
-C  $Id$
+C  $Id: trnslo.f 767 2013-04-10 22:29:22Z rhavis@msn.com $
 C----------
 C  TRNSLO DECODES THE INPUT SLOPE VALUE TO A RATIO.
 C----------

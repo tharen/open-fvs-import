@@ -1,7 +1,7 @@
       SUBROUTINE EVTSTV (IUSERV)
       IMPLICIT NONE
 C----------
-C  $Id$
+C  $Id: evtstv.f 1083 2013-11-07 22:29:48Z rhavis@msn.com $
 C----------
 C
 C     CALLED FROM EVMON, LOADS AND MAINTAINS THE TEST VARIABLE TABLES.

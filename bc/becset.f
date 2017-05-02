@@ -1,7 +1,7 @@
       SUBROUTINE BECSET
       IMPLICIT NONE
 C----------
-C  $Id$
+C  $Id: becset.f 767 2013-04-10 22:29:22Z rhavis@msn.com $
 C----------
 C
 C     THE PRINCIPAL TASK IS TO RESOLVE SITE AND BEC INFORMATION

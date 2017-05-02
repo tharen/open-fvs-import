@@ -1,6 +1,6 @@
 // cfim.cpp : Defines the entry point for the console application.
 //----------
-//  $Id$
+//  $Id: cfim.cpp 1276 2014-07-07 14:59:41Z sarebain@fs.fed.us $
 //----------
 // Cruz, M.G.; Butler, B.W.; Alexander, M.E.; Viegas, D.X. 2006.
 // Development and evaluation of a semi-physical crown fire initiation model.

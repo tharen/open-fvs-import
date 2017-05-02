@@ -2,7 +2,7 @@
      >                  PSBURN)
       IMPLICIT NONE
 C----------
-C  $Id$
+C  $Id: fmeff.f 1521 2015-05-15 15:07:40Z ncrookston.fs@gmail.com $
 C----------
 *     SINGLE-STAND VERSION
 *     CALLED FROM: FMBURN

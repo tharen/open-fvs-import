@@ -1,7 +1,7 @@
       SUBROUTINE CHPUT
       IMPLICIT NONE
 C----------
-C  $Id$
+C  $Id: chput.f 1577 2015-08-25 20:51:41Z lancedavid $
 C----------
 C
 C     WRITE THE ALL-DATA CHARACTER DATA TO THE DA FILE.

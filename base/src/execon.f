@@ -1,7 +1,7 @@
       SUBROUTINE EXECON
       IMPLICIT NONE
 C----------
-C  $Id$
+C  $Id: execon.f 1542 2015-06-22 18:05:29Z gary.dixon24 $
 C-------
 C
 C     EXTRA EXTERNAL REFERENCES FOR THE ECON EXTENSION.

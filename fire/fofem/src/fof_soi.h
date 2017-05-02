@@ -1,5 +1,5 @@
 //
-// $Id$
+// $Id: fof_soi.h 767 2013-04-10 22:29:22Z rhavis@msn.com $
 //
 
 /* #define e_mplus1 14     */

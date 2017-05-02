@@ -1,7 +1,7 @@
       SUBROUTINE OPCYCL (NCYC,IY)
       IMPLICIT NONE
 C----------
-C  $Id$
+C  $Id: opcycl.f 767 2013-04-10 22:29:22Z rhavis@msn.com $
 C----------
 C
 C     OPTION PROCESSING ROUTINE - NL CROOKSTON - JAN 1981 - MOSCOW

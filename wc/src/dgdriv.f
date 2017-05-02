@@ -1,7 +1,7 @@
       SUBROUTINE DGDRIV
       IMPLICIT NONE
 C----------
-C WC $Id$
+C WC $Id: dgdriv.f 1858 2016-07-19 13:11:09Z rhavis $
 C----------
 C  THIS SUBROUTINE SERVES TWO PURPOSES:
 C

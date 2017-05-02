@@ -5,7 +5,7 @@
      &      reprodValue, reprodValueCalculated, ft3Volume, bfVolume,
      &      discountRate, sevInput, sevInputUsed)
 
-C $Id$
+C $Id: dbsecsum.f 1389 2014-12-19 21:46:29Z rhavis@msn.com $
 
 
       implicit none

@@ -1,4 +1,4 @@
-c $Id$
+c $Id: cmdline.f 1744 2016-03-28 21:01:34Z rhavis $
 
 c     This is a collection of routines that provide an interface to
 c     elements of the FVS command line parameters, including the stop/

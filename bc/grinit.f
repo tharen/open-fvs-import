@@ -1,7 +1,7 @@
        SUBROUTINE GRINIT
        IMPLICIT NONE
 C----------
-C  $Id$
+C  $Id: grinit.f 1594 2015-09-18 19:59:19Z rhavis $
 C----------
 C
 C  INITIALIZE PROGNOSIS MODEL VARIABLES
@@ -103,7 +103,7 @@ C     INITIAL VALUES FOR "Version 2" active and processed; respectively
       DBHMIN(7) = 12.5 * CMtoIN    ! PL uses 12.5 cm 
       LFLAGV = .FALSE.
       LBAMAX = .FALSE.
-      LZEIDE = .FALSE.
+      LZEIDE = .TRUE.
       CFMIN = 0.
       TCFMIN =0.
       BFMIN = 0.

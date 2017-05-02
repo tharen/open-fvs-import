@@ -1,7 +1,7 @@
 // C language routines that link ODBC to FVS
 // NLCrookston -- RMRS -- Moscow -- October 2011
 
-//  $Id$
+//  $Id: fvsSQL.c 1425 2015-02-09 17:59:18Z ncrookston.fs@gmail.com $
 
 #ifdef WINDOWS
 #include <windows.h>

@@ -1,7 +1,7 @@
       SUBROUTINE ERRGRO (LRETRN,IERRN)
       IMPLICIT NONE
 C----------
-C  $Id$
+C  $Id: errgro.f 1366 2014-11-26 16:45:29Z rhavis@msn.com $
 C----------
 C
 C     ERROR PROCESSOR FOR THE FOREST VEGETATION SIMULATOR.

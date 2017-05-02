@@ -1,8 +1,8 @@
       SUBROUTINE FMPOCR(IYR,ICALL)
       IMPLICIT NONE
 C----------
-C  $Id$
-C  $Id$
+C  $Id: fmpocr.f 1453 2015-03-23 21:30:27Z sarebain@fs.fed.us $
+C  $Id: fmpocr.f 1453 2015-03-23 21:30:27Z sarebain@fs.fed.us $
 C----------
 C     CALLED FROM: FMBURN
 C

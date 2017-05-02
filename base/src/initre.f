@@ -1,7 +1,7 @@
       SUBROUTINE INITRE
       IMPLICIT NONE
 C----------
-C  $Id$
+C  $Id: initre.f 1930 2017-04-03 19:53:50Z mshettles521 $
 C----------
 C
 C  THIS ROUTINE PROCESSES OPTIONS AND INITIATES THE

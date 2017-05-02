@@ -1,8 +1,8 @@
       SUBROUTINE FMSNAG (IYR, YR1)
       IMPLICIT NONE
 C----------
-C  $Id$
-C  $Id$
+C  $Id: fmsnag.f 1531 2015-06-08 22:34:53Z rhavis@msn.com $
+C  $Id: fmsnag.f 1531 2015-06-08 22:34:53Z rhavis@msn.com $
 C----------
 C     CALLED FROM: FMMAIN
 C     CALLS   FMSSEE

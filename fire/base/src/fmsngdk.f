@@ -1,7 +1,7 @@
       SUBROUTINE FMSNGDK(VVER,KSP,D,DKTIME)
       IMPLICIT NONE
 C----------
-C  $Id$
+C  $Id: fmsngdk.f 1640 2015-12-10 23:30:14Z rhavis $
 C----------
 C
 C     SNAG DECAY PREDICTION

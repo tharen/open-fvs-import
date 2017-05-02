@@ -1,7 +1,7 @@
       SUBROUTINE FVSOLDSEC(ISPC,VN,D,H)
       IMPLICIT NONE
 C----------
-C VOLUME $Id$
+C VOLUME $Id: fvsoldsec.f 1744 2016-03-28 21:01:34Z rhavis $
 C----------
       INTEGER ISPC
       REAL H,D,VN

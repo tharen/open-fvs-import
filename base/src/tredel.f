@@ -1,7 +1,7 @@
       SUBROUTINE TREDEL (IVACT,INDEX)
       IMPLICIT NONE
 C----------
-C  $Id$
+C  $Id: tredel.f 767 2013-04-10 22:29:22Z rhavis@msn.com $
 C----------
 C
 C     DELETES TREE RECORDS BY MOVING TREES FROM THE BOTTOM OF THE LIST

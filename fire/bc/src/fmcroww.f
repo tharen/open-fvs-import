@@ -1,7 +1,7 @@
       SUBROUTINE FMCROWW (SPI,D,H,ITRNC,IC,HP,SG,XV)
       IMPLICIT NONE
 C
-C  $Id$
+C  $Id: fmcroww.f 767 2013-04-10 22:29:22Z rhavis@msn.com $
 C
 C----------
 C  **FMCROWW  FIRE-BC

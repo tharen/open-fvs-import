@@ -1,7 +1,7 @@
       SUBROUTINE FILOPN
       IMPLICIT NONE
 C----------
-C  $Id$
+C  $Id: filopn.f 1744 2016-03-28 21:01:34Z rhavis $
 C----------
 C
 C  THIS ROUTINE OPENS THE FILES FOR THE PROGNOSIS MODEL.

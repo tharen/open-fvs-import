@@ -1,7 +1,7 @@
       SUBROUTINE DBSEXECSQL (SQLCMD,ConnHndl,LSCHED,IRC)
       IMPLICIT NONE
 C
-C $Id$
+C $Id: dbsexecsql.f 1238 2014-05-23 20:04:10Z ncrookston.fs@gmail.com $
 C
 C
 C     AUTH: D. GAMMEL -- RMRS -- MAY 2003

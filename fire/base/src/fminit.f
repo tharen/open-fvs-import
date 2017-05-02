@@ -1,7 +1,7 @@
       SUBROUTINE FMINIT
       IMPLICIT NONE
 C----------
-C  $Id$
+C  $Id: fminit.f 1173 2014-03-25 20:33:38Z sarebain@fs.fed.us $
 C----------
 C  PURPOSE:
 C      INITIALIZE VARIABLES FOR THE FIRE MODEL

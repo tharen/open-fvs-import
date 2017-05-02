@@ -2,7 +2,7 @@
      >                   ARRAY,IRECNT,KODE,KARD,LFLAG,LKECHO)
       IMPLICIT NONE
 C----------
-C  $Id$
+C  $Id: keyrdr.f 968 2013-07-12 18:49:16Z rhavis@msn.com $
 C----------
 C
 C     KEYWORD CARD READER FOR THE STAND PROGNOSIS SYSTEM

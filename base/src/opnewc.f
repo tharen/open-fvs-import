@@ -2,7 +2,7 @@
      >                   IPRMPT,IRECNT,ICYC)
       IMPLICIT NONE
 C----------
-C  $Id$
+C  $Id: opnewc.f 1046 2013-09-16 20:00:33Z rhavis@msn.com $
 C----------
 C
 C     OPTION PROCESSING ROUTINE - NL CROOKSTON - JULY 1988 - MOSCOW

@@ -1,7 +1,7 @@
       SUBROUTINE SVNTR (XP,NP)
       IMPLICIT NONE
 C----------
-C  $Id$
+C  $Id: svntr.f 767 2013-04-10 22:29:22Z rhavis@msn.com $
 C----------
 C
 C     STAND VISUALIZATION GENERATION

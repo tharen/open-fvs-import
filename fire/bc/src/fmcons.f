@@ -1,7 +1,7 @@
       SUBROUTINE FMCONS(FMOIS,BTYPE,PLAREA,IYR,ICALL,PSMOKE,PSBURN)
       IMPLICIT NONE
 C
-C  $Id$
+C  $Id: fmcons.f 1316 2014-08-28 21:37:59Z sarebain@fs.fed.us $
 C
 C----------
 C  **FMCONS   FIRE-BC

@@ -1,7 +1,7 @@
       SUBROUTINE STASH (BUFFER,ILIMIT)
       IMPLICIT NONE
 C----------
-C	$Id$
+C	$Id: stash.f 452 2012-11-08 22:36:12Z ncrookston.fs@gmail.com $
 C----------
 C
 C     STASH A BUFFER FULL OF DATA

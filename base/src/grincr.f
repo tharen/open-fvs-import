@@ -2,7 +2,7 @@
      1                   LBWEGO,LCVATV,LBGCGO)
       IMPLICIT NONE
 C----------
-C  $Id$
+C  $Id: grincr.f 1930 2017-04-03 19:53:50Z mshettles521 $
 C----------
 C
 C     COMPUTES GROWTH AND MORTALITY ON EACH TREE RECORD.

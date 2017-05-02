@@ -1,6 +1,6 @@
 CODE SEGMENT FMSNGL
 C----------
-C  $Id$
+C  $Id: FMSNGL.F77 767 2013-04-10 22:29:22Z rhavis@msn.com $
 C----------
 C  **FMSNGL FIRE
 C----------

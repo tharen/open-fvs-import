@@ -1,7 +1,7 @@
       SUBROUTINE SPESRT
       IMPLICIT NONE
 C----------
-C  $Id$
+C  $Id: spesrt.f 767 2013-04-10 22:29:22Z rhavis@msn.com $
 C----------
 C
 C     REALIGNS THE SPECIES-ORDER SORT AFTER THE TREE LIST HAS

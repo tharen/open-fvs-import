@@ -2,7 +2,7 @@
      -  SDH,SDS,YRLAST,KODE)
       IMPLICIT NONE
 C
-C $Id$
+C $Id: dbsfmdsnag.f 1389 2014-12-19 21:46:29Z rhavis@msn.com $
 C
 C     PURPOSE: TO POPULATE A DATABASE WITH THE DETAILED SNAG REPORT
 C              INFORMATION

@@ -1,7 +1,7 @@
       SUBROUTINE DMOPTS
       IMPLICIT NONE      
 C----------
-C  $Id$
+C  $Id: dmopts.f 594 2013-03-08 21:36:18Z drobinsonessa@gmail.com $
 C----------
 C **DMOPTS -- NISI  Date of last revision: April 10 1994 
 C----------------------------------------------------------------------

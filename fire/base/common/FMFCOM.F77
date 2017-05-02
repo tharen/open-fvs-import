@@ -1,6 +1,6 @@
 C.... Code segment FMFCOM.
 C----------
-C  $Id$
+C  $Id: FMFCOM.F77 1521 2015-05-15 15:07:40Z ncrookston.fs@gmail.com $
 C----------
 C  **FMFCOM  FIRE
 C----------

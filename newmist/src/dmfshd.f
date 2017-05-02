@@ -1,7 +1,7 @@
       SUBROUTINE DMFSHD
       IMPLICIT NONE
 C----------
-C  $Id$
+C  $Id: dmfshd.f 594 2013-03-08 21:36:18Z drobinsonessa@gmail.com $
 C----------
 C **DMFSHD --  DATE OF LAST REVISION: 02/16/96     
 C----------

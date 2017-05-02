@@ -1,7 +1,7 @@
       SUBROUTINE COMPRS (NCLAS,PN1)
       IMPLICIT NONE
 C----------
-C  $Id$
+C  $Id: comprs.f 1260 2014-06-18 19:59:18Z rhavis@msn.com $
 C----------
 C
 C     TREE LIST COMPRESSION ROUTINE FOR THE PROGNOSIS

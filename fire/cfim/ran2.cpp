@@ -1,5 +1,5 @@
 //----------
-//  $Id$
+//  $Id: ran2.cpp 767 2013-04-10 22:29:22Z rhavis@msn.com $
 //----------
 #include "stdafx.h"
 

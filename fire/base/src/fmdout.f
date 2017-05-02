@@ -1,8 +1,8 @@
       SUBROUTINE FMDOUT (IYR)
       IMPLICIT NONE
 C----------
-C  $Id$
-C  $Id$
+C  $Id: fmdout.f 1318 2014-09-09 16:08:42Z sarebain@fs.fed.us $
+C  $Id: fmdout.f 1318 2014-09-09 16:08:42Z sarebain@fs.fed.us $
 C----------
 *     SINGLE-STAND VERSION
 *     CALLED FROM: FMMAIN

@@ -2,7 +2,7 @@
      &                 ICYC,IREAD,LKECHO)
       IMPLICIT NONE
 C----------
-C  $Id$
+C  $Id: ffin.f 1841 2016-06-30 21:20:56Z rhavis $
 C----------
 C
 C     PART OF THE FERTILIZER OPTION.  CALLED BY INITRE TO ENTER

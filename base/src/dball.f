@@ -1,7 +1,7 @@
       SUBROUTINE DBALL (ICYC)
       IMPLICIT NONE
 C----------
-C  $Id$
+C  $Id: dball.f 767 2013-04-10 22:29:22Z rhavis@msn.com $
 C----------
 C
 COMMONS

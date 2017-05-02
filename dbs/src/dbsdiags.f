@@ -1,7 +1,7 @@
       SUBROUTINE DBSDIAGS(HndlType,Hndl,CallFrom)
       IMPLICIT NONE
 C
-C $Id$
+C $Id: dbsdiags.f 1245 2014-05-25 17:51:08Z ncrookston.fs@gmail.com $
 C
 C      THIS SUBROUTINE PRINTS ERROR DIAGNOSTICS FOR THE DBS
 C      CALLS TO THE SQL ODBC API

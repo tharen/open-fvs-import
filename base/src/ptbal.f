@@ -1,7 +1,7 @@
       SUBROUTINE PTBAL
       IMPLICIT NONE
 C----------
-C  $Id$
+C  $Id: ptbal.f 1531 2015-06-08 22:34:53Z rhavis@msn.com $
 C----------
 C     
 C     COMPUTES THE POINT BASAL AREA IN LARGER TREES.  THIS IS A
