@@ -1,7 +1,4 @@
 CODE SEGMENT GLBLCNTL
-C----------
-C COMMON $Id$
-C----------
 C    
       integer :: fvsRtnCode,restartcode,minorstopptcode,
      -  minorstopptyear,jstash,jdstash,firstWrite,maxStoppts,

@@ -1,6 +1,6 @@
 C COMMON BLOCK FOR FVS/ECON REQUIRED SAVE VARIABLES
 C----------
-C COMMON $Id$
+C  **ECON   DATE OF LAST REVISION:  04/15/2013
 C----------
 C Author Fred Martin, WA DNR
 C Created to permit start and re-start of FVS without use of "save" variable functionality

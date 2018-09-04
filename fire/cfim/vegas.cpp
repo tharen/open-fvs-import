@@ -1,5 +1,5 @@
 //----------
-// FIRE-CFIM $Id$
+//  $Id$
 //----------
 
 #include "stdafx.h"

@@ -1,6 +1,6 @@
 CODE SEGMENT CLIMATE
 C----------
-C COMMON $Id$
+C  $Id$
 C----------     
       INTEGER    MXCLATTRS,MXCLYEARS
       PARAMETER (MXCLATTRS=130)

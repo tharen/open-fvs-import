@@ -1,7 +1,5 @@
 CODE SEGMENT PPMDCM
-C----------
-C COMMON $Id$
-C----------
+C                     Last Revision:   06/15/00
 C
       CHARACTER*4 MDMGID(MXSTND)
       CHARACTER*8 MDSTDS(MXSTND)

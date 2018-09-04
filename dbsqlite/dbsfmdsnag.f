@@ -2,7 +2,7 @@
      -  SDH,SDS,YRLAST,KODE)
       IMPLICIT NONE
 C
-C DBSQLITE $Id$
+C $Id$
 C
 C     PURPOSE: TO POPULATE A DATABASE WITH THE DETAILED SNAG REPORT
 C              INFORMATION
@@ -58,8 +58,8 @@ COMMONS
      >       "FVS_SnagDet"//CHAR(0))
       IF(iRet.EQ.0) THEN 
           SQLStmtStr='CREATE TABLE FVS_SnagDet ('//
-     -          'CaseID text not null,'//
-     -          'StandID text not null,'//
+     -          'CaseID char(36) not null,'//
+     -          'StandID char(26) not null,'//
      -          'Year Int null,'//
      -          'Species char null,'//
      -          'DBH_Class int null,'//

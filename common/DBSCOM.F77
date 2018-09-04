@@ -1,6 +1,6 @@
 CODE SEGMENT DBSCOM
 C----------
-C COMMON $Id$
+C  $Id$
 C----------
 
       INCLUDE 'DBSTYPEDEFS.F77'

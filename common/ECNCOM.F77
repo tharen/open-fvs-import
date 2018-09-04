@@ -1,6 +1,6 @@
 C COMMON BLOCK FOR FVS/ECON
 C----------
-C COMMON $Id$
+C  **ECON   DATE OF LAST REVISION: 11/07/2012
 C----------
 C Author Fred Martin, WA DNR
 

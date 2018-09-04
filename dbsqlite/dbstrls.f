@@ -1,7 +1,7 @@
       SUBROUTINE DBSTRLS(IWHO,KODE,TEM)
       IMPLICIT NONE
 C----------
-C DBSQLITE $Id$
+C $Id$
 C----------
 C     PURPOSE: TO OUTPUT THE TREELIST DATA TO THE DATABASE
 C
@@ -73,13 +73,13 @@ C     IS THIS OUTPUT A REDIRECT OF THE REPORT THEN SET KODE TO 0
      >       "FVS_TreeList"//CHAR(0))
       IF(iRet.EQ.0) THEN
           SQLStmtStr='CREATE TABLE FVS_TreeList('//
-     -             'CaseID text,'//
-     -             'StandID text,'//
+     -             'CaseID char(36),'//
+     -             'StandID char(26),'//
      -             'Year int null,'//
      -             'PrdLen int null,'//
-     -             'TreeId text null,'//
+     -             'TreeId char(8) null,'//
      -             'TreeIndex int null,'//
-     -             'Species text null,'//
+     -             'Species char(8) null,'//
      -             'TreeVal int null,'//
      -             'SSCD int null,'//
      -             'PtIndex int null,'//
