@@ -41,6 +41,12 @@ C
       INCLUDE 'FMPARM.F77'
 C
 C
+Cppe      INCLUDE 'PPEPRM.F77'
+C
+C
+Cppe      INCLUDE 'PPCNTL.F77'
+C
+C
       INCLUDE 'CONTRL.F77'
 C
 C
@@ -363,6 +369,7 @@ C----------
 C----------
 C
 Csng      IF (IYR .EQ. IY(1)) THEN
+Cppe      IF (IYR .EQ. MIY(1)) THEN
 C----------
 C        Load dead fuels as a function of PERCOV...assume that the initiating
 C        stands correspond to about 10% cover and established are 60% or more.

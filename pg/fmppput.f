@@ -6,6 +6,7 @@ C----------
 C  Purpose:
 C     Put (write) the Fire Model data for a given stand to DA file.
 C
+C     This is part of the Parallel Processing Extension.
 C----------------------------------------------------------------------
 C
 C  Call list definitions:

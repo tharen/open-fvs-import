@@ -36,6 +36,7 @@ C
       CHARACTER*40 CNAME
       EQUIVALENCE (NSTK,SUMPRB)
       LOGICAL LTEMP,LKECHO
+      CALL PPEATV (LTEMP)
       DO 10 I=1,MAXSP
       HTADJ(I)=0.0
       XESMLT(I)=1.0
@@ -49,6 +50,7 @@ C
       LAUTAL=.FALSE.
       LSPRUT=.TRUE.
       IPRINT=1
+      IF(LTEMP) IPRINT=0
       INADV=0
       LOAD=0
       IBLK=0

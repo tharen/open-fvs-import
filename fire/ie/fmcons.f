@@ -30,6 +30,7 @@ C.... PARAMETER STATEMENTS.
 C.... PARAMETER INCLUDE FILES.
 
       INCLUDE 'PRGPRM.F77'
+C      INCLUDE 'PPEPRM.F77'
       INCLUDE 'FMPARM.F77'
 
 C.... COMMON INCLUDE FILES.
@@ -112,7 +113,7 @@ C
         ENDDO
       ENDDO
 
-C     LETS SEPARATE OUT THE CALCULATIONS:
+C     LET'S SEPARATE OUT THE CALCULATIONS:
 
 C     FIRST, BURN UNPILED FUELS, IF A 'NATURAL' OR PRESCRIBED FIRE:
 
@@ -340,7 +341,7 @@ c     IPM: smoke size; IP: unpiled/piled; IL: fuel class; IM: moisture type
         ENDDO
 
 C       Only calculate smoke from live stuff if it is a 'proper' fire.
-C       We are not burning live stuff from a fuel treatment fire.
+C       We aren't burning live stuff from a fuel treatment fire.
 
         IF (BTYPE .EQ. 0) THEN
           DO IL=1,2
