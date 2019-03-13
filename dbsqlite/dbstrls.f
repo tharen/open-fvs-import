@@ -232,8 +232,7 @@ C
             IF(ISPOUT6.EQ.3)CSPECIES=ADJUSTL(TRIM(PLNJSP(ISP(I)))) 
             
             ColNumber=1
-            iRet = fsql3_bind_text(IoutDBref,ColNumber,TID,
-     >                            LEN_TRIM(TID))
+            iRet = fsql3_bind_int(IoutDBref,ColNumber,TID)
             ColNumber=ColNumber+1
             iRet = fsql3_bind_int(IoutDBref,ColNumber,I)
             ColNumber=ColNumber+1
@@ -309,10 +308,12 @@ C     FOR CYCLE 0 TREELIST, PRINT DEAD TREES WHICH WERE PRESENT IN
 C     THE INVENTORY DATA AT THE BOTTOM OF THE TREELIST.
 C
       IF (ITREELIST .EQ. 0) RETURN
-      IF((IREC2.GE.MAXTP1).OR.(ITPLAB.EQ.3).OR.(ICYC.GE.1)) THEN
-        go to 100
+      IF(.NOT.((IREC2.GE.MAXTP1).OR.(ITPLAB.EQ.3).OR.
+     >         (ICYC.GE.1))) THEN
+        iRet = fsql3_finalize(IoutDBref)
+        RETURN
       ENDIF
-
+      
       DO I=IREC2,MAXTRE
         P =(PROB(I) / GROSPC) / (FINT/FINTM)
         WRITE(TID,'(I8)') IDTREE(I)
@@ -435,7 +436,7 @@ C
         iRet = fsql3_step(IoutDBref)
         iRet = fsql3_reset(IoutDBref)
       ENDDO
-  100 iRet = fsql3_finalize(IoutDBref)
+      iRet = fsql3_finalize(IoutDBref)
       iRet = fsql3_exec (IoutDBref,"Commit;"//Char(0))
 
       RETURN
