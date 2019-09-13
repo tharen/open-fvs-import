@@ -45,22 +45,22 @@ void CfvsSpeciesCode(char **fvs_code,char **fia_code,char **plant_code,
   fvsSpeciesCodeC(*fvs_code,*fia_code,*plant_code,indx,nchfvs,nchfia,nchplant,rtnCode);  
 }
  
-void fvsStandIDC(char  *sID,char  *sCN,char  *mID,char  *mCASE);
+void fvsStandIDC(char *,char  *,char  *,char  *);
 void CfvsStandID(char **sID,char **sCN,char **mID,char **mCASE)
 {
-  fvsStandIDC(*sID,*sCN,*mID,*mCASE);
+    fvsStandIDC(sID[0],sCN[0],mID[0],mCASE[0]);
 }
 
 void fvsUnitConversionC(char  *name,int *nch, double *value, int *rtnCode);
 void CfvsUnitConversion(char **name,int *nch, double *value, int *rtnCode)
 {
-  fvsUnitConversionC(*name,nch,value,rtnCode);  
+  fvsUnitConversionC(name[0],nch,value,rtnCode);  
 }
 
 void fvsCloseFileC(char  *name,int *nch);
 void CfvsCloseFile(char **name,int *nch)
 {
-  fvsCloseFileC(*name,nch);  
+  fvsCloseFileC(name[0],nch);  
 }
 
 void fvsSVSObjDataC(char *name,int *nch,char *action,int *nobjs,
@@ -68,7 +68,7 @@ void fvsSVSObjDataC(char *name,int *nch,char *action,int *nobjs,
 void CfvsSVSObjData(char **name,int *nch,char **action,int *nobjs,
                     double *attr, int *rtnCode)
 {
-  fvsSVSObjDataC(*name,nch,*action,nobjs,attr,rtnCode);  
+  fvsSVSObjDataC(name[0],nch,*action,nobjs,attr,rtnCode);  
 }
 
 void fvsFFEAttrsC(char *name,int *nch,char *action,int *nobjs,
@@ -76,7 +76,7 @@ void fvsFFEAttrsC(char *name,int *nch,char *action,int *nobjs,
 void CfvsFFEAttrs(char **name,int *nch,char **action,int *nobjs,
                   double *attr, int *rtnCode)
 {
-  fvsFFEAttrsC(*name,nch,*action,nobjs,attr,rtnCode);  
+  fvsFFEAttrsC(name[0],nch,*action,nobjs,attr,rtnCode);  
 }
 
 
