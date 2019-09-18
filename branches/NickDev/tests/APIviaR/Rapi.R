@@ -96,7 +96,10 @@ fvsGetTreeAttrs(treeAttrs)
 fvsRun(0,0)
 
 #get and output summary statistics
-fvsGetSummary()
+sum = fvsGetSummary()
+sum
+
+fvsSetupSummary(sum)
 
 # continue the run for the next stand.
 fvsRun()

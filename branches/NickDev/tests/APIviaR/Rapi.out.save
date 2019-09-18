@@ -1493,7 +1493,7 @@ $cwd
 > # continue the run
 > fvsRun(0,0)
 
-                  IE FVS VARIANT -- RV:20190307  
+                  IE FVS VARIANT -- RV:20190605  
 
 
         STAND = S248112                     MANAGEMENT CODE = NONE
@@ -1518,7 +1518,7 @@ YEAR /ACRE  BA SDI  HT  QMD CU FT /ACRE CU FT BD FT  BA SDI  HT  QMD ACC MOR
 2080   130 231 336 119 18.1 10186     0     0     0 231 336 119 18.1 183  93
 2090   113 238 334 125 19.7 11090     0     0     0 238 334 125 19.7   0   0
 
-                  IE FVS VARIANT -- RV:20190307  
+                  IE FVS VARIANT -- RV:20190605  
 
 
         STAND = S248112                     MANAGEMENT CODE = NONE
@@ -1543,7 +1543,7 @@ YEAR /ACRE  BA SDI  HT  QMD CU FT /ACRE CU FT BD FT  BA SDI  HT  QMD ACC MOR
 2080   114 241 338 126 19.7 11058     0     0     0 241 338 126 19.7 181  99
 2090    99 246 335 133 21.3 11880     0     0     0 246 335 133 21.3   0   0
 
-                  IE FVS VARIANT -- RV:20190307  
+                  IE FVS VARIANT -- RV:20190605  
 
 
         STAND = S248112                     MANAGEMENT CODE = NONE
@@ -1565,7 +1565,8 @@ YEAR /ACRE  BA SDI  HT  QMD CU FT /ACRE CU FT BD FT  BA SDI  HT  QMD ACC MOR
 2050   212  99 188  78  9.3  3011     0     0     0  99 188  78  9.3 186  14
 > 
 > #get and output summary statistics
-> fvsGetSummary()
+> sum = fvsGetSummary()
+> sum
    Year Age Tpa TCuFt MCuFt  BdFt RTpa RTCuFt RMCuFt RBdFt ATBA ATCCF ATTopHt
 1  1990  60 536  1592  1015  5238  532   1502    465  2392    4     4      67
 2  2000  70   4   130   116   562    0      0      0     0    5     5      77
@@ -1591,6 +1592,47 @@ YEAR /ACRE  BA SDI  HT  QMD CU FT /ACRE CU FT BD FT  BA SDI  HT  QMD ACC MOR
 10     10 197   65     11    201       1      2
 11      0   0    0     11    201       1      2
 > 
+> fvsSetupSummary(sum)
+   Year Age Tpa TCuFt MCuFt  BdFt RTpa RTCuFt RMCuFt RBdFt ATBA ATCCF ATTopHt
+1  1990  60 536  1592  1015  5238    0      0      0     0   NA    NA      NA
+1  1990  60   4    90   550  2846  532   1502    465  2392    4     4      67
+2  2000  70   4   130   116   562    0      0      0     0    5     5      77
+3  2010  80   4   172   151   782    0      0      0     0    6     5      85
+4  2020  90 249   216   197  1060    0      0      0     0    7     8      21
+5  2030 100 233   514   247  1400    0      0      0     0   26    30      44
+6  2040 110 218  1469  1110  7048    0      0      0     0   59    65      64
+7  2050 120 212  3011  2420 12446    0      0      0     0   99   104      78
+8  2060 130 203  4730  4344 22552    0      0      0     0  137   135      88
+9  2070 140 190  6395  5832 31023    0      0      0     0  170   160      96
+10 2080 150 176  7904  7021 38959    0      0      0     0  195   173     104
+11 2090 160 161  9230  8554 47889    0      0      0     0  214   182     111
+   PrdLen Acc Mort SampWt ForTyp SizeCls StkCls TPrdTpa TPrdTCuFt TPrdMCuFt
+1      NA  NA   NA     NA     NA      NA     NA     536      1592      1015
+1      10   4    0     11    201       2      3     536      1592      1015
+2      10   5    0     11    999       5      5     536      1632       581
+3      10   5    1     11    999       5      5     536      1674       616
+4      10  30    0     11    999       5      5     781      1718       662
+5      10  96    1     11    201       3      4     765      2016       712
+6      10 158    4     11    201       2      4     750      2971      1575
+7      10 186   14     11    201       1      3     744      4513      2885
+8      10 196   30     11    201       1      2     735      6232      4809
+9      10 199   48     11    201       1      2     722      7897      6297
+10     10 197   65     11    201       1      2     708      9406      7486
+11      0   0    0     11    201       1      2     693     10732      9019
+   TPrdBdFt
+1      5238
+1      5238
+2      2954
+3      3174
+4      3452
+5      3792
+6      9440
+7     14838
+8     24944
+9     33415
+10    41351
+11    50281
+> 
 > # continue the run for the next stand.
 > fvsRun()
 > 
@@ -1602,7 +1644,7 @@ YEAR /ACRE  BA SDI  HT  QMD CU FT /ACRE CU FT BD FT  BA SDI  HT  QMD ACC MOR
 2080   176 195 310 104 14.3  7904     0     0     0 195 310 104 14.3 197  65
 2090   161 214 329 111 15.6  9230     0     0     0 214 329 111 15.6   0   0
 
-                  IE FVS VARIANT -- RV:20190307  
+                  IE FVS VARIANT -- RV:20190605  
 
 
         STAND = S248112                     MANAGEMENT CODE = NONE

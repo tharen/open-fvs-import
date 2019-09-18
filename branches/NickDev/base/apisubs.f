@@ -827,8 +827,7 @@ c     indx    = species index
       return
       end
 
-      subroutine fvsSpeciesCodeC(fvs_code,fia_code,plant_code,
-     -           indx,nchfvs,nchfia,nchplant,rtnCode) 
+      subroutine fvsSpeciesCodeC(fvs_code,fia_code,plant_code,indx) 
      -           bind(c, name="fvsSpeciesCodeC") 
       use iso_c_binding
       implicit none
@@ -840,33 +839,31 @@ c     indx    = species index
       include "PRGPRM.F77"
       include "PLOT.F77"
                                                                                           
-      integer(c_int), bind(c) :: indx,nchfvs,nchfia,nchplant,rtnCode
-      integer i
+      integer(c_int), bind(c) :: indx
+      integer i,nch
       character(c_char), dimension(*), bind(c) :: fvs_code
       character(c_char), dimension(*), bind(c) :: fia_code                                              
       character(c_char), dimension(*), bind(c) :: plant_code
       if (indx == 0 .or. indx > MAXSP) then
-        nchfvs  = 0                                                                             
-        nchfia  = 0
-        nchplant= 0                                                                              
-        rtnCode = 1
+        fvs_code(1)  =char(0)
+        fia_code(1)  =char(0)                             
+        plant_code(1)=char(0)
       else
-        nchfvs  = len_trim(JSP   (indx))
-        nchfia  = len_trim(FIAJSP(indx))                     
-        nchplant= len_trim(PLNJSP(indx))
-        do i=1,nchfvs
+        nch=len_trim(JSP(indx))
+        do i=1,nch
           fvs_code(i) = JSP(indx)(i:i)
         enddo
-        do i=1,nchfia
+        fvs_code(nch+1) = char(0)
+        nch=len_trim(FIAJSP(indx))                     
+        do i=1,nch
           fia_code(i) = FIAJSP(indx)(i:i)
         enddo
-        do i=1,nchplant
+        fia_code(nch+1)     = char(0)                             
+        nch=len_trim(PLNJSP(indx))
+        do i=1,nch
           plant_code(i) = PLNJSP(indx)(i:i)
         enddo
-        fvs_code(nchfvs+1)     = char(0)
-        fia_code(nchfia+1)     = char(0)                             
-        plant_code(nchplant+1) = char(0)
-        rtnCode = 0
+        plant_code(nch+1) = char(0)
       endif
       return
       end
