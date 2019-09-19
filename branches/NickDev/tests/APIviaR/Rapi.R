@@ -10,6 +10,9 @@ while(TRUE)
 }
 setwd("rFVS/R")
 
+#set the default sign digits to 4
+options(digits=4)
+
 # fetching R code
 for (rf in dir ()) source (rf)
 setwd(cwd)
@@ -60,7 +63,9 @@ trees$htg  = 0
 trees$dg   = 0
 fvsSetTreeAttrs(trees[,c(3,6,8)])
 
+options(digits=2)
 fvsGetSVSObjectSet()
+options(digits=4)
 
 # finish the run
 fvsRun(0,0)
