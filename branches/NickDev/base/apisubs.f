@@ -841,9 +841,9 @@ c     indx    = species index
                                                                                           
       integer(c_int), bind(c) :: indx
       integer i,nch
-      character(c_char), dimension(*), bind(c) :: fvs_code
-      character(c_char), dimension(*), bind(c) :: fia_code                                              
-      character(c_char), dimension(*), bind(c) :: plant_code
+      character(c_char), dimension(5), bind(c) :: fvs_code
+      character(c_char), dimension(5), bind(c) :: fia_code                                              
+      character(c_char), dimension(7), bind(c) :: plant_code
       if (indx == 0 .or. indx > MAXSP) then
         fvs_code(1)  =char(0)
         fia_code(1)  =char(0)                             
@@ -858,7 +858,7 @@ c     indx    = species index
         do i=1,nch
           fia_code(i) = FIAJSP(indx)(i:i)
         enddo
-        fia_code(nch+1)     = char(0)                             
+        fia_code(nch+1) = char(0)                             
         nch=len_trim(PLNJSP(indx))
         do i=1,nch
           plant_code(i) = PLNJSP(indx)(i:i)
@@ -900,7 +900,10 @@ c     indx    = species index
       include "DBSCOM.F77"
                                                                                           
       integer i,ncsID,ncCN,ncmID,ncCase
-      character(c_char), dimension(*), bind(c) :: sID,sCN,mID,mCase
+      character(c_char), dimension(len(NPLT  )+1), bind(c) :: sID
+      character(c_char), dimension(len(DBCN  )+1), bind(c) :: sCN
+      character(c_char), dimension(len(MGMID )+1), bind(c) :: mID
+      character(c_char), dimension(len(CASEID)+1), bind(c) :: mCase
 
       ncsID  = len_trim(NPLT)
       ncCN   = len_trim(DBCN)
