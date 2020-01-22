@@ -1,7 +1,7 @@
 
 # $Id: makefile 1665 2016-02-01 21:32:22Z nickcrookston $
 
-all : iet01 iet02 iet03 iedb econdb firedb climdb \
+all : iet01 iet02 iet03 compress iedb econdb firedb climdb \
  ffe_svs climate climatePutGet maxActs 
 
 iet01 : 
@@ -41,6 +41,14 @@ iedb :
 	-sqlite3 FVSieOut.db < sqliteTestFVSieOut.sql > ie.db_dump.txt
 	-diff -w ie.db_dump.txt ie.db_dump.txt.save
 	@echo Test ie ended
+
+compress : 	
+	@echo Test ie compres
+	-$(WINE) ../../bin/qFVSie --keywordfile=compress.key 
+	grep -v "FOREST VEGETATION SIMULATOR" compress.out > compress.cmp
+	rm compress.out
+	-diff -w compress.cmp compress.out.save
+	@echo Compress test ended
 
 calibStats : 	
 	@echo Test FVS_CalibStats read and write
