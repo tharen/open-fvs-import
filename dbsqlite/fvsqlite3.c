@@ -131,10 +131,11 @@ int dbexeccallback(void *cb,
 int fsql3_exec2_(int *dbnum, char *sql, char *msg, int *txtlen)
 {
   struct cbmsgstr cbmsg;
+  char *zErrMsg = 0;
+  int rc;
   cbmsg.len=0;
   cbmsg.msg[0]=0;
-  char *zErrMsg = 0;
-  int rc = sqlite3_exec(dbset[*dbnum], /* An open database */
+  rc = sqlite3_exec(dbset[*dbnum], /* An open database */
            sql,                        /* SQL to be evaluated */
            dbexeccallback,             /* Callback function */
            (void *) &cbmsg,            /* 1st argument to callback */
@@ -353,8 +354,9 @@ int fsql3_colisnull_(int *dbnum, int *col)
 int fsql3_addcolifabsent_(int *dbnum, char *tname, char *cname, char *cdef)
 {
   char sql[501];
+  int rc;
   snprintf(sql,500,"select %s from %s limit 0;",cname,tname);
-	int rc = sqlite3_exec(dbset[*dbnum], sql, NULL, NULL, NULL);
+	rc = sqlite3_exec(dbset[*dbnum], sql, NULL, NULL, NULL);
 	if (rc!=SQLITE_OK)       
   {
     snprintf(sql,500,"alter table %s add column %s %s;",tname,cname,cdef);
@@ -367,9 +369,10 @@ int fsql3_addcolifabsent_(int *dbnum, char *tname, char *cname, char *cdef)
 int fsql3_tableexists_(int *dbnum, char *tname)
 {
   char sql[501];
+  int rc;
   snprintf(sql,500,"select _ROWID_ from sqlite_master where name = '%s';",tname);
   sqlite3_prepare_v2(dbset[*dbnum], sql, -1, &stmtset[*dbnum], NULL);
-  int rc = SQLITE_ROW == sqlite3_step(stmtset[*dbnum]);
+  rc = SQLITE_ROW == sqlite3_step(stmtset[*dbnum]);
   sqlite3_finalize(stmtset[*dbnum]);
   stmtset[*dbnum] = NULL;
   return rc;
