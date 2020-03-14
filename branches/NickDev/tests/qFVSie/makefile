@@ -1,7 +1,7 @@
 
 # $Id: makefile 1665 2016-02-01 21:32:22Z nickcrookston $
 
-all : iet01 iet02 iet03 compress iedb econdb firedb climdb \
+all : iet01 iet02 iet03 iedb econdb firedb climdb \
  ffe_svs climate climatePutGet maxActs 
 
 iet01 : 
@@ -45,16 +45,14 @@ iedb :
 compress : 	
 	@echo Test ie compres
 	-$(WINE) ../../bin/qFVSie --keywordfile=compress.key 
-	grep -v "FOREST VEGETATION SIMULATOR" compress.out > compress.cmp
-	rm compress.out
-	-diff -w compress.cmp compress.out.save
+	-diff -w compress.out compress.out.save
 	@echo Compress test ended
 
 calibStats : 	
 	@echo Test FVS_CalibStats read and write
 	rm -f calibStats.db
 	-$(WINE) ../../bin/qFVSie --keywordfile=calibStats.key 
-	-sqlite3 calibStats.db ".header on" "select StandID,TreeSize,Species,NumTrees,round(ScaleFactor,3),round(StdErrRatio,2) from FVS_CalibStats" > calibStats_dump.txt
+	-sqlite3 calibStats.db ".header on" "select StandID,TreeSize,SpeciesPlant,NumTrees,round(ScaleFactor,3),round(StdErrRatio,2) from FVS_CalibStats" > calibStats_dump.txt
 	-diff -w calibStats_dump.txt calibStats_dump.txt.save
 	@echo Test calibStats ended
 
@@ -62,7 +60,7 @@ econdb :
 	@echo Test econ database read and write
 	rm -f TestDataBase.db
 	-$(WINE) ../../bin/qFVSie --keywordfile=TestDataBase.key 
-	-sqlite3 TestDataBase.db "select Year,Species,Total_Value from FVS_EconHarvestValue;" > TestDataBase.dump
+	-sqlite3 TestDataBase.db "select Year,SpeciesPlants,Total_Value from FVS_EconHarvestValue;" > TestDataBase.dump
 	-sqlite3 TestDataBase.db "select round(pnv,1),Mrch_BoardFoot_Volume from FVS_EconSummary;" >> TestDataBase.dump	
 	-diff -w TestDataBase.dump TestDataBase.dump.save
 	@echo Test calibStats ended
@@ -79,7 +77,7 @@ climdb :
 	@echo climate database read and write
 	rm -f ClimOut.db
 	-$(WINE) ../../bin/qFVSie --keywordfile=Clim.key  
-	-sqlite3 ClimOut.db "Select Species,Count(Species) from FVS_Climate group by Species;" > Clim.db.txt 
+	-sqlite3 ClimOut.db "Select SpeciesFVS,Count(SpeciesFVS) from FVS_Climate group by SpeciesFVS;" > Clim.db.txt 
 	-diff -w Clim.db.txt Clim.db.txt.save
 
 ffe_svs:
