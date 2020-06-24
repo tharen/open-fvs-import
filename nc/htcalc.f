@@ -19,9 +19,9 @@ C----------
 C----------
 C DOUGLAS FIR USE KING
 C OTHER SOFTWOODS USE DOUGLAS-FIR
-C SPECIES: OS, DF
+C SPECIES: OS, DF, RW
 C----------
-      CASE(1,3)
+      CASE(1,3,12)
         Z = 2500.0/(SINDX - 4.5)
         A = -0.954038 + 0.109757*Z
         B = 0.055818 + 0.0079224*Z

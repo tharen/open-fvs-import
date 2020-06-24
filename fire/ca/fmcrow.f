@@ -105,12 +105,12 @@ C    46 = WILLOW                   willow sp                64
 C    47 = CALIFORNIA NUTMEG        tanoak           17
 C    48 = CALIFORNIA LAUREL        tanoak           17
 C    49 = OTHER HARDWOODS          Cal black oak    21
-
+C    50 = COAST REDWOOD            -                19
       DATA ISPMAP / 7,20, 7, 4, 4, 4, 3, 6,24,14,
      >             11,11,11,11,15,15,15,13,13,11,
      >             16,18,19, 7,11,17,17,21,17,21,
      >             21,21,17, 5,44,23,10,17,56,29,
-     >             46,17,60,41,17,64,17,17,21/
+     >             46,17,60,41,17,64,17,17,21,19/
 
 
 C     CHECK FOR DEBUG

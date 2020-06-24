@@ -99,7 +99,8 @@ C                  herbs, shrubs
      &             0.25, 0.25, ! tanoak - use QA Ottmar and others 2000b
      &             0.15, 0.10, ! red fir - use white fir
      &             0.20, 0.25, ! ponderosa pine
-     &             0.25, 0.25/ ! other hardwood - tanoak - use QA Ottmar and others 2000b
+     &             0.25, 0.25, ! other hardwood - tanoak - use QA Ottmar and others 2000b
+     &             0.20, 0.20/ ! coast redwood - use other conifer
 
 C     INITIAL LIVE FUEL LOADING FOR 'INTIALIZING STANDS WITH 10% COVER
 
@@ -114,7 +115,8 @@ C                  herbs, shrubs
      &             0.18, 2.00,  ! tanoak - use QA Ottmar and others 2000b, modified.
      &             0.30, 2.00,  ! red fir - use white fir
      &             0.25, 1.00,  ! ponderosa pine
-     &             0.18, 2.00/  ! other hardwood - tanoak - use QA Ottmar and others 2000b, modified.
+     &             0.18, 2.00,  ! other hardwood - tanoak - use QA Ottmar and others 2000b, modified.
+     &             0.40, 2.00/ ! coast redwood
 
 C     INITIAL FUEL LOADING FOR 'ESTABLISHED' STANDS WITH 60% COVER
 C     THIS CAN BE MODIFIED BY THE *FUELINIT** KEYWORD
@@ -130,7 +132,8 @@ C                  <.25 to1  1-3   3-6 6-12  12-20 20-35 35-50 >50  Lit  Duf
      &             0.2, 0.6, 2.4, 3.6, 5.6, 0.0, 0.0,0.0,0.0,1.4,16.8, ! tanoak - aspen - Ottmar
      &             0.7, 0.7, 3.0, 7.0, 7.0, 0.0, 0.0,0.0,0.0,0.6,25.0, ! red fir - use white fir
      &             0.9, 0.9, 1.2, 7.0, 8.0, 0.0, 0.0,0.0,0.0,0.6,15.0, ! ponderosa pine - use sugar pine
-     &             0.2, 0.6, 2.4, 3.6, 5.6, 0.0, 0.0,0.0,0.0,1.4,16.8/ ! other hardwood - aspen - Ottmar
+     &             0.2, 0.6, 2.4, 3.6, 5.6, 0.0, 0.0,0.0,0.0,1.4,16.8, ! other hardwood - aspen - Ottmar
+     &             0.9, 0.9, 1.6, 3.5, 3.5, 0.0, 0.0,0.0,0.0,0.6,10.0/ ! coast redwood - use other conifer
 
 C     INITIAL FUEL LOADING FOR 'INITIALIZING' STANDS WITH 10% COVER
 C     THIS CAN BE MODIFIED BY THE *FUELINIT** KEYWORD
@@ -146,7 +149,8 @@ C                  <.25 to1  1-3  3-6  6-12  12-20 20-35 35-50 >50  Lit  Duf
      &             0.1, 0.4, 5.0, 2.2, 2.3, 0.0, 0.0,0.0,0.0,0.8, 5.6, ! tanoak - aspen - Ottmar
      &             0.5, 0.5, 2.0, 2.8, 2.8, 0.0, 0.0,0.0,0.0,0.3,12.0, ! red fir - use white fir
      &             0.6, 0.7, 0.8, 2.8, 3.2, 0.0, 0.0,0.0,0.0,0.3, 7.0, ! ponderosa pine - use sugar pine
-     &             0.1, 0.4, 5.0, 2.2, 2.3, 0.0, 0.0,0.0,0.0,0.8, 5.6/ ! other hardwood - aspen - Ottmar
+     &             0.1, 0.4, 5.0, 2.2, 2.3, 0.0, 0.0,0.0,0.0,0.8, 5.6, ! other hardwood - aspen - Ottmar
+     &             0.5, 0.5, 1.0, 1.4, 1.4, 0.0, 0.0,0.0,0.0,0.3, 5.0/ ! coast redwood - use other conifer
 
 C     DOMINANT SPECIES FOR EACH (OPTIONAL) VEGETATION CODE.
 C     DERIVED FROM R5 VEG CODES AND NC **HABTYP**

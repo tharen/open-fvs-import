@@ -178,7 +178,7 @@ C         sugar pine
             LSW(I)     = .TRUE.
 
 C         Douglas-fir, other conifers
-          CASE (3,1)
+          CASE (3,1,12)
             V2T(I)     =  28.7 ! interior west DF in Wood Handbook
             LEAFLF(I)  =   5.0
             TFALL(I,0) =   3.0

@@ -1,4 +1,5 @@
-      SUBROUTINE SMHTGF(NSPC,D,CR,BA,BAL,SI,HTGR,RELHT,DEBUG,JOSTND)
+      SUBROUTINE SMHTGF(NSPC,D,CR,BA,BAL,SI,HT,PBAL,TEMSLP,TEMASP,HTGR,
+     &                  RELHT,DEBUG,JOSTND)
       IMPLICIT NONE
 C----------
 C CA $Id$
@@ -78,10 +79,12 @@ C   48 = UMCA     CALIFORNIA LAUREL         UMBELLULARIA CALIFORNICA
 C
 C   49 =          OTHER HARDWOODS
 C----------
+C INTERNAL VARIABLES
       LOGICAL DEBUG
-      REAL SPADJF(49),RELHT,HTGR,SI,BAL,BA,CR,D,FACTOR,TEMBAL
+      REAL SPADJF(50),RELHT,HTGR,SI,BAL,BA,CR,D,FACTOR,TEMBAL,HT,PBAL
+      REAL TEMSLP,TEMASP
       REAL DOMHTGR,CRMOD,RHMOD,SMHMOD
-      INTEGER MAPSP(49),JOSTND,NSPC
+      INTEGER MAPSP(50),JOSTND,NSPC
       REAL RDANUW
 C----------
 C  DATA STATEMENTS
@@ -91,14 +94,14 @@ C----------
      & 1.0, 1.0, 1.0, 1.0, 1.0, 1.1, 1.1, 1.0, 1.1, 0.9,
      & 1.0, 0.9, 1.0, 0.8, 1.0, 1.1, 0.9, 1.1, 1.1, 1.0,
      & 1.1, 1.0, 1.1, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0,
-     & 1.1, 1.0, 1.1, 1.2, 1.2, 1.1, 0.8, 1.0, 1.0 /
+     & 1.1, 1.0, 1.1, 1.2, 1.2, 1.1, 0.8, 1.0, 1.0, 1.0 /
 C
       DATA MAPSP /
      & 2, 2, 2, 2, 2, 2, 2, 2, 2, 1,
      & 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
-     & 1, 2, 1, 2, 1, 3, 3, 3, 3, 3,
+     & 1, 2, 5, 2, 1, 3, 3, 3, 3, 3,
      & 3, 3, 3, 4, 3, 3, 4, 3, 4, 3,
-     & 3, 4, 3, 3, 3, 3, 2, 4, 3 /
+     & 3, 4, 3, 3, 3, 3, 2, 4, 3, 5 /
 C----------
 C  DUMMY ARGUMENT NOT USED WARNING SUPPRESSION SECTION
 C----------
@@ -111,7 +114,7 @@ C----------
 C
       TEMBAL=BAL
       IF(TEMBAL .LT. 5.0) TEMBAL=5.0
-      GO TO (100,200,300,400) MAPSP(NSPC)
+      GO TO (100,200,300,400,500) MAPSP(NSPC)
 C
 C----------
 C   PINES
@@ -119,7 +122,7 @@ C----------
   100 CONTINUE
       HTGR = EXP(0.7452 - 0.003271*BAL - 0.1632*CR + 0.0217*CR*CR
      &     + 0.00536*SI) * FACTOR * 1.75
-      GO TO 500
+      GO TO 600
 C
 C----------
 C  FIRS - INCLUDING DOUGLAS FIR
@@ -152,25 +155,36 @@ C----------
       HTGR= DOMHTGR*SMHMOD
       IF (DEBUG) WRITE (JOSTND,9900) DOMHTGR, SMHMOD, HTGR, SI,CR,RELHT
  9900 FORMAT(' DEBUG-SMHTGF--9900--',3F10.4, 2F6.1,F7.4)
-      GO TO 500
+      GO TO 600
 C
 C----------
 C  BLACKOAK
 C----------
   300 CONTINUE
       HTGR = EXP(3.817 - 0.7829*ALOG(TEMBAL)) * FACTOR
-      GO TO 500
+      GO TO 600
 
 CC----------
 C  TANOAK
 C----------
   400 CONTINUE
       HTGR = EXP(3.385 - 0.5898*ALOG(TEMBAL)) * FACTOR
-C
+      GO TO 600
+
+C-----------
+C REDWOOD AND GIANT SEQUIOA
+C-----------
+  500 CONTINUE
+      HTGR = EXP(-1.614631 - 0.000035*HT**2 + 0.325206*LOG(HT) 
+     & - 0.001741*PBAL + 0.197669*LOG(CR*10) + 0.515935*LOG(SI)
+     & - 0.001741*TEMSLP - 0.001886*(TEMSLP)*COS(TEMASP))
+     
+C     MAKE HEIGHT GROWTH BE ON A 5-YEAR BASIS
+      HTGR = HTGR * 0.5
 C----------
 C  SET LOWER BOUND ON HEIGHT INCREMENT
 C----------
-  500 CONTINUE
+  600 CONTINUE
       IF(HTGR .LT. 0.1) HTGR = 0.1
       RETURN
       END

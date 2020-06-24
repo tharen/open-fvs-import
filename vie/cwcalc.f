@@ -64,9 +64,9 @@ C     ROCKY MOUNTAIN CONIFERS. USDA-FS, INT-183.
 C----------
       LOGICAL DEBUG
       CHARACTER CWEQN*5, FIASP*3
-      CHARACTER AKMAP(13)*5, BMMAP(18)*5, CAMAP(49)*5, CIMAP(19)*5
+      CHARACTER AKMAP(13)*5, BMMAP(18)*5, CAMAP(50)*5, CIMAP(19)*5
       CHARACTER CRMAP(38)*5, ECMAP(32)*5, EMMAP(19)*5, IEMAP(23)*5
-      CHARACTER KTMAP(11)*5, NCMAP(11)*5, NIMAP(11)*5, PNMAP(39)*5
+      CHARACTER KTMAP(11)*5, NCMAP(12)*5, NIMAP(11)*5, PNMAP(39)*5
       CHARACTER SOMAP(33)*5, TTMAP(18)*5, UTMAP(24)*5, WCMAP(39)*5
       CHARACTER WSMAP(43)*5, OCMAP(49)*5, OPMAP(39)*5
       INTEGER ISPC,IICR, IWHO, JSTND2
@@ -114,8 +114,8 @@ C         BUtoBM       RA       MA   GCtoTO   DGtoRA   FLtoBM   WNtoBM
      &    '31206', '35106', '36102', '63102', '35106', '31206', '31206',
 C             TO   SYtoTO       AS       CW   WItoBM   CNtoCL       CL
      &    '63102', '63102', '74605', '74705', '31206', '98102', '98102',
-C             OH
-     &    '31206'/
+C             OH   GStoRW
+     &    '31206', '21104'/
 C----------
 C  CENTRAL IDAHO
 C----------
@@ -200,8 +200,8 @@ C  KLAMATH MOUNTAINS
 C----------
 C                      OC       SP       DF       WF       MA       IC
        DATA NCMAP/ '12205', '11705', '20205', '01505', '36102', '08105',
-C             BO       TO       RF       PP       OH
-     &    '81802', '63102', '02006', '12205', '81802'/
+C             BO       TO       RF       PP       OH       RW
+     &    '81802', '63102', '02006', '12205', '81802', '21104'/
 C----------
 C  PACIFIC COAST
 C----------

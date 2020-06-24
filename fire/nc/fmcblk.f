@@ -27,7 +27,7 @@ C      10=WOODLAND JUNIPER/OAK/MESQUITE
       DATA BIOGRP/
      & 2, 4, 2, 3, 8,
      & 1, 9, 8, 3, 4, ! 10
-     & 8 /
+     & 8, 2/
 
 C DATA Statement Debug Information
 C         Variant   = NC

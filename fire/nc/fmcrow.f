@@ -68,9 +68,10 @@ C     8 = TANOAK                   -                17
 C     9 = RED FIR                  grand fir         4
 C    10 = PONDEROSA PINE           -                13
 C    11 = OTHER HARDWOOD           tanoak           17
+C    12 = COAST REDWOOD	
 
-      DATA ISPMAP / 3,15, 3, 4,10,20,21,17, 4,13,
-     >             17/
+      DATA ISPMAP / 3, 15, 3, 4, 10, 20, 21, 17, 4, 13,
+     >             17, 3/
 C
 C     CHECK FOR DEBUG
 C

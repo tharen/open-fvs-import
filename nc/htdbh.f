@@ -24,7 +24,7 @@ C             0 IF DIAMETER IS PROVIDED AND HEIGHT IS DESIRED
 C             1 IF HEIGHT IS PROVIDED AND DIAMETER IS DESIRED
 C----------
 C
-      REAL SISKIY(11,3),D,H,P2,P3,P4,HAT3
+      REAL SISKIY(12,3),D,H,P2,P3,P4,HAT3
       INTEGER MODE,ISPC,IFOR
       INTEGER IDANUW
 C
@@ -40,6 +40,7 @@ C    8 = LIDE3    TANOAK                    LITHOCARPUS DENSIFLORUS
 C    9 = ABMA     RED FIR                   ABIES MAGNIFICA
 C   10 = PIPO     PONDEROSA PINE            PINUS PONDEROSA
 C   11 =          OTHER HARDWOODS           USE TANOAK
+C   12 = SESE3    COAST REDWOOD             COAST REDWOOD
 C----------
 C
 C  SISKIYOU
@@ -47,15 +48,15 @@ C
       DATA SISKIY /
      &  523.0987,  819.8690,  523.0987,  604.8450,  160.6821,
      & 1530.3300,   48.6795,  679.1972,  202.8860, 1348.0419,
-     &  679.1972,
+     &  679.1972,  595.1068,
 C
      &    5.7243,    6.4531,    5.7243,    5.9835,    4.1677,
      &    7.0811,    8.9420,    5.5698,    8.7469,    7.0463,
-     &    5.5698,
+     &    5.5698,    5.8104,
 C
      &   -0.4109,   -0.3434,   -0.4109,   -0.3789,   -0.4954,
      &   -0.2544,   -1.4832,   -0.3074,   -0.8317,   -0.3076,
-     &   -0.3074 /
+     &   -0.3074,   -0.3821 /
 C----------
 C  DUMMY ARGUMENT NOT USED WARNING SUPPRESSION SECTION
 C----------

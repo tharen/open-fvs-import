@@ -96,7 +96,7 @@ C
       REAL PSIGSQ(MAXSP)
       CHARACTER DAT*10,TIM*8,SPEC*2,REV*10
       REAL RNPAR
-      DATA PSIGSQ/ 49*0.0898 /
+      DATA PSIGSQ/ 50*0.0898 /
 C-----------
 C  CHECK FOR DEBUG.
 C-----------

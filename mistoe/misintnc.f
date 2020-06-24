@@ -59,12 +59,12 @@ C.... Data statements.
 C.... Species character representations
 
       DATA (ACSP(I),I=1,MAXSP)
-     &   /'OS','SP','DF','WF','MA','IC','BO','TO','RF','PP','OH'/
+     &   /'OS','SP','DF','WF','MA','IC','BO','TO','RF','PP','OH', 'RW'/
 
 C.... Species affected by mistletoe
 
       DATA (AFIT(I),I=1,MAXSP)
-     &   /  0,   1,   1,   1,   0,   0,   0,   0,   1,   1,   0/
+     &   /  0,   1,   1,   1,   0,   0,   0,   0,   1,   1,   0,   0/
 
 C.... Diameter growth rates
 
@@ -79,6 +79,7 @@ C.... Diameter growth rates
      &   1.0,1.0,1.0,1.0,1.0,1.0,1.0,
      &   1.0,1.0,1.0,.98,.95,.70,.50,
      &   1.0,1.0,1.0,.98,.86,.73,.50,
+     &   1.0,1.0,1.0,1.0,1.0,1.0,1.0,
      &   1.0,1.0,1.0,1.0,1.0,1.0,1.0/
 
 C.... Height growth potential rates
@@ -110,6 +111,7 @@ C.... set here.
      &   1.0,1.0,1.0,1.0,1.0,1.0,1.0,
      &   1.0,1.0,1.0,1.0,1.0,1.0,1.0,
      &   1.0,1.0,1.0,1.0,1.0,1.0,1.0,
+     &   1.0,1.0,1.0,1.0,1.0,1.0,1.0,
      &   1.0,1.0,1.0,1.0,1.0,1.0,1.0/
 
 C.... Mortality coefficients
@@ -125,6 +127,7 @@ C.... Mortality coefficients
      &   0.0,0.0,0.0,
      &   0.0,0.00159,0.00508,
      &   0.00681,-0.00580,0.00935,
+     &   0.0,0.0,0.0,
      &   0.0,0.0,0.0/
 
 C.... Check for debug.

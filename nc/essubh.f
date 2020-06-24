@@ -105,6 +105,11 @@ C
       CASE (11)
       HHT = 7.0
 C
+C     HT OF TALLEST SUBS. SPECIES 12 (RW)
+C
+      CASE (12)
+      HHT = 2.0
+C
       END SELECT
       RETURN
       END
