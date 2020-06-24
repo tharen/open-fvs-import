@@ -66,7 +66,8 @@ COMMONS
      >     0.041,  !46 = willow (wi) ! Salix spp.
      >     0.025,  !47 = California nutmeg (cn) ! PY
      >     0.026,  !48 = California laurel (cl)
-     >     0.030/  !49 = other hardwoods (oh) ! BO
+     >     0.030,  !49 = other hardwoods (oh) ! BO
+     >     0.081/  !50 = coast redwood (RW)
 
       FMBRKT = DBH*B1(ISP)
 

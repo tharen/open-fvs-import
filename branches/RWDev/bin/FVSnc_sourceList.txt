@@ -56,6 +56,7 @@
 ../nc/cratet.f
 ../nc/crown.f
 ../nc/cubrds.f
+../nc/dgdriv.f
 ../nc/dgf.f
 ../nc/dubscr.f
 ../nc/dunn.f
@@ -86,7 +87,6 @@
 ../ie/dgbnd.f
 ../ie/rcon.f
 ../ie/vols.f
-../kt/dgdriv.f
 ../kt/maical.f
 ../so/avht40.f
 ../vie/cwcalc.f

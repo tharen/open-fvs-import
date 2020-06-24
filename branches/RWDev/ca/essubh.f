@@ -53,7 +53,7 @@ C
      &       30, 30, 30, 30, 20, 20, 20, 20, 20, 20,
      &       30, 20, 20, 40, 20, 50, 50, 50, 50, 40,
      &       40, 50, 50, 50, 50, 50, 50, 50, 40, 40,
-     &       50, 50, 50, 50, 50, 50, 50, 50, 50),I
+     &       50, 50, 50, 50, 50, 50, 50, 50, 50, 20),I
 C
 C     HEIGHT OF TALLEST SUBSEQUENT SPECIES 5:RF (6,9)
 C
@@ -61,7 +61,7 @@ C
       HHT = 1.0
       GO TO 70
 C
-C     HEIGHT OF TALLEST SUBS. SPECIES 7:DF (1-4,8,15-20,22-23,25)
+C     HEIGHT OF TALLEST SUBS. SPECIES 7:DF (1-4,8,15-20,22-23,25,50)
 C
    20 CONTINUE
       HHT = 2.0

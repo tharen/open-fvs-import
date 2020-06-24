@@ -77,7 +77,7 @@ C             OF TREE MORTALITY (TREES/ACRE).
 C----------
       REAL PRM(6)
       INTEGER MYACTS(2)
-      REAL PMSC(6),PMD(6)
+      REAL PMSC(7),PMD(7)
       INTEGER IBGMAP(MAXSP)
       INTEGER IDMFLG,KNT,NTODO,I,NP,IACTK,IDATE,ISPCC,IPASS
       INTEGER I1,I2,I3,IS,IPATH,KSPC,KNT2,ISPC,ITODO,IP
@@ -97,14 +97,15 @@ C----------
 C
 C BACKGROUND MORTALITY CONSTANTS
 C FROM SO VARIANT, MAPPED TO ICASCA SPECIES
-C 1=WP/SP  2=DF  3=WF/IC/RF/OT  4=MH/ES  5=LP  6=PP
+C 1=WP/SP  2=DF  3=WF/IC/RF/OT  4=MH/ES  5=LP  6=PP, 7=GS/RW
 C----------
-      DATA PMSC/ 6.5112, 7.2985, 5.1677, 9.6943, 5.9617, 5.5877 /
+      DATA PMSC/ 6.5112, 7.2985, 5.1677, 9.6943, 5.9617, 5.5877,
+     &           2.596805/
       DATA PMD/ -.0052485, -.0129121, -.0077681, -.0127328,
-     *          -.0340128, -.005348 /
-      DATA IBGMAP/ 3, 3, 3, 3, 3, 3, 2, 4, 4,
-     &          1, 1, 5, 1, 1, 6, 1, 1, 6, 6,
-     &          6, 3, 4, 3, 3, 3, 24*3 /
+     &          -.0340128, -.005348, 0.512610 /
+      DATA IBGMAP/ 3, 3, 3, 3, 3, 3, 2, 4, 4, 1,
+     &             1, 5, 1, 1, 6, 1, 1, 6, 6, 6,
+     &             3, 4, 7, 3, 3, 24*3, 7 /
 C----------
 C SPECIES ORDER IN CA VARIANT:
 C  1=PC  2=IC  3=RC  4=WF  5=RF  6=SH  7=DF  8=WH  9=MH 10=WB
@@ -481,6 +482,10 @@ C----------
 C  COMPUTE BACKGROUND MORTALITY RATE RI
 C----------
       RI=(1.0/(1.0+EXP(B0+B1*D)))
+
+C     MARK CASTLE DEBUG
+      IF(DEBUG)WRITE(JOSTND,*)' B0=',B0,' B1=',B1,' D=',D,
+     &  ' RI=',RI, ' ISPC=', ISPC
 C----------
 C TEST RUNS SHOW BACKGROUND MORTALITY RATE IS HIGH, CUT IT IN HALF.
 C----------

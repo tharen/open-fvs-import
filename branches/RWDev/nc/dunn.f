@@ -24,10 +24,10 @@ C
 C
 COMMONS
 C----------
-      REAL ADJFAC(11),DUNN50(8),XST2(8),SS,DU50
+      REAL ADJFAC(12),DUNN50(8),XST2(8),SS,DU50
       INTEGER IST,ISPC,I
       DATA ADJFAC/ 0.90, 0.90, 1.00, 1.00, 0.57, 0.76,
-     &             0.57, 0.57, 1.00, 1.00, 0.57/
+     &             0.57, 0.57, 1.00, 1.00, 0.57, 1.00/
       DATA DUNN50/106.,90.,75.,56.,49.,39.,31.,23./
 C
       IST=INT(SS+1.0)

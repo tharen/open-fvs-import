@@ -269,8 +269,8 @@ c         Brewer spruce
             FALLX(I)   =   0.687
             LSW(I)     = .TRUE.
 
-C         giant sequoia
-          CASE (23)
+C         giant sequoia and coast redwood
+          CASE (23,50)
             V2T(I)     =  21.2 ! use redwood
             LEAFLF(I)  =   5.0
             TFALL(I,0) =   3.0
@@ -460,7 +460,7 @@ C       CLASSES, AND THE FUELPOOL KEYWORD TO REASSIGN CLASS
         SELECT CASE (I)
 
 C         some pines, doug-fir, cedars 
-          CASE (1:3,7,10,14,16,17,21,23,24)
+          CASE (1:3,7,10,14,16,17,21,23,24,50)
             DKRCLS(I)  =   1
 
 C         lodgepole, spruce, hemlock

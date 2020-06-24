@@ -1874,7 +1874,7 @@ C      ALFA   FIA   PLNT       AK    BM    CA    CI    CR    EC    EM        SPE
      & '   ','   ','SCPO7   ','OH ','OH ','OH ','OH ','OH ','OH ','OH ',    !Schinus polygamus
      & '   ','   ','SCTE    ','OH ','OH ','OH ','OH ','OH ','OH ','OH ',    !Schinus terebinthifolius
      & '   ','   ','SCTER2  ','OH ','OH ','OH ','OH ','OH ','OH ','OH ',    !Schinus terebinthifolius var. raddianus
-     & 'RW ','211','SESE3   ','OS ','OS ','GS ','OS ','OS ','OS ','OS ',    !Sequoia sempervirens
+     & 'RW ','211','SESE3   ','OS ','OS ','RW ','OS ','OS ','OS ','OS ',    !Sequoia sempervirens
      & 'GS ','212','SEGI2   ','OS ','OS ','GS ','OS ','OS ','OS ','OS ',    !Sequoiadendron giganteum
      & '   ','   ','SYRIN   ','OH ','OH ','OH ','OH ','OH ','OH ','OH ',    !Syringa
      & '   ','   ','SYRE2   ','OH ','OH ','OH ','OH ','OH ','OH ','OH ',    !Syringa reticulata
@@ -1887,7 +1887,7 @@ C       IE    KT    NC    NI    PN    SO    TT    UT    WC    WS             SPE
      & 'OH ','OT ','OH ','OT ','OT ','OH ','OH ','OH ','OT ','OH ',         !Schinus polygamus
      & 'OH ','OT ','OH ','OT ','OT ','OH ','OH ','OH ','OT ','OH ',         !Schinus terebinthifolius
      & 'OH ','OT ','OH ','OT ','OT ','OH ','OH ','OH ','OT ','OH ',         !Schinus terebinthifolius var. raddianus
-     & 'OS ','OT ','OS ','OT ','RW ','OS ','OH ','OS ','RW ','RW ',         !Sequoia sempervirens
+     & 'OS ','OT ','RW ','OT ','RW ','OS ','OH ','OS ','RW ','RW ',         !Sequoia sempervirens
      & 'OS ','OT ','OS ','OT ','RW ','OS ','OS ','OS ','RW ','GS ',         !Sequoiadendron giganteum
      & 'OH ','OT ','OH ','OT ','OT ','OH ','OH ','OH ','OT ','OH ',         !Syringa
      & 'OH ','OT ','OH ','OT ','OT ','OH ','OH ','OH ','OT ','OH ',         !Syringa reticulata

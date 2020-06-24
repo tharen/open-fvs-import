@@ -52,7 +52,7 @@ C.... model.
 C.... The following IRTSPC is the base root disease model IRTSPC
 C.... It is used for variants : NI, CI, and KT
 
-      DATA IRTSPC /27, 12,  3, 13, 30, 14, 29, 32, 15, 10, 18/
+      DATA IRTSPC /27, 12,  3, 13, 30, 14, 29, 32, 15, 10, 18, 35/
 
       DATA DICLAS /0.0, 5.0, 12.0, 24.0/
       DATA DSFAC  /1.0, 0.75/

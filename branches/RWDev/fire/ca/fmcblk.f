@@ -34,7 +34,7 @@ C      10=WOODLAND JUNIPER/OAK/MESQUITE
      & 9, 9, 9, 7, 8,
      & 8, 8, 8, 8, 8, ! 40
      & 8, 8, 8, 6, 6,
-     & 6, 3, 8,10 /   ! 49
+     & 6, 3, 8,10, 1 /! 50
 
 C DATA Statement Debug Information
 C         Variant   = CA

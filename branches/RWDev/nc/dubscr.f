@@ -1,4 +1,4 @@
-      SUBROUTINE DUBSCR(ISPC,D,H,CR,TPCT,TPCCF)
+      SUBROUTINE DUBSCR(ISPC,D,H,RDEN,QMDPLT,CR,TPCT,TPCCF)
       IMPLICIT NONE
 C----------
 C NC $Id$
@@ -28,53 +28,63 @@ C
 C
 COMMONS
 C----------
+      LOGICAL DEBUG
       EXTERNAL RANN
       INTEGER ISPC
       REAL D,H,CR,FCR,SD,TPCT,TPCCF,BACHLO
       REAL BCR0(MAXSP),BCR1(MAXSP),BCR2(MAXSP),BCR3(MAXSP),
      & CRSD(MAXSP),BCR5(MAXSP),BCR6(MAXSP),
      & BCR8(MAXSP),BCR9(MAXSP),BCR10(MAXSP)
-      REAL RDANUW
+      REAL RDANUW,RDEN,QMDPLT,HDR
 C----------
       DATA BCR0/
-     & -1.669490, -1.669490,  -.426688,  -.426688,  -.426688,  -.426688,
-     & -1.669490,  -.426688,  -.426688, -1.669490,  -2.19723/
+     & -1.669490, -1.669490,  -.426688,  -.426688,  -.426688,
+     & -0.426688, -1.669490,  -.426688,  -.426688, -1.669490,
+     & -2.19723,   0.00000/
 C
       DATA BCR1/
-     &  -.209765,  -.209765,  -.093105,  -.093105,  -.093105,  -.093105,
-     &  -.209765,  -.093105,  -.093105,  -.209765,   .000000/
+     &  -.209765,  -.209765,  -.093105,  -.093105,  -.093105,
+     &  -.093105,  -.209765,  -.093105,  -.093105,  -.209765,
+     &   .000000,    0.00000/
 C
       DATA BCR2/
-     &   .000000,   .000000,   .022409,   .022409,   .022409,   .022409,
-     &   .000000,   .022409,   .022409,   .000000,   .000000/
+     &   .000000,   .000000,   .022409,   .022409,   .022409,
+     &   .022409,   .000000,   .022409,   .022409,   .000000,
+     &   .000000,   0.00000/
 C
       DATA BCR3/
-     &   .003359,   .003359,   .002633,   .002633,   .002633,   .002633,
-     &   .003359,   .002633,   .002633,   .003359,   .000000/
+     &   .003359,   .003359,   .002633,   .002633,   .002633,
+     &   .002633,   .003359,   .002633,   .002633,   .003359,
+     &   .000000,   0.00000/
 C
       DATA BCR5/
-     &   .011032,   .011032,   .000000,   .000000,   .000000,   .000000,
-     &   .011032,   .000000,   .000000,   .011032,   .000000/
+     &   .011032,   .011032,   .000000,   .000000,   .000000,
+     &   .000000,   .011032,   .000000,   .000000,   .011032,
+     &   .000000,   0.00000/
 C
       DATA BCR6/
-     &   .000000,   .000000,  -.045532,  -.045532,  -.045532,  -.045532,
-     &   .000000,  -.045532,  -.045532,   .000000,   .000000/
+     &   .000000,   .000000,  -.045532,  -.045532,  -.045532,
+     &  -.045532,   .000000,  -.045532,  -.045532,   .000000,
+     &   .000000,   0.00000/
 C
       DATA BCR8/
-     &   .017727,   .017727,   .000000,   .000000,   .000000,   .000000,
-     &   .017727,   .000000,   .000000,   .017727,   .000000/
+     &   .017727,   .017727,   .000000,   .000000,   .000000,
+     &   .000000,   .017727,   .000000,   .000000,   .017727,
+     &   .000000,   0.00000/
 C
       DATA BCR9/
-     &  -.000053,  -.000053,   .000022,   .000022,   .000022,   .000022,
-     &  -.000053,   .000022,   .000022,  -.000053,   .000000/
+     &  -.000053,  -.000053,   .000022,   .000022,   .000022,
+     &   .000022,  -.000053,   .000022,   .000022,  -.000053,
+     &   .000000,   0.00000/
 C
       DATA BCR10/
-     &   .014098,   .014098,  -.013115,  -.013115,  -.013115,  -.013115,
-     &   .014098,  -.013115,  -.013115,   .014098,   .000000/
+     &   .014098,   .014098,  -.013115,  -.013115,  -.013115,
+     &  -.013115,   .014098,  -.013115,  -.013115,   .014098,
+     &   .000000,   0.00000/
 C
       DATA CRSD/
-     &  .5000,.5000,.6957,.6957,.6957,.9310,
-     &  .6124,.6957,.6957,.4942,0.200/
+     &  .5000,.5000,.6957,.6957, .6957, .9310,
+     &  .6124,.6957,.6957,.4942, 0.200, .1500/
 C----------
 C  DUMMY ARGUMENT NOT USED WARNING SUPPRESSION SECTION
 C----------
@@ -82,13 +92,29 @@ C----------
 C-----------
 C  CHECK FOR DEBUG.
 C-----------
-C     CALL DBCHK (DEBUG,'DUBSCR',6,ICYC)
+      CALL DBCHK (DEBUG,'DUBSCR',6,ICYC)
 C----------
 C  EXPECTED CROWN RATIO IS A FUNCTION OF SPECIES, DBH, BASAL AREA, BAL,
 C  AND PCCF.  THE MODEL IS BASED ON THE LOGISTIC FUNCTION,
 C  AND RETURNS A VALUE BETWEEN ZERO AND ONE.
 C----------
-      CR = BCR0(ISPC)
+
+C  CALCULATE HEIGHT DIAMETER RATIO - USED IN RW CR EQUATION
+      HDR = (H*12)/D
+      IF(HDR .GT. 150) HDR = 150
+
+C RW CR CALCULATION
+      IF(ISPC .EQ. 12) THEN
+        CR = -1.842864 + 0.007664*D + 0.487667*LOG(HDR) + 
+     &        0.823697*RDEN - 0.145448*(D/QMDPLT)
+
+C MARK CASTLE: DEBUG
+        IF(DEBUG)WRITE(JOSTND,*)'IN DUBSCR',' D=',D,' H=',H,
+     &  ' RDEN=',RDEN,' QMDPLT=',QMDPLT,' HDR=', HDR,' CR=',CR
+
+C ALL OTHER SPECIES CR CALCULATION
+      ELSE
+        CR = BCR0(ISPC)
      *   + BCR1(ISPC)*D
      *   + BCR2(ISPC)*H
      *   + BCR3(ISPC)*BA
@@ -97,6 +123,8 @@ C----------
      *   + BCR8(ISPC)*AVH
      *   + BCR9(ISPC)*(BA*TPCCF)
      *   + BCR10(ISPC)*RMAI
+      ENDIF
+
 C----------
 C  A RANDOM ERROR IS ASSIGNED TO THE CROWN RATIO PREDICTION
 C  PRIOR TO THE LOGISTIC TRANSFORMATION.  LINEAR REGRESSION
@@ -112,8 +140,8 @@ C----------
       IF(CR .LT. .05) CR=.05
 C     IF(DEBUG)WRITE(JOSTND,600)ISPC,D,H,TBA,TPCCF,CR,FCR,RMAI
 C 600 FORMAT(' IN DUBSCR, ISPC=',I2,' DBH=',F4.1,' H=',F5.1,
-C    & ' TBA=',F7.3,' TPCCF=',F8.4,' CR=',F4.3,
-C    &   ' RAN ERR = ',F6.4,' RMAI= ',F9.4)
-C
+C    &       ' TBA=',F7.3,' TPCCF=',F8.4,' CR=',F4.3,
+C    &       ' RAN ERR = ',F6.4,' RMAI= ',F9.4)
+
       RETURN
       END

@@ -91,8 +91,8 @@ C----------
       DATA MAPNI /
 C     WP=WP,WL=WL,DF=DF,GF=GF,WH=WH,RC=RC,LP=LP,ES=ES,AF=AF,PP=PP
      &    1,    2,    3,    4,    5,    6,    7,    8,    9,   10,
-C     MH=MH
-     &   11, 38*0/
+C     MH=MH RW=RC
+     &   11,    6, 37*0/
 C
 C
       DATA MAPAK /

@@ -704,7 +704,7 @@ C     Curl-leaf Mtn Mahogany,Birchleaf Mtn Mahogany,Pacific dogwood,     Eucalyp
 C     Walnut,                Tanoak,                Ohia,                California sycamore, Quacking aspen, 
 C     Black cottonwood,      Bitter Cherry,         California live oak, Canyon live oak,     Blue oak, 
 C     Engelmann's oak,       Oregon white oak,      California black oak,California white oak,Interior live oak,
-C     Willow,                California laurel,     Other hardwoods,     unkown
+C     Willow,                California laurel,     Other hardwoods,     unkown,              Coast redwood
 
       DATA (FIA(I),I=1,32)/   11,   15,   17,   19,   20,
      >                        21,   22,   41,   62,   64,

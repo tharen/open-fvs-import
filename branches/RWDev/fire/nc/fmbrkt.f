@@ -28,7 +28,8 @@ C
      >     0.052,    !8  tanoak
      >     0.039,    !9  red fir
      >     0.063,    !10 ponderosa pine
-     >     0.052/    !11 other hardwood - use tanoak
+     >     0.052,    !11 other hardwood - use tanoak
+     >     0.063/    !12 coast redwood - use douglas fir
 C
       FMBRKT = DBH*B1(ISP)
 C
