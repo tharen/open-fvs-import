@@ -1,4 +1,4 @@
-      SUBROUTINE CWCALC(ISPC,P,D,H,CR,IICR,CW,IWHO,JOSTND)
+      SUBROUTINE CWCALC(ISPC,P,D,H,CR,IICR,CW,IWHO,JSTND2)
       IMPLICIT NONE
 C----------
 C CANADA-BC $Id$
@@ -57,16 +57,18 @@ C     PROVIDED FROM REGION 6.
 C  MOEUR, MELINDA 1981. CROWN WIDTH AND FOLIAGE WEIGHT OF NORTHERN
 C     ROCKY MOUNTAIN CONIFERS. USDA-FS, INT-183.
 C----------
-
+      LOGICAL   DEBUG
       CHARACTER CWEQN*5, FIASP*3
       CHARACTER AKMAP(13)*5, BMMAP(18)*5, CAMAP(49)*5, CIMAP(19)*5
       CHARACTER CRMAP(38)*5, ECMAP(32)*5, EMMAP(19)*5, IEMAP(23)*5
       CHARACTER KTMAP(11)*5, NCMAP(11)*5, NIMAP(11)*5, PNMAP(39)*5
       CHARACTER SOMAP(33)*5, TTMAP(18)*5, UTMAP(24)*5, WCMAP(39)*5
-      CHARACTER WSMAP(43)*5, BCMAP(15)*5
-      INTEGER ISPC,IICR, IWHO, JOSTND
+      CHARACTER WSMAP(43)*5, OCMAP(49)*5, OPMAP(39)*5, BCMAP(15)*5
+      INTEGER ISPC,IICR, IWHO, JSTND2
       REAL D, H, CW, HI, HILAT, HILONG, HIELEV,EL,MIND,CR,CL,BAREA
       REAL BF,P,OMIND
+      REAL RDANUW
+      INTEGER IDANUW      
 C----------
 C  DATA STATEMENTS
 C----------
@@ -182,7 +184,7 @@ C                      WP       WL       DF       GF       WH       RC
 C             LP       ES       AF       PP       OT(MH)
      &    '10803', '09303', '01903', '12203', '26405'/
 C----------
-C  INTERIOR BC (15)
+C  BC (15)
 C----------
 C                      PW       LW       FD       BG       HW       CW
        DATA BCMAP/ '11903', '07303', '20203', '01703', '26305', '24205',
@@ -252,7 +254,6 @@ C             PM       RM       UJ       GB       NC       FC       MC
      &    '10602', '06405', '06405', '10201', '74902', '74902', '47502',
 C             BI       BE       OS       OH
      &    '31206', '74902', '12205', '81402'/
-     
 C----------
 C  WEST CASCADES
 C----------
@@ -289,22 +290,88 @@ C          BO       VO       IO       TO       GC
 C          AS       CL       MA       DG       BM
      & '74605', '98102', '36102', '35106', '31206',   
 C          MC       OS       OH
-     & '47502', '12205', '81802'/  
+     & '47502', '12205', '81802'/
+C----------
+C  FVS-ORGANON SWO  (OC VARIANT)
+C----------
+C                      PC       IC       RC       GF       RF      SH
+       DATA OCMAP/ '04105', '08105', '24205', '01703', '02006', '02105',
+C             DF       WH       MH       WB       KP       LP   CPtoLP
+     &    '20205', '26305', '26403', '10105', '10305', '10805', '10805',
+C             LM       JP       SP       WP       PP   MPtoGP       GP
+     &    '11301', '11605', '11705', '11905', '12205', '12702', '12702',
+C             WJ       BR   GStoRW       PY   OStoJP       LO       CY
+     &    '06405', '09204', '21104', '23104', '11605', '80102', '80502',
+C             BL   EOtoBL       WO       BO       VO       IO       BM
+     &    '80702', '80702', '81505', '81802', '82102', '83902', '31206',
+C         BUtoBM       RA       MA   GCtoTO   DGtoRA   FLtoBM   WNtoBM
+     &    '31206', '35106', '36102', '63102', '35106', '31206', '31206',
+C             TO   SYtoTO       AS       CW   WItoBM   CNtoCL       CL
+     &    '63102', '63102', '74605', '74705', '31206', '98102', '98102',
+C             OH
+     &    '31206'/
+C----------
+C  FVS-ORGANON NWO & SMC  (OP VARIANT)
+C----------
+C                      SF       WF       GF       AF       RF      SS
+       DATA OPMAP/ '01105', '01505', '01703', '01905', '02006', '09805',
+C             NF       YC       IC       ES       LP       JP       SP
+     &    '02206', '04205', '08105', '09305', '10805', '11605', '11705',
+C             WP       PP       DF       RW       RC       WH       MH
+     &    '11905', '12205', '20205', '21104', '24205', '26305', '26403',
+C             BM       RA       MA       TO   GCtoTO       AS       CW
+     &    '31206', '35106', '36102', '63102', '63102', '74605', '74705',
+C             WO        J       LL       WB       KP       PY   DGtoRA
+     &    '81505', '06405', '07204', '10105', '10305', '23104', '35106',
+C         HTtoRA   CHtoRA   WItoBM       --       OT
+     &    '35106', '35106', '31206', '12205', '12205'/
 C
+C----------
+C  DUMMY ARGUMENT NOT USED WARNING SUPPRESSION SECTION
+C----------
+      IDANUW = IICR
+      IDANUW = IWHO
+      RDANUW = P
+C-----------
+C  SEE IF WE NEED TO DO SOME DEBUG.
+C-----------
+      CALL DBCHK (DEBUG,'CWCALC',6,ICYC)
 C----------
 C  SET THE EQUATION NUMBER
 C  OR IF THIS IS AN R5 FOREST BRANCH TO THE R5CRWD ROUTINE
+C
+C  NOTES FOR NON-FS FOREST CODES (ALSO SEE SUBROUTINE **FORKOD**):
+C  SO VARIANT IFOR=8=INDUSTRY IS IN R5
+C             IFOR=10=WARM SPRINGS RESERVATION IS IN R6
+C  NC VARIANT IFOR=5=HOOPA IS IN R5; IFOR=6=SIMPSON TIMBER IS IN R6;
+C                 IFOR=7=BLM COOS BAY IS IN R6
+C  PN&OP VARIANTS IFOR=3=QUINAULT IS IN R6; IFOR=4,5,6=BLM SALEM,EUGENE,COOS BAY
+C                 ARE IN R6
+C  WC VARIANT IFOR=7,8,9,10=BLM SALEM,EUGENE,ROSEBURG,MEDFORD ARE IN R6
+C  CA VARIANT IFOR=8,9,10=BLM ROSEBURG,MEDFORD, COOS BAY ARE IN R6
+C
+C  ALSO BECAUSE OF FOREST CODE MAPPING IN **FORKOD**, IFOR WILL BE:
+C  BM VARIANT  .LE. 4
+C  CA VARIANT  .LE. 10
+C  EC VARIANT  .LE. 4
+C  NC VARIANT  .LE. 7
+C  SO VARIANT  .LE. 10 BUT NOT 9
+C  WC VARIANT  .LE. 10
+C  WS VARIANT  .LE. 6
+C  MAPPING IS ALWAYS WITHIN REGIONAL BOUNDARIES.
 C----------
-      IF((VARACD.EQ.'SO').AND.(IFOR.GE.4))THEN
+C
+      IF((VARACD.EQ.'SO').AND.(IFOR.GE.4 .AND. IFOR.LE.9))THEN
         CALL R5CRWD(ISPC,D,H,CW)
         GO TO 9000
-      ELSEIF ((VARACD.EQ.'WS').AND.(IFOR.LE.12))THEN
+      ELSEIF (VARACD.EQ.'WS')THEN
         CALL R5CRWD(ISPC,D,H,CW)
         GO TO 9000
-      ELSEIF ((VARACD.EQ.'NC').AND.((IFOR.LE.3).OR.(IFOR.GE.9)))THEN
+      ELSEIF ((VARACD.EQ.'NC').AND.((IFOR.LE.3).OR.(IFOR.EQ.5)))THEN
         CALL R5CRWD(ISPC,D,H,CW)
         GO TO 9000
-      ELSEIF ((VARACD.EQ.'CA').AND.((IFOR.LE.5).OR.(IFOR.GE.8)))THEN
+      ELSEIF (((VARACD.EQ.'CA') .OR. (VARACD.EQ.'OC')).AND.
+     &        (IFOR.LE.5))THEN
         CALL R5CRWD(ISPC,D,H,CW)
         GO TO 9000
       ENDIF
@@ -344,6 +411,10 @@ C
           CWEQN=NCMAP(ISPC)
         CASE('NI')
           CWEQN=NIMAP(ISPC)
+        CASE('OC')
+          CWEQN=OCMAP(ISPC)
+        CASE('OP')
+          CWEQN=OPMAP(ISPC)
         CASE('PN')
           CWEQN=PNMAP(ISPC)
         CASE('SO')
