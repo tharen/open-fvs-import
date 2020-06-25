@@ -68,7 +68,7 @@ C----------
       CHARACTER CRMAP(38)*5, ECMAP(32)*5, EMMAP(19)*5, IEMAP(23)*5
       CHARACTER KTMAP(11)*5, NCMAP(11)*5, NIMAP(11)*5, PNMAP(39)*5
       CHARACTER SOMAP(33)*5, TTMAP(18)*5, UTMAP(24)*5, WCMAP(39)*5
-      CHARACTER WSMAP(43)*5, OCMAP(49)*5, OPMAP(39)*5
+      CHARACTER WSMAP(43)*5, OCMAP(49)*5, OPMAP(39)*5, BCMAP(15)*5
       INTEGER ISPC,IICR, IWHO, JSTND2
       REAL D, H, CW, HI, HILAT,HILONG,HIELEV,EL,MIND,CR,CL,BAREA
       REAL BF,P,OMIND
@@ -188,6 +188,15 @@ C                      WP       WL       DF       GF       WH       RC
        DATA NIMAP/ '11903', '07303', '20203', '01703', '26303', '24203',
 C             LP       ES       AF       PP       OT(MH)
      &    '10803', '09303', '01903', '12203', '26405'/
+C----------
+C  BC (15)
+C----------
+C                      PW       LW       FD       BG       HW       CW
+       DATA BCMAP/ '11903', '07303', '20203', '01703', '26305', '24205',
+C             PL       SE       BL       PY       EP       AT       AC
+     &    '10805', '09303', '01905', '12203', '37506', '74605', '74902',
+C             OC       OH 
+     &    '20203', '37506' /
 C----------
 C  KOOKANTL
 C----------
@@ -397,6 +406,8 @@ C
           CWEQN=ECMAP(ISPC)
         CASE('EM')
           CWEQN=EMMAP(ISPC)
+        CASE('BC')
+          CWEQN=BCMAP(ISPC)          
         CASE('IE')
           CWEQN=IEMAP(ISPC)
         CASE('KT')
