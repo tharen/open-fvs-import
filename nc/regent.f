@@ -276,19 +276,20 @@ C     CALCULATE SMALL TREE DIAMETER GROWTH
      &       - 0.001519*TEMSLP*COS(TEMASP))
 
 C     CONVERT DG TO INSIDE BARK DG
+        BARK=BRATIO(ISPC,DBH(K),HT(K))
         D1 = D * BARK
         D2 = (D + DGSM)*BARK
         DGSM = D2 - D1
 
 C     APPLY SMALL TREE DIAMETER GROWTH MULTIPLIER
-        DGSM = DGSM * XRDGRO
-        DG(K) = DGSM / 2.0
+        DGSM = (DGSM/2.0) * XRDGRO * SCALE2
+        DG(K) = DGSM 
 
 C     MARK CASTLE DEBUG
         IF(DEBUG)WRITE(JOSTND,*)'IN REGENT ',' D=',D,' PBAL=',PBAL,
      &  ' RDEN=',RDEN,' CR=',CR, ' SI=',XSITE,' SLP=',TEMSLP,
      &  ' ASP=',TEMASP,' XRDGRO=',XRDGRO, ' BRATIO=', BARK,
-     &  ' DG=',DGSM
+     &  ' DG=',DG(K)
 
 C  PROCESS OTHER SPECIES
       ELSE

@@ -82,7 +82,13 @@ C----------
               PREM = PREM * 0.5 
             ENDIF             
           CASE(43)
-            PREM = PREM * 0.70                                                          
+            PREM = PREM * 0.70
+          CASE(50)
+            IF(DSTMP.LT.216.7)THEN
+              PREM = PREM * ((93.2669-0.4303 * DSTMP)/100.)
+            ELSE
+              PREM = 0.
+            ENDIF                                                          
           CASE DEFAULT
             PREM = PREM * 1.  
         END SELECT
@@ -341,6 +347,12 @@ C----------
         SELECT CASE(ISPC)
           CASE(5,7,8)
             PREM = PREM * 0.90                                       
+          CASE(12)
+            IF(DSTMP.LT.216.7)THEN
+              PREM = PREM * ((93.2669-0.4303 * DSTMP)/100.)
+            ELSE
+              PREM = 0.
+            ENDIF
           CASE DEFAULT
             PREM = PREM * 1.  
         END SELECT 
@@ -805,7 +817,7 @@ C----------
           ELSE
             NMSPRC = 2
           ENDIF 
-        CASE(34,37,38,42,45,48)
+        CASE(34,37,38,42,45,48,50)
           IF(DSTMP.LT.5.0)THEN
             NMSPRC = 1
           ELSE IF(DSTMP.GE.5.0.AND.DSTMP.LE.10.0)THEN
@@ -977,7 +989,7 @@ C----------
           ELSE
             NMSPRC = 2
           ENDIF
-        CASE(5,8)
+        CASE(5,8,12)
           IF(DSTMP.LT.5.0)THEN
             NMSPRC = 1
           ELSE IF(DSTMP.GE.5.0.AND.DSTMP.LE.10.0)THEN

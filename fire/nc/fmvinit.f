@@ -178,7 +178,7 @@ C         sugar pine
             LSW(I)     = .TRUE.
 
 C         Douglas-fir, other conifers
-          CASE (3,1,12)
+          CASE (3,1)
             V2T(I)     =  28.7 ! interior west DF in Wood Handbook
             LEAFLF(I)  =   5.0
             TFALL(I,0) =   3.0
@@ -258,7 +258,18 @@ C         ponderosa pine
             FALLX(I)   =   1.235
             DKRCLS(I)  =   4
             LSW(I)     = .TRUE.
-
+           
+C         coast redwood
+          CASE (12)
+            V2T(I)     =  21.2
+            LEAFLF(I)  =   5.0
+            TFALL(I,0) =   3.0
+            TFALL(I,3) =  20.0
+            ALLDWN(I)  = 150.0
+            FALLX(I)   =   0.687
+            DKRCLS(I)  =   1
+            LSW(I)     = .TRUE.
+            
         END SELECT
 C
 C       HARD SNAGS NEVER BECOME SOFT
