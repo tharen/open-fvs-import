@@ -73,7 +73,7 @@ C----------
       DATA XMIN/ 1., 1., 1., .5, 1., .5, .5, 1., .5, 1., 1., 1./
 
       DATA DBHMID/1.0,3.0,5.0,7.0,9.0,12.0,16.0,20.0,24.0,28.0/,
-     &  ISPSPE/5,7,8/,
+     &  ISPSPE/5,7,8,12/,
      &  BNORML/3*1.0,1.046,1.093,1.139,1.186,1.232,
      &  1.278,1.325,1.371,1.418,1.464,1.510,1.557,1.603,1.649,1.696,
      &  1.742,1.789/,
@@ -137,6 +137,7 @@ C     8 = TANOAK (TO)                    LITHOCARPUS DENSIFLORUS
 C     9 = RED FIR (RF)                   ABIES MAGNIFICA
 C    10 = PONDEROSA PINE (PP)            PINUS PONDEROSA
 C    11 = OTHER HARDWOOD (OH)
+C    12 = COAST REDWOOD (RW)             SEQUIOA SEMPERVIRENS
 C----------
       DATA JSP /
      & 'OS ',   'SP ',   'DF ',   'WF ',   'MA ',   'IC ',   'BO ',
