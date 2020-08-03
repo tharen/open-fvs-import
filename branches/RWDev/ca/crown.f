@@ -286,7 +286,7 @@ C BRANCH FOR RW/GS
         X = B1 + B2*D + B3*LOG(HDR) + B4*RDEN + B5*D/QMDPLT
         X = 1.0/(1.0+EXP(X))
 C     MARK CASTLE: DEBUG
-        IF(DEBUG)WRITE(JOSTND,*)' IN CROWN', 'D=',D,' H=',H,
+        IF(DEBUG)WRITE(JOSTND,*)' IN CROWN', ' D=',D,' H=',H,
      &   ' RDEN=',RDEN,' QMDPLT=',QMDPLT,' HDR=',HDR,' CR=',X
       ENDIF
 
