@@ -90,6 +90,7 @@ C----------
       REAL DQ10N,TREEIT
       REAL TMMSB,T85MSB,TMORE,TEMEFF,TPACLS,DBHEND,BADEAD
       REAL DIA0,D10,DR0,DR10,SUMDR0,SUMDR10,SUMDR10N,DR10N,D10N,SDQ0
+      REAL TEMPD,PN
 C----------
 C     SPECIES LIST FOR WESTERN SIERRAS VARIANT.
 C
@@ -169,22 +170,22 @@ C----------
 C BACKGROUND MORTALITY CONSTANTS
 C----------
       DATA PMSC/
-     &    6.5112,    7.2985,    5.1677,    9.6943,    5.1677,
+     &    6.5112,    7.2985,    5.1677,    2.5968,    5.1677,
      &    9.6943,    5.1677,    5.5877,    5.9617,    5.9617,
      &    6.5112,    6.5112,    5.1677,    6.5112,    6.5112,
      &    6.5112,    6.5112,    5.5877,    6.5112,    6.5112,
-     &    5.1677,    7.2985,    9.6943,    6.5112,    6.5112,
+     &    5.1677,    7.2985,    2.5968,    6.5112,    6.5112,
      &    6.5112,    6.5112,    5.9617,    5.9617,    5.9617,
      &    5.9617,    5.9617,    5.9617,    5.1677,    5.1677,
      &    5.1677,    5.1677,    5.1677,    5.1677,    5.9617,
      &    5.9617,    6.5112,    5.9617/
 C
       DATA PMD/
-     & -.0052485, -.0129121, -.0077681, -.0127328, -.0077681,
+     & -.0052485, -.0129121, -.0077681,   .512610, -.0077681,
      & -.0127328, -.0077681,  -.005348, -.0340128, -.0340128,
      & -.0052485, -.0052485, -.0077681, -.0052485, -.0052485,
      & -.0052485, -.0052485,  -.005348, -.0052485, -.0052485,
-     & -.0077681, -.0129121, -.0127328, -.0052485, -.0052485,
+     & -.0077681, -.0129121,  .512610, -.0052485, -.0052485,
      & -.0052485, -.0052485, -.0340128, -.0340128, -.0340128,
      & -.0340128, -.0340128, -.0340128, -.0077681, -.0077681,
      & -.0077681, -.0077681, -.0077681, -.0077681, -.0340128,
@@ -555,7 +556,23 @@ C----------
 C----------
 C  COMPUTE BACKGROUND MORTALITY RATE RI
 C----------
-      RI=(1.0/(1.0+EXP(B0+B1*D)))
+C BRANCH FOR GS/RW
+C CALCULATE SURVIVAL RATE AND THEN CONVERT TO MORTALITY RATE
+      IF(ISPC.EQ.4 .OR. ISPC .EQ.23) THEN
+        TEMPD = D
+        IF(TEMPD .GT. 150) TEMPD = 150
+        PN = B0 + B1*TEMPD
+        PN = EXP(PN)/(1 + EXP(PN))
+        RI = 1 - PN
+        IF(RI .LT. 0.0001) RI = 0.0001
+C CALCULATE MORTALITY RATE FOR OTHER SPECIES
+      ELSE
+        RI=(1.0/(1.0+EXP(B0+B1*D)))
+      ENDIF
+
+C     MARK CASTLE DEBUG
+      IF(DEBUG)WRITE(JOSTND,*)' IN MORTS', ' ISPC=', ISPC, ' B0=',B0,
+     &  ' B1=',B1,' D=',D, ' RI=',RI, ' PN=', PN
 C----------
 C TEST RUNS SHOW BACKGROUND MORTALITY RATE IS HIGH, CUT IT IN HALF.
 C----------
